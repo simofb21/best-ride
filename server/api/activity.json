@@ -1,0 +1,47 @@
+{
+  "activity": {
+    "distance": 0,
+    "duration": 0,
+    "elevation_gain": 0,
+    "average_speed": 0,
+    "max_speed": 0,
+    "average_cadence": 0,
+    "average_heartrate": 0,
+    "max_heartrate": 0,
+    "average_watts": 0,
+    "max_watts": 0,
+    "kilojoules": 0,
+    "kcalories": 0
+  },
+  "power_records": [
+    {
+      "short_intervals": {
+        "peak_power": 0,
+        "3s_power": 0,
+        "5s_power": 0,
+        "10s_power": 0,
+        "20s_power": 0,
+        "30s_power": 0,
+        "1min_power": 0,
+        "2min_power": 0,
+        "3min_power": 0
+      }
+    },
+    {
+      "middle_intervals": {
+        "5min_power": 0,
+        "8min_power": 0,
+        "10min_power": 0,
+        "12min_power": 0
+      }
+    },
+    {
+      "long_intervals": {
+        "15min_power": 0,
+        "20min_power": 0,
+        "30min_power": 0,
+        "60min_power": 0
+      }
+    }
+  ]
+}

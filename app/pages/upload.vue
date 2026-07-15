@@ -17,7 +17,6 @@
         class="hidden-input"
         @change="onFileChange"
       />
-
       <p v-if="!selectedFile">
         Trascina qui il file .fit oppure clicca per selezionarlo
       </p>
@@ -31,15 +30,51 @@
     </button>
 
     <div v-if="result" class="results">
-      <h2>Risultati</h2>
-      <ul>
-        <li>Durata: {{ result.durationMinutes }} min</li>
-        <li>Distanza: {{ result.distanceKm }} km</li>
-        <li>Potenza media: {{ result.avgPower }} W</li>
-        <li>Potenza massima: {{ result.maxPower }} W</li>
-        <li>Cadenza media: {{ result.avgCadence }} rpm</li>
-        <li v-if="result.avgHeartRate">
-          FC media: {{ result.avgHeartRate }} bpm
+      <h2>Riepilogo attività</h2>
+      <ul class="stats-grid">
+        <li>Distanza: {{ result.activity.distance }} km</li>
+        <li>Durata: {{ Math.round(result.activity.duration / 60) }} min</li>
+        <li>Dislivello: {{ result.activity.elevation_gain }} m</li>
+        <li>Velocità media: {{ result.activity.average_speed }} km/h</li>
+        <li>Velocità massima: {{ result.activity.max_speed }} km/h</li>
+        <li>Cadenza media: {{ result.activity.average_cadence }} rpm</li>
+        <li>FC media: {{ result.activity.average_heartrate }} bpm</li>
+        <li>FC massima: {{ result.activity.max_heartrate }} bpm</li>
+        <li>Potenza media: {{ result.activity.average_watts }} W</li>
+        <li>Potenza massima: {{ result.activity.max_watts }} W</li>
+        <li>Energia: {{ result.activity.kilojoules }} kJ</li>
+        <li>Calorie: {{ result.activity.kcalories }} kcal</li>
+      </ul>
+
+      <h2>Curva di potenza</h2>
+
+      <h3>Intervalli brevi</h3>
+      <ul class="stats-grid">
+        <li
+          v-for="(value, key) in result.power_records[0].short_intervals"
+          :key="key"
+        >
+          {{ key }}: {{ value }} W
+        </li>
+      </ul>
+
+      <h3>Intervalli medi</h3>
+      <ul class="stats-grid">
+        <li
+          v-for="(value, key) in result.power_records[1].middle_intervals"
+          :key="key"
+        >
+          {{ key }}: {{ value }} W
+        </li>
+      </ul>
+
+      <h3>Intervalli lunghi</h3>
+      <ul class="stats-grid">
+        <li
+          v-for="(value, key) in result.power_records[2].long_intervals"
+          :key="key"
+        >
+          {{ key }}: {{ value }} W
         </li>
       </ul>
     </div>
@@ -50,7 +85,7 @@
 
 <script setup lang="ts">
 const selectedFile = ref<File | null>(null);
-const result = ref<any>(null);
+const result = ref<ActivityAnalysis | null>(null);
 const loading = ref(false);
 const error = ref("");
 const isDragOver = ref(false);
@@ -67,8 +102,7 @@ function onFileChange(e: Event) {
 
 function onDrop(e: DragEvent) {
   isDragOver.value = false;
-  const file = e.dataTransfer?.files?.[0];
-  setFile(file ?? null);
+  setFile(e.dataTransfer?.files?.[0] ?? null);
 }
 
 function setFile(file: File | null) {
@@ -83,7 +117,6 @@ function setFile(file: File | null) {
 
 async function uploadFile() {
   if (!selectedFile.value) return;
-
   loading.value = true;
   error.value = "";
 
@@ -91,7 +124,7 @@ async function uploadFile() {
   formData.append("file", selectedFile.value);
 
   try {
-    result.value = await $fetch("/api/upload", {
+    result.value = await $fetch<ActivityAnalysis>("/api/upload", {
       method: "POST",
       body: formData,
     });
@@ -110,9 +143,6 @@ async function uploadFile() {
   padding: 40px;
   text-align: center;
   cursor: pointer;
-  transition:
-    border-color 0.2s,
-    background-color 0.2s;
 }
 .dropzone.is-dragover {
   border-color: #42b883;
@@ -120,6 +150,13 @@ async function uploadFile() {
 }
 .hidden-input {
   display: none;
+}
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 8px;
+  list-style: none;
+  padding: 0;
 }
 .error {
   color: #e53935;
