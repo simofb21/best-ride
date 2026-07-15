@@ -11,6 +11,7 @@ export interface ActivitySummary {
   max_watts: number;
   kilojoules: number;
   kcalories: number;
+  normalized_power: number;
 }
 
 export interface ShortIntervals {

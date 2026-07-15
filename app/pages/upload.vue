@@ -44,6 +44,7 @@
         <li>Potenza massima: {{ result.activity.max_watts }} W</li>
         <li>Energia: {{ result.activity.kilojoules }} kJ</li>
         <li>Calorie: {{ result.activity.kcalories }} kcal</li>
+        <li>Potenza normalizzata: {{ result.activity.normalized_power }} W</li>
       </ul>
 
       <h2>Curva di potenza</h2>
