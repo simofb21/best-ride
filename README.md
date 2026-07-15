@@ -1,6 +1,6 @@
-# Personal Best 🚴‍♂️🏆
+# Best Ride 
 
-**Personal Best** è un'applicazione web (PWA) progettata per i ciclisti che vogliono analizzare le proprie performance e monitorare i propri record personali senza la complessità, i costi o l'ansia da prestazione delle piattaforme social tradizionali.
+**Best Ride ** è un'applicazione web (PWA) progettata per i ciclisti che vogliono analizzare le proprie performance e monitorare i propri record personali senza la complessità, i costi o l'ansia da prestazione delle piattaforme social tradizionali.
 
 ---
 
@@ -13,7 +13,7 @@ Molti ciclisti si trovano in una di queste situazioni:
 ---
 
 ## Lo Scopo del Progetto
-L'obiettivo di **Personal Best** è restituire al ciclista il controllo e la visualizzazione dei propri dati di allenamento, offrendo un'interfaccia moderna, scura e focalizzata esclusivamente sulla gratificazione personale e sul superamento dei propri limiti.
+L'obiettivo di **Best Ride** è restituire al ciclista il controllo e la visualizzazione dei propri dati di allenamento, offrendo un'interfaccia moderna, scura e focalizzata esclusivamente sulla gratificazione personale e sul superamento dei propri limiti.
 
 Il progetto si sviluppa intorno a tre pilastri fondamentali:
 
