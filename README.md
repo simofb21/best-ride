@@ -1,6 +1,6 @@
 # Best Ride 
 
-**Best Ride ** è un'applicazione web (PWA) progettata per i ciclisti che vogliono analizzare le proprie performance e monitorare i propri record personali senza la complessità, i costi o l'ansia da prestazione delle piattaforme social tradizionali.
+**Best Ride** è un'applicazione web (PWA) progettata per i ciclisti che vogliono analizzare le proprie performance e monitorare i propri record personali senza la complessità, i costi o l'ansia da prestazione delle piattaforme social tradizionali.
 
 ---
 
