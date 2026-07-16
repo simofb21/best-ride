@@ -7,6 +7,9 @@ datasource db {
   provider = "mysql"
 }
 
+// ============================================================
+// USER — l'utente registrato
+// ============================================================
 model User {
   id                 Int      @id @default(autoincrement())
   email              String   @unique
@@ -19,14 +22,16 @@ model User {
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
 
-  lastActivity LastActivity?
-  records      UserRecords?
+  lastActivity  LastActivity?
+  records       UserRecords?
+  customRecords CustomRecord[]
 
   @@map("users")
 }
 
-// Una sola riga per utente: l'ultima attività caricata.
-// Ad ogni nuovo upload questa riga viene sovrascritta (upsert), non se ne accumulano altre.
+// ============================================================
+// LAST ACTIVITY — una sola riga per utente, sempre sovrascritta
+// ============================================================
 model LastActivity {
   id                     Int      @id @default(autoincrement())
   userId                 Int      @unique
@@ -35,9 +40,8 @@ model LastActivity {
   ftpUsed                Int
   anaerobicThresholdUsed Int
 
-  // Tutto il payload calcolato: riepilogo attività, power curve, training load,
-  // e in futuro streams/mappa/salite/zone. Il server lo rilegge da qui,
-  // niente colonne separate per ogni singolo dato.
+  // Tutto il payload calcolato in un unico JSON: riepilogo attività,
+  // power curve, training load, e in futuro streams/mappa/salite/zone.
   data Json
 
   user User @relation(fields: [userId], references: [id])
@@ -45,14 +49,14 @@ model LastActivity {
   @@map("last_activity")
 }
 
-// Una sola riga per utente: contiene i "podi" (top 3) di ogni metrica.
-// Ogni campo è un array JSON tipo:
-// [{ "value": 320, "date": "2024-06-01", "description": "vento forte" }, ...]
+// ============================================================
+// USER RECORDS — una sola riga per utente: i podi (top-3) dei record DI DEFAULT
+// ============================================================
 model UserRecords {
   id     Int @id @default(autoincrement())
   userId Int @unique
 
-  // --- Power curve (intervalli brevi) ---
+  // --- Power curve: intervalli brevi ---
   peakPower Json?
   power3s   Json?
   power5s   Json?
@@ -63,13 +67,13 @@ model UserRecords {
   power2min Json?
   power3min Json?
 
-  // --- Power curve (intervalli medi) ---
+  // --- Power curve: intervalli medi ---
   power5min  Json?
   power8min  Json?
   power10min Json?
   power12min Json?
 
-  // --- Power curve (intervalli lunghi) ---
+  // --- Power curve: intervalli lunghi ---
   power15min Json?
   power20min Json?
   power30min Json?
@@ -85,11 +89,28 @@ model UserRecords {
   elevationGain   Json?
   tss             Json?
 
-  // Record personalizzati creati dall'utente (es. "Salita allo Stelvio"):
-  // { "stelvio_climb": { "label": "...", "unit": "min", "lowerIsBetter": true, "entries": [...] } }
-  customRecords Json?
-
   user User @relation(fields: [userId], references: [id])
 
   @@map("user_records")
+}
+
+// ============================================================
+// CUSTOM RECORD — una riga per ogni record PERSONALIZZATO creato dall'utente
+// ============================================================
+model CustomRecord {
+  id            Int      @id @default(autoincrement())
+  userId        Int
+  slug          String
+  label         String
+  unit          String
+  lowerIsBetter Boolean  @default(false)
+  createdAt     DateTime @default(now())
+
+  // Le sue top-3 performance: [{ value, date, description }, ...]
+  entries Json?
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, slug])
+  @@map("custom_records")
 }
