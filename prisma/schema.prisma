@@ -7,9 +7,6 @@ datasource db {
   provider = "mysql"
 }
 
-// ============================================================
-// USER — l'utente registrato
-// ============================================================
 model User {
   id                 Int      @id @default(autoincrement())
   email              String   @unique
@@ -23,15 +20,40 @@ model User {
   updatedAt          DateTime @updatedAt
 
   lastActivity  LastActivity?
-  records       UserRecords?
   customRecords CustomRecord[]
+
+  recordPeakPower   RecordPeakPower[]
+  record3s          Record3s[]
+  record5s          Record5s[]
+  record10s         Record10s[]
+  record20s         Record20s[]
+  record30s         Record30s[]
+  record1min        Record1min[]
+  record2min        Record2min[]
+  record3min        Record3min[]
+  record5min        Record5min[]
+  record8min        Record8min[]
+  record10min       Record10min[]
+  record12min       Record12min[]
+  record15min       Record15min[]
+  record20min       Record20min[]
+  record30min       Record30min[]
+  record60min       Record60min[]
+
+  recordDistance      RecordDistance[]
+  recordElevationGain RecordElevationGain[]
+  recordDuration      RecordDuration[]
+  recordKilojoules    RecordKilojoules[]
+  recordMaxCadence    RecordMaxCadence[]
+  recordMaxSpeed      RecordMaxSpeed[]
+  recordMaxHeartrate  RecordMaxHeartrate[]
+  recordHr5min        RecordHr5min[]
+  recordHr20min       RecordHr20min[]
+  recordHr1h          RecordHr1h[]
 
   @@map("users")
 }
 
-// ============================================================
-// LAST ACTIVITY — una sola riga per utente, sempre sovrascritta
-// ============================================================
 model LastActivity {
   id                     Int      @id @default(autoincrement())
   userId                 Int      @unique
@@ -39,64 +61,13 @@ model LastActivity {
   uploadedAt             DateTime @default(now())
   ftpUsed                Int
   anaerobicThresholdUsed Int
-
-  // Tutto il payload calcolato in un unico JSON: riepilogo attività,
-  // power curve, training load, e in futuro streams/mappa/salite/zone.
-  data Json
+  data                   Json
 
   user User @relation(fields: [userId], references: [id])
 
   @@map("last_activity")
 }
 
-// ============================================================
-// USER RECORDS — una sola riga per utente: i podi (top-3) dei record DI DEFAULT
-// ============================================================
-model UserRecords {
-  id     Int @id @default(autoincrement())
-  userId Int @unique
-
-  // --- Power curve: intervalli brevi ---
-  peakPower Json?
-  power3s   Json?
-  power5s   Json?
-  power10s  Json?
-  power20s  Json?
-  power30s  Json?
-  power1min Json?
-  power2min Json?
-  power3min Json?
-
-  // --- Power curve: intervalli medi ---
-  power5min  Json?
-  power8min  Json?
-  power10min Json?
-  power12min Json?
-
-  // --- Power curve: intervalli lunghi ---
-  power15min Json?
-  power20min Json?
-  power30min Json?
-  power60min Json?
-
-  // --- Riepilogo attività ---
-  averageWatts    Json?
-  normalizedPower Json?
-  averageSpeed    Json?
-  maxSpeed        Json?
-  distance        Json?
-  duration        Json?
-  elevationGain   Json?
-  tss             Json?
-
-  user User @relation(fields: [userId], references: [id])
-
-  @@map("user_records")
-}
-
-// ============================================================
-// CUSTOM RECORD — una riga per ogni record PERSONALIZZATO creato dall'utente
-// ============================================================
 model CustomRecord {
   id            Int      @id @default(autoincrement())
   userId        Int
@@ -105,12 +76,450 @@ model CustomRecord {
   unit          String
   lowerIsBetter Boolean  @default(false)
   createdAt     DateTime @default(now())
-
-  // Le sue top-3 performance: [{ value, date, description }, ...]
-  entries Json?
+  entries       Json?
 
   user User @relation(fields: [userId], references: [id])
 
   @@unique([userId, slug])
   @@map("custom_records")
+}
+
+// ============================================================
+// POWER CURVE — 17 tabelle, tutte con la stessa identica struttura
+// ============================================================
+
+model RecordPeakPower {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  rank        Int
+  value       Decimal  @db.Decimal(10, 2)
+  entryDate   DateTime @db.Date
+  description String?  @db.VarChar(500)
+  activityId  String?
+  updatedAt   DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, rank])
+  @@map("record_peak_power")
+}
+
+model Record3s {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  rank        Int
+  value       Decimal  @db.Decimal(10, 2)
+  entryDate   DateTime @db.Date
+  description String?  @db.VarChar(500)
+  activityId  String?
+  updatedAt   DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, rank])
+  @@map("record_3s")
+}
+
+model Record5s {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  rank        Int
+  value       Decimal  @db.Decimal(10, 2)
+  entryDate   DateTime @db.Date
+  description String?  @db.VarChar(500)
+  activityId  String?
+  updatedAt   DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, rank])
+  @@map("record_5s")
+}
+
+model Record10s {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  rank        Int
+  value       Decimal  @db.Decimal(10, 2)
+  entryDate   DateTime @db.Date
+  description String?  @db.VarChar(500)
+  activityId  String?
+  updatedAt   DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, rank])
+  @@map("record_10s")
+}
+
+model Record20s {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  rank        Int
+  value       Decimal  @db.Decimal(10, 2)
+  entryDate   DateTime @db.Date
+  description String?  @db.VarChar(500)
+  activityId  String?
+  updatedAt   DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, rank])
+  @@map("record_20s")
+}
+
+model Record30s {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  rank        Int
+  value       Decimal  @db.Decimal(10, 2)
+  entryDate   DateTime @db.Date
+  description String?  @db.VarChar(500)
+  activityId  String?
+  updatedAt   DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, rank])
+  @@map("record_30s")
+}
+
+model Record1min {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  rank        Int
+  value       Decimal  @db.Decimal(10, 2)
+  entryDate   DateTime @db.Date
+  description String?  @db.VarChar(500)
+  activityId  String?
+  updatedAt   DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, rank])
+  @@map("record_1min")
+}
+
+model Record2min {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  rank        Int
+  value       Decimal  @db.Decimal(10, 2)
+  entryDate   DateTime @db.Date
+  description String?  @db.VarChar(500)
+  activityId  String?
+  updatedAt   DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, rank])
+  @@map("record_2min")
+}
+
+model Record3min {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  rank        Int
+  value       Decimal  @db.Decimal(10, 2)
+  entryDate   DateTime @db.Date
+  description String?  @db.VarChar(500)
+  activityId  String?
+  updatedAt   DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, rank])
+  @@map("record_3min")
+}
+
+model Record5min {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  rank        Int
+  value       Decimal  @db.Decimal(10, 2)
+  entryDate   DateTime @db.Date
+  description String?  @db.VarChar(500)
+  activityId  String?
+  updatedAt   DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, rank])
+  @@map("record_5min")
+}
+
+model Record8min {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  rank        Int
+  value       Decimal  @db.Decimal(10, 2)
+  entryDate   DateTime @db.Date
+  description String?  @db.VarChar(500)
+  activityId  String?
+  updatedAt   DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, rank])
+  @@map("record_8min")
+}
+
+model Record10min {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  rank        Int
+  value       Decimal  @db.Decimal(10, 2)
+  entryDate   DateTime @db.Date
+  description String?  @db.VarChar(500)
+  activityId  String?
+  updatedAt   DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, rank])
+  @@map("record_10min")
+}
+
+model Record12min {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  rank        Int
+  value       Decimal  @db.Decimal(10, 2)
+  entryDate   DateTime @db.Date
+  description String?  @db.VarChar(500)
+  activityId  String?
+  updatedAt   DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, rank])
+  @@map("record_12min")
+}
+
+model Record15min {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  rank        Int
+  value       Decimal  @db.Decimal(10, 2)
+  entryDate   DateTime @db.Date
+  description String?  @db.VarChar(500)
+  activityId  String?
+  updatedAt   DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, rank])
+  @@map("record_15min")
+}
+
+model Record20min {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  rank        Int
+  value       Decimal  @db.Decimal(10, 2)
+  entryDate   DateTime @db.Date
+  description String?  @db.VarChar(500)
+  activityId  String?
+  updatedAt   DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, rank])
+  @@map("record_20min")
+}
+
+model Record30min {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  rank        Int
+  value       Decimal  @db.Decimal(10, 2)
+  entryDate   DateTime @db.Date
+  description String?  @db.VarChar(500)
+  activityId  String?
+  updatedAt   DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, rank])
+  @@map("record_30min")
+}
+
+model Record60min {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  rank        Int
+  value       Decimal  @db.Decimal(10, 2)
+  entryDate   DateTime @db.Date
+  description String?  @db.VarChar(500)
+  activityId  String?
+  updatedAt   DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, rank])
+  @@map("record_60min")
+}
+
+// ============================================================
+// ALTRE METRICHE — stessa struttura
+// ============================================================
+
+model RecordDistance {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  rank        Int
+  value       Decimal  @db.Decimal(10, 2)
+  entryDate   DateTime @db.Date
+  description String?  @db.VarChar(500)
+  activityId  String?
+  updatedAt   DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, rank])
+  @@map("record_distance")
+}
+
+model RecordElevationGain {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  rank        Int
+  value       Decimal  @db.Decimal(10, 2)
+  entryDate   DateTime @db.Date
+  description String?  @db.VarChar(500)
+  activityId  String?
+  updatedAt   DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, rank])
+  @@map("record_elevation_gain")
+}
+
+model RecordDuration {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  rank        Int
+  value       Decimal  @db.Decimal(10, 2)
+  entryDate   DateTime @db.Date
+  description String?  @db.VarChar(500)
+  activityId  String?
+  updatedAt   DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, rank])
+  @@map("record_duration")
+}
+
+model RecordKilojoules {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  rank        Int
+  value       Decimal  @db.Decimal(10, 2)
+  entryDate   DateTime @db.Date
+  description String?  @db.VarChar(500)
+  activityId  String?
+  updatedAt   DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, rank])
+  @@map("record_kilojoules")
+}
+
+model RecordMaxCadence {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  rank        Int
+  value       Decimal  @db.Decimal(10, 2)
+  entryDate   DateTime @db.Date
+  description String?  @db.VarChar(500)
+  activityId  String?
+  updatedAt   DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, rank])
+  @@map("record_max_cadence")
+}
+
+model RecordMaxSpeed {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  rank        Int
+  value       Decimal  @db.Decimal(10, 2)
+  entryDate   DateTime @db.Date
+  description String?  @db.VarChar(500)
+  activityId  String?
+  updatedAt   DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, rank])
+  @@map("record_max_speed")
+}
+
+model RecordMaxHeartrate {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  rank        Int
+  value       Decimal  @db.Decimal(10, 2)
+  entryDate   DateTime @db.Date
+  description String?  @db.VarChar(500)
+  activityId  String?
+  updatedAt   DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, rank])
+  @@map("record_max_heartrate")
+}
+
+model RecordHr5min {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  rank        Int
+  value       Decimal  @db.Decimal(10, 2)
+  entryDate   DateTime @db.Date
+  description String?  @db.VarChar(500)
+  activityId  String?
+  updatedAt   DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, rank])
+  @@map("record_hr_5min")
+}
+
+model RecordHr20min {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  rank        Int
+  value       Decimal  @db.Decimal(10, 2)
+  entryDate   DateTime @db.Date
+  description String?  @db.VarChar(500)
+  activityId  String?
+  updatedAt   DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, rank])
+  @@map("record_hr_20min")
+}
+
+model RecordHr1h {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  rank        Int
+  value       Decimal  @db.Decimal(10, 2)
+  entryDate   DateTime @db.Date
+  description String?  @db.VarChar(500)
+  activityId  String?
+  updatedAt   DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, rank])
+  @@map("record_hr_1h")
 }
