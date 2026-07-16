@@ -1,0 +1,98 @@
+// prisma/schema.prisma
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+model User {
+  id                  Int      @id @default(autoincrement())
+  email               String   @unique
+  passwordHash        String
+  firstName           String
+  lastName            String
+  weightKg            Decimal? @db.Decimal(5, 2)
+  ftp                 Int?
+  anaerobicThreshold  Int?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  activities   Activity[]
+  recordTypes  RecordType[]
+
+  @@map("users")
+}
+
+model Activity {
+  id                    String   @id @default(uuid())
+  userId                Int
+  filename              String
+  uploadedAt            DateTime @default(now())
+
+  ftpUsed               Int
+  anaerobicThresholdUsed Int
+
+  distanceKm            Decimal  @db.Decimal(6, 2)
+  durationSeconds       Int
+  elevationGainM        Int
+  averageSpeedKmh       Decimal  @db.Decimal(5, 1)
+  maxSpeedKmh           Decimal  @db.Decimal(5, 1)
+  averageCadenceRpm     Int
+  averageHeartrate      Int
+  maxHeartrate          Int
+  averageWatts          Int
+  maxWatts              Int
+  normalizedPower       Int
+  kilojoules            Int
+  kcalories             Int
+  intensityFactor       Decimal  @db.Decimal(4, 2)
+  tss                   Int
+
+  // Dati "pesanti" che non serve interrogare via SQL (power curve, streams grezzi):
+  // li teniamo come JSON, evitando 20 colonne per ogni intervallo di potenza.
+  rawData               Json
+
+  user                  User @relation(fields: [userId], references: [id])
+  recordEntries         RecordEntry[]
+
+  @@map("activities")
+}
+
+// Definisce COSA si può misurare: sia i record di default (peak power, 5min power...)
+// sia quelli custom creati dall'utente (es. "Salita allo Stelvio").
+model RecordType {
+  id             Int      @id @default(autoincrement())
+  userId         Int
+  key            String   // es. "peak_power", "5min_power", oppure slug custom "stelvio_climb"
+  label          String   // nome mostrato: "Peak Power", "Salita allo Stelvio"
+  unit           String   // "W", "min", "km/h"...
+  isDefault      Boolean  @default(false)
+  lowerIsBetter  Boolean  @default(false) // true per i tempi (es. scalata), false per potenza/velocità
+  createdAt      DateTime @default(now())
+
+  user    User @relation(fields: [userId], references: [id])
+  entries RecordEntry[]
+
+  @@unique([userId, key])
+  @@map("record_types")
+}
+
+// Le singole "entry" di un record: fino a 3 per tipo (i tuoi "best 3 assoluti")
+model RecordEntry {
+  id            Int      @id @default(autoincrement())
+  recordTypeId  Int
+  value         Decimal  @db.Decimal(10, 2)
+  entryDate     DateTime @db.Date
+  description   String?  @db.VarChar(500)
+  activityId    String?  // null se inserito manualmente (registrazione o record custom senza file)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  recordType RecordType @relation(fields: [recordTypeId], references: [id])
+  activity   Activity?  @relation(fields: [activityId], references: [id])
+
+  @@map("record_entries")
+}
