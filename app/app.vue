@@ -1,5 +1,9 @@
+<!-- app/app.vue -->
 <template>
-  <div>
-    <NuxtPage />
-  </div>
+  <v-app>
+    <Navbar />
+    <v-main>
+      <NuxtPage />
+    </v-main>
+  </v-app>
 </template>
