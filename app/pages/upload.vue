@@ -302,7 +302,9 @@ const error = ref("");
 const isDragOver = ref(false);
 const fileInput = ref<HTMLInputElement | null>(null);
 const isDark = ref(false);
-
+definePageMeta({
+  middleware: "auth",
+});
 // Persist the user's theme choice
 onMounted(() => {
   const saved = localStorage.getItem("theme");
