@@ -49,7 +49,6 @@ async function handleLogin() {
 
     // Ricarica la sessione lato client, così useUserSession() sa subito che siamo loggati
     await refreshSession();
-
     await navigateTo("/upload");
   } catch (err: any) {
     error.value = err?.data?.message || "Login failed";

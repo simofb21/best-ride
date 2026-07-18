@@ -49,7 +49,6 @@ function extractValidPowerPoints(records: any[]): Point[] {
       points.push({
         // Converto il timestamp in secondi
         t: new Date(record.timestamp).getTime() / 1000,
-
         // Salvo la potenza
         p: record.power,
       });
@@ -65,13 +64,10 @@ function bestAveragePower(points: Point[], windowSeconds: number): number {
   if (points.length == 0) {
     return 0;
   }
-
   // Migliore media trovata
   let best = 0;
-
   // Indice di inizio della finestra
   let start = 0;
-
   // Somma delle potenze nella finestra corrente
   let sum = 0;
 
@@ -84,7 +80,6 @@ function bestAveragePower(points: Point[], windowSeconds: number): number {
     while (points[end].t - points[start].t > windowSeconds) {
       // Tolgo il primo valore dalla somma
       sum = sum - points[start].p;
-
       // Sposto l'inizio della finestra
       start++;
     }

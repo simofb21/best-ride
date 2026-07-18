@@ -1,1 +1,1 @@
-<template>sfadsa</template>
+<template>Register</template>

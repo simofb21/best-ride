@@ -37,7 +37,7 @@
     <!-- Azioni login/logout, solo desktop -->
     <div class="d-none d-md-flex align-center">
       <template v-if="loggedIn">
-        <span class="user-name">{{ user?.firstName }}</span>
+        <span class="user-name">{{ user?.firstName || "Error" }}</span>
         <v-btn
           variant="outlined"
           size="small"
