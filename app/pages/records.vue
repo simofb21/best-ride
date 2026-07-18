@@ -5,6 +5,8 @@
       Track your best performances. Add up to 3 results per metric.
     </p>
 
+    <p v-if="errorMessage" class="error-banner">{{ errorMessage }}</p>
+
     <section
       v-for="category in categories"
       :key="category.key"
@@ -147,6 +149,7 @@
 definePageMeta({ middleware: "auth" });
 
 const records = ref<Record<string, any[]>>({});
+const errorMessage = ref("");
 
 const categories = [
   { key: "short_power", label: "Short Power Efforts" },
@@ -197,19 +200,27 @@ function startEdit(metricKey: string, entry: any) {
 }
 
 async function saveEdit(metricKey: string, rank: number) {
-  await $fetch("/api/records", {
-    method: "POST",
-    body: {
-      metricKey,
-      rank,
-      value: draft.value,
-      entryDate: draft.entryDate,
-      description: draft.description || null,
-    },
-  });
+  errorMessage.value = "";
 
-  editingKey.value = null;
-  await fetchRecords();
+  try {
+    await $fetch("/api/records", {
+      method: "POST",
+      body: {
+        metricKey,
+        rank,
+        value: draft.value,
+        entryDate: draft.entryDate,
+        description: draft.description || null,
+      },
+    });
+
+    editingKey.value = null;
+    await fetchRecords();
+  } catch (err: any) {
+    errorMessage.value =
+      err?.data?.message || "Something went wrong while saving";
+    console.error("Validation details:", err?.data?.data);
+  }
 }
 
 // --- Aggiunta nuova performance ---
@@ -239,18 +250,26 @@ async function submitNewEntry() {
   )
     return;
 
-  await $fetch("/api/records", {
-    method: "POST",
-    body: {
-      metricKey: addingMetric.value,
-      value: newEntry.value.value,
-      entryDate: newEntry.value.entryDate,
-      description: newEntry.value.description || null,
-    },
-  });
+  errorMessage.value = "";
 
-  showAddDialog.value = false;
-  await fetchRecords();
+  try {
+    await $fetch("/api/records", {
+      method: "POST",
+      body: {
+        metricKey: addingMetric.value,
+        value: newEntry.value.value,
+        entryDate: newEntry.value.entryDate,
+        description: newEntry.value.description || null,
+      },
+    });
+
+    showAddDialog.value = false;
+    await fetchRecords();
+  } catch (err: any) {
+    errorMessage.value =
+      err?.data?.message || "Something went wrong while saving";
+    console.error("Validation details:", err?.data?.data);
+  }
 }
 
 // --- Cancellazione con conferma ---
@@ -265,16 +284,22 @@ function confirmDelete(metricKey: string, rank: number) {
 async function performDelete() {
   if (!pendingDelete.value) return;
 
-  await $fetch(
-    `/api/records/${pendingDelete.value.metricKey}/${pendingDelete.value.rank}`,
-    {
-      method: "DELETE",
-    },
-  );
+  errorMessage.value = "";
 
-  showDeleteDialog.value = false;
-  pendingDelete.value = null;
-  await fetchRecords();
+  try {
+    await $fetch(
+      `/api/records/${pendingDelete.value.metricKey}/${pendingDelete.value.rank}`,
+      { method: "DELETE" },
+    );
+
+    showDeleteDialog.value = false;
+    pendingDelete.value = null;
+    await fetchRecords();
+  } catch (err: any) {
+    errorMessage.value =
+      err?.data?.message || "Something went wrong while deleting";
+    showDeleteDialog.value = false;
+  }
 }
 </script>
 
@@ -429,5 +454,14 @@ async function performDelete() {
   border: 1px solid var(--border);
   background: var(--bg);
   color: var(--text);
+}
+.error-banner {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #ef4444;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  margin-bottom: 20px;
 }
 </style>
