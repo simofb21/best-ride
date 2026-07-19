@@ -7,18 +7,17 @@ export default defineEventHandler(async (event) => {
   const body = await readBody(event);
   const { activity, power_records, training_load, recordChecks, filename } =
     body;
-  const activityDate = new Date(activity.activityDate); // <-- la vera data dell'uscita
 
-  // 1. Salva/sovrascrive l'ultima attività (upsert: se esiste, sovrascrive)
+  const activityDate = new Date(activity.activityDate);
+  const user = await prisma.user.findUnique({ where: { id: userId } });
+
+  // 1. Salva/sovrascrive l'ultima attività
   await prisma.lastActivity.upsert({
     where: { userId },
     update: {
       filename,
-      ftpUsed:
-        (await prisma.user.findUnique({ where: { id: userId } }))?.ftp ?? 0,
-      anaerobicThresholdUsed:
-        (await prisma.user.findUnique({ where: { id: userId } }))
-          ?.anaerobicThreshold ?? 0,
+      ftpUsed: user?.ftp ?? 0,
+      anaerobicThresholdUsed: user?.anaerobicThreshold ?? 0,
       data: { activity, power_records, training_load },
     },
     create: {
@@ -30,7 +29,22 @@ export default defineEventHandler(async (event) => {
     },
   });
 
-  // 2. Aggiorna i record personali se necessario
+  // 2. Aggiorna i totali annuali: somma la distanza e le ore di QUESTA attività
+  const activityHours = activity.duration / 3600; // duration è in secondi
+
+  await prisma.user.update({
+    where: { id: userId },
+    data: {
+      yearlyDistanceKm: {
+        increment: activity.distance,
+      },
+      yearlyHours: {
+        increment: Number(activityHours.toFixed(2)),
+      },
+    },
+  });
+
+  // 3. Aggiorna i record fissi, usando la data reale dell'attività
   for (const check of recordChecks) {
     if (!check.wouldEnterAt) continue;
 

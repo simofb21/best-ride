@@ -31,6 +31,8 @@ export type UserAvgAggregateOutputType = {
   weightKg: runtime.Decimal | null
   ftp: number | null
   anaerobicThreshold: number | null
+  yearlyDistanceKm: runtime.Decimal | null
+  yearlyHours: runtime.Decimal | null
 }
 
 export type UserSumAggregateOutputType = {
@@ -38,6 +40,8 @@ export type UserSumAggregateOutputType = {
   weightKg: runtime.Decimal | null
   ftp: number | null
   anaerobicThreshold: number | null
+  yearlyDistanceKm: runtime.Decimal | null
+  yearlyHours: runtime.Decimal | null
 }
 
 export type UserMinAggregateOutputType = {
@@ -49,6 +53,8 @@ export type UserMinAggregateOutputType = {
   weightKg: runtime.Decimal | null
   ftp: number | null
   anaerobicThreshold: number | null
+  yearlyDistanceKm: runtime.Decimal | null
+  yearlyHours: runtime.Decimal | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -62,6 +68,8 @@ export type UserMaxAggregateOutputType = {
   weightKg: runtime.Decimal | null
   ftp: number | null
   anaerobicThreshold: number | null
+  yearlyDistanceKm: runtime.Decimal | null
+  yearlyHours: runtime.Decimal | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -75,6 +83,8 @@ export type UserCountAggregateOutputType = {
   weightKg: number
   ftp: number
   anaerobicThreshold: number
+  yearlyDistanceKm: number
+  yearlyHours: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -86,6 +96,8 @@ export type UserAvgAggregateInputType = {
   weightKg?: true
   ftp?: true
   anaerobicThreshold?: true
+  yearlyDistanceKm?: true
+  yearlyHours?: true
 }
 
 export type UserSumAggregateInputType = {
@@ -93,6 +105,8 @@ export type UserSumAggregateInputType = {
   weightKg?: true
   ftp?: true
   anaerobicThreshold?: true
+  yearlyDistanceKm?: true
+  yearlyHours?: true
 }
 
 export type UserMinAggregateInputType = {
@@ -104,6 +118,8 @@ export type UserMinAggregateInputType = {
   weightKg?: true
   ftp?: true
   anaerobicThreshold?: true
+  yearlyDistanceKm?: true
+  yearlyHours?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -117,6 +133,8 @@ export type UserMaxAggregateInputType = {
   weightKg?: true
   ftp?: true
   anaerobicThreshold?: true
+  yearlyDistanceKm?: true
+  yearlyHours?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -130,6 +148,8 @@ export type UserCountAggregateInputType = {
   weightKg?: true
   ftp?: true
   anaerobicThreshold?: true
+  yearlyDistanceKm?: true
+  yearlyHours?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -230,6 +250,8 @@ export type UserGroupByOutputType = {
   weightKg: runtime.Decimal | null
   ftp: number | null
   anaerobicThreshold: number | null
+  yearlyDistanceKm: runtime.Decimal | null
+  yearlyHours: runtime.Decimal | null
   createdAt: Date
   updatedAt: Date
   _count: UserCountAggregateOutputType | null
@@ -266,6 +288,8 @@ export type UserWhereInput = {
   weightKg?: Prisma.DecimalNullableFilter<"User"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.IntNullableFilter<"User"> | number | null
   anaerobicThreshold?: Prisma.IntNullableFilter<"User"> | number | null
+  yearlyDistanceKm?: Prisma.DecimalNullableFilter<"User"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.DecimalNullableFilter<"User"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   lastActivity?: Prisma.XOR<Prisma.LastActivityNullableScalarRelationFilter, Prisma.LastActivityWhereInput> | null
@@ -308,6 +332,8 @@ export type UserOrderByWithRelationInput = {
   weightKg?: Prisma.SortOrderInput | Prisma.SortOrder
   ftp?: Prisma.SortOrderInput | Prisma.SortOrder
   anaerobicThreshold?: Prisma.SortOrderInput | Prisma.SortOrder
+  yearlyDistanceKm?: Prisma.SortOrderInput | Prisma.SortOrder
+  yearlyHours?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   lastActivity?: Prisma.LastActivityOrderByWithRelationInput
@@ -354,6 +380,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   weightKg?: Prisma.DecimalNullableFilter<"User"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.IntNullableFilter<"User"> | number | null
   anaerobicThreshold?: Prisma.IntNullableFilter<"User"> | number | null
+  yearlyDistanceKm?: Prisma.DecimalNullableFilter<"User"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.DecimalNullableFilter<"User"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   lastActivity?: Prisma.XOR<Prisma.LastActivityNullableScalarRelationFilter, Prisma.LastActivityWhereInput> | null
@@ -396,6 +424,8 @@ export type UserOrderByWithAggregationInput = {
   weightKg?: Prisma.SortOrderInput | Prisma.SortOrder
   ftp?: Prisma.SortOrderInput | Prisma.SortOrder
   anaerobicThreshold?: Prisma.SortOrderInput | Prisma.SortOrder
+  yearlyDistanceKm?: Prisma.SortOrderInput | Prisma.SortOrder
+  yearlyHours?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
@@ -417,6 +447,8 @@ export type UserScalarWhereWithAggregatesInput = {
   weightKg?: Prisma.DecimalNullableWithAggregatesFilter<"User"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.IntNullableWithAggregatesFilter<"User"> | number | null
   anaerobicThreshold?: Prisma.IntNullableWithAggregatesFilter<"User"> | number | null
+  yearlyDistanceKm?: Prisma.DecimalNullableWithAggregatesFilter<"User"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.DecimalNullableWithAggregatesFilter<"User"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
 }
@@ -429,6 +461,8 @@ export type UserCreateInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
@@ -471,6 +505,8 @@ export type UserUncheckedCreateInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
@@ -512,6 +548,8 @@ export type UserUpdateInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
@@ -554,6 +592,8 @@ export type UserUncheckedUpdateInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
@@ -596,6 +636,8 @@ export type UserCreateManyInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -608,6 +650,8 @@ export type UserUpdateManyMutationInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -621,6 +665,8 @@ export type UserUncheckedUpdateManyInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -640,6 +686,8 @@ export type UserCountOrderByAggregateInput = {
   weightKg?: Prisma.SortOrder
   ftp?: Prisma.SortOrder
   anaerobicThreshold?: Prisma.SortOrder
+  yearlyDistanceKm?: Prisma.SortOrder
+  yearlyHours?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -649,6 +697,8 @@ export type UserAvgOrderByAggregateInput = {
   weightKg?: Prisma.SortOrder
   ftp?: Prisma.SortOrder
   anaerobicThreshold?: Prisma.SortOrder
+  yearlyDistanceKm?: Prisma.SortOrder
+  yearlyHours?: Prisma.SortOrder
 }
 
 export type UserMaxOrderByAggregateInput = {
@@ -660,6 +710,8 @@ export type UserMaxOrderByAggregateInput = {
   weightKg?: Prisma.SortOrder
   ftp?: Prisma.SortOrder
   anaerobicThreshold?: Prisma.SortOrder
+  yearlyDistanceKm?: Prisma.SortOrder
+  yearlyHours?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -673,6 +725,8 @@ export type UserMinOrderByAggregateInput = {
   weightKg?: Prisma.SortOrder
   ftp?: Prisma.SortOrder
   anaerobicThreshold?: Prisma.SortOrder
+  yearlyDistanceKm?: Prisma.SortOrder
+  yearlyHours?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -682,6 +736,8 @@ export type UserSumOrderByAggregateInput = {
   weightKg?: Prisma.SortOrder
   ftp?: Prisma.SortOrder
   anaerobicThreshold?: Prisma.SortOrder
+  yearlyDistanceKm?: Prisma.SortOrder
+  yearlyHours?: Prisma.SortOrder
 }
 
 export type UserScalarRelationFilter = {
@@ -1135,6 +1191,8 @@ export type UserCreateWithoutLastActivityInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   customRecords?: Prisma.CustomRecordCreateNestedManyWithoutUserInput
@@ -1176,6 +1234,8 @@ export type UserUncheckedCreateWithoutLastActivityInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   customRecords?: Prisma.CustomRecordUncheckedCreateNestedManyWithoutUserInput
@@ -1232,6 +1292,8 @@ export type UserUpdateWithoutLastActivityInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   customRecords?: Prisma.CustomRecordUpdateManyWithoutUserNestedInput
@@ -1273,6 +1335,8 @@ export type UserUncheckedUpdateWithoutLastActivityInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   customRecords?: Prisma.CustomRecordUncheckedUpdateManyWithoutUserNestedInput
@@ -1313,6 +1377,8 @@ export type UserCreateWithoutCustomRecordsInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
@@ -1354,6 +1420,8 @@ export type UserUncheckedCreateWithoutCustomRecordsInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
@@ -1410,6 +1478,8 @@ export type UserUpdateWithoutCustomRecordsInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
@@ -1451,6 +1521,8 @@ export type UserUncheckedUpdateWithoutCustomRecordsInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
@@ -1491,6 +1563,8 @@ export type UserCreateWithoutRecordPeakPowerInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
@@ -1532,6 +1606,8 @@ export type UserUncheckedCreateWithoutRecordPeakPowerInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
@@ -1588,6 +1664,8 @@ export type UserUpdateWithoutRecordPeakPowerInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
@@ -1629,6 +1707,8 @@ export type UserUncheckedUpdateWithoutRecordPeakPowerInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
@@ -1669,6 +1749,8 @@ export type UserCreateWithoutRecord3sInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
@@ -1710,6 +1792,8 @@ export type UserUncheckedCreateWithoutRecord3sInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
@@ -1766,6 +1850,8 @@ export type UserUpdateWithoutRecord3sInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
@@ -1807,6 +1893,8 @@ export type UserUncheckedUpdateWithoutRecord3sInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
@@ -1847,6 +1935,8 @@ export type UserCreateWithoutRecord5sInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
@@ -1888,6 +1978,8 @@ export type UserUncheckedCreateWithoutRecord5sInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
@@ -1944,6 +2036,8 @@ export type UserUpdateWithoutRecord5sInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
@@ -1985,6 +2079,8 @@ export type UserUncheckedUpdateWithoutRecord5sInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
@@ -2025,6 +2121,8 @@ export type UserCreateWithoutRecord10sInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
@@ -2066,6 +2164,8 @@ export type UserUncheckedCreateWithoutRecord10sInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
@@ -2122,6 +2222,8 @@ export type UserUpdateWithoutRecord10sInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
@@ -2163,6 +2265,8 @@ export type UserUncheckedUpdateWithoutRecord10sInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
@@ -2203,6 +2307,8 @@ export type UserCreateWithoutRecord20sInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
@@ -2244,6 +2350,8 @@ export type UserUncheckedCreateWithoutRecord20sInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
@@ -2300,6 +2408,8 @@ export type UserUpdateWithoutRecord20sInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
@@ -2341,6 +2451,8 @@ export type UserUncheckedUpdateWithoutRecord20sInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
@@ -2381,6 +2493,8 @@ export type UserCreateWithoutRecord30sInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
@@ -2422,6 +2536,8 @@ export type UserUncheckedCreateWithoutRecord30sInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
@@ -2478,6 +2594,8 @@ export type UserUpdateWithoutRecord30sInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
@@ -2519,6 +2637,8 @@ export type UserUncheckedUpdateWithoutRecord30sInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
@@ -2559,6 +2679,8 @@ export type UserCreateWithoutRecord1minInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
@@ -2600,6 +2722,8 @@ export type UserUncheckedCreateWithoutRecord1minInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
@@ -2656,6 +2780,8 @@ export type UserUpdateWithoutRecord1minInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
@@ -2697,6 +2823,8 @@ export type UserUncheckedUpdateWithoutRecord1minInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
@@ -2737,6 +2865,8 @@ export type UserCreateWithoutRecord2minInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
@@ -2778,6 +2908,8 @@ export type UserUncheckedCreateWithoutRecord2minInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
@@ -2834,6 +2966,8 @@ export type UserUpdateWithoutRecord2minInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
@@ -2875,6 +3009,8 @@ export type UserUncheckedUpdateWithoutRecord2minInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
@@ -2915,6 +3051,8 @@ export type UserCreateWithoutRecord3minInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
@@ -2956,6 +3094,8 @@ export type UserUncheckedCreateWithoutRecord3minInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
@@ -3012,6 +3152,8 @@ export type UserUpdateWithoutRecord3minInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
@@ -3053,6 +3195,8 @@ export type UserUncheckedUpdateWithoutRecord3minInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
@@ -3093,6 +3237,8 @@ export type UserCreateWithoutRecord5minInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
@@ -3134,6 +3280,8 @@ export type UserUncheckedCreateWithoutRecord5minInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
@@ -3190,6 +3338,8 @@ export type UserUpdateWithoutRecord5minInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
@@ -3231,6 +3381,8 @@ export type UserUncheckedUpdateWithoutRecord5minInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
@@ -3271,6 +3423,8 @@ export type UserCreateWithoutRecord8minInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
@@ -3312,6 +3466,8 @@ export type UserUncheckedCreateWithoutRecord8minInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
@@ -3368,6 +3524,8 @@ export type UserUpdateWithoutRecord8minInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
@@ -3409,6 +3567,8 @@ export type UserUncheckedUpdateWithoutRecord8minInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
@@ -3449,6 +3609,8 @@ export type UserCreateWithoutRecord10minInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
@@ -3490,6 +3652,8 @@ export type UserUncheckedCreateWithoutRecord10minInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
@@ -3546,6 +3710,8 @@ export type UserUpdateWithoutRecord10minInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
@@ -3587,6 +3753,8 @@ export type UserUncheckedUpdateWithoutRecord10minInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
@@ -3627,6 +3795,8 @@ export type UserCreateWithoutRecord12minInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
@@ -3668,6 +3838,8 @@ export type UserUncheckedCreateWithoutRecord12minInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
@@ -3724,6 +3896,8 @@ export type UserUpdateWithoutRecord12minInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
@@ -3765,6 +3939,8 @@ export type UserUncheckedUpdateWithoutRecord12minInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
@@ -3805,6 +3981,8 @@ export type UserCreateWithoutRecord15minInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
@@ -3846,6 +4024,8 @@ export type UserUncheckedCreateWithoutRecord15minInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
@@ -3902,6 +4082,8 @@ export type UserUpdateWithoutRecord15minInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
@@ -3943,6 +4125,8 @@ export type UserUncheckedUpdateWithoutRecord15minInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
@@ -3983,6 +4167,8 @@ export type UserCreateWithoutRecord20minInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
@@ -4024,6 +4210,8 @@ export type UserUncheckedCreateWithoutRecord20minInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
@@ -4080,6 +4268,8 @@ export type UserUpdateWithoutRecord20minInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
@@ -4121,6 +4311,8 @@ export type UserUncheckedUpdateWithoutRecord20minInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
@@ -4161,6 +4353,8 @@ export type UserCreateWithoutRecord30minInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
@@ -4202,6 +4396,8 @@ export type UserUncheckedCreateWithoutRecord30minInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
@@ -4258,6 +4454,8 @@ export type UserUpdateWithoutRecord30minInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
@@ -4299,6 +4497,8 @@ export type UserUncheckedUpdateWithoutRecord30minInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
@@ -4339,6 +4539,8 @@ export type UserCreateWithoutRecord60minInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
@@ -4380,6 +4582,8 @@ export type UserUncheckedCreateWithoutRecord60minInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
@@ -4436,6 +4640,8 @@ export type UserUpdateWithoutRecord60minInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
@@ -4477,6 +4683,8 @@ export type UserUncheckedUpdateWithoutRecord60minInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
@@ -4517,6 +4725,8 @@ export type UserCreateWithoutRecordDistanceInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
@@ -4558,6 +4768,8 @@ export type UserUncheckedCreateWithoutRecordDistanceInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
@@ -4614,6 +4826,8 @@ export type UserUpdateWithoutRecordDistanceInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
@@ -4655,6 +4869,8 @@ export type UserUncheckedUpdateWithoutRecordDistanceInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
@@ -4695,6 +4911,8 @@ export type UserCreateWithoutRecordElevationGainInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
@@ -4736,6 +4954,8 @@ export type UserUncheckedCreateWithoutRecordElevationGainInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
@@ -4792,6 +5012,8 @@ export type UserUpdateWithoutRecordElevationGainInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
@@ -4833,6 +5055,8 @@ export type UserUncheckedUpdateWithoutRecordElevationGainInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
@@ -4873,6 +5097,8 @@ export type UserCreateWithoutRecordDurationInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
@@ -4914,6 +5140,8 @@ export type UserUncheckedCreateWithoutRecordDurationInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
@@ -4970,6 +5198,8 @@ export type UserUpdateWithoutRecordDurationInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
@@ -5011,6 +5241,8 @@ export type UserUncheckedUpdateWithoutRecordDurationInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
@@ -5051,6 +5283,8 @@ export type UserCreateWithoutRecordKilojoulesInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
@@ -5092,6 +5326,8 @@ export type UserUncheckedCreateWithoutRecordKilojoulesInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
@@ -5148,6 +5384,8 @@ export type UserUpdateWithoutRecordKilojoulesInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
@@ -5189,6 +5427,8 @@ export type UserUncheckedUpdateWithoutRecordKilojoulesInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
@@ -5229,6 +5469,8 @@ export type UserCreateWithoutRecordMaxCadenceInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
@@ -5270,6 +5512,8 @@ export type UserUncheckedCreateWithoutRecordMaxCadenceInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
@@ -5326,6 +5570,8 @@ export type UserUpdateWithoutRecordMaxCadenceInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
@@ -5367,6 +5613,8 @@ export type UserUncheckedUpdateWithoutRecordMaxCadenceInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
@@ -5407,6 +5655,8 @@ export type UserCreateWithoutRecordMaxSpeedInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
@@ -5448,6 +5698,8 @@ export type UserUncheckedCreateWithoutRecordMaxSpeedInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
@@ -5504,6 +5756,8 @@ export type UserUpdateWithoutRecordMaxSpeedInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
@@ -5545,6 +5799,8 @@ export type UserUncheckedUpdateWithoutRecordMaxSpeedInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
@@ -5585,6 +5841,8 @@ export type UserCreateWithoutRecordMaxHeartrateInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
@@ -5626,6 +5884,8 @@ export type UserUncheckedCreateWithoutRecordMaxHeartrateInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
@@ -5682,6 +5942,8 @@ export type UserUpdateWithoutRecordMaxHeartrateInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
@@ -5723,6 +5985,8 @@ export type UserUncheckedUpdateWithoutRecordMaxHeartrateInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
@@ -5763,6 +6027,8 @@ export type UserCreateWithoutRecordHr5minInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
@@ -5804,6 +6070,8 @@ export type UserUncheckedCreateWithoutRecordHr5minInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
@@ -5860,6 +6128,8 @@ export type UserUpdateWithoutRecordHr5minInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
@@ -5901,6 +6171,8 @@ export type UserUncheckedUpdateWithoutRecordHr5minInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
@@ -5941,6 +6213,8 @@ export type UserCreateWithoutRecordHr20minInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
@@ -5982,6 +6256,8 @@ export type UserUncheckedCreateWithoutRecordHr20minInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
@@ -6038,6 +6314,8 @@ export type UserUpdateWithoutRecordHr20minInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
@@ -6079,6 +6357,8 @@ export type UserUncheckedUpdateWithoutRecordHr20minInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
@@ -6119,6 +6399,8 @@ export type UserCreateWithoutRecordHr1hInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
@@ -6160,6 +6442,8 @@ export type UserUncheckedCreateWithoutRecordHr1hInput = {
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: number | null
   anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
@@ -6216,6 +6500,8 @@ export type UserUpdateWithoutRecordHr1hInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
@@ -6257,6 +6543,8 @@ export type UserUncheckedUpdateWithoutRecordHr1hInput = {
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
@@ -6572,6 +6860,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   weightKg?: boolean
   ftp?: boolean
   anaerobicThreshold?: boolean
+  yearlyDistanceKm?: boolean
+  yearlyHours?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   lastActivity?: boolean | Prisma.User$lastActivityArgs<ExtArgs>
@@ -6617,11 +6907,13 @@ export type UserSelectScalar = {
   weightKg?: boolean
   ftp?: boolean
   anaerobicThreshold?: boolean
+  yearlyDistanceKm?: boolean
+  yearlyHours?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "passwordHash" | "firstName" | "lastName" | "weightKg" | "ftp" | "anaerobicThreshold" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "passwordHash" | "firstName" | "lastName" | "weightKg" | "ftp" | "anaerobicThreshold" | "yearlyDistanceKm" | "yearlyHours" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   lastActivity?: boolean | Prisma.User$lastActivityArgs<ExtArgs>
   customRecords?: boolean | Prisma.User$customRecordsArgs<ExtArgs>
@@ -6697,6 +6989,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     weightKg: runtime.Decimal | null
     ftp: number | null
     anaerobicThreshold: number | null
+    yearlyDistanceKm: runtime.Decimal | null
+    yearlyHours: runtime.Decimal | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["user"]>
@@ -7105,6 +7399,8 @@ export interface UserFieldRefs {
   readonly weightKg: Prisma.FieldRef<"User", 'Decimal'>
   readonly ftp: Prisma.FieldRef<"User", 'Int'>
   readonly anaerobicThreshold: Prisma.FieldRef<"User", 'Int'>
+  readonly yearlyDistanceKm: Prisma.FieldRef<"User", 'Decimal'>
+  readonly yearlyHours: Prisma.FieldRef<"User", 'Decimal'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
 }

@@ -108,6 +108,8 @@ export const UserScalarFieldEnum = {
   weightKg: 'weightKg',
   ftp: 'ftp',
   anaerobicThreshold: 'anaerobicThreshold',
+  yearlyDistanceKm: 'yearlyDistanceKm',
+  yearlyHours: 'yearlyHours',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
