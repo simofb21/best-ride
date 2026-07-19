@@ -22,7 +22,9 @@
         >
           <div class="metric-header">
             <span class="metric-label">{{ metric.label }}</span>
-            <span class="metric-unit">{{ metric.unit }}</span>
+            <span class="metric-unit">{{
+              isTimeUnit(metric.unit) ? "h:m:s" : metric.unit
+            }}</span>
           </div>
 
           <div class="entries">
@@ -35,7 +37,13 @@
 
               <!-- Sola lettura -->
               <template v-if="!isEditing(metric.key, entry.rank)">
-                <span class="value-display">{{ entry.value }}</span>
+                <span class="value-display">
+                  {{
+                    isTimeUnit(metric.unit)
+                      ? formatHMS(entry.value)
+                      : entry.value
+                  }}
+                </span>
                 <span class="date-display">{{
                   formatDateDisplay(entry.entryDate)
                 }}</span>
@@ -46,7 +54,12 @@
 
               <!-- Modalità modifica -->
               <template v-else>
+                <TimeInput
+                  v-if="isTimeUnit(metric.unit)"
+                  v-model="draft.value"
+                />
                 <input
+                  v-else
                   type="number"
                   class="value-input"
                   v-model.number="draft.value"
@@ -110,8 +123,16 @@
         >
         <v-card-text class="dialog-form">
           <label>
-            Value ({{ metricUnit(addingMetric) }})
-            <input v-model.number="newEntry.value" type="number" />
+            Value ({{
+              isTimeUnit(metricUnit(addingMetric))
+                ? "h:m:s"
+                : metricUnit(addingMetric)
+            }})
+            <TimeInput
+              v-if="isTimeUnit(metricUnit(addingMetric))"
+              v-model="newEntry.value"
+            />
+            <input v-else v-model.number="newEntry.value" type="number" />
           </label>
           <label>
             Date
@@ -226,16 +247,12 @@ async function saveEdit(metricKey: string, rank: number) {
 // --- Aggiunta nuova performance ---
 const showAddDialog = ref(false);
 const addingMetric = ref<string | null>(null);
-const newEntry = ref({
-  value: null as number | null,
-  entryDate: "",
-  description: "",
-});
+const newEntry = ref({ value: 0, entryDate: "", description: "" });
 
 function openAddForm(metricKey: string) {
   addingMetric.value = metricKey;
   newEntry.value = {
-    value: null,
+    value: 0,
     entryDate: new Date().toISOString().split("T")[0],
     description: "",
   };
@@ -243,12 +260,7 @@ function openAddForm(metricKey: string) {
 }
 
 async function submitNewEntry() {
-  if (
-    !addingMetric.value ||
-    newEntry.value.value == null ||
-    !newEntry.value.entryDate
-  )
-    return;
+  if (!addingMetric.value || !newEntry.value.entryDate) return;
 
   errorMessage.value = "";
 

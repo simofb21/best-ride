@@ -12,7 +12,7 @@
       <template v-if="loggedIn">
         <v-btn to="/upload" variant="text" class="nav-link">Upload</v-btn>
         <v-btn to="/records" variant="text" class="nav-link">Records</v-btn>
-        <v-btn to="/records/custom" variant="text" class="nav-link"
+        <v-btn to="/record-custom" variant="text" class="nav-link"
           >Custom Records</v-btn
         >
         <v-btn to="/profile" variant="text" class="nav-link">Profile</v-btn>

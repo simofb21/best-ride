@@ -17,7 +17,9 @@
         <div class="metric-header">
           <span class="metric-label">{{ record.label }}</span>
           <div class="header-actions">
-            <span class="metric-unit">{{ record.unit }}</span>
+            <span class="metric-unit">{{
+              isTimeUnit(record.unit) ? "h:m:s" : record.unit
+            }}</span>
             <button
               class="icon-btn delete-icon"
               @click="confirmDeleteRecord(record.id)"
@@ -35,8 +37,13 @@
           >
             <span class="rank-badge">#{{ index + 1 }}</span>
 
+            <!-- Sola lettura -->
             <template v-if="!isEditing(record.id, index + 1)">
-              <span class="value-display">{{ entry.value }}</span>
+              <span class="value-display">
+                {{
+                  isTimeUnit(record.unit) ? formatHMS(entry.value) : entry.value
+                }}
+              </span>
               <span class="date-display">{{
                 formatDateDisplay(entry.date)
               }}</span>
@@ -45,8 +52,11 @@
               }}</span>
             </template>
 
+            <!-- Modalità modifica -->
             <template v-else>
+              <TimeInput v-if="isTimeUnit(record.unit)" v-model="draft.value" />
               <input
+                v-else
                 type="number"
                 class="value-input"
                 v-model.number="draft.value"
@@ -88,7 +98,7 @@
           <button
             v-if="(record.entries?.length || 0) < 3"
             class="add-btn"
-            @click="openAddEntryForm(record.id)"
+            @click="openAddEntryForm(record.id, record.unit)"
           >
             <v-icon icon="mdi-plus" size="16" />
             Add performance
@@ -110,14 +120,30 @@
               placeholder="e.g. Stelvio Climb"
             />
           </label>
+
           <label>
-            Unit
+            Type
+            <select v-model="newRecord.unitType" @change="onUnitTypeChange">
+              <option
+                v-for="opt in UNIT_TYPE_OPTIONS"
+                :key="opt.value"
+                :value="opt.value"
+              >
+                {{ opt.label }}
+              </option>
+            </select>
+          </label>
+
+          <label v-if="newRecord.unitType === 'other'">
+            Custom unit (max 20 characters)
             <input
-              v-model="newRecord.unit"
+              v-model="newRecord.customUnit"
               type="text"
-              placeholder="e.g. min, km/h, points"
+              maxlength="20"
+              placeholder="e.g. points, reps"
             />
           </label>
+
           <label class="toggle-label">
             <input type="checkbox" v-model="newRecord.lowerIsBetter" />
             Lower value is better (e.g. race times)
@@ -138,7 +164,11 @@
         <v-card-text class="dialog-form">
           <label>
             Value
-            <input v-model.number="newEntry.value" type="number" />
+            <TimeInput
+              v-if="isTimeUnit(addingRecordUnit)"
+              v-model="newEntry.value"
+            />
+            <input v-else v-model.number="newEntry.value" type="number" />
           </label>
           <label>
             Date
@@ -228,27 +258,55 @@ onMounted(fetchCustomRecords);
 
 // --- Creazione nuovo record custom ---
 const showCreateDialog = ref(false);
-const newRecord = ref({ label: "", unit: "", lowerIsBetter: false });
+const newRecord = ref({
+  label: "",
+  unitType: "time" as string,
+  customUnit: "",
+  lowerIsBetter: true,
+});
+
+function onUnitTypeChange() {
+  const typeConfig = UNIT_TYPE_OPTIONS.find(
+    (t) => t.value === newRecord.value.unitType,
+  );
+  newRecord.value.lowerIsBetter = typeConfig?.lowerIsBetterDefault ?? false;
+}
 
 function openCreateForm() {
-  newRecord.value = { label: "", unit: "", lowerIsBetter: false };
+  newRecord.value = {
+    label: "",
+    unitType: "time",
+    customUnit: "",
+    lowerIsBetter: true,
+  };
   showCreateDialog.value = true;
 }
 
 async function submitNewRecord() {
-  if (!newRecord.value.label || !newRecord.value.unit) return;
+  if (!newRecord.value.label.trim()) return;
+
+  if (
+    newRecord.value.unitType === "other" &&
+    !newRecord.value.customUnit.trim()
+  ) {
+    errorMessage.value = "Please specify the custom unit";
+    return;
+  }
 
   errorMessage.value = "";
   try {
     await $fetch("/api/custom-records", {
       method: "POST",
-      body: newRecord.value,
+      body: {
+        ...newRecord.value,
+        label: newRecord.value.label.trim(),
+        customUnit: newRecord.value.customUnit.trim(),
+      },
     });
     showCreateDialog.value = false;
     await fetchCustomRecords();
   } catch (err: any) {
-    errorMessage.value =
-      err?.data?.message || "Something went wrong while creating the record";
+    errorMessage.value = err?.data?.message || "Something went wrong";
   }
 }
 
@@ -290,16 +348,14 @@ async function saveEdit(recordId: number, rank: number) {
 // --- Aggiunta nuova performance ---
 const showAddEntryDialog = ref(false);
 const addingRecordId = ref<number | null>(null);
-const newEntry = ref({
-  value: null as number | null,
-  date: "",
-  description: "",
-});
+const addingRecordUnit = ref<string>("");
+const newEntry = ref({ value: 0, date: "", description: "" });
 
-function openAddEntryForm(recordId: number) {
+function openAddEntryForm(recordId: number, unit: string) {
   addingRecordId.value = recordId;
+  addingRecordUnit.value = unit;
   newEntry.value = {
-    value: null,
+    value: 0,
     date: new Date().toISOString().split("T")[0],
     description: "",
   };
@@ -307,12 +363,7 @@ function openAddEntryForm(recordId: number) {
 }
 
 async function submitNewEntry() {
-  if (
-    !addingRecordId.value ||
-    newEntry.value.value == null ||
-    !newEntry.value.date
-  )
-    return;
+  if (!addingRecordId.value || !newEntry.value.date) return;
 
   errorMessage.value = "";
   try {
@@ -389,7 +440,6 @@ async function performDeleteRecord() {
 </script>
 
 <style scoped>
-/* Stile minimo per ora, lo rifiniamo insieme dopo */
 .custom-records-page {
   max-width: 1200px;
   margin: 0 auto;
@@ -529,7 +579,8 @@ async function performDeleteRecord() {
   font-size: 12px;
   color: var(--text-muted);
 }
-.dialog-form input {
+.dialog-form input,
+.dialog-form select {
   padding: 8px 10px;
   border-radius: 8px;
   border: 1px solid var(--border);

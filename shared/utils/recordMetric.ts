@@ -1,5 +1,4 @@
 // shared/utils/recordMetrics.ts
-
 export interface RecordMetricConfig {
   key: string;
   label: string;
@@ -152,7 +151,7 @@ export const RECORD_METRICS: RecordMetricConfig[] = [
   {
     key: "duration",
     label: "Longest Duration",
-    unit: "min",
+    unit: "h:m:s",
     lowerIsBetter: false,
     category: "other",
   },
