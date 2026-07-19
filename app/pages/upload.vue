@@ -91,6 +91,30 @@
     <p v-if="error" class="error-banner">{{ error }}</p>
 
     <section v-if="result" class="results">
+      <!-- NUOVI RECORD -->
+      <div v-if="newRecords.length" class="records-banner">
+        <h3>🎉 New records on this ride!</h3>
+        <ul>
+          <li v-for="check in newRecords" :key="check.metricKey">
+            <strong>{{ check.label }}</strong
+            >:
+            {{
+              check.metricKey === "duration"
+                ? formatDuration(check.newValue)
+                : check.newValue
+            }}{{ check.unit !== "h:m:s" ? check.unit : "" }} —
+            <span class="rank-tag">#{{ check.wouldEnterAt }} all-time</span>
+            <span v-if="check.currentBest">
+              (previous best: {{ check.currentBest
+              }}{{ check.unit !== "h:m:s" ? check.unit : "" }})</span
+            >
+          </li>
+        </ul>
+      </div>
+      <div v-else class="no-records-banner">
+        No new records this time — but every ride counts!
+      </div>
+
       <!-- HERO STATS -->
       <div class="hero-row">
         <div class="hero-stat accent">
@@ -233,6 +257,13 @@
                 >{{ result.activity.kcalories }} <small>kcal</small></strong
               >
             </div>
+            <div class="metric-row">
+              <span>Intensity Factor</span
+              ><strong>{{ result.training_load?.intensity_factor }}</strong>
+            </div>
+            <div class="metric-row">
+              <span>TSS</span><strong>{{ result.training_load?.tss }}</strong>
+            </div>
           </div>
         </div>
       </div>
@@ -290,22 +321,37 @@
           </div>
         </div>
       </div>
+
+      <!-- CONFERMA SALVATAGGIO -->
+      <div class="confirm-section">
+        <p class="confirm-text">
+          Set this as your latest activity and update your records?
+        </p>
+        <button
+          class="confirm-btn"
+          :disabled="confirming"
+          @click="confirmSaveActivity"
+        >
+          <span v-if="confirming" class="spinner" />
+          {{ confirming ? "Saving…" : "Save as latest activity" }}
+        </button>
+      </div>
     </section>
   </div>
 </template>
 
 <script setup lang="ts">
+definePageMeta({ middleware: "auth" });
+
 const selectedFile = ref<File | null>(null);
-const result = ref<ActivityAnalysis | null>(null);
+const result = ref<any>(null);
 const loading = ref(false);
+const confirming = ref(false);
 const error = ref("");
 const isDragOver = ref(false);
 const fileInput = ref<HTMLInputElement | null>(null);
 const isDark = ref(false);
-definePageMeta({
-  middleware: "auth",
-});
-// Persist the user's theme choice
+
 onMounted(() => {
   const saved = localStorage.getItem("theme");
   if (saved) isDark.value = saved === "dark";
@@ -344,6 +390,11 @@ function formatDuration(totalSeconds: number): string {
   const m = Math.round((totalSeconds % 3600) / 60);
   return h > 0 ? `${h}h ${m}min` : `${m}min`;
 }
+
+// Filtra solo i record che sono effettivamente migliorati (wouldEnterAt non null)
+const newRecords = computed(() => {
+  return (result.value?.recordChecks || []).filter((r: any) => r.wouldEnterAt);
+});
 
 const chartData = computed(() => {
   if (!result.value) return { path: "", areaPath: "", coords: [] as any[] };
@@ -423,7 +474,7 @@ async function uploadFile() {
   formData.append("file", selectedFile.value);
 
   try {
-    result.value = await $fetch<ActivityAnalysis>("/api/upload", {
+    result.value = await $fetch("/api/upload", {
       method: "POST",
       body: formData,
     });
@@ -432,6 +483,24 @@ async function uploadFile() {
       err?.data?.message || "Something went wrong while analyzing the file";
   } finally {
     loading.value = false;
+  }
+}
+
+async function confirmSaveActivity() {
+  if (!result.value) return;
+  confirming.value = true;
+  error.value = "";
+
+  try {
+    await $fetch("/api/activities/confirm", {
+      method: "POST",
+      body: result.value,
+    });
+    await navigateTo("/activity-info");
+  } catch (err: any) {
+    error.value = err?.data?.message || "Something went wrong while saving";
+  } finally {
+    confirming.value = false;
   }
 }
 </script>
@@ -528,7 +597,6 @@ async function uploadFile() {
   color: var(--accent);
 }
 
-/* Dropzone */
 .dropzone {
   border: 1.5px dashed var(--border);
   border-radius: 14px;
@@ -620,7 +688,40 @@ async function uploadFile() {
   margin-bottom: 20px;
 }
 
-/* Results */
+.records-banner {
+  background: var(--accent-soft);
+  border: 1px solid var(--accent);
+  border-radius: 12px;
+  padding: 18px 20px;
+}
+.records-banner h3 {
+  margin: 0 0 10px;
+  font-size: 15px;
+}
+.records-banner ul {
+  margin: 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.records-banner li {
+  font-size: 13px;
+}
+.rank-tag {
+  font-weight: 700;
+  color: var(--accent-strong);
+}
+
+.no-records-banner {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 20px;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
 .results {
   padding-bottom: 60px;
   display: flex;
@@ -808,6 +909,44 @@ async function uploadFile() {
   color: var(--text-muted);
 }
 
+.confirm-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.confirm-text {
+  margin: 0;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+.confirm-btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 10px;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+.confirm-btn:hover:not(:disabled) {
+  background: var(--accent-strong);
+}
+.confirm-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 @media (max-width: 1100px) {
   .main-grid {
     grid-template-columns: 1fr;
@@ -827,6 +966,10 @@ async function uploadFile() {
   .page section {
     padding-left: 16px;
     padding-right: 16px;
+  }
+  .confirm-section {
+    flex-direction: column;
+    align-items: stretch;
   }
 }
 </style>
