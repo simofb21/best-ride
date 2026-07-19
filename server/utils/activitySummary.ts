@@ -113,5 +113,6 @@ export function buildActivitySummary(records: any[], session: any) {
     max_watts: max_watts,
     kilojoules: kilojoules,
     kcalories: kcalories,
+    activityDate: session?.start_time ?? records[0]?.timestamp ?? new Date(),
   };
 }

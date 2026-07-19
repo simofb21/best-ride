@@ -7,6 +7,7 @@ export default defineEventHandler(async (event) => {
   const body = await readBody(event);
   const { activity, power_records, training_load, recordChecks, filename } =
     body;
+  const activityDate = new Date(activity.activityDate); // <-- la vera data dell'uscita
 
   // 1. Salva/sovrascrive l'ultima attività (upsert: se esiste, sovrascrive)
   await prisma.lastActivity.upsert({
@@ -29,9 +30,7 @@ export default defineEventHandler(async (event) => {
     },
   });
 
-  // 2. Per ogni record che è migliorato, aggiorna davvero il podio
-  const today = new Date().toISOString().split("T")[0];
-
+  // 2. Aggiorna i record personali se necessario
   for (const check of recordChecks) {
     if (!check.wouldEnterAt) continue;
 
@@ -47,7 +46,7 @@ export default defineEventHandler(async (event) => {
         entryDate: e.entryDate,
         description: e.description,
       })),
-      { value: check.newValue, entryDate: new Date(today), description: null },
+      { value: check.newValue, entryDate: activityDate, description: null },
     ];
 
     const metricConfig = RECORD_METRICS.find((m) => m.key === check.metricKey)!;

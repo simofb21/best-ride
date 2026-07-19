@@ -16,6 +16,8 @@ model User {
   weightKg           Decimal? @db.Decimal(5, 2)
   ftp                Int?
   anaerobicThreshold Int?
+  yearlyDistanceKm      Decimal? @db.Decimal(8, 2)
+  yearlyHours           Decimal? @db.Decimal(6, 1) 
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
 
