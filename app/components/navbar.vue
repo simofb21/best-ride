@@ -81,7 +81,7 @@
           @click="isDrawerOpen = false"
         />
         <v-list-item
-          to="/records/custom"
+          to="/record-custom"
           title="Custom Records"
           @click="isDrawerOpen = false"
         />

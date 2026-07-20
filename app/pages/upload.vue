@@ -6,38 +6,6 @@
         <p class="eyebrow">Activity Analysis</p>
         <h1>Upload a .fit file</h1>
       </div>
-
-      <button
-        class="theme-toggle"
-        @click="isDark = !isDark"
-        :aria-label="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
-      >
-        <svg
-          v-if="isDark"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.6"
-        >
-          <circle cx="12" cy="12" r="4.5" />
-          <path
-            d="M12 2.5v2M12 19.5v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M2.5 12h2M19.5 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"
-            stroke-linecap="round"
-          />
-        </svg>
-        <svg
-          v-else
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.6"
-        >
-          <path
-            d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z"
-            stroke-linejoin="round"
-          />
-        </svg>
-      </button>
     </header>
 
     <div
@@ -350,16 +318,8 @@ const confirming = ref(false);
 const error = ref("");
 const isDragOver = ref(false);
 const fileInput = ref<HTMLInputElement | null>(null);
-const isDark = ref(false);
 
-onMounted(() => {
-  const saved = localStorage.getItem("theme");
-  if (saved) isDark.value = saved === "dark";
-  else isDark.value = window.matchMedia("(prefers-color-scheme: dark)").matches;
-});
-watch(isDark, (value) => {
-  localStorage.setItem("theme", value ? "dark" : "light");
-});
+onMounted(() => {});
 
 const DURATION_META: Record<string, { seconds: number; label: string }> = {
   peak_power: { seconds: 1, label: "Peak" },
@@ -518,30 +478,6 @@ async function confirmSaveActivity() {
   transition:
     background-color 0.2s,
     color 0.2s;
-}
-
-.theme-light {
-  --bg: #ffffff;
-  --surface: #f3f9f5;
-  --surface-alt: #e8f3ec;
-  --border: #d7e6dd;
-  --text: #0d1912;
-  --text-muted: #5c6d63;
-  --accent: #0e9f6e;
-  --accent-strong: #0b7a54;
-  --accent-soft: rgba(14, 159, 110, 0.1);
-}
-
-.theme-dark {
-  --bg: #000000;
-  --surface: #0d130f;
-  --surface-alt: #131c16;
-  --border: #22302a;
-  --text: #f2f7f4;
-  --text-muted: #8fa196;
-  --accent: #22c55e;
-  --accent-strong: #4ade80;
-  --accent-soft: rgba(34, 197, 94, 0.14);
 }
 
 .page > *,

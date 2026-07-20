@@ -234,10 +234,6 @@ const loadError = ref("");
 const isDark = ref(false);
 
 onMounted(async () => {
-  const saved = localStorage.getItem("theme");
-  if (saved) isDark.value = saved === "dark";
-  else isDark.value = window.matchMedia("(prefers-color-scheme: dark)").matches;
-
   try {
     data.value = await $fetch("/api/activities/last");
   } catch (err: any) {
@@ -335,28 +331,7 @@ const gridLines = [20, 90, 160, 230];
   font-family: var(--sans);
 }
 
-.theme-light {
-  --bg: #ffffff;
-  --surface: #f3f9f5;
-  --surface-alt: #e8f3ec;
-  --border: #d7e6dd;
-  --text: #0d1912;
-  --text-muted: #5c6d63;
-  --accent: #0e9f6e;
-  --accent-strong: #0b7a54;
-  --accent-soft: rgba(14, 159, 110, 0.1);
-}
-.theme-dark {
-  --bg: #000000;
-  --surface: #0d130f;
-  --surface-alt: #131c16;
-  --border: #22302a;
-  --text: #f2f7f4;
-  --text-muted: #8fa196;
-  --accent: #22c55e;
-  --accent-strong: #4ade80;
-  --accent-soft: rgba(34, 197, 94, 0.14);
-}
+
 
 .page > *,
 .page section {
