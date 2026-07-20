@@ -2,15 +2,19 @@
 <template>
   <v-app-bar color="surface" elevation="0" class="navbar-border">
     <NuxtLink to="/" class="brand">Best Ride</NuxtLink>
-
+    <NuxtLink to="/" class="logo-link" aria-label="Home page">
+      <img src="/favicon.ico" alt="Logo" height="40" width="40" />
+    </NuxtLink>
     <v-spacer />
-
     <!-- Link centrali, solo desktop -->
     <div class="nav-links d-none d-md-flex">
       <v-btn to="/tutorial" variant="text" class="nav-link">Tutorial</v-btn>
 
       <template v-if="loggedIn">
         <v-btn to="/upload" variant="text" class="nav-link">Upload</v-btn>
+        <v-btn variant="text" class="nav-link" to="/activity-info">
+          Last activity info
+        </v-btn>
         <v-btn to="/records" variant="text" class="nav-link">Records</v-btn>
         <v-btn to="/record-custom" variant="text" class="nav-link"
           >Custom Records</v-btn
@@ -81,6 +85,11 @@
           @click="isDrawerOpen = false"
         />
         <v-list-item
+          to="/activity-info"
+          title="Last Activity Info"
+          @click="isDrawerOpen = false"
+        />
+        <v-list-item
           to="/record-custom"
           title="Custom Records"
           @click="isDrawerOpen = false"
@@ -134,6 +143,11 @@ async function handleLogout() {
   text-decoration: none;
   margin-left: 16px;
   margin-right: 8px;
+}
+
+.logo-link {
+  display: inline-flex;
+  align-items: center;
 }
 
 .nav-link {
