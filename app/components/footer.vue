@@ -110,7 +110,7 @@
       class="tab-item"
       :class="{ active: isActive('/activity-info') }"
     >
-      <v-icon icon="mdi-chart-line" size="22" />
+      <v-icon icon="mdi-poll" size="22" />
       <span>Latest</span>
     </NuxtLink>
     <NuxtLink
@@ -122,11 +122,11 @@
       <span>Records</span>
     </NuxtLink>
     <NuxtLink
-      to="/records-custom"
+      to="/record-custom"
       class="tab-item"
       :class="{ active: isActive('/record-custom') }"
     >
-      <v-icon icon="mdi-star-outline" size="22" />
+      <v-icon icon="mdi-bullseye-arrow" size="22" />
       <span>Custom</span>
     </NuxtLink>
     <NuxtLink
