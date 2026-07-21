@@ -134,7 +134,7 @@
   font-size: 12px;
   font-weight: 600;
   color: var(--text);
-  border: 1px solid black;
+  border: 1px solid lightgray;
 }
 .feature-card .v-icon {
   color: var(--accent-strong);
