@@ -8,18 +8,53 @@
     <v-spacer />
     <!-- Link centrali, solo desktop -->
     <div class="nav-links d-none d-md-flex">
-      <v-btn to="/tutorial" variant="text" class="nav-link">Tutorial</v-btn>
+      <v-btn
+        to="/tutorial"
+        variant="text"
+        class="nav-link"
+        prepend-icon="mdi-cast-education
+"
+        >Tutorial</v-btn
+      >
 
       <template v-if="loggedIn">
-        <v-btn to="/upload" variant="text" class="nav-link">Upload</v-btn>
-        <v-btn variant="text" class="nav-link" to="/activity-info">
+        <v-btn
+          to="/upload"
+          variant="text"
+          class="nav-link"
+          prepend-icon="mdi-upload"
+        >
+          Upload
+        </v-btn>
+        <v-btn
+          variant="text"
+          class="nav-link"
+          to="/activity-info"
+          prepend-icon="mdi-poll"
+        >
           Last activity info
         </v-btn>
-        <v-btn to="/records" variant="text" class="nav-link">Records</v-btn>
-        <v-btn to="/record-custom" variant="text" class="nav-link"
+        <v-btn
+          to="/records"
+          variant="text"
+          class="nav-link"
+          prepend-icon="mdi-trophy-award"
+          >Records</v-btn
+        >
+        <v-btn
+          to="/record-custom"
+          variant="text"
+          class="nav-link"
+          prepend-icon="mdi-bullseye-arrow "
           >Custom Records</v-btn
         >
-        <v-btn to="/profile" variant="text" class="nav-link">Profile</v-btn>
+        <v-btn
+          to="/profile"
+          variant="text"
+          class="nav-link"
+          prepend-icon="mdi-account"
+          >Profile</v-btn
+        >
       </template>
     </div>
 
@@ -71,6 +106,7 @@
         to="/tutorial"
         title="Tutorial"
         @click="isDrawerOpen = false"
+        append-icon="mdi-cast-education"
       />
 
       <template v-if="loggedIn">
@@ -78,26 +114,37 @@
           to="/upload"
           title="Upload"
           @click="isDrawerOpen = false"
+          append-icon="mdi-cloud-upload-outline"
         />
         <v-list-item
           to="/records"
           title="Records"
           @click="isDrawerOpen = false"
+          append-icon="mdi-trophy-outline"
         />
         <v-list-item
           to="/activity-info"
           title="Last Activity Info"
           @click="isDrawerOpen = false"
+          append-icon="mdi-poll"
         />
         <v-list-item
           to="/record-custom"
           title="Custom Records"
           @click="isDrawerOpen = false"
+          append-icon="mdi-bullseye-arrow "
         />
         <v-list-item
           to="/profile"
           title="Profile"
           @click="isDrawerOpen = false"
+          append-icon="mdi-account-outline"
+        />
+        <v-list-item
+          to="/privacy-policy"
+          title="Privacy Policy"
+          @click="isDrawerOpen = false"
+          append-icon="mdi-shield-account-outline"
         />
         <v-divider class="my-2" />
         <v-list-item
