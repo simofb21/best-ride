@@ -6,6 +6,12 @@
       <div class="footer-col brand-col">
         <p class="footer-brand">Best Ride</p>
         <p class="footer-tagline">Track your power. Chase your records.</p>
+        <p class="footer-tagline">
+          Best Ride is a project made by Simone Fusar Bassini. A cyclist who
+          takes care about his performance and wants that him and other riders
+          can achieve their goals.
+        </p>
+
         <p v-if="loggedIn" class="footer-user">
           <v-icon icon="mdi-account-circle-outline" size="14" />
           {{ user?.firstName }} {{ user?.lastName }}
@@ -45,9 +51,47 @@
     <div class="footer-bottom">
       <span>© {{ currentYear }} Best Ride</span>
       <span class="dot">·</span>
-      <NuxtLink to="/privacy-policy" class="footer-bottom-link"
-        >Privacy Policy</NuxtLink
+
+      <NuxtLink to="/privacy-policy" class="footer-bottom-link">
+        <v-icon size="18">mdi-shield-account-outline</v-icon>
+        Privacy Policy
+      </NuxtLink>
+
+      <span class="dot">·</span>
+
+      <a
+        href="https://www.linkedin.com/in/simone-fusar-bassini-7407003b4"
+        class="footer-bottom-link"
       >
+        <v-icon size="18">mdi-linkedin</v-icon>
+        Simone Fusar Bassini
+      </a>
+
+      <span class="dot">·</span>
+
+      <a href="https://www.instagram.com/fb.simo_" class="footer-bottom-link">
+        <v-icon size="18">mdi-instagram</v-icon>
+        fb.simo_
+      </a>
+
+      <span class="dot">·</span>
+
+      <span class="dot">·</span>
+
+      <a href="mailto:simofusar@gmail.com" class="footer-bottom-link">
+        <v-icon size="18">mdi-email-outline</v-icon>
+        simofusar@gmail.com
+      </a>
+
+      <span class="dot">·</span>
+
+      <a
+        href="https://github.com/simofb21/best-ride"
+        class="footer-bottom-link"
+      >
+        <v-icon size="18">mdi-github</v-icon>
+        simofb21
+      </a>
     </div>
   </footer>
 
@@ -205,6 +249,8 @@ watchEffect(async () => {
   gap: 8px;
   font-size: 12px;
   color: var(--text-muted);
+  justify-content: space-between;
+  align-items: center;
 }
 .dot {
   opacity: 0.5;
