@@ -9,24 +9,17 @@
     </section>
 
     <section class="steps">
-      <div class="step">
-        <v-icon icon="mdi-cloud-upload-outline" size="30" />
-        <h3>1. Upload</h3>
-        <p>Drop your .fit file from any bike computer or app</p>
-      </div>
-      <div class="step">
-        <v-icon icon="mdi-chart-line" size="30" />
-        <h3>2. Analyze</h3>
-        <p>
-          Get your full power curve, speed, cadence and heart rate breakdown
-        </p>
-      </div>
-      <div class="step">
-        <v-icon icon="mdi-trophy-outline" size="30" />
-        <h3>3. Beat your records</h3>
-        <p>Every ride is checked against your personal bests, automatically</p>
-      </div>
+      <StepCard icon="mdi-cloud-upload-outline" title="1. Upload">
+        Drop your .fit file from any bike computer or app
+      </StepCard>
+      <StepCard icon="mdi-chart-line" title="2. Analyze">
+        Get your full power curve, speed, cadence and heart rate breakdown
+      </StepCard>
+      <StepCard icon="mdi-trophy-outline" title="3. Beat your records">
+        Every ride is checked against your personal bests, automatically
+      </StepCard>
     </section>
+
     <p class="tagline">Some of the Features</p>
     <section class="features">
       <div class="feature-card">
@@ -48,11 +41,9 @@
     </section>
 
     <section class="cta">
-      <NuxtLink to="/register" class="cta-btn"
-        >Get started — it's free</NuxtLink
-      >
-      <NuxtLink to="/login" class="cta-btn">Already have an account?</NuxtLink>
-      <NuxtLink to="/tutorial" class="cta-secondary">See how it works</NuxtLink>
+      <CtaButton to="/register">Get started — it's free</CtaButton>
+      <CtaButton to="/login">Already have an account?</CtaButton>
+      <CtaButton to="/tutorial" secondary>See how it works</CtaButton>
     </section>
   </div>
 </template>
@@ -92,31 +83,6 @@
   gap: 24px;
 }
 
-.step {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 28px 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-}
-.step .v-icon {
-  color: var(--accent-strong);
-  margin-bottom: 4px;
-}
-.step h3 {
-  margin: 0;
-  font-size: 15px;
-  color: var(--text);
-}
-.step p {
-  margin: 0;
-  font-size: 13px;
-  color: var(--text-muted);
-}
-
 .features {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -125,6 +91,7 @@
 
 .feature-card {
   background: var(--surface-alt);
+  border: 1px solid var(--border);
   border-radius: 12px;
   padding: 18px 12px;
   display: flex;
@@ -134,7 +101,6 @@
   font-size: 12px;
   font-weight: 600;
   color: var(--text);
-  border: 1px solid lightgray;
 }
 .feature-card .v-icon {
   color: var(--accent-strong);
@@ -145,25 +111,6 @@
   flex-direction: column;
   align-items: center;
   gap: 12px;
-}
-
-.cta-btn {
-  background: var(--accent);
-  color: #fff;
-  padding: 14px 32px;
-  border-radius: 12px;
-  font-weight: 700;
-  font-size: 15px;
-  text-decoration: none;
-}
-.cta-btn:hover {
-  background: var(--accent-strong);
-}
-
-.cta-secondary {
-  color: var(--text-muted);
-  font-size: 13px;
-  text-decoration: underline;
 }
 
 @media (max-width: 700px) {

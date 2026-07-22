@@ -1,3 +1,4 @@
+<!-- app/pages/records-custom.vue -->
 <template>
   <div class="custom-records-page">
     <h1>Custom Records</h1>
@@ -13,98 +14,18 @@
     </button>
 
     <div class="custom-records-grid">
-      <div v-for="record in customRecords" :key="record.id" class="metric-card">
-        <div class="metric-header">
-          <span class="metric-label">{{ record.label }}</span>
-          <div class="header-actions">
-            <span class="metric-unit">{{
-              isTimeUnit(record.unit) ? "h:m:s" : record.unit
-            }}</span>
-            <button
-              class="icon-btn delete-icon"
-              @click="confirmDeleteRecord(record.id)"
-            >
-              <v-icon icon="mdi-trash-can-outline" size="16" />
-            </button>
-          </div>
-        </div>
-
-        <div class="entries">
-          <div
-            v-for="(entry, index) in record.entries"
-            :key="index"
-            class="entry-row"
-          >
-            <span class="rank-badge">#{{ index + 1 }}</span>
-
-            <!-- Sola lettura -->
-            <template v-if="!isEditing(record.id, index + 1)">
-              <span class="value-display">
-                {{
-                  isTimeUnit(record.unit) ? formatHMS(entry.value) : entry.value
-                }}
-              </span>
-              <span class="date-display">{{
-                formatDateDisplay(entry.date)
-              }}</span>
-              <span class="description-display">{{
-                entry.description || "—"
-              }}</span>
-            </template>
-
-            <!-- Modalità modifica -->
-            <template v-else>
-              <TimeInput v-if="isTimeUnit(record.unit)" v-model="draft.value" />
-              <input
-                v-else
-                type="number"
-                class="value-input"
-                v-model.number="draft.value"
-              />
-              <input type="date" class="date-input" v-model="draft.date" />
-              <input
-                type="text"
-                class="description-input"
-                placeholder="Add a note..."
-                v-model="draft.description"
-              />
-            </template>
-
-            <div class="row-actions">
-              <button
-                v-if="!isEditing(record.id, index + 1)"
-                class="icon-btn"
-                @click="startEdit(record.id, index + 1, entry)"
-              >
-                <v-icon icon="mdi-pencil-outline" size="17" />
-              </button>
-              <button
-                v-else
-                class="icon-btn save-icon"
-                @click="saveEdit(record.id, index + 1)"
-              >
-                <v-icon icon="mdi-check" size="18" />
-              </button>
-
-              <button
-                class="icon-btn delete-icon"
-                @click="confirmDeleteEntry(record.id, index + 1)"
-              >
-                <v-icon icon="mdi-delete-outline" size="17" />
-              </button>
-            </div>
-          </div>
-
-          <button
-            v-if="(record.entries?.length || 0) < 3"
-            class="add-btn"
-            @click="openAddEntryForm(record.id, record.unit)"
-          >
-            <v-icon icon="mdi-plus" size="16" />
-            Add performance
-          </button>
-        </div>
-      </div>
+      <RecordMetricCard
+        v-for="record in customRecords"
+        :key="record.id"
+        :label="record.label"
+        :unit="record.unit"
+        :entries="record.entries"
+        :deletable="true"
+        @save-entry="(rank, entry) => saveEntry(record.id, rank, entry)"
+        @add-entry="() => openAddEntryForm(record.id, record.unit)"
+        @delete-entry="(rank) => confirmDeleteEntry(record.id, rank)"
+        @delete-record="() => confirmDeleteRecord(record.id)"
+      />
     </div>
 
     <!-- Dialog: crea nuovo record custom -->
@@ -244,13 +165,6 @@ interface CustomRecordItem {
 const customRecords = ref<CustomRecordItem[]>([]);
 const errorMessage = ref("");
 
-function formatDateDisplay(date: string) {
-  return new Date(date).toLocaleDateString();
-}
-function formatDateForInput(date: string) {
-  return new Date(date).toISOString().split("T")[0];
-}
-
 async function fetchCustomRecords() {
   customRecords.value = await $fetch("/api/custom-records");
 }
@@ -310,34 +224,23 @@ async function submitNewRecord() {
   }
 }
 
-// --- Edit inline di un'entry esistente ---
-const editingKey = ref<string | null>(null); // formato "recordId:rank"
-const draft = reactive({ value: 0, date: "", description: "" });
-
-function isEditing(recordId: number, rank: number) {
-  return editingKey.value === `${recordId}:${rank}`;
-}
-
-function startEdit(recordId: number, rank: number, entry: CustomRecordEntry) {
-  editingKey.value = `${recordId}:${rank}`;
-  draft.value = entry.value;
-  draft.date = formatDateForInput(entry.date);
-  draft.description = entry.description || "";
-}
-
-async function saveEdit(recordId: number, rank: number) {
+// --- Salvataggio entry (creazione o modifica), delegato dal componente ---
+async function saveEntry(
+  recordId: number,
+  rank: number,
+  entry: CustomRecordEntry,
+) {
   errorMessage.value = "";
   try {
     await $fetch(`/api/custom-records/${recordId}`, {
       method: "PATCH",
       body: {
         rank,
-        value: draft.value,
-        date: draft.date,
-        description: draft.description || null,
+        value: entry.value,
+        date: entry.date,
+        description: entry.description,
       },
     });
-    editingKey.value = null;
     await fetchCustomRecords();
   } catch (err: any) {
     errorMessage.value =
@@ -445,6 +348,12 @@ async function performDeleteRecord() {
   margin: 0 auto;
   padding: 32px;
 }
+.custom-records-page h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+}
 .subtitle {
   color: var(--text-muted);
   margin-bottom: 20px;
@@ -466,105 +375,6 @@ async function performDeleteRecord() {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
   gap: 16px;
-}
-.metric-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 16px;
-}
-.metric-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-}
-.header-actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.metric-label {
-  font-weight: 600;
-  font-size: 14px;
-}
-.metric-unit {
-  color: var(--text-muted);
-  font-size: 12px;
-}
-.entry-row {
-  display: grid;
-  grid-template-columns: 26px 60px 90px 1fr auto;
-  gap: 8px;
-  align-items: center;
-  margin-bottom: 8px;
-}
-.rank-badge {
-  font-family: monospace;
-  font-size: 11px;
-  color: var(--accent);
-  font-weight: 700;
-}
-.value-display,
-.date-display,
-.description-display {
-  font-size: 13px;
-  color: var(--text);
-}
-.description-display {
-  color: var(--text-muted);
-  font-size: 12px;
-}
-.value-input,
-.date-input,
-.description-input {
-  border: 1px solid var(--accent);
-  border-radius: 6px;
-  padding: 5px 8px;
-  font-size: 12px;
-  background: var(--bg);
-  color: var(--text);
-  width: 100%;
-}
-.row-actions {
-  display: flex;
-  gap: 2px;
-}
-.icon-btn {
-  border: none;
-  background: transparent;
-  color: var(--text-muted);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 4px;
-  border-radius: 6px;
-}
-.icon-btn:hover {
-  background: var(--border);
-  color: var(--text);
-}
-.save-icon {
-  color: var(--accent);
-}
-.delete-icon:hover {
-  color: #ef4444;
-}
-.add-btn {
-  border: 1px dashed var(--border);
-  background: transparent;
-  color: var(--text-muted);
-  border-radius: 8px;
-  padding: 8px;
-  font-size: 12px;
-  width: 100%;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  margin-top: 4px;
 }
 .dialog-form {
   display: flex;
@@ -600,5 +410,40 @@ async function performDeleteRecord() {
   border-radius: 8px;
   font-size: 13px;
   margin-bottom: 20px;
+}
+
+@media (max-width: 480px) {
+  .custom-records-grid,
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .entry-row {
+    grid-template-columns: 24px 1fr auto;
+    grid-template-areas:
+      "medal value actions"
+      "medal date actions"
+      "medal desc actions";
+    row-gap: 4px;
+  }
+
+  .value-display,
+  .value-input {
+    grid-area: value;
+  }
+  .date-display,
+  .date-input {
+    grid-area: date;
+  }
+  .description-display,
+  .description-input {
+    grid-area: desc;
+  }
+  .rank-medal {
+    grid-area: medal;
+  }
+  .row-actions {
+    grid-area: actions;
+  }
 }
 </style>

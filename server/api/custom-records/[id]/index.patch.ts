@@ -33,27 +33,20 @@ export default defineEventHandler(async (event) => {
   const { rank, value, date, description } = parsed.data;
 
   const record = await prisma.customRecord.findUnique({ where: { id } });
-
   if (!record || record.userId !== userId) {
     throw createError({ statusCode: 404, message: "Custom record not found" });
   }
 
   const existingEntries = (record.entries as unknown as RecordEntry[]) || [];
 
-  // CASO 1: rank specificato → sto MODIFICANDO uno slot già esistente
-  if (rank) {
-    const updatedEntries = [...existingEntries];
-    updatedEntries[rank - 1] = { value, date, description };
+  // In ENTRAMBI i casi (nuova entry o modifica di una esistente),
+  // ricostruiamo la lista SENZA lo slot che stiamo toccando, poi la rimettiamo
+  // dentro insieme al nuovo valore e riordiniamo tutto da capo.
+  const entriesExcludingEdited = rank
+    ? existingEntries.filter((_, index) => index !== rank - 1)
+    : existingEntries;
 
-    const updated = await prisma.customRecord.update({
-      where: { id },
-      data: { entries: updatedEntries },
-    });
-    return updated;
-  }
-
-  // CASO 2: nessun rank → è una NUOVA performance, va inserita nel podio giusto
-  const combined = [...existingEntries, { value, date, description }];
+  const combined = [...entriesExcludingEdited, { value, date, description }];
 
   combined.sort((a, b) =>
     record.lowerIsBetter ? a.value - b.value : b.value - a.value,

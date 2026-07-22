@@ -41,7 +41,7 @@
           <v-icon icon="mdi-trophy-outline" size="26" />
           <span>My records</span>
         </NuxtLink>
-        <NuxtLink to="/records-custom" class="shortcut-card">
+        <NuxtLink to="/record-custom" class="shortcut-card">
           <v-icon icon="mdi-star-outline" size="26" />
           <span>Custom records</span>
         </NuxtLink>
