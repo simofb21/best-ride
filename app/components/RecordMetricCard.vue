@@ -1,7 +1,31 @@
 <template>
   <div class="metric-card">
     <div class="metric-header">
-      <span class="metric-label">{{ label }}</span>
+      <template v-if="!isEditingLabel">
+        <span class="metric-label">{{ label }}</span>
+        <button
+          v-if="editableLabel"
+          class="icon-btn label-edit-btn"
+          @click="startEditLabel"
+        >
+          <v-icon icon="mdi-pencil-outline" size="14" />
+        </button>
+      </template>
+      <template v-else>
+        <input
+          v-model="labelDraft"
+          type="text"
+          class="label-input"
+          maxlength="100"
+        />
+        <button class="icon-btn save-icon" @click="saveLabel">
+          <v-icon icon="mdi-check" size="16" />
+        </button>
+        <button class="icon-btn" @click="cancelEditLabel">
+          <v-icon icon="mdi-close" size="16" />
+        </button>
+      </template>
+
       <div class="header-actions">
         <span class="metric-unit">{{ isTimeUnit(unit) ? "h:m:s" : unit }}</span>
         <button
@@ -18,19 +42,26 @@
       <div v-for="(entry, index) in entries" :key="index" class="entry-row">
         <v-icon
           icon="mdi-medal"
-          size="24"
+          size="22"
           :color="medalColor(index)"
           class="rank-medal"
         />
+
         <!-- Sola lettura -->
         <template v-if="!isEditing(index + 1)">
           <span class="value-display">
             {{ isTimeUnit(unit) ? formatHMS(entry.value) : entry.value }}
           </span>
           <span class="date-display">{{ formatDateDisplay(entry.date) }}</span>
-          <span class="description-display">{{
-            entry.description || "—"
-          }}</span>
+
+          <button
+            v-if="entry.description"
+            class="icon-btn description-toggle"
+            @click="toggleDescription(index)"
+          >
+            <v-icon icon="mdi-eye-outline" size="16" />
+          </button>
+          <span v-else class="description-empty">—</span>
         </template>
 
         <!-- Modalità modifica -->
@@ -74,6 +105,11 @@
             <v-icon icon="mdi-delete-outline" size="17" />
           </button>
         </div>
+
+        <!-- Descrizione espansa, sotto la riga -->
+        <div v-if="expandedDescription === index" class="description-expanded">
+          {{ entry.description }}
+        </div>
       </div>
 
       <button class="add-btn" @click="$emit('add-entry', unit)">
@@ -85,11 +121,6 @@
 </template>
 
 <script setup lang="ts">
-const MEDAL_COLORS = ["yellow-darken-2", "grey", "orange"]; // oro, argento, bronzo
-
-function medalColor(index: number): string {
-  return MEDAL_COLORS[index] ?? "grey";
-}
 interface RecordEntry {
   value: number;
   date: string;
@@ -100,7 +131,8 @@ const props = defineProps<{
   label: string;
   unit: string;
   entries: RecordEntry[];
-  deletable?: boolean; // true per i custom (si può eliminare l'intera card), false per i fissi
+  deletable?: boolean;
+  editableLabel?: boolean; // true per i custom, false/assente per i fissi
 }>();
 
 const emit = defineEmits<{
@@ -108,7 +140,13 @@ const emit = defineEmits<{
   (e: "add-entry", unit: string): void;
   (e: "delete-entry", rank: number): void;
   (e: "delete-record"): void;
+  (e: "rename", newLabel: string): void;
 }>();
+
+const MEDAL_COLORS = ["yellow-darken-2", "grey", "orange"];
+function medalColor(index: number): string {
+  return MEDAL_COLORS[index] ?? "grey";
+}
 
 function formatDateDisplay(date: string) {
   return new Date(date).toLocaleDateString();
@@ -117,7 +155,34 @@ function formatDateForInput(date: string) {
   return new Date(date).toISOString().split("T")[0];
 }
 
-// --- Edit inline (matita → spunta), interno al componente ---
+// --- Editing del nome ---
+const isEditingLabel = ref(false);
+const labelDraft = ref("");
+
+function startEditLabel() {
+  labelDraft.value = props.label;
+  isEditingLabel.value = true;
+}
+function cancelEditLabel() {
+  isEditingLabel.value = false;
+}
+function saveLabel() {
+  const trimmed = labelDraft.value.trim();
+  if (trimmed && trimmed !== props.label) {
+    emit("rename", trimmed);
+  }
+  isEditingLabel.value = false;
+}
+
+// --- Descrizione dietro icona occhio ---
+const expandedDescription = ref<number | null>(null);
+
+function toggleDescription(index: number) {
+  expandedDescription.value =
+    expandedDescription.value === index ? null : index;
+}
+
+// --- Edit inline entry (matita → spunta) ---
 const editingRank = ref<number | null>(null);
 const draft = reactive<RecordEntry>({ value: 0, date: "", description: "" });
 
@@ -151,22 +216,41 @@ function saveEdit(rank: number) {
 }
 .metric-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: 6px;
   margin-bottom: 12px;
-}
-.header-actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
 }
 .metric-label {
   font-weight: 600;
   font-size: 14px;
 }
+.label-edit-btn {
+  opacity: 0.5;
+}
+.label-edit-btn:hover {
+  opacity: 1;
+}
+.label-input {
+  flex: 1;
+  min-width: 0;
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 13px;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
 .metric-unit {
   color: var(--text-muted);
   font-size: 12px;
+  white-space: nowrap;
 }
 
 .entry-row {
@@ -176,22 +260,38 @@ function saveEdit(rank: number) {
   align-items: center;
   margin-bottom: 8px;
 }
-.rank-badge {
-  font-family: var(--mono);
-  font-size: 11px;
-  color: var(--accent);
-  font-weight: 700;
-}
 
 .value-display,
-.date-display,
-.description-display {
+.date-display {
   font-size: 13px;
   color: var(--text);
 }
-.description-display {
+
+.description-toggle {
+  color: var(--text-muted);
+}
+.description-toggle:hover {
+  color: var(--accent);
+}
+.description-empty {
   color: var(--text-muted);
   font-size: 12px;
+  text-align: center;
+}
+
+.description-expanded {
+  grid-column: 1 / -1;
+  background: var(--surface-alt);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  max-width: 100%;
+  word-wrap: break-word;
+  white-space: normal;
+  margin-top: -4px;
+  margin-bottom: 4px;
 }
 
 .value-input,
@@ -254,18 +354,14 @@ function saveEdit(rank: number) {
   border-color: var(--accent);
   color: var(--accent);
 }
-@media (max-width: 480px) {
-  .custom-records-grid,
-  .metrics-grid {
-    grid-template-columns: 1fr;
-  }
 
+/* ============ MOBILE ============ */
+@media (max-width: 480px) {
   .entry-row {
-    grid-template-columns: 24px 1fr auto;
+    grid-template-columns: 22px 1fr auto;
     grid-template-areas:
       "medal value actions"
-      "medal date actions"
-      "medal desc actions";
+      "medal date actions";
     row-gap: 4px;
   }
 
@@ -276,16 +372,30 @@ function saveEdit(rank: number) {
   .date-display,
   .date-input {
     grid-area: date;
-  }
-  .description-display,
-  .description-input {
-    grid-area: desc;
+    display: flex;
+    align-items: center;
+    gap: 6px;
   }
   .rank-medal {
     grid-area: medal;
   }
   .row-actions {
     grid-area: actions;
+  }
+  .description-input {
+    grid-column: 2 / span 1;
+  }
+
+  /* L'icona occhio si sposta accanto alla data su mobile, per risparmiare spazio */
+  .description-toggle,
+  .description-empty {
+    grid-area: date;
+    margin-left: auto;
+  }
+
+  .description-expanded {
+    font-size: 11px;
+    padding: 8px 10px;
   }
 }
 </style>

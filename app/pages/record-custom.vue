@@ -21,10 +21,12 @@
         :unit="record.unit"
         :entries="record.entries"
         :deletable="true"
+        :editable-label="true"
         @save-entry="(rank, entry) => saveEntry(record.id, rank, entry)"
         @add-entry="() => openAddEntryForm(record.id, record.unit)"
         @delete-entry="(rank) => confirmDeleteEntry(record.id, rank)"
         @delete-record="() => confirmDeleteRecord(record.id)"
+        @rename="(newLabel) => renameRecord(record.id, newLabel)"
       />
     </div>
 
@@ -164,7 +166,19 @@ interface CustomRecordItem {
 
 const customRecords = ref<CustomRecordItem[]>([]);
 const errorMessage = ref("");
-
+async function renameRecord(recordId: number, newLabel: string) {
+  errorMessage.value = "";
+  try {
+    await $fetch(`/api/custom-records/${recordId}/rename`, {
+      method: "PATCH",
+      body: { label: newLabel },
+    });
+    await fetchCustomRecords();
+  } catch (err: any) {
+    errorMessage.value =
+      err?.data?.message || "Something went wrong while renaming";
+  }
+}
 async function fetchCustomRecords() {
   customRecords.value = await $fetch("/api/custom-records");
 }
