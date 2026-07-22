@@ -48,9 +48,15 @@ export default defineEventHandler(async (event) => {
 
   const combined = [...entriesExcludingEdited, { value, date, description }];
 
-  combined.sort((a, b) =>
-    record.lowerIsBetter ? a.value - b.value : b.value - a.value,
-  );
+  combined.sort((a, b) => {
+    const primaryDiff = record.lowerIsBetter
+      ? a.value - b.value
+      : b.value - a.value;
+    if (primaryDiff !== 0) return primaryDiff;
+
+    // Parità: vince la performance più recente
+    return new Date(b.date).getTime() - new Date(a.date).getTime();
+  });
   const newTop3 = combined.slice(0, 3);
 
   const updated = await prisma.customRecord.update({

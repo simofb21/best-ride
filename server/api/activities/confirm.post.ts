@@ -64,9 +64,13 @@ export default defineEventHandler(async (event) => {
     ];
 
     const metricConfig = RECORD_METRICS.find((m) => m.key === check.metricKey)!;
-    combined.sort((a, b) =>
-      metricConfig.lowerIsBetter ? a.value - b.value : b.value - a.value,
-    );
+    combined.sort((a, b) => {
+      const primaryDiff = metricConfig.lowerIsBetter
+        ? a.value - b.value
+        : b.value - a.value;
+      if (primaryDiff !== 0) return primaryDiff;
+      return new Date(b.entryDate).getTime() - new Date(a.entryDate).getTime();
+    });
     const newTop3 = combined.slice(0, 3);
 
     for (let i = 0; i < newTop3.length; i++) {

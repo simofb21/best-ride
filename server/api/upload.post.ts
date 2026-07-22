@@ -92,13 +92,19 @@ export default defineEventHandler(async (event) => {
     // indipendentemente da quante entry ci sono già — questo evita il bug
     // per cui un valore veniva piazzato "in fondo" senza un vero confronto.
     const combined = [
-      ...existing.map((e: any) => ({ value: Number(e.value), isNew: false })),
-      { value: newValue, isNew: true },
+      ...existing.map((e: any) => ({
+        value: Number(e.value),
+        entryDate: e.entryDate,
+        isNew: false,
+      })),
+      { value: newValue, entryDate: activity.activityDate, isNew: true },
     ];
 
-    combined.sort((a, b) =>
-      lowerIsBetter ? a.value - b.value : b.value - a.value,
-    );
+    combined.sort((a, b) => {
+      const primaryDiff = lowerIsBetter ? a.value - b.value : b.value - a.value;
+      if (primaryDiff !== 0) return primaryDiff;
+      return new Date(b.entryDate).getTime() - new Date(a.entryDate).getTime();
+    });
 
     const top3 = combined.slice(0, 3);
     const positionIndex = top3.findIndex((e) => e.isNew);
