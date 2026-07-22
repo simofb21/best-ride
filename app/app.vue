@@ -8,3 +8,8 @@
     <Footer />
   </v-app>
 </template>
+<style>
+.app-root {
+  background: var(--bg) !important;
+}
+</style>

@@ -2,7 +2,7 @@
   --bg: #ffffff;
   --surface: #f3f9f5;
   --border: #d7e6dd;
-  --text: #0d1912;
+  --text: #004e22;
   --text-muted: #5c6d63;
   --accent: #0e9f6e;
   --accent-strong: #0b7a54;
@@ -12,16 +12,26 @@ html.dark {
   --bg: #000000;
   --surface: #0d130f;
   --border: #22302a;
-  --text: #f2f7f4;
+  --text: #bcffd6;
   --text-muted: #8fa196;
   --accent: #22c55e;
   --accent-strong: #4ade80;
 }
-
-body {
+html,
+body,
+#__nuxt {
   background: var(--bg);
   color: var(--text);
   transition:
     background-color 0.2s,
     color 0.2s;
+  min-height: 100vh;
+}
+body {
+  margin: 0;
+}
+.v-application__wrap {
+  background: var(--bg) !important;
+  color: var(--text) !important;
+  min-height: 100vh;
 }

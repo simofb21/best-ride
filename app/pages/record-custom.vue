@@ -460,4 +460,12 @@ async function performDeleteRecord() {
     grid-area: actions;
   }
 }
+.custom-records-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+}
 </style>
