@@ -2,6 +2,8 @@ import { prisma } from "../utils/db";
 import {
   normalizeToScore,
   getTierLabel,
+  getThresholds,
+  getAgeBracket,
 } from "../../shared/utils/powerProfile";
 
 export default defineEventHandler(async (event) => {
@@ -10,7 +12,7 @@ export default defineEventHandler(async (event) => {
 
   const user = await prisma.user.findUnique({
     where: { id: userId },
-    select: { weightKg: true, ftp: true, sex: true },
+    select: { weightKg: true, ftp: true, sex: true, dateOfBirth: true },
   });
 
   if (!user?.weightKg) {
@@ -22,6 +24,7 @@ export default defineEventHandler(async (event) => {
   }
 
   const weightKg = Number(user.weightKg);
+  const ageBracket = getAgeBracket(user.dateOfBirth);
 
   const [best5s, best30s, best1min, best2min, best5min, best12min, best20min] =
     await Promise.all([
@@ -46,12 +49,11 @@ export default defineEventHandler(async (event) => {
   };
 
   const profile = POWER_PROFILE_DURATIONS.map((duration) => {
+    const thresholds = getThresholds(duration, user.sex, ageBracket);
     const rawWatts = rawValues[duration.key];
     const wkg = rawWatts != null ? rawWatts / weightKg : 0;
-    const score =
-      rawWatts != null ? normalizeToScore(wkg, duration.thresholds) : 0;
-    const tier =
-      rawWatts != null ? getTierLabel(wkg, duration.thresholds) : null;
+    const score = rawWatts != null ? normalizeToScore(wkg, thresholds) : 0;
+    const tier = rawWatts != null ? getTierLabel(wkg, thresholds) : null;
 
     return {
       key: duration.key,
@@ -65,5 +67,5 @@ export default defineEventHandler(async (event) => {
     };
   });
 
-  return { weightKg, profile };
+  return { weightKg, ageBracket, profile };
 });

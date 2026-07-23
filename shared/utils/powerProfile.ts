@@ -1,3 +1,5 @@
+// shared/utils/powerProfile.ts
+
 // Scala di riferimento originale a 7 livelli, valori in W/kg per ciascuna durata.
 // Nomenclatura e soglie nostre, non riprese da tabelle pubblicate di terzi.
 export const PERFORMANCE_TIERS = [
@@ -10,13 +12,31 @@ export const PERFORMANCE_TIERS = [
   "World Tour",
 ] as const;
 
-// shared/utils/powerProfile.ts
 export interface DurationProfile {
   key: string;
   label: string;
   shortLabel: string;
   thresholdsMale: number[];
   thresholdsFemale: number[];
+}
+
+export type AgeBracket = "youth" | "adult" | "masters";
+
+export function getAgeBracket(dateOfBirth: string | Date | null): AgeBracket {
+  if (!dateOfBirth) return "adult"; // fallback se non impostata
+
+  const birth = new Date(dateOfBirth);
+  const today = new Date();
+  let age = today.getFullYear() - birth.getFullYear();
+  const hasHadBirthdayThisYear =
+    today.getMonth() > birth.getMonth() ||
+    (today.getMonth() === birth.getMonth() &&
+      today.getDate() >= birth.getDate());
+  if (!hasHadBirthdayThisYear) age--;
+
+  if (age < 16) return "youth";
+  if (age <= 45) return "adult";
+  return "masters";
 }
 
 export const POWER_PROFILE_DURATIONS: DurationProfile[] = [
@@ -78,12 +98,53 @@ export const POWER_PROFILE_DURATIONS: DurationProfile[] = [
   },
 ];
 
+// Moltiplicatori applicati alle soglie di riferimento (fascia "adult" = 1.0, il riferimento base).
+// Valori diversi per durata: le doti neuromuscolari/anaerobiche calano/crescono di più con l'età
+// rispetto alla resistenza aerobica pura (FTP), coerente con la fisiologia dello sviluppo/invecchiamento.
+const AGE_MULTIPLIERS: Record<AgeBracket, Record<string, number>> = {
+  youth: {
+    power_5s: 0.82,
+    power_30s: 0.84,
+    power_1min: 0.85,
+    power_2min: 0.87,
+    power_5min: 0.88,
+    power_12min: 0.9,
+    power_20min: 0.9,
+    ftp: 0.9,
+  },
+  adult: {
+    power_5s: 1.0,
+    power_30s: 1.0,
+    power_1min: 1.0,
+    power_2min: 1.0,
+    power_5min: 1.0,
+    power_12min: 1.0,
+    power_20min: 1.0,
+    ftp: 1.0,
+  },
+  masters: {
+    power_5s: 0.88,
+    power_30s: 0.89,
+    power_1min: 0.9,
+    power_2min: 0.91,
+    power_5min: 0.92,
+    power_12min: 0.94,
+    power_20min: 0.94,
+    ftp: 0.95,
+  },
+};
+
 export function getThresholds(
   duration: DurationProfile,
   sex: string | null,
+  ageBracket: AgeBracket = "adult",
 ): number[] {
-  return sex === "F" ? duration.thresholdsFemale : duration.thresholdsMale;
+  const base =
+    sex === "F" ? duration.thresholdsFemale : duration.thresholdsMale;
+  const multiplier = AGE_MULTIPLIERS[ageBracket][duration.key] ?? 1.0;
+  return base.map((t) => Number((t * multiplier).toFixed(2)));
 }
+
 /**
  * Normalizza un valore W/kg in uno score 0-100, interpolando linearmente
  * tra i 7 livelli di riferimento della durata specificata.
@@ -105,7 +166,7 @@ export function normalizeToScore(wkg: number, thresholds: number[]): number {
     }
   }
 
-  // Sopra l'ultimo livello (World Class+): cap a 100
+  // Sopra l'ultimo livello (World Tour+): cap a 100
   return 100;
 }
 

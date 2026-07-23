@@ -7,6 +7,8 @@ const updateProfileSchema = z.object({
   weightKg: z.coerce.number().min(20).max(300),
   ftp: z.coerce.number().int().min(0).max(1000),
   anaerobicThreshold: z.coerce.number().int().min(0).max(250),
+  sex: z.enum(["M", "F"]).optional().nullable(),
+  dateOfBirth: z.string().optional().nullable(), // formato "YYYY-MM-DD" da <input type="date">
 });
 
 export default defineEventHandler(async (event) => {
@@ -26,7 +28,12 @@ export default defineEventHandler(async (event) => {
 
   const updated = await prisma.user.update({
     where: { id: userId },
-    data: parsed.data,
+    data: {
+      ...parsed.data,
+      dateOfBirth: parsed.data.dateOfBirth
+        ? new Date(parsed.data.dateOfBirth)
+        : null,
+    },
     select: {
       firstName: true,
       lastName: true,
