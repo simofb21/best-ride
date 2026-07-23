@@ -123,6 +123,11 @@
     </div>
   </div>
   <PowerProfileRadar />
+  <FtpZones v-if="profile.ftp" :ftp="profile.ftp" />
+  <ThresholdZones
+    v-if="profile.anaerobicThreshold"
+    :threshold="profile.anaerobicThreshold"
+  />
 </template>
 
 <script setup lang="ts">
