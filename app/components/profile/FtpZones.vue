@@ -19,9 +19,7 @@
 
         <span class="zone-description">{{ zone.description }}</span>
 
-        <span
-          class="zone-range"
-        >
+        <span class="zone-range">
           {{ zone.minValue }}{{ zone.maxValue ? `–${zone.maxValue}` : "+"
           }}<small>W</small>
         </span>
@@ -104,10 +102,10 @@ const zones = computed(() => computeZones(props.ftp, FTP_ZONES));
   gap: 8px;
   padding: 5px 12px;
   border-radius: 20px;
-  /* Trasparenza adattiva basata sul colore dinamico della zona */
   background-color: color-mix(in srgb, var(--zone-color) 12%, transparent);
   border: 1px solid color-mix(in srgb, var(--zone-color) 25%, transparent);
-  flex-shrink: 0;
+  flex-shrink: 1; /* prima era 0 */
+  min-width: 0;
 }
 
 .zone-dot {
@@ -123,6 +121,9 @@ const zones = computed(() => computeZones(props.ftp, FTP_ZONES));
   font-weight: 700;
   color: var(--text, #111827);
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100px;
 }
 
 /* --- DESCRIZIONE E RANGE --- */
@@ -149,14 +150,43 @@ const zones = computed(() => computeZones(props.ftp, FTP_ZONES));
   font-weight: 500;
   margin-left: 2px;
 }
-
 @media (max-width: 520px) {
   .zones-card {
     padding: 20px 16px;
   }
 
+  .zone-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "badge range"
+      "description range";
+    gap: 4px 8px;
+    align-items: center;
+  }
+
+  .zone-badge {
+    grid-area: badge;
+    max-width: fit-content;
+  }
+
   .zone-description {
-    display: none;
+    display: block;
+    grid-area: description;
+    font-size: 11px;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: unset;
+    line-height: 1.3;
+  }
+
+  .zone-range {
+    grid-area: range;
+    align-self: center;
+  }
+
+  .zone-name {
+    max-width: 100px;
   }
 }
 </style>

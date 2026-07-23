@@ -5,28 +5,26 @@ export interface FtpTier {
 
 // Ordinate dalla più alta alla più bassa: la prima che soddisfa min viene usata
 export const FTP_TIERS: FtpTier[] = [
-  { minWkg: 7, message: () => "You're a pro-level engine. Absolutely elite." },
-  { minWkg: 6, message: () => "You have a genuinely huge engine." },
-  { minWkg: 5, message: () => "Cat 1/2 territory — you're seriously strong." },
+  { minWkg: 7, message: () => "Are you Pogi?" },
+  { minWkg: 6, message: () => "Are you a Pro or something like that?" },
+  { minWkg: 5, message: () => "You are very strong!" },
   {
     minWkg: 4,
-    message: (wkg) =>
-      `Solid amateur racer level. ${(5 - wkg).toFixed(1)} w/kg to reach Cat 1/2.`,
+    message: (wkg) => `Good level. You can still improve!`,
   },
   {
     minWkg: 3,
     message: (wkg) =>
-      `You're missing ${(4 - wkg).toFixed(1)} w/kg to reach a strong amateur level.`,
+      `You are a good rider. Still ${(7 - wkg).toFixed(1)} w/kg to reach Pogacar Level. `,
   },
   {
     minWkg: 2,
-    message: (wkg) =>
-      `Solid fitness base. ${(3 - wkg).toFixed(1)} w/kg to the next tier.`,
+    message: (wkg) => `Solid fitness base. `,
   },
   {
     minWkg: 0,
     message: (wkg) =>
-      `Just getting started — ${(2 - wkg).toFixed(1)} w/kg to a solid fitness base.`,
+      `You have just started your cycling journey. Keep training and you will improve!`,
   },
 ];
 

@@ -148,8 +148,48 @@ const zones = computed(() => computeZones(props.threshold, HR_ZONES));
 }
 
 @media (max-width: 480px) {
+  .zones-card {
+    padding: 20px 16px;
+  }
+
+  .zone-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "badge range"
+      "description range";
+    gap: 4px 8px;
+    align-items: center;
+  }
+
+  .zone-badge {
+    grid-area: badge;
+    max-width: fit-content;
+    flex-shrink: 1;
+    min-width: 0;
+  }
+
+  .zone-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100px;
+  }
+
   .zone-description {
-    display: none;
+    display: block;
+    grid-area: description;
+    font-size: 11px;
+    line-height: 1.3;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: unset;
+  }
+
+  .zone-range {
+    grid-area: range;
+    font-size: 12px;
+    align-self: center;
   }
 }
 </style>
