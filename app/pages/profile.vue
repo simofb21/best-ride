@@ -169,9 +169,10 @@ async function handleProfileSave(draftData: Partial<ProfileData>) {
 }
 
 .page-title {
-  font-size: 28px;
-  font-weight: 800;
-  margin-bottom: 24px;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
 }
 
 .state-message {

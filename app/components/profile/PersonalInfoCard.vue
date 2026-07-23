@@ -2,40 +2,72 @@
   <div class="card full-width">
     <div class="card-header">
       <h2>Personal info</h2>
-      <button v-if="!isEditing" class="icon-btn" @click="startEdit">
-        <v-icon icon="mdi-pencil-outline" size="18" />
-      </button>
-      <button v-else class="icon-btn save-icon" @click="saveProfile">
-        <v-icon icon="mdi-check" size="20" />
-      </button>
+      <v-btn
+        v-if="!isEditing"
+        icon="mdi-pencil-outline"
+        size="small"
+        variant="text"
+        color="grey-darken-1"
+        @click="startEdit"
+      />
+      <v-btn
+        v-else
+        icon="mdi-check"
+        size="small"
+        variant="text"
+        color="primary"
+        @click="saveProfile"
+      />
     </div>
 
+    <!-- First Name -->
     <div class="info-row">
       <span>First name</span>
       <strong v-if="!isEditing">{{ profile.firstName }}</strong>
-      <input v-else v-model="draft.firstName" type="text" class="edit-input" />
+      <v-text-field
+        v-else
+        v-model="draft.firstName"
+        density="compact"
+        variant="outlined"
+        hide-details
+        class="edit-field"
+      />
     </div>
 
+    <!-- Last Name -->
     <div class="info-row">
       <span>Last name</span>
       <strong v-if="!isEditing">{{ profile.lastName }}</strong>
-      <input v-else v-model="draft.lastName" type="text" class="edit-input" />
+      <v-text-field
+        v-else
+        v-model="draft.lastName"
+        density="compact"
+        variant="outlined"
+        hide-details
+        class="edit-field"
+      />
     </div>
 
+    <!-- Weight -->
     <div class="info-row">
       <span>Weight</span>
       <strong v-if="!isEditing">
         {{ profile.weightKg }} <small>kg</small>
       </strong>
-      <input
+      <v-text-field
         v-else
         v-model.number="draft.weightKg"
         type="number"
         step="0.1"
-        class="edit-input"
+        suffix="kg"
+        density="compact"
+        variant="outlined"
+        hide-details
+        class="edit-field"
       />
     </div>
 
+    <!-- Sex -->
     <div class="info-row">
       <span>Sex</span>
       <strong v-if="!isEditing">
@@ -43,13 +75,20 @@
           profile.sex === "M" ? "Male" : profile.sex === "F" ? "Female" : "—"
         }}
       </strong>
-      <select v-else v-model="draft.sex" class="edit-input">
-        <option :value="null">Prefer not to say</option>
-        <option value="M">Male</option>
-        <option value="F">Female</option>
-      </select>
+      <v-select
+        v-else
+        v-model="draft.sex"
+        :items="sexOptions"
+        item-title="title"
+        item-value="value"
+        density="compact"
+        variant="outlined"
+        hide-details
+        class="edit-field"
+      />
     </div>
 
+    <!-- Date of Birth -->
     <div class="info-row">
       <span>Date of Birth</span>
       <strong v-if="!isEditing">
@@ -59,38 +98,63 @@
             : "—"
         }}
       </strong>
-      <input
-        v-else
-        v-model="draft.dateOfBirth"
-        type="date"
-        class="edit-input"
-      />
+      <v-menu v-else :close-on-content-click="false">
+        <template #activator="{ props: menuProps }">
+          <v-text-field
+            v-bind="menuProps"
+            :model-value="formattedDateOfBirth"
+            prepend-inner-icon="mdi-calendar"
+            readonly
+            density="compact"
+            variant="outlined"
+            hide-details
+            class="edit-field"
+          />
+        </template>
+
+        <v-date-picker
+          v-model="draft.dateOfBirth"
+          hide-header
+          color="primary"
+        />
+      </v-menu>
     </div>
 
+    <!-- FTP -->
     <div class="info-row">
       <span>FTP</span>
       <strong v-if="!isEditing">{{ profile.ftp }} <small>W</small></strong>
-      <input
+      <v-text-field
         v-else
         v-model.number="draft.ftp"
         type="number"
-        class="edit-input"
+        suffix="W"
+        density="compact"
+        variant="outlined"
+        hide-details
+        class="edit-field"
       />
     </div>
 
+    <!-- Anaerobic Threshold -->
     <div class="info-row">
       <span>Anaerobic Threshold</span>
       <strong v-if="!isEditing">
         {{ profile.anaerobicThreshold }} <small>bpm</small>
       </strong>
-      <input
+      <v-text-field
         v-else
         v-model.number="draft.anaerobicThreshold"
         type="number"
-        class="edit-input"
+        suffix="bpm"
+        density="compact"
+        variant="outlined"
+        hide-details
+        class="edit-field"
       />
     </div>
 
+    <!-- Readonly Stats -->
     <div class="info-row">
       <span>Distance this year</span>
       <strong>{{ profile.yearlyDistanceKm }} <small>km</small></strong>
@@ -104,7 +168,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from "vue";
+import { ref, reactive, computed } from "vue";
 
 export interface ProfileData {
   firstName: string;
@@ -127,6 +191,14 @@ const emit = defineEmits<{
 }>();
 
 const isEditing = ref(false);
+
+// Opzioni per la selezione del sesso
+const sexOptions = [
+  { title: "Prefer not to say", value: null },
+  { title: "Male", value: "M" },
+  { title: "Female", value: "F" },
+];
+
 const draft = reactive({
   firstName: "",
   lastName: "",
@@ -134,7 +206,7 @@ const draft = reactive({
   ftp: 0,
   anaerobicThreshold: 0,
   sex: null as string | null,
-  dateOfBirth: null as string | null,
+  dateOfBirth: null as Date | null, // v-date-picker richiede un oggetto Date
 });
 
 function startEdit() {
@@ -144,12 +216,38 @@ function startEdit() {
   draft.ftp = props.profile.ftp ?? 0;
   draft.anaerobicThreshold = props.profile.anaerobicThreshold ?? 0;
   draft.sex = props.profile.sex;
-  draft.dateOfBirth = props.profile.dateOfBirth;
+
+  // Convertiamo la stringa proveniente dalle props in oggetto Date
+  draft.dateOfBirth = props.profile.dateOfBirth
+    ? new Date(props.profile.dateOfBirth)
+    : null;
+
   isEditing.value = true;
 }
 
+// Computed per mostrare la data formattata nel v-text-field
+const formattedDateOfBirth = computed(() => {
+  if (!draft.dateOfBirth) return "";
+  const d = new Date(draft.dateOfBirth);
+  if (isNaN(d.getTime())) return "";
+
+  return d.toLocaleDateString("it-IT", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
+});
+
 function saveProfile() {
-  emit("update", { ...draft });
+  // Riconvertiamo l'oggetto Date in formato stringa YYYY-MM-DD prima di inviare
+  const payload = {
+    ...draft,
+    dateOfBirth: draft.dateOfBirth
+      ? new Date(draft.dateOfBirth).toISOString().split("T")[0]
+      : null,
+  };
+
+  emit("update", payload);
   isEditing.value = false;
 }
 </script>
@@ -176,36 +274,12 @@ function saveProfile() {
   font-weight: 700;
 }
 
-.icon-btn {
-  border: none;
-  background: transparent;
-  color: var(--text-muted);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 6px;
-  border-radius: 6px;
-}
-
-.icon-btn:hover {
-  background: var(--border);
-  color: var(--text);
-}
-
-.save-icon {
-  color: var(--accent);
-}
-
-.save-icon:hover {
-  color: var(--accent-strong);
-}
-
 .info-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 0;
+  min-height: 48px;
+  padding: 6px 0;
   border-bottom: 1px solid var(--border);
   font-size: 14px;
   color: var(--text-muted);
@@ -225,14 +299,9 @@ function saveProfile() {
   font-weight: 500;
 }
 
-.edit-input {
-  border: 1px solid var(--accent);
-  border-radius: 6px;
-  padding: 5px 8px;
-  font-size: 13px;
-  background: var(--bg);
-  color: var(--text);
-  width: 140px;
-  text-align: right;
+/* Dimensione contenuta per gli input di Vuetify nelle righe */
+.edit-field {
+  max-width: 180px;
+  background-color: white;
 }
 </style>

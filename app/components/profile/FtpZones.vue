@@ -21,7 +21,6 @@
 
         <span
           class="zone-range"
-          :style="{ 'background-color': 'var(--zone-color)' }"
         >
           {{ zone.minValue }}{{ zone.maxValue ? `–${zone.maxValue}` : "+"
           }}<small>W</small>
