@@ -115,7 +115,8 @@
 
       <div class="card ftp-card" v-if="wkg">
         <div class="wkg-hero">
-          <span class="wkg-value">{{ wkg.toFixed(2) }}</span>
+          <span class="wkg-unit">Your FTP is </span>
+          <span class="wkg-value"> {{ wkg.toFixed(2) }}</span>
           <span class="wkg-unit">W/kg</span>
         </div>
         <p class="ftp-message">{{ ftpMessage }}</p>
