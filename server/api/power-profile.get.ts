@@ -3,13 +3,14 @@ import {
   normalizeToScore,
   getTierLabel,
 } from "../../shared/utils/powerProfile";
+
 export default defineEventHandler(async (event) => {
   const session = await requireUserSession(event);
   const userId = session.user.id;
 
   const user = await prisma.user.findUnique({
     where: { id: userId },
-    select: { weightKg: true, ftp: true },
+    select: { weightKg: true, ftp: true, sex: true },
   });
 
   if (!user?.weightKg) {

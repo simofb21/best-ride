@@ -53,7 +53,31 @@
             class="edit-input"
           />
         </div>
-
+        <div class="info-row">
+          <span>Sex</span>
+          <strong v-if="!isEditing">{{
+            profile.sex === "M" ? "Male" : profile.sex === "F" ? "Female" : "—"
+          }}</strong>
+          <select v-else v-model="draft.sex" class="edit-input">
+            <option :value="null">Prefer not to say</option>
+            <option value="M">Male</option>
+            <option value="F">Female</option>
+          </select>
+        </div>
+        <div class="info-row">
+          <span>Date of Birth</span>
+          <strong v-if="!isEditing">{{
+            profile.dateOfBirth
+              ? new Date(profile.dateOfBirth).toLocaleDateString()
+              : "—"
+          }}</strong>
+          <input
+            v-else
+            v-model="draft.dateOfBirth"
+            type="date"
+            class="edit-input"
+          />
+        </div>
         <div class="info-row">
           <span>FTP</span>
           <strong v-if="!isEditing">{{ profile.ftp }} <small>W</small></strong>
@@ -112,6 +136,8 @@ interface ProfileData {
   anaerobicThreshold: number | null;
   yearlyDistanceKm: number | null;
   yearlyHours: number | null;
+  sex: string | null;
+  dateOfBirth: string | null;
 }
 
 const profile = ref<ProfileData | null>(null);
@@ -144,6 +170,8 @@ const draft = reactive({
   weightKg: 0,
   ftp: 0,
   anaerobicThreshold: 0,
+  sex: null as string | null,
+  dateOfBirth: null as string | null,
 });
 
 function startEdit() {
@@ -153,6 +181,8 @@ function startEdit() {
   draft.weightKg = profile.value.weightKg ?? 0;
   draft.ftp = profile.value.ftp ?? 0;
   draft.anaerobicThreshold = profile.value.anaerobicThreshold ?? 0;
+  draft.sex = profile.value.sex;
+  draft.dateOfBirth = profile.value.dateOfBirth;
   isEditing.value = true;
 }
 

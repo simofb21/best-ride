@@ -57,6 +57,8 @@ export type UserMinAggregateOutputType = {
   yearlyHours: runtime.Decimal | null
   createdAt: Date | null
   updatedAt: Date | null
+  sex: string | null
+  dateOfBirth: Date | null
 }
 
 export type UserMaxAggregateOutputType = {
@@ -72,6 +74,8 @@ export type UserMaxAggregateOutputType = {
   yearlyHours: runtime.Decimal | null
   createdAt: Date | null
   updatedAt: Date | null
+  sex: string | null
+  dateOfBirth: Date | null
 }
 
 export type UserCountAggregateOutputType = {
@@ -87,6 +91,8 @@ export type UserCountAggregateOutputType = {
   yearlyHours: number
   createdAt: number
   updatedAt: number
+  sex: number
+  dateOfBirth: number
   _all: number
 }
 
@@ -122,6 +128,8 @@ export type UserMinAggregateInputType = {
   yearlyHours?: true
   createdAt?: true
   updatedAt?: true
+  sex?: true
+  dateOfBirth?: true
 }
 
 export type UserMaxAggregateInputType = {
@@ -137,6 +145,8 @@ export type UserMaxAggregateInputType = {
   yearlyHours?: true
   createdAt?: true
   updatedAt?: true
+  sex?: true
+  dateOfBirth?: true
 }
 
 export type UserCountAggregateInputType = {
@@ -152,6 +162,8 @@ export type UserCountAggregateInputType = {
   yearlyHours?: true
   createdAt?: true
   updatedAt?: true
+  sex?: true
+  dateOfBirth?: true
   _all?: true
 }
 
@@ -254,6 +266,8 @@ export type UserGroupByOutputType = {
   yearlyHours: runtime.Decimal | null
   createdAt: Date
   updatedAt: Date
+  sex: string | null
+  dateOfBirth: Date | null
   _count: UserCountAggregateOutputType | null
   _avg: UserAvgAggregateOutputType | null
   _sum: UserSumAggregateOutputType | null
@@ -292,6 +306,8 @@ export type UserWhereInput = {
   yearlyHours?: Prisma.DecimalNullableFilter<"User"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  sex?: Prisma.StringNullableFilter<"User"> | string | null
+  dateOfBirth?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   lastActivity?: Prisma.XOR<Prisma.LastActivityNullableScalarRelationFilter, Prisma.LastActivityWhereInput> | null
   customRecords?: Prisma.CustomRecordListRelationFilter
   recordPeakPower?: Prisma.RecordPeakPowerListRelationFilter
@@ -336,6 +352,8 @@ export type UserOrderByWithRelationInput = {
   yearlyHours?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  sex?: Prisma.SortOrderInput | Prisma.SortOrder
+  dateOfBirth?: Prisma.SortOrderInput | Prisma.SortOrder
   lastActivity?: Prisma.LastActivityOrderByWithRelationInput
   customRecords?: Prisma.CustomRecordOrderByRelationAggregateInput
   recordPeakPower?: Prisma.RecordPeakPowerOrderByRelationAggregateInput
@@ -384,6 +402,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   yearlyHours?: Prisma.DecimalNullableFilter<"User"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  sex?: Prisma.StringNullableFilter<"User"> | string | null
+  dateOfBirth?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   lastActivity?: Prisma.XOR<Prisma.LastActivityNullableScalarRelationFilter, Prisma.LastActivityWhereInput> | null
   customRecords?: Prisma.CustomRecordListRelationFilter
   recordPeakPower?: Prisma.RecordPeakPowerListRelationFilter
@@ -428,6 +448,8 @@ export type UserOrderByWithAggregationInput = {
   yearlyHours?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  sex?: Prisma.SortOrderInput | Prisma.SortOrder
+  dateOfBirth?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
   _avg?: Prisma.UserAvgOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
@@ -451,6 +473,8 @@ export type UserScalarWhereWithAggregatesInput = {
   yearlyHours?: Prisma.DecimalNullableWithAggregatesFilter<"User"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
+  sex?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  dateOfBirth?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
 }
 
 export type UserCreateInput = {
@@ -465,6 +489,8 @@ export type UserCreateInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerCreateNestedManyWithoutUserInput
@@ -509,6 +535,8 @@ export type UserUncheckedCreateInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordUncheckedCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedCreateNestedManyWithoutUserInput
@@ -552,6 +580,8 @@ export type UserUpdateInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUpdateManyWithoutUserNestedInput
@@ -596,6 +626,8 @@ export type UserUncheckedUpdateInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUncheckedUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedUpdateManyWithoutUserNestedInput
@@ -640,6 +672,8 @@ export type UserCreateManyInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
 }
 
 export type UserUpdateManyMutationInput = {
@@ -654,6 +688,8 @@ export type UserUpdateManyMutationInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type UserUncheckedUpdateManyInput = {
@@ -669,6 +705,8 @@ export type UserUncheckedUpdateManyInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type UserOrderByRelevanceInput = {
@@ -690,6 +728,8 @@ export type UserCountOrderByAggregateInput = {
   yearlyHours?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  sex?: Prisma.SortOrder
+  dateOfBirth?: Prisma.SortOrder
 }
 
 export type UserAvgOrderByAggregateInput = {
@@ -714,6 +754,8 @@ export type UserMaxOrderByAggregateInput = {
   yearlyHours?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  sex?: Prisma.SortOrder
+  dateOfBirth?: Prisma.SortOrder
 }
 
 export type UserMinOrderByAggregateInput = {
@@ -729,6 +771,8 @@ export type UserMinOrderByAggregateInput = {
   yearlyHours?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  sex?: Prisma.SortOrder
+  dateOfBirth?: Prisma.SortOrder
 }
 
 export type UserSumOrderByAggregateInput = {
@@ -767,6 +811,14 @@ export type NullableIntFieldUpdateOperationsInput = {
 
 export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
+}
+
+export type NullableStringFieldUpdateOperationsInput = {
+  set?: string | null
+}
+
+export type NullableDateTimeFieldUpdateOperationsInput = {
+  set?: Date | string | null
 }
 
 export type IntFieldUpdateOperationsInput = {
@@ -1195,6 +1247,8 @@ export type UserCreateWithoutLastActivityInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
   customRecords?: Prisma.CustomRecordCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerCreateNestedManyWithoutUserInput
   record3s?: Prisma.Record3sCreateNestedManyWithoutUserInput
@@ -1238,6 +1292,8 @@ export type UserUncheckedCreateWithoutLastActivityInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
   customRecords?: Prisma.CustomRecordUncheckedCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedCreateNestedManyWithoutUserInput
   record3s?: Prisma.Record3sUncheckedCreateNestedManyWithoutUserInput
@@ -1296,6 +1352,8 @@ export type UserUpdateWithoutLastActivityInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   customRecords?: Prisma.CustomRecordUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUpdateManyWithoutUserNestedInput
   record3s?: Prisma.Record3sUpdateManyWithoutUserNestedInput
@@ -1339,6 +1397,8 @@ export type UserUncheckedUpdateWithoutLastActivityInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   customRecords?: Prisma.CustomRecordUncheckedUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedUpdateManyWithoutUserNestedInput
   record3s?: Prisma.Record3sUncheckedUpdateManyWithoutUserNestedInput
@@ -1381,6 +1441,8 @@ export type UserCreateWithoutCustomRecordsInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerCreateNestedManyWithoutUserInput
   record3s?: Prisma.Record3sCreateNestedManyWithoutUserInput
@@ -1424,6 +1486,8 @@ export type UserUncheckedCreateWithoutCustomRecordsInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedCreateNestedManyWithoutUserInput
   record3s?: Prisma.Record3sUncheckedCreateNestedManyWithoutUserInput
@@ -1482,6 +1546,8 @@ export type UserUpdateWithoutCustomRecordsInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUpdateManyWithoutUserNestedInput
   record3s?: Prisma.Record3sUpdateManyWithoutUserNestedInput
@@ -1525,6 +1591,8 @@ export type UserUncheckedUpdateWithoutCustomRecordsInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedUpdateManyWithoutUserNestedInput
   record3s?: Prisma.Record3sUncheckedUpdateManyWithoutUserNestedInput
@@ -1567,6 +1635,8 @@ export type UserCreateWithoutRecordPeakPowerInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordCreateNestedManyWithoutUserInput
   record3s?: Prisma.Record3sCreateNestedManyWithoutUserInput
@@ -1610,6 +1680,8 @@ export type UserUncheckedCreateWithoutRecordPeakPowerInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordUncheckedCreateNestedManyWithoutUserInput
   record3s?: Prisma.Record3sUncheckedCreateNestedManyWithoutUserInput
@@ -1668,6 +1740,8 @@ export type UserUpdateWithoutRecordPeakPowerInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUpdateManyWithoutUserNestedInput
   record3s?: Prisma.Record3sUpdateManyWithoutUserNestedInput
@@ -1711,6 +1785,8 @@ export type UserUncheckedUpdateWithoutRecordPeakPowerInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUncheckedUpdateManyWithoutUserNestedInput
   record3s?: Prisma.Record3sUncheckedUpdateManyWithoutUserNestedInput
@@ -1753,6 +1829,8 @@ export type UserCreateWithoutRecord3sInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerCreateNestedManyWithoutUserInput
@@ -1796,6 +1874,8 @@ export type UserUncheckedCreateWithoutRecord3sInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordUncheckedCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedCreateNestedManyWithoutUserInput
@@ -1854,6 +1934,8 @@ export type UserUpdateWithoutRecord3sInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUpdateManyWithoutUserNestedInput
@@ -1897,6 +1979,8 @@ export type UserUncheckedUpdateWithoutRecord3sInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUncheckedUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedUpdateManyWithoutUserNestedInput
@@ -1939,6 +2023,8 @@ export type UserCreateWithoutRecord5sInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerCreateNestedManyWithoutUserInput
@@ -1982,6 +2068,8 @@ export type UserUncheckedCreateWithoutRecord5sInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordUncheckedCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedCreateNestedManyWithoutUserInput
@@ -2040,6 +2128,8 @@ export type UserUpdateWithoutRecord5sInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUpdateManyWithoutUserNestedInput
@@ -2083,6 +2173,8 @@ export type UserUncheckedUpdateWithoutRecord5sInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUncheckedUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedUpdateManyWithoutUserNestedInput
@@ -2125,6 +2217,8 @@ export type UserCreateWithoutRecord10sInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerCreateNestedManyWithoutUserInput
@@ -2168,6 +2262,8 @@ export type UserUncheckedCreateWithoutRecord10sInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordUncheckedCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedCreateNestedManyWithoutUserInput
@@ -2226,6 +2322,8 @@ export type UserUpdateWithoutRecord10sInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUpdateManyWithoutUserNestedInput
@@ -2269,6 +2367,8 @@ export type UserUncheckedUpdateWithoutRecord10sInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUncheckedUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedUpdateManyWithoutUserNestedInput
@@ -2311,6 +2411,8 @@ export type UserCreateWithoutRecord20sInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerCreateNestedManyWithoutUserInput
@@ -2354,6 +2456,8 @@ export type UserUncheckedCreateWithoutRecord20sInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordUncheckedCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedCreateNestedManyWithoutUserInput
@@ -2412,6 +2516,8 @@ export type UserUpdateWithoutRecord20sInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUpdateManyWithoutUserNestedInput
@@ -2455,6 +2561,8 @@ export type UserUncheckedUpdateWithoutRecord20sInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUncheckedUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedUpdateManyWithoutUserNestedInput
@@ -2497,6 +2605,8 @@ export type UserCreateWithoutRecord30sInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerCreateNestedManyWithoutUserInput
@@ -2540,6 +2650,8 @@ export type UserUncheckedCreateWithoutRecord30sInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordUncheckedCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedCreateNestedManyWithoutUserInput
@@ -2598,6 +2710,8 @@ export type UserUpdateWithoutRecord30sInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUpdateManyWithoutUserNestedInput
@@ -2641,6 +2755,8 @@ export type UserUncheckedUpdateWithoutRecord30sInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUncheckedUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedUpdateManyWithoutUserNestedInput
@@ -2683,6 +2799,8 @@ export type UserCreateWithoutRecord1minInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerCreateNestedManyWithoutUserInput
@@ -2726,6 +2844,8 @@ export type UserUncheckedCreateWithoutRecord1minInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordUncheckedCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedCreateNestedManyWithoutUserInput
@@ -2784,6 +2904,8 @@ export type UserUpdateWithoutRecord1minInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUpdateManyWithoutUserNestedInput
@@ -2827,6 +2949,8 @@ export type UserUncheckedUpdateWithoutRecord1minInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUncheckedUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedUpdateManyWithoutUserNestedInput
@@ -2869,6 +2993,8 @@ export type UserCreateWithoutRecord2minInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerCreateNestedManyWithoutUserInput
@@ -2912,6 +3038,8 @@ export type UserUncheckedCreateWithoutRecord2minInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordUncheckedCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedCreateNestedManyWithoutUserInput
@@ -2970,6 +3098,8 @@ export type UserUpdateWithoutRecord2minInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUpdateManyWithoutUserNestedInput
@@ -3013,6 +3143,8 @@ export type UserUncheckedUpdateWithoutRecord2minInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUncheckedUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedUpdateManyWithoutUserNestedInput
@@ -3055,6 +3187,8 @@ export type UserCreateWithoutRecord3minInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerCreateNestedManyWithoutUserInput
@@ -3098,6 +3232,8 @@ export type UserUncheckedCreateWithoutRecord3minInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordUncheckedCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedCreateNestedManyWithoutUserInput
@@ -3156,6 +3292,8 @@ export type UserUpdateWithoutRecord3minInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUpdateManyWithoutUserNestedInput
@@ -3199,6 +3337,8 @@ export type UserUncheckedUpdateWithoutRecord3minInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUncheckedUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedUpdateManyWithoutUserNestedInput
@@ -3241,6 +3381,8 @@ export type UserCreateWithoutRecord5minInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerCreateNestedManyWithoutUserInput
@@ -3284,6 +3426,8 @@ export type UserUncheckedCreateWithoutRecord5minInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordUncheckedCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedCreateNestedManyWithoutUserInput
@@ -3342,6 +3486,8 @@ export type UserUpdateWithoutRecord5minInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUpdateManyWithoutUserNestedInput
@@ -3385,6 +3531,8 @@ export type UserUncheckedUpdateWithoutRecord5minInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUncheckedUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedUpdateManyWithoutUserNestedInput
@@ -3427,6 +3575,8 @@ export type UserCreateWithoutRecord8minInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerCreateNestedManyWithoutUserInput
@@ -3470,6 +3620,8 @@ export type UserUncheckedCreateWithoutRecord8minInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordUncheckedCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedCreateNestedManyWithoutUserInput
@@ -3528,6 +3680,8 @@ export type UserUpdateWithoutRecord8minInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUpdateManyWithoutUserNestedInput
@@ -3571,6 +3725,8 @@ export type UserUncheckedUpdateWithoutRecord8minInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUncheckedUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedUpdateManyWithoutUserNestedInput
@@ -3613,6 +3769,8 @@ export type UserCreateWithoutRecord10minInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerCreateNestedManyWithoutUserInput
@@ -3656,6 +3814,8 @@ export type UserUncheckedCreateWithoutRecord10minInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordUncheckedCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedCreateNestedManyWithoutUserInput
@@ -3714,6 +3874,8 @@ export type UserUpdateWithoutRecord10minInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUpdateManyWithoutUserNestedInput
@@ -3757,6 +3919,8 @@ export type UserUncheckedUpdateWithoutRecord10minInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUncheckedUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedUpdateManyWithoutUserNestedInput
@@ -3799,6 +3963,8 @@ export type UserCreateWithoutRecord12minInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerCreateNestedManyWithoutUserInput
@@ -3842,6 +4008,8 @@ export type UserUncheckedCreateWithoutRecord12minInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordUncheckedCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedCreateNestedManyWithoutUserInput
@@ -3900,6 +4068,8 @@ export type UserUpdateWithoutRecord12minInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUpdateManyWithoutUserNestedInput
@@ -3943,6 +4113,8 @@ export type UserUncheckedUpdateWithoutRecord12minInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUncheckedUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedUpdateManyWithoutUserNestedInput
@@ -3985,6 +4157,8 @@ export type UserCreateWithoutRecord15minInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerCreateNestedManyWithoutUserInput
@@ -4028,6 +4202,8 @@ export type UserUncheckedCreateWithoutRecord15minInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordUncheckedCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedCreateNestedManyWithoutUserInput
@@ -4086,6 +4262,8 @@ export type UserUpdateWithoutRecord15minInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUpdateManyWithoutUserNestedInput
@@ -4129,6 +4307,8 @@ export type UserUncheckedUpdateWithoutRecord15minInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUncheckedUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedUpdateManyWithoutUserNestedInput
@@ -4171,6 +4351,8 @@ export type UserCreateWithoutRecord20minInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerCreateNestedManyWithoutUserInput
@@ -4214,6 +4396,8 @@ export type UserUncheckedCreateWithoutRecord20minInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordUncheckedCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedCreateNestedManyWithoutUserInput
@@ -4272,6 +4456,8 @@ export type UserUpdateWithoutRecord20minInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUpdateManyWithoutUserNestedInput
@@ -4315,6 +4501,8 @@ export type UserUncheckedUpdateWithoutRecord20minInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUncheckedUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedUpdateManyWithoutUserNestedInput
@@ -4357,6 +4545,8 @@ export type UserCreateWithoutRecord30minInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerCreateNestedManyWithoutUserInput
@@ -4400,6 +4590,8 @@ export type UserUncheckedCreateWithoutRecord30minInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordUncheckedCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedCreateNestedManyWithoutUserInput
@@ -4458,6 +4650,8 @@ export type UserUpdateWithoutRecord30minInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUpdateManyWithoutUserNestedInput
@@ -4501,6 +4695,8 @@ export type UserUncheckedUpdateWithoutRecord30minInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUncheckedUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedUpdateManyWithoutUserNestedInput
@@ -4543,6 +4739,8 @@ export type UserCreateWithoutRecord60minInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerCreateNestedManyWithoutUserInput
@@ -4586,6 +4784,8 @@ export type UserUncheckedCreateWithoutRecord60minInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordUncheckedCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedCreateNestedManyWithoutUserInput
@@ -4644,6 +4844,8 @@ export type UserUpdateWithoutRecord60minInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUpdateManyWithoutUserNestedInput
@@ -4687,6 +4889,8 @@ export type UserUncheckedUpdateWithoutRecord60minInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUncheckedUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedUpdateManyWithoutUserNestedInput
@@ -4729,6 +4933,8 @@ export type UserCreateWithoutRecordDistanceInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerCreateNestedManyWithoutUserInput
@@ -4772,6 +4978,8 @@ export type UserUncheckedCreateWithoutRecordDistanceInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordUncheckedCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedCreateNestedManyWithoutUserInput
@@ -4830,6 +5038,8 @@ export type UserUpdateWithoutRecordDistanceInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUpdateManyWithoutUserNestedInput
@@ -4873,6 +5083,8 @@ export type UserUncheckedUpdateWithoutRecordDistanceInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUncheckedUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedUpdateManyWithoutUserNestedInput
@@ -4915,6 +5127,8 @@ export type UserCreateWithoutRecordElevationGainInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerCreateNestedManyWithoutUserInput
@@ -4958,6 +5172,8 @@ export type UserUncheckedCreateWithoutRecordElevationGainInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordUncheckedCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedCreateNestedManyWithoutUserInput
@@ -5016,6 +5232,8 @@ export type UserUpdateWithoutRecordElevationGainInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUpdateManyWithoutUserNestedInput
@@ -5059,6 +5277,8 @@ export type UserUncheckedUpdateWithoutRecordElevationGainInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUncheckedUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedUpdateManyWithoutUserNestedInput
@@ -5101,6 +5321,8 @@ export type UserCreateWithoutRecordDurationInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerCreateNestedManyWithoutUserInput
@@ -5144,6 +5366,8 @@ export type UserUncheckedCreateWithoutRecordDurationInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordUncheckedCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedCreateNestedManyWithoutUserInput
@@ -5202,6 +5426,8 @@ export type UserUpdateWithoutRecordDurationInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUpdateManyWithoutUserNestedInput
@@ -5245,6 +5471,8 @@ export type UserUncheckedUpdateWithoutRecordDurationInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUncheckedUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedUpdateManyWithoutUserNestedInput
@@ -5287,6 +5515,8 @@ export type UserCreateWithoutRecordKilojoulesInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerCreateNestedManyWithoutUserInput
@@ -5330,6 +5560,8 @@ export type UserUncheckedCreateWithoutRecordKilojoulesInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordUncheckedCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedCreateNestedManyWithoutUserInput
@@ -5388,6 +5620,8 @@ export type UserUpdateWithoutRecordKilojoulesInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUpdateManyWithoutUserNestedInput
@@ -5431,6 +5665,8 @@ export type UserUncheckedUpdateWithoutRecordKilojoulesInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUncheckedUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedUpdateManyWithoutUserNestedInput
@@ -5473,6 +5709,8 @@ export type UserCreateWithoutRecordMaxCadenceInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerCreateNestedManyWithoutUserInput
@@ -5516,6 +5754,8 @@ export type UserUncheckedCreateWithoutRecordMaxCadenceInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordUncheckedCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedCreateNestedManyWithoutUserInput
@@ -5574,6 +5814,8 @@ export type UserUpdateWithoutRecordMaxCadenceInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUpdateManyWithoutUserNestedInput
@@ -5617,6 +5859,8 @@ export type UserUncheckedUpdateWithoutRecordMaxCadenceInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUncheckedUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedUpdateManyWithoutUserNestedInput
@@ -5659,6 +5903,8 @@ export type UserCreateWithoutRecordMaxSpeedInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerCreateNestedManyWithoutUserInput
@@ -5702,6 +5948,8 @@ export type UserUncheckedCreateWithoutRecordMaxSpeedInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordUncheckedCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedCreateNestedManyWithoutUserInput
@@ -5760,6 +6008,8 @@ export type UserUpdateWithoutRecordMaxSpeedInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUpdateManyWithoutUserNestedInput
@@ -5803,6 +6053,8 @@ export type UserUncheckedUpdateWithoutRecordMaxSpeedInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUncheckedUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedUpdateManyWithoutUserNestedInput
@@ -5845,6 +6097,8 @@ export type UserCreateWithoutRecordMaxHeartrateInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerCreateNestedManyWithoutUserInput
@@ -5888,6 +6142,8 @@ export type UserUncheckedCreateWithoutRecordMaxHeartrateInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordUncheckedCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedCreateNestedManyWithoutUserInput
@@ -5946,6 +6202,8 @@ export type UserUpdateWithoutRecordMaxHeartrateInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUpdateManyWithoutUserNestedInput
@@ -5989,6 +6247,8 @@ export type UserUncheckedUpdateWithoutRecordMaxHeartrateInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUncheckedUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedUpdateManyWithoutUserNestedInput
@@ -6031,6 +6291,8 @@ export type UserCreateWithoutRecordHr5minInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerCreateNestedManyWithoutUserInput
@@ -6074,6 +6336,8 @@ export type UserUncheckedCreateWithoutRecordHr5minInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordUncheckedCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedCreateNestedManyWithoutUserInput
@@ -6132,6 +6396,8 @@ export type UserUpdateWithoutRecordHr5minInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUpdateManyWithoutUserNestedInput
@@ -6175,6 +6441,8 @@ export type UserUncheckedUpdateWithoutRecordHr5minInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUncheckedUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedUpdateManyWithoutUserNestedInput
@@ -6217,6 +6485,8 @@ export type UserCreateWithoutRecordHr20minInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerCreateNestedManyWithoutUserInput
@@ -6260,6 +6530,8 @@ export type UserUncheckedCreateWithoutRecordHr20minInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordUncheckedCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedCreateNestedManyWithoutUserInput
@@ -6318,6 +6590,8 @@ export type UserUpdateWithoutRecordHr20minInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUpdateManyWithoutUserNestedInput
@@ -6361,6 +6635,8 @@ export type UserUncheckedUpdateWithoutRecordHr20minInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUncheckedUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedUpdateManyWithoutUserNestedInput
@@ -6403,6 +6679,8 @@ export type UserCreateWithoutRecordHr1hInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerCreateNestedManyWithoutUserInput
@@ -6446,6 +6724,8 @@ export type UserUncheckedCreateWithoutRecordHr1hInput = {
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sex?: string | null
+  dateOfBirth?: Date | string | null
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordUncheckedCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedCreateNestedManyWithoutUserInput
@@ -6504,6 +6784,8 @@ export type UserUpdateWithoutRecordHr1hInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUpdateManyWithoutUserNestedInput
@@ -6547,6 +6829,8 @@ export type UserUncheckedUpdateWithoutRecordHr1hInput = {
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUncheckedUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedUpdateManyWithoutUserNestedInput
@@ -6864,6 +7148,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   yearlyHours?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  sex?: boolean
+  dateOfBirth?: boolean
   lastActivity?: boolean | Prisma.User$lastActivityArgs<ExtArgs>
   customRecords?: boolean | Prisma.User$customRecordsArgs<ExtArgs>
   recordPeakPower?: boolean | Prisma.User$recordPeakPowerArgs<ExtArgs>
@@ -6911,9 +7197,11 @@ export type UserSelectScalar = {
   yearlyHours?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  sex?: boolean
+  dateOfBirth?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "passwordHash" | "firstName" | "lastName" | "weightKg" | "ftp" | "anaerobicThreshold" | "yearlyDistanceKm" | "yearlyHours" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "passwordHash" | "firstName" | "lastName" | "weightKg" | "ftp" | "anaerobicThreshold" | "yearlyDistanceKm" | "yearlyHours" | "createdAt" | "updatedAt" | "sex" | "dateOfBirth", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   lastActivity?: boolean | Prisma.User$lastActivityArgs<ExtArgs>
   customRecords?: boolean | Prisma.User$customRecordsArgs<ExtArgs>
@@ -6993,6 +7281,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     yearlyHours: runtime.Decimal | null
     createdAt: Date
     updatedAt: Date
+    sex: string | null
+    dateOfBirth: Date | null
   }, ExtArgs["result"]["user"]>
   composites: {}
 }
@@ -7403,6 +7693,8 @@ export interface UserFieldRefs {
   readonly yearlyHours: Prisma.FieldRef<"User", 'Decimal'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
+  readonly sex: Prisma.FieldRef<"User", 'String'>
+  readonly dateOfBirth: Prisma.FieldRef<"User", 'DateTime'>
 }
     
 

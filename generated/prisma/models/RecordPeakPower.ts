@@ -505,10 +505,6 @@ export type DecimalFieldUpdateOperationsInput = {
   divide?: runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
-export type NullableStringFieldUpdateOperationsInput = {
-  set?: string | null
-}
-
 export type RecordPeakPowerCreateWithoutUserInput = {
   rank: number
   value: runtime.Decimal | runtime.DecimalJsLike | number | string

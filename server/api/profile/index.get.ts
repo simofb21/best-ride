@@ -14,6 +14,8 @@ export default defineEventHandler(async (event) => {
       anaerobicThreshold: true,
       yearlyDistanceKm: true,
       yearlyHours: true,
+      sex: true,
+      dateOfBirth: true,
     },
   });
 

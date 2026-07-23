@@ -2464,7 +2464,9 @@ export const UserScalarFieldEnum = {
   yearlyDistanceKm: 'yearlyDistanceKm',
   yearlyHours: 'yearlyHours',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  sex: 'sex',
+  dateOfBirth: 'dateOfBirth'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -2910,7 +2912,8 @@ export const UserOrderByRelevanceFieldEnum = {
   email: 'email',
   passwordHash: 'passwordHash',
   firstName: 'firstName',
-  lastName: 'lastName'
+  lastName: 'lastName',
+  sex: 'sex'
 } as const
 
 export type UserOrderByRelevanceFieldEnum = (typeof UserOrderByRelevanceFieldEnum)[keyof typeof UserOrderByRelevanceFieldEnum]

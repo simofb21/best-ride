@@ -20,7 +20,8 @@ model User {
   yearlyHours           Decimal? @db.Decimal(6, 1) 
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
-
+  sex               String? @db.VarChar(1)
+  dateOfBirth       DateTime? @db.Date
   lastActivity  LastActivity?
   customRecords CustomRecord[]
 

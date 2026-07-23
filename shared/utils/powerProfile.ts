@@ -10,11 +10,13 @@ export const PERFORMANCE_TIERS = [
   "World Tour",
 ] as const;
 
+// shared/utils/powerProfile.ts
 export interface DurationProfile {
   key: string;
   label: string;
-  shortLabel: string; // per l'asse del radar, spazio limitato
-  thresholds: number[]; // 7 valori W/kg, uno per tier, crescenti
+  shortLabel: string;
+  thresholdsMale: number[];
+  thresholdsFemale: number[];
 }
 
 export const POWER_PROFILE_DURATIONS: DurationProfile[] = [
@@ -22,51 +24,66 @@ export const POWER_PROFILE_DURATIONS: DurationProfile[] = [
     key: "power_5s",
     label: "Neuromuscular Power (5s)",
     shortLabel: '5"',
-    thresholds: [9, 11, 13, 15, 17, 19, 21],
+    thresholdsMale: [9, 11, 13, 15, 17, 19, 21],
+    thresholdsFemale: [7.5, 9.2, 10.9, 12.6, 14.3, 16, 17.7],
   },
   {
     key: "power_30s",
     label: "30s Power",
     shortLabel: '30"',
-    thresholds: [7.5, 9, 10.5, 12, 13.5, 15, 16.5],
+    thresholdsMale: [7.5, 9, 10.5, 12, 13.5, 15, 16.5],
+    thresholdsFemale: [6.3, 7.6, 8.9, 10.2, 11.5, 12.8, 14.1],
   },
   {
     key: "power_1min",
     label: "Anaerobic Capacity (1min)",
     shortLabel: "1'",
-    thresholds: [6, 7.5, 9, 10.5, 12, 13.5, 15],
+    thresholdsMale: [6, 7.5, 9, 10.5, 12, 13.5, 15],
+    thresholdsFemale: [5, 6.3, 7.6, 8.9, 10.2, 11.5, 12.8],
   },
   {
     key: "power_2min",
     label: "2min Power",
     shortLabel: "2'",
-    thresholds: [5, 6, 7, 8, 9, 10, 11],
+    thresholdsMale: [5, 6, 7, 8, 9, 10, 11],
+    thresholdsFemale: [4.2, 5.1, 6.0, 6.9, 7.8, 8.7, 9.6],
   },
   {
     key: "power_5min",
     label: "VO2max Power (5min)",
     shortLabel: "5'",
-    thresholds: [4, 4.7, 5.4, 6.1, 6.8, 7.5, 8.2],
+    thresholdsMale: [4, 4.7, 5.4, 6.1, 6.8, 7.5, 8.2],
+    thresholdsFemale: [3.4, 4.0, 4.6, 5.2, 5.8, 6.4, 7.0],
   },
   {
     key: "power_12min",
     label: "12min Power",
     shortLabel: "12'",
-    thresholds: [3.6, 4.2, 4.8, 5.4, 6.0, 6.6, 7.2],
+    thresholdsMale: [3.6, 4.2, 4.8, 5.4, 6.0, 6.6, 7.2],
+    thresholdsFemale: [3.1, 3.6, 4.1, 4.6, 5.1, 5.6, 6.1],
   },
   {
     key: "power_20min",
     label: "20min Power",
     shortLabel: "20'",
-    thresholds: [3.4, 4.0, 4.5, 5.0, 5.6, 6.2, 6.8],
+    thresholdsMale: [3.4, 4.0, 4.5, 5.0, 5.6, 6.2, 6.8],
+    thresholdsFemale: [2.9, 3.4, 3.8, 4.3, 4.8, 5.3, 5.8],
   },
   {
     key: "ftp",
     label: "Functional Threshold (FTP)",
     shortLabel: "FTP",
-    thresholds: [2.8, 3.3, 3.8, 4.3, 4.8, 5.3, 5.8],
+    thresholdsMale: [2.8, 3.3, 3.8, 4.3, 4.8, 5.3, 5.8],
+    thresholdsFemale: [2.4, 2.8, 3.2, 3.7, 4.1, 4.5, 5.0],
   },
 ];
+
+export function getThresholds(
+  duration: DurationProfile,
+  sex: string | null,
+): number[] {
+  return sex === "F" ? duration.thresholdsFemale : duration.thresholdsMale;
+}
 /**
  * Normalizza un valore W/kg in uno score 0-100, interpolando linearmente
  * tra i 7 livelli di riferimento della durata specificata.
