@@ -1,211 +1,159 @@
 <template>
   <div class="profile-page">
-    <h1>My Profile</h1>
+    <h1 class="page-title">My Profile</h1>
 
     <p v-if="errorMessage" class="error-banner">{{ errorMessage }}</p>
-
     <div v-if="loading" class="state-message">Loading...</div>
 
-    <div v-else-if="profile" class="profile-content">
-      <div class="card">
-        <div class="card-header">
-          <h2>Personal info</h2>
-          <button v-if="!isEditing" class="icon-btn" @click="startEdit">
-            <v-icon icon="mdi-pencil-outline" size="18" />
-          </button>
-          <button v-else class="icon-btn save-icon" @click="saveProfile">
-            <v-icon icon="mdi-check" size="20" />
-          </button>
+    <div v-else-if="profile" class="profile-container">
+      <!-- ================= DESKTOP LAYOUT ================= -->
+      <div class="desktop-layout">
+        <!-- 1. Box Personal Info espanso su tutta la larghezza -->
+        <PersonalInfoCard :profile="profile" @update="handleProfileSave" />
+
+        <!-- 2. Box W/kg -->
+        <FtpCard :ftp="profile.ftp" :weight-kg="profile.weightKg" />
+
+        <!-- 3. Power Profile: Testo a sinistra, Grafico a destra -->
+        <div class="card power-profile-wrapper">
+          <h2>Power Profile</h2>
+          <PowerProfileRadar />
         </div>
 
-        <div class="info-row">
-          <span>First name</span>
-          <strong v-if="!isEditing">{{ profile.firstName }}</strong>
-          <input
-            v-else
-            v-model="draft.firstName"
-            type="text"
-            class="edit-input"
+        <!-- 4. Zone: Potenza a sinistra, Frequenza Cardiaca a destra -->
+        <div class="zones-grid">
+          <FtpZones v-if="profile.ftp" :ftp="profile.ftp" />
+          <ThresholdZones
+            v-if="profile.anaerobicThreshold"
+            :threshold="profile.anaerobicThreshold"
           />
-        </div>
-
-        <div class="info-row">
-          <span>Last name</span>
-          <strong v-if="!isEditing">{{ profile.lastName }}</strong>
-          <input
-            v-else
-            v-model="draft.lastName"
-            type="text"
-            class="edit-input"
-          />
-        </div>
-
-        <div class="info-row">
-          <span>Weight</span>
-          <strong v-if="!isEditing"
-            >{{ profile.weightKg }} <small>kg</small></strong
-          >
-          <input
-            v-else
-            v-model.number="draft.weightKg"
-            type="number"
-            step="0.1"
-            class="edit-input"
-          />
-        </div>
-        <div class="info-row">
-          <span>Sex</span>
-          <strong v-if="!isEditing">{{
-            profile.sex === "M" ? "Male" : profile.sex === "F" ? "Female" : "—"
-          }}</strong>
-          <select v-else v-model="draft.sex" class="edit-input">
-            <option :value="null">Prefer not to say</option>
-            <option value="M">Male</option>
-            <option value="F">Female</option>
-          </select>
-        </div>
-        <div class="info-row">
-          <span>Date of Birth</span>
-          <strong v-if="!isEditing">{{
-            profile.dateOfBirth
-              ? new Date(profile.dateOfBirth).toLocaleDateString()
-              : "—"
-          }}</strong>
-          <input
-            v-else
-            v-model="draft.dateOfBirth"
-            type="date"
-            class="edit-input"
-          />
-        </div>
-        <div class="info-row">
-          <span>FTP</span>
-          <strong v-if="!isEditing">{{ profile.ftp }} <small>W</small></strong>
-          <input
-            v-else
-            v-model.number="draft.ftp"
-            type="number"
-            class="edit-input"
-          />
-        </div>
-
-        <div class="info-row">
-          <span>Anaerobic Threshold</span>
-          <strong v-if="!isEditing"
-            >{{ profile.anaerobicThreshold }} <small>bpm</small></strong
-          >
-          <input
-            v-else
-            v-model.number="draft.anaerobicThreshold"
-            type="number"
-            class="edit-input"
-          />
-        </div>
-
-        <div class="info-row">
-          <span>Distance this year</span>
-          <strong>{{ profile.yearlyDistanceKm }} <small>km</small></strong>
-        </div>
-
-        <div class="info-row">
-          <span>Hours this year</span>
-          <strong>{{ profile.yearlyHours }} <small>h</small></strong>
         </div>
       </div>
 
-      <div class="card ftp-card" v-if="wkg">
-        <div class="wkg-hero">
-          <span class="wkg-unit">Your FTP is </span>
-          <span class="wkg-value"> {{ wkg.toFixed(2) }}</span>
-          <span class="wkg-unit">W/kg</span>
+      <!-- ================= MOBILE LAYOUT (ACCORDION RECTANGLES) ================= -->
+      <div class="mobile-layout">
+        <!-- Rettangolo 1: Personal Info -->
+        <div class="mobile-accordion">
+          <button class="accordion-header" @click="toggleSection('info')">
+            <span>Personal Info</span>
+            <v-icon
+              :icon="
+                activeSection === 'info' ? 'mdi-chevron-up' : 'mdi-chevron-down'
+              "
+            />
+          </button>
+          <div v-if="activeSection === 'info'" class="accordion-content">
+            <PersonalInfoCard :profile="profile" @update="handleProfileSave" />
+          </div>
         </div>
-        <p class="ftp-message">{{ ftpMessage }}</p>
+
+        <!-- Rettangolo 2: Power Profile (Include FTP Card + Radar + Testo) -->
+        <div class="mobile-accordion">
+          <button
+            class="accordion-header"
+            @click="toggleSection('powerProfile')"
+          >
+            <span>Power Profile</span>
+            <v-icon
+              :icon="
+                activeSection === 'powerProfile'
+                  ? 'mdi-chevron-up'
+                  : 'mdi-chevron-down'
+              "
+            />
+          </button>
+          <div
+            v-if="activeSection === 'powerProfile'"
+            class="accordion-content stack-content"
+          >
+            <FtpCard :ftp="profile.ftp" :weight-kg="profile.weightKg" />
+            <div class="card">
+              <PowerProfileRadar />
+            </div>
+          </div>
+        </div>
+
+        <!-- Rettangolo 3: Power Zones -->
+        <div class="mobile-accordion">
+          <button class="accordion-header" @click="toggleSection('powerZones')">
+            <span>Power Zones</span>
+            <v-icon
+              :icon="
+                activeSection === 'powerZones'
+                  ? 'mdi-chevron-up'
+                  : 'mdi-chevron-down'
+              "
+            />
+          </button>
+          <div v-if="activeSection === 'powerZones'" class="accordion-content">
+            <FtpZones v-if="profile.ftp" :ftp="profile.ftp" />
+          </div>
+        </div>
+
+        <!-- Rettangolo 4: Heart Rate Zones -->
+        <div class="mobile-accordion">
+          <button class="accordion-header" @click="toggleSection('hrZones')">
+            <span>Heart Rate Zones</span>
+            <v-icon
+              :icon="
+                activeSection === 'hrZones'
+                  ? 'mdi-chevron-up'
+                  : 'mdi-chevron-down'
+              "
+            />
+          </button>
+          <div v-if="activeSection === 'hrZones'" class="accordion-content">
+            <ThresholdZones
+              v-if="profile.anaerobicThreshold"
+              :threshold="profile.anaerobicThreshold"
+            />
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-  <PowerProfileRadar />
-  <div v-if="profile" class="zones-grid">
-    <FtpZones v-if="profile.ftp" :ftp="profile.ftp" />
-    <ThresholdZones
-      v-if="profile.anaerobicThreshold"
-      :threshold="profile.anaerobicThreshold"
-    />
   </div>
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted } from "vue";
+import PersonalInfoCard, {
+  type ProfileData,
+} from "~/components/profile/PersonalInfoCard.vue";
+import FtpCard from "~/components/profile/FtpCard.vue";
 import PowerProfileRadar from "~/components/profile/PowerProfileRadar.vue";
 import FtpZones from "~/components/profile/FtpZones.vue";
 import ThresholdZones from "~/components/profile/ThresholdZones.vue";
 
 definePageMeta({ middleware: "auth" });
 
-interface ProfileData {
-  firstName: string;
-  lastName: string;
-  weightKg: number | null;
-  ftp: number | null;
-  anaerobicThreshold: number | null;
-  yearlyDistanceKm: number | null;
-  yearlyHours: number | null;
-  sex: string | null;
-  dateOfBirth: string | null;
-}
-
 const profile = ref<ProfileData | null>(null);
 const loading = ref(true);
 const errorMessage = ref("");
 
+// Stato fisarmonica per Mobile
+const activeSection = ref<string | null>("info");
+
+function toggleSection(section: string) {
+  activeSection.value = activeSection.value === section ? null : section;
+}
+
 onMounted(async () => {
   try {
     profile.value = await $fetch("/api/profile");
+  } catch (err: any) {
+    errorMessage.value = err?.data?.message || "Error loading profile data";
   } finally {
     loading.value = false;
   }
 });
 
-const wkg = computed(() => {
-  if (!profile.value?.ftp || !profile.value?.weightKg) return null;
-  return profile.value.ftp / profile.value.weightKg;
-});
-
-const ftpMessage = computed(() => {
-  if (wkg.value == null) return "";
-  return getFtpMessage(wkg.value);
-});
-
-// --- Edit inline ---
-const isEditing = ref(false);
-const draft = reactive({
-  firstName: "",
-  lastName: "",
-  weightKg: 0,
-  ftp: 0,
-  anaerobicThreshold: 0,
-  sex: null as string | null,
-  dateOfBirth: null as string | null,
-});
-
-function startEdit() {
-  if (!profile.value) return;
-  draft.firstName = profile.value.firstName;
-  draft.lastName = profile.value.lastName;
-  draft.weightKg = profile.value.weightKg ?? 0;
-  draft.ftp = profile.value.ftp ?? 0;
-  draft.anaerobicThreshold = profile.value.anaerobicThreshold ?? 0;
-  draft.sex = profile.value.sex;
-  draft.dateOfBirth = profile.value.dateOfBirth;
-  isEditing.value = true;
-}
-
-async function saveProfile() {
+async function handleProfileSave(draftData: Partial<ProfileData>) {
   errorMessage.value = "";
   try {
     profile.value = await $fetch("/api/profile", {
       method: "PATCH",
-      body: { ...draft },
+      body: draftData,
     });
-    isEditing.value = false;
   } catch (err: any) {
     errorMessage.value =
       err?.data?.message || "Something went wrong while saving";
@@ -215,120 +163,21 @@ async function saveProfile() {
 
 <style scoped>
 .profile-page {
-  max-width: 700px;
+  max-width: 1000px;
   margin: 0 auto;
-  padding: 32px;
+  padding: 32px 16px;
 }
+
+.page-title {
+  font-size: 28px;
+  font-weight: 800;
+  margin-bottom: 24px;
+}
+
 .state-message {
   color: var(--text-muted);
   padding: 40px 0;
   text-align: center;
-}
-.profile-content {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 24px;
-}
-
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
-}
-.card-header h2 {
-  margin: 0;
-  font-size: 15px;
-  font-weight: 700;
-}
-
-.icon-btn {
-  border: none;
-  background: transparent;
-  color: var(--text-muted);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 6px;
-  border-radius: 6px;
-}
-.icon-btn:hover {
-  background: var(--border);
-  color: var(--text);
-}
-.save-icon {
-  color: var(--accent);
-}
-.save-icon:hover {
-  color: var(--accent-strong);
-}
-
-.info-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 0;
-  border-bottom: 1px solid var(--border);
-  font-size: 14px;
-  color: var(--text-muted);
-}
-.info-row:last-child {
-  border-bottom: none;
-}
-.info-row strong {
-  color: var(--text);
-  font-weight: 600;
-}
-.info-row strong small {
-  color: var(--text-muted);
-  font-weight: 500;
-}
-
-.edit-input {
-  border: 1px solid var(--accent);
-  border-radius: 6px;
-  padding: 5px 8px;
-  font-size: 13px;
-  background: var(--bg);
-  color: var(--text);
-  width: 140px;
-  text-align: right;
-}
-
-.ftp-card {
-  text-align: center;
-  border-color: var(--accent);
-  background: var(--accent-soft);
-}
-.wkg-hero {
-  display: flex;
-  align-items: baseline;
-  justify-content: center;
-  gap: 6px;
-  margin-bottom: 10px;
-}
-.wkg-value {
-  font-family: var(--mono);
-  font-size: 40px;
-  font-weight: 800;
-  color: var(--accent-strong);
-}
-.wkg-unit {
-  font-size: 14px;
-  color: var(--text-muted);
-}
-.ftp-message {
-  margin: 0;
-  font-size: 14px;
-  color: var(--text);
 }
 
 .error-banner {
@@ -339,5 +188,83 @@ async function saveProfile() {
   border-radius: 8px;
   font-size: 13px;
   margin-bottom: 20px;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 24px;
+}
+
+.power-profile-wrapper h2 {
+  font-size: 16px;
+  font-weight: 700;
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+
+/* DESKTOP LAYOUT CONFIGURATION */
+.desktop-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.zones-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+/* MOBILE LAYOUT CONFIGURATION */
+.mobile-layout {
+  display: none;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.mobile-accordion {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.accordion-header {
+  width: 100%;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: transparent;
+  border: none;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  cursor: pointer;
+  text-align: left;
+}
+
+.accordion-content {
+  padding: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.stack-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* SWITCH MEDIA QUERIES */
+@media (max-width: 768px) {
+  .desktop-layout {
+    display: none;
+  }
+
+  .mobile-layout {
+    display: flex;
+  }
 }
 </style>

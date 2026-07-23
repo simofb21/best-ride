@@ -1,63 +1,61 @@
 <template>
   <div class="power-profile">
     <div v-if="loading" class="state-message">Loading power profile...</div>
-
     <div v-else-if="error" class="state-message error">{{ error }}</div>
 
     <template v-else-if="data">
-      <svg class="radar-svg" viewBox="0 0 400 400">
-        <!-- Griglia di riferimento: anelli concentrici a 20/40/60/80/100 -->
-        <polygon
-          v-for="ring in [20, 40, 60, 80, 100]"
-          :key="ring"
-          :points="ringPoints(ring)"
-          class="radar-ring"
-        />
+      <div class="power-profile-layout">
+        <!-- Testo / Legenda a sinistra -->
+        <div class="legend">
+          <div v-for="item in data.profile" :key="item.key" class="legend-row">
+            <span class="legend-label"
+              >{{ item.shortLabel }} — {{ item.label }}</span
+            >
+            <span v-if="item.hasData" class="legend-value">
+              {{ item.wkg }} W/kg <span class="tier-tag">{{ item.tier }}</span>
+            </span>
+            <span v-else class="legend-value muted">No data yet</span>
+          </div>
+        </div>
 
-        <!-- Linee assiali dal centro a ogni vertice -->
-        <line
-          v-for="(point, i) in axisEndpoints"
-          :key="'axis-' + i"
-          x1="200"
-          y1="200"
-          :x2="point.x"
-          :y2="point.y"
-          class="radar-axis"
-        />
-
-        <!-- Poligono dei dati dell'atleta -->
-        <polygon :points="dataPoints" class="radar-shape" />
-        <circle
-          v-for="(point, i) in dataCoords"
-          :key="'dot-' + i"
-          :cx="point.x"
-          :cy="point.y"
-          r="4"
-          class="radar-dot"
-        />
-
-        <!-- Etichette degli assi -->
-        <text
-          v-for="(point, i) in labelPositions"
-          :key="'label-' + i"
-          :x="point.x"
-          :y="point.y"
-          class="axis-label"
-          text-anchor="middle"
-        >
-          {{ data.profile[i]!.shortLabel }}
-        </text>
-      </svg>
-
-      <div class="legend">
-        <div v-for="item in data.profile" :key="item.key" class="legend-row">
-          <span class="legend-label"
-            >{{ item.shortLabel }} — {{ item.label }}</span
-          >
-          <span v-if="item.hasData" class="legend-value">
-            {{ item.wkg }} W/kg <span class="tier-tag">{{ item.tier }}</span>
-          </span>
-          <span v-else class="legend-value muted">No data yet</span>
+        <!-- Grafico Radar a destra -->
+        <div class="chart-container">
+          <svg class="radar-svg" viewBox="0 0 400 400">
+            <polygon
+              v-for="ring in [20, 40, 60, 80, 100]"
+              :key="ring"
+              :points="ringPoints(ring)"
+              class="radar-ring"
+            />
+            <line
+              v-for="(point, i) in axisEndpoints"
+              :key="'axis-' + i"
+              x1="200"
+              y1="200"
+              :x2="point.x"
+              :y2="point.y"
+              class="radar-axis"
+            />
+            <polygon :points="dataPoints" class="radar-shape" />
+            <circle
+              v-for="(point, i) in dataCoords"
+              :key="'dot-' + i"
+              :cx="point.x"
+              :cy="point.y"
+              r="4"
+              class="radar-dot"
+            />
+            <text
+              v-for="(point, i) in labelPositions"
+              :key="'label-' + i"
+              :x="point.x"
+              :y="point.y"
+              class="axis-label"
+              text-anchor="middle"
+            >
+              {{ data.profile[i]!.shortLabel }}
+            </text>
+          </svg>
         </div>
       </div>
     </template>
@@ -65,6 +63,8 @@
 </template>
 
 <script setup lang="ts">
+import { ref, computed, onMounted } from "vue";
+
 interface ProfileEntry {
   key: string;
   label: string;
@@ -98,13 +98,12 @@ onMounted(async () => {
 const CENTER = 200;
 const RADIUS = 150;
 
-// Calcola la posizione (x,y) su un dato asse, a un dato raggio (0-100 -> 0-RADIUS)
 function pointOnAxis(
   axisIndex: number,
   totalAxes: number,
   radiusValue: number,
 ) {
-  const angle = (Math.PI * 2 * axisIndex) / totalAxes - Math.PI / 2; // -90° per partire dall'alto
+  const angle = (Math.PI * 2 * axisIndex) / totalAxes - Math.PI / 2;
   return {
     x: CENTER + radiusValue * Math.cos(angle),
     y: CENTER + radiusValue * Math.sin(angle),
@@ -148,33 +147,57 @@ const dataPoints = computed(() => {
 
 <style scoped>
 .power-profile {
+  width: 100%;
+}
+
+.power-profile-layout {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.chart-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.legend {
+  flex: 1;
+  width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 24px;
+  gap: 6px;
+}
+
+@media (max-width: 768px) {
+  .power-profile-layout {
+    flex-direction: column-reverse;
+  }
 }
 
 .state-message {
   color: var(--text-muted);
   padding: 40px 0;
+  text-align: center;
 }
+
 .state-message.error {
   color: #ef4444;
 }
 
 .radar-svg {
   width: 100%;
-  max-width: 420px;
+  max-width: 380px;
   height: auto;
 }
 
-.radar-ring {
-  fill: none;
-  stroke: var(--border);
-  stroke-width: 1;
-}
-
+.radar-ring,
 .radar-axis {
+  fill: none;
   stroke: var(--border);
   stroke-width: 1;
 }
@@ -197,14 +220,6 @@ const dataPoints = computed(() => {
   font-family: var(--mono);
 }
 
-.legend {
-  width: 100%;
-  max-width: 420px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
 .legend-row {
   display: flex;
   justify-content: space-between;
@@ -213,6 +228,7 @@ const dataPoints = computed(() => {
   border-bottom: 1px solid var(--border);
   font-size: 13px;
 }
+
 .legend-row:last-child {
   border-bottom: none;
 }
@@ -229,6 +245,7 @@ const dataPoints = computed(() => {
   align-items: center;
   gap: 8px;
 }
+
 .legend-value.muted {
   color: var(--text-muted);
   font-weight: 500;

@@ -44,10 +44,8 @@ const zones = computed(() => computeZones(props.ftp, FTP_ZONES));
   background: var(--surface, #ffffff);
   border: 1px solid var(--border, #e5e7eb);
   border-radius: 16px;
-  padding: 24px 28px; /* Padding interno aumentato per dare più respiro */
-  max-width: 520px; /* Mantiene la scheda ben centrata ed evita che si allarghi troppo */
-  margin-left: auto;
-  margin-right: auto;
+  padding: 24px 28px;
+  width: 100%; /* Sostituito max-width con width: 100% */
   box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.04);
 }
 
