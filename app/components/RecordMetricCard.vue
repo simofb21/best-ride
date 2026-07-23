@@ -134,7 +134,7 @@ const props = defineProps<{
   deletable?: boolean;
   editableLabel?: boolean; // true per i custom, false/assente per i fissi
 }>();
-
+// definisce gli eventi che il componente può emettere, con i relativi tipi di argomenti
 const emit = defineEmits<{
   (e: "save-entry", rank: number, entry: RecordEntry): void;
   (e: "add-entry", unit: string): void;

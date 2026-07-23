@@ -98,6 +98,7 @@
       </div>
     </div>
   </div>
+  <PowerProfileRadar />
 </template>
 
 <script setup lang="ts">

@@ -48,10 +48,6 @@
   </div>
 </template>
 
-<script setup lang="ts">
-// Nessuna logica necessaria per ora — puro contenuto informativo
-</script>
-
 <style scoped>
 .site-info {
   width: 100%;
