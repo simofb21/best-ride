@@ -57,6 +57,8 @@
 </template>
 
 <script setup lang="ts">
+import Dashboard from "~/components/homeComponents/dashboard.vue";
+import SiteInfo from "~/components/homeComponents/site-info.vue";
 const { loggedIn } = useUserSession();
 </script>
 
