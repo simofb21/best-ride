@@ -123,14 +123,20 @@
     </div>
   </div>
   <PowerProfileRadar />
-  <FtpZones v-if="profile.ftp" :ftp="profile.ftp" />
-  <ThresholdZones
-    v-if="profile.anaerobicThreshold"
-    :threshold="profile.anaerobicThreshold"
-  />
+  <div v-if="profile" class="zones-grid">
+    <FtpZones v-if="profile.ftp" :ftp="profile.ftp" />
+    <ThresholdZones
+      v-if="profile.anaerobicThreshold"
+      :threshold="profile.anaerobicThreshold"
+    />
+  </div>
 </template>
 
 <script setup lang="ts">
+import PowerProfileRadar from "~/components/profile/PowerProfileRadar.vue";
+import FtpZones from "~/components/profile/FtpZones.vue";
+import ThresholdZones from "~/components/profile/ThresholdZones.vue";
+
 definePageMeta({ middleware: "auth" });
 
 interface ProfileData {
