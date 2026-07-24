@@ -63,9 +63,13 @@ export default defineEventHandler(async (event) => {
     { value, entryDate: new Date(entryDate), description },
   ];
 
-  combined.sort((a, b) =>
-    lowerIsBetter ? a.value - b.value : b.value - a.value,
-  );
+  combined.sort((a, b) => {
+    const primaryDiff = lowerIsBetter ? a.value - b.value : b.value - a.value;
+    if (primaryDiff !== 0) return primaryDiff;
+
+    // Parità: vince la performance più recente
+    return new Date(b.entryDate).getTime() - new Date(a.entryDate).getTime();
+  });
   const newTop3 = combined.slice(0, 3);
 
   for (let i = 0; i < newTop3.length; i++) {

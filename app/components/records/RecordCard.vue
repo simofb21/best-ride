@@ -121,6 +121,8 @@
 </template>
 
 <script setup lang="ts">
+import { ref, reactive } from "vue";
+
 interface RecordEntry {
   value: number;
   date: string;
@@ -132,9 +134,9 @@ const props = defineProps<{
   unit: string;
   entries: RecordEntry[];
   deletable?: boolean;
-  editableLabel?: boolean; // true per i custom, false/assente per i fissi
+  editableLabel?: boolean;
 }>();
-// definisce gli eventi che il componente può emettere, con i relativi tipi di argomenti
+
 const emit = defineEmits<{
   (e: "save-entry", rank: number, entry: RecordEntry): void;
   (e: "add-entry", unit: string): void;
@@ -143,15 +145,35 @@ const emit = defineEmits<{
   (e: "rename", newLabel: string): void;
 }>();
 
+// --- Helper per la gestione del tempo ---
+function isTimeUnit(unit: string): boolean {
+  if (!unit) return false;
+  const u = unit.toLowerCase();
+  return (
+    u === "s" || u === "sec" || u === "seconds" || u === "h:m:s" || u === "time"
+  );
+}
+
+function formatHMS(seconds: number): string {
+  if (!seconds || isNaN(seconds)) return "00:00:00";
+  const h = Math.floor(seconds / 3600);
+  const m = Math.floor((seconds % 3600) / 60);
+  const s = Math.floor(seconds % 60);
+  return [h, m, s].map((v) => String(v).padStart(2, "0")).join(":");
+}
+
 const MEDAL_COLORS = ["yellow-darken-2", "grey", "orange"];
 function medalColor(index: number): string {
   return MEDAL_COLORS[index] ?? "grey";
 }
 
 function formatDateDisplay(date: string) {
+  if (!date) return "";
   return new Date(date).toLocaleDateString();
 }
+
 function formatDateForInput(date: string) {
+  if (!date) return "";
   return new Date(date).toISOString().split("T")[0];
 }
 
@@ -182,7 +204,7 @@ function toggleDescription(index: number) {
     expandedDescription.value === index ? null : index;
 }
 
-// --- Edit inline entry (matita → spunta) ---
+// --- Edit inline entry ---
 const editingRank = ref<number | null>(null);
 const draft = reactive<RecordEntry>({ value: 0, date: "", description: "" });
 
@@ -192,7 +214,7 @@ function isEditing(rank: number) {
 
 function startEdit(rank: number, entry: RecordEntry) {
   editingRank.value = rank;
-  draft.value = entry.value;
+  draft.value = Number(entry.value) || 0;
   draft.date = formatDateForInput(entry.date);
   draft.description = entry.description || "";
 }

@@ -14,7 +14,7 @@
     </button>
 
     <div class="custom-records-grid">
-      <RecordMetricCard
+      <RecordCard
         v-for="record in customRecords"
         :key="record.id"
         :label="record.label"
@@ -148,6 +148,7 @@
 </template>
 
 <script setup lang="ts">
+import RecordCard from "~/components/records/RecordCard.vue";
 definePageMeta({ middleware: "auth" });
 
 interface CustomRecordEntry {

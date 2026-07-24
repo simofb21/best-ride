@@ -1,14 +1,42 @@
-// shared/utils/recordMetrics.ts
 export interface RecordMetricConfig {
   key: string;
   label: string;
   unit: string;
   lowerIsBetter: boolean;
-  category: "short_power" | "mid_power" | "long_power" | "other";
+  category:
+    | "general"
+    | "short_power"
+    | "mid_power"
+    | "long_power"
+    | "heart_rate"
+    | "other";
 }
 
 export const RECORD_METRICS: RecordMetricConfig[] = [
-  // Power curve — short
+  // --- General ---
+  {
+    key: "distance",
+    label: "Longest Distance",
+    unit: "km",
+    lowerIsBetter: false,
+    category: "general",
+  },
+  {
+    key: "duration",
+    label: "Longest Duration",
+    unit: "h:m:s",
+    lowerIsBetter: false,
+    category: "general",
+  },
+  {
+    key: "elevation_gain",
+    label: "Biggest Elevation Gain",
+    unit: "m",
+    lowerIsBetter: false,
+    category: "general",
+  },
+
+  // --- Power curve: short ---
   {
     key: "peak_power",
     label: "Peak Power",
@@ -73,7 +101,7 @@ export const RECORD_METRICS: RecordMetricConfig[] = [
     category: "short_power",
   },
 
-  // Power curve — mid
+  // --- Power curve: mid ---
   {
     key: "5min_power",
     label: "5 min",
@@ -103,7 +131,7 @@ export const RECORD_METRICS: RecordMetricConfig[] = [
     category: "mid_power",
   },
 
-  // Power curve — long
+  // --- Power curve: long ---
   {
     key: "15min_power",
     label: "15 min",
@@ -133,28 +161,37 @@ export const RECORD_METRICS: RecordMetricConfig[] = [
     category: "long_power",
   },
 
-  // Altre metriche
+  // --- Heart Rate ---
   {
-    key: "distance",
-    label: "Longest Distance",
-    unit: "km",
+    key: "max_heartrate",
+    label: "Max Heart Rate",
+    unit: "bpm",
     lowerIsBetter: false,
-    category: "other",
+    category: "heart_rate",
   },
   {
-    key: "elevation_gain",
-    label: "Biggest Elevation Gain",
-    unit: "m",
+    key: "hr_5min",
+    label: "Best 5min Heart Rate",
+    unit: "bpm",
     lowerIsBetter: false,
-    category: "other",
+    category: "heart_rate",
   },
   {
-    key: "duration",
-    label: "Longest Duration",
-    unit: "h:m:s",
+    key: "hr_20min",
+    label: "Best 20min Heart Rate",
+    unit: "bpm",
     lowerIsBetter: false,
-    category: "other",
+    category: "heart_rate",
   },
+  {
+    key: "hr_1h",
+    label: "Best 1h Heart Rate",
+    unit: "bpm",
+    lowerIsBetter: false,
+    category: "heart_rate",
+  },
+
+  // --- Other ---
   {
     key: "kilojoules",
     label: "Most Kilojoules",
@@ -173,34 +210,6 @@ export const RECORD_METRICS: RecordMetricConfig[] = [
     key: "max_speed",
     label: "Max Speed",
     unit: "km/h",
-    lowerIsBetter: false,
-    category: "other",
-  },
-  {
-    key: "max_heartrate",
-    label: "Max Heart Rate",
-    unit: "bpm",
-    lowerIsBetter: false,
-    category: "other",
-  },
-  {
-    key: "hr_5min",
-    label: "Best 5min Heart Rate",
-    unit: "bpm",
-    lowerIsBetter: false,
-    category: "other",
-  },
-  {
-    key: "hr_20min",
-    label: "Best 20min Heart Rate",
-    unit: "bpm",
-    lowerIsBetter: false,
-    category: "other",
-  },
-  {
-    key: "hr_1h",
-    label: "Best 1h Heart Rate",
-    unit: "bpm",
     lowerIsBetter: false,
     category: "other",
   },

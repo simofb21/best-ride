@@ -2,118 +2,47 @@
   <div class="records-page">
     <h1>My Records</h1>
     <p class="subtitle">
-      Track your best performances. Add up to 3 results per metric.
+      Fill in your records manually, or let them be set automatically when you
+      upload an activity.
     </p>
 
     <p v-if="errorMessage" class="error-banner">{{ errorMessage }}</p>
 
-    <section
-      v-for="category in categories"
-      :key="category.key"
-      class="category-section"
-    >
-      <h2>{{ category.label }}</h2>
+    <RecordCategorySection
+      title="General"
+      :metrics="metricsByCategory.general"
+      :records="records"
+      @save-entry="saveEntry"
+      @add-entry="openAddForm"
+      @delete-entry="confirmDelete"
+    />
 
-      <div class="metrics-grid">
-        <div
-          v-for="metric in metricsByCategory[category.key]"
-          :key="metric.key"
-          class="metric-card"
-        >
-          <div class="metric-header">
-            <span class="metric-label">{{ metric.label }}</span>
-            <span class="metric-unit">{{
-              isTimeUnit(metric.unit) ? "h:m:s" : metric.unit
-            }}</span>
-          </div>
+    <RecordCategorySection
+      title="Power"
+      :subcategories="powerSubcategories"
+      :records="records"
+      @save-entry="saveEntry"
+      @add-entry="openAddForm"
+      @delete-entry="confirmDelete"
+    />
 
-          <div class="entries">
-            <div
-              v-for="entry in records[metric.key] || []"
-              :key="entry.rank"
-              class="entry-row"
-            >
-              <span class="rank-badge">#{{ entry.rank }}</span>
+    <RecordCategorySection
+      title="Heart Rate"
+      :metrics="metricsByCategory.heart_rate"
+      :records="records"
+      @save-entry="saveEntry"
+      @add-entry="openAddForm"
+      @delete-entry="confirmDelete"
+    />
 
-              <!-- Sola lettura -->
-              <template v-if="!isEditing(metric.key, entry.rank)">
-                <span class="value-display">
-                  {{
-                    isTimeUnit(metric.unit)
-                      ? formatHMS(entry.value)
-                      : entry.value
-                  }}
-                </span>
-                <span class="date-display">{{
-                  formatDateDisplay(entry.entryDate)
-                }}</span>
-                <span class="description-display">{{
-                  entry.description || "—"
-                }}</span>
-              </template>
-
-              <!-- Modalità modifica -->
-              <template v-else>
-                <TimeInput
-                  v-if="isTimeUnit(metric.unit)"
-                  v-model="draft.value"
-                />
-                <input
-                  v-else
-                  type="number"
-                  class="value-input"
-                  v-model.number="draft.value"
-                />
-                <input
-                  type="date"
-                  class="date-input"
-                  v-model="draft.entryDate"
-                />
-                <input
-                  type="text"
-                  class="description-input"
-                  placeholder="Add a note..."
-                  v-model="draft.description"
-                />
-              </template>
-
-              <div class="row-actions">
-                <button
-                  v-if="!isEditing(metric.key, entry.rank)"
-                  class="icon-btn"
-                  @click="startEdit(metric.key, entry)"
-                >
-                  <v-icon icon="mdi-pencil-outline" size="17" />
-                </button>
-                <button
-                  v-else
-                  class="icon-btn save-icon"
-                  @click="saveEdit(metric.key, entry.rank)"
-                >
-                  <v-icon icon="mdi-check" size="18" />
-                </button>
-
-                <button
-                  class="icon-btn delete-icon"
-                  @click="confirmDelete(metric.key, entry.rank)"
-                >
-                  <v-icon icon="mdi-delete-outline" size="17" />
-                </button>
-              </div>
-            </div>
-
-            <button
-              v-if="(records[metric.key]?.length || 0) < 3"
-              class="add-btn"
-              @click="openAddForm(metric.key)"
-            >
-              <v-icon icon="mdi-plus" size="16" />
-              Add performance
-            </button>
-          </div>
-        </div>
-      </div>
-    </section>
+    <RecordCategorySection
+      title="Other"
+      :metrics="metricsByCategory.other"
+      :records="records"
+      @save-entry="saveEntry"
+      @add-entry="openAddForm"
+      @delete-entry="confirmDelete"
+    />
 
     <!-- Dialog: aggiungi nuova performance -->
     <v-dialog v-model="showAddDialog" max-width="360">
@@ -168,24 +97,37 @@
 
 <script setup lang="ts">
 definePageMeta({ middleware: "auth" });
-
+import RecordCategorySection from "~/components/records/RecordCategorySection.vue";
+import { RECORD_METRICS } from "../../shared/utils/recordMetric";
+import { ref, computed, watch } from "vue";
 const records = ref<Record<string, any[]>>({});
 const errorMessage = ref("");
 
-const categories = [
-  { key: "short_power", label: "Short Power Efforts" },
-  { key: "mid_power", label: "Mid Power Efforts" },
-  { key: "long_power", label: "Long Power Efforts" },
-  { key: "other", label: "Other Records" },
-];
-
 const metricsByCategory = computed(() => {
   const grouped: Record<string, typeof RECORD_METRICS> = {};
-  for (const cat of categories) {
-    grouped[cat.key] = RECORD_METRICS.filter((m) => m.category === cat.key);
+  for (const cat of ["general", "heart_rate", "other"] as const) {
+    grouped[cat] = RECORD_METRICS.filter((m) => m.category === cat);
   }
   return grouped;
 });
+
+const powerSubcategories = computed(() => [
+  {
+    key: "short_power",
+    label: "Short",
+    metrics: RECORD_METRICS.filter((m) => m.category === "short_power"),
+  },
+  {
+    key: "mid_power",
+    label: "Mid",
+    metrics: RECORD_METRICS.filter((m) => m.category === "mid_power"),
+  },
+  {
+    key: "long_power",
+    label: "Long",
+    metrics: RECORD_METRICS.filter((m) => m.category === "long_power"),
+  },
+]);
 
 function metricLabel(key: string | null) {
   return RECORD_METRICS.find((m) => m.key === key)?.label ?? key ?? "";
@@ -193,54 +135,63 @@ function metricLabel(key: string | null) {
 function metricUnit(key: string | null) {
   return RECORD_METRICS.find((m) => m.key === key)?.unit ?? "";
 }
-function formatDateDisplay(date: string) {
-  return new Date(date).toLocaleDateString();
-}
-function formatDateForInput(date: string) {
-  return new Date(date).toISOString().split("T")[0];
-}
 
 async function fetchRecords() {
-  records.value = await $fetch("/api/records");
+  try {
+    const rawRecords = await $fetch<Record<string, any[]>>("/api/records");
+
+    // Puliamo e normalizziamo i dati ricevuti dal backend
+    const normalized: Record<string, any[]> = {};
+
+    for (const [key, entries] of Object.entries(rawRecords || {})) {
+      if (Array.isArray(entries)) {
+        normalized[key] = entries.map((entry) => ({
+          ...entry,
+          // Convertiamo il valore da stringa a numero float/int
+          value:
+            entry.value !== null && entry.value !== undefined
+              ? Number(entry.value)
+              : 0,
+          // Convertiamo la data da ISO string ("2026-07-23T...") a "2026-07-23"
+          entryDate: entry.entryDate ? entry.entryDate.split("T")[0] : "",
+          // Garantiamo un campo date standard se usata dai figli
+          date: entry.entryDate ? entry.entryDate.split("T")[0] : "",
+        }));
+      } else {
+        normalized[key] = [];
+      }
+    }
+
+    records.value = normalized;
+  } catch (err: any) {
+    errorMessage.value = "Impossibile caricare i dati dei record.";
+    console.error("Errore nel recupero dei record:", err);
+  }
 }
 onMounted(fetchRecords);
 
-// --- Edit inline (matita → spunta) ---
-const editingKey = ref<string | null>(null); // formato "metricKey:rank"
-const draft = reactive({ value: 0, entryDate: "", description: "" });
-
-function isEditing(metricKey: string, rank: number) {
-  return editingKey.value === `${metricKey}:${rank}`;
-}
-
-function startEdit(metricKey: string, entry: any) {
-  editingKey.value = `${metricKey}:${entry.rank}`;
-  draft.value = entry.value;
-  draft.entryDate = formatDateForInput(entry.entryDate);
-  draft.description = entry.description || "";
-}
-
-async function saveEdit(metricKey: string, rank: number) {
+// --- Salvataggio entry (creazione o modifica), delegato dal componente ---
+async function saveEntry(
+  metricKey: string,
+  rank: number,
+  entry: { value: number; date: string; description: string | null },
+) {
   errorMessage.value = "";
-
   try {
     await $fetch("/api/records", {
       method: "POST",
       body: {
         metricKey,
         rank,
-        value: draft.value,
-        entryDate: draft.entryDate,
-        description: draft.description || null,
+        value: entry.value,
+        entryDate: entry.date,
+        description: entry.description,
       },
     });
-
-    editingKey.value = null;
     await fetchRecords();
   } catch (err: any) {
     errorMessage.value =
       err?.data?.message || "Something went wrong while saving";
-    console.error("Validation details:", err?.data?.data);
   }
 }
 
@@ -263,7 +214,6 @@ async function submitNewEntry() {
   if (!addingMetric.value || !newEntry.value.entryDate) return;
 
   errorMessage.value = "";
-
   try {
     await $fetch("/api/records", {
       method: "POST",
@@ -274,13 +224,11 @@ async function submitNewEntry() {
         description: newEntry.value.description || null,
       },
     });
-
     showAddDialog.value = false;
     await fetchRecords();
   } catch (err: any) {
     errorMessage.value =
       err?.data?.message || "Something went wrong while saving";
-    console.error("Validation details:", err?.data?.data);
   }
 }
 
@@ -297,13 +245,11 @@ async function performDelete() {
   if (!pendingDelete.value) return;
 
   errorMessage.value = "";
-
   try {
     await $fetch(
       `/api/records/${pendingDelete.value.metricKey}/${pendingDelete.value.rank}`,
       { method: "DELETE" },
     );
-
     showDeleteDialog.value = false;
     pendingDelete.value = null;
     await fetchRecords();
@@ -321,132 +267,16 @@ async function performDelete() {
   margin: 0 auto;
   padding: 32px;
 }
+.records-page h1 {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--text, #111827);
+}
 .subtitle {
   color: var(--text-muted);
-  margin-bottom: 32px;
+  margin-bottom: 28px;
 }
-
-.category-section {
-  margin-bottom: 40px;
-}
-.category-section h2 {
-  font-size: 16px;
-  margin-bottom: 16px;
-}
-
-.metrics-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-  gap: 16px;
-}
-
-.metric-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 16px;
-}
-
-.metric-header {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 12px;
-}
-.metric-label {
-  font-weight: 600;
-  font-size: 14px;
-}
-.metric-unit {
-  color: var(--text-muted);
-  font-size: 12px;
-}
-
-.entry-row {
-  display: grid;
-  grid-template-columns: 26px 60px 90px 1fr auto;
-  gap: 8px;
-  align-items: center;
-  margin-bottom: 8px;
-}
-.rank-badge {
-  font-family: monospace;
-  font-size: 11px;
-  color: var(--accent);
-  font-weight: 700;
-}
-
-.value-display,
-.date-display,
-.description-display {
-  font-size: 13px;
-  color: var(--text);
-}
-.description-display {
-  color: var(--text-muted);
-  font-size: 12px;
-}
-
-.value-input,
-.date-input,
-.description-input {
-  border: 1px solid var(--accent);
-  border-radius: 6px;
-  padding: 5px 8px;
-  font-size: 12px;
-  background: var(--bg);
-  color: var(--text);
-  width: 100%;
-}
-
-.row-actions {
-  display: flex;
-  gap: 2px;
-}
-.icon-btn {
-  border: none;
-  background: transparent;
-  color: var(--text-muted);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 4px;
-  border-radius: 6px;
-}
-.icon-btn:hover {
-  background: var(--border);
-  color: var(--text);
-}
-.save-icon {
-  color: var(--accent);
-}
-.save-icon:hover {
-  color: var(--accent-strong);
-}
-.delete-icon:hover {
-  color: #ef4444;
-}
-
-.add-btn {
-  border: 1px dashed var(--border);
-  background: transparent;
-  color: var(--text-muted);
-  border-radius: 8px;
-  padding: 8px;
-  font-size: 12px;
-  width: 100%;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  margin-top: 4px;
-}
-.add-btn:hover {
-  border-color: var(--accent);
-  color: var(--accent);
-}
-
 .dialog-form {
   display: flex;
   flex-direction: column;
