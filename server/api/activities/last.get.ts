@@ -11,10 +11,10 @@ export default defineEventHandler(async (event) => {
   if (!lastActivity) {
     throw createError({ statusCode: 404, message: "No activity found yet" });
   }
-  console.log(
-    "recordChecks nel DB:",
-    JSON.stringify((lastActivity.data as any)?.recordChecks),
-  );
+  // console.log(
+  //   "recordChecks nel DB:",
+  //   JSON.stringify((lastActivity.data as any)?.recordChecks),
+  // );
 
   return lastActivity.data; // { activity, power_records, training_load }
 });

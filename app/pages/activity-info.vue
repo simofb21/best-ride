@@ -112,7 +112,6 @@ function formatDuration(totalSeconds: number): string {
   const m = Math.round((totalSeconds % 3600) / 60);
   return h > 0 ? `${h}h ${m}min` : `${m}min`;
 }
-console.log(JSON.stringify(data.value));
 </script>
 
 <style scoped>
@@ -120,6 +119,7 @@ console.log(JSON.stringify(data.value));
   max-width: 1400px;
   margin: 0 auto;
   padding: 32px;
+  overflow-x: hidden; /* previene che elementi larghi spingano la pagina di lato */
 }
 .state-message,
 .empty-state {

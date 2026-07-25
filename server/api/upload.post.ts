@@ -136,7 +136,6 @@ export default defineEventHandler(async (event) => {
       currentBest,
     });
   }
-  console.log("ciao");
 console.log("recordChecks generati:", JSON.stringify(recordChecks, null, 2));
   return {
     activity: { ...activity, normalized_power: normalizedPower },

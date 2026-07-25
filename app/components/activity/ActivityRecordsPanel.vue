@@ -83,26 +83,23 @@ const CATEGORY_LABELS: Record<string, string> = {
 };
 
 const groupedRecords = computed(() => {
-  console.log("recordChecks ricevuti dal componente:", props.recordChecks);
-  console.log(
-    "RECORD_METRICS disponibile?",
-    typeof RECORD_METRICS,
-    RECORD_METRICS?.length,
-  );
+  // console.log("recordChecks ricevuti dal componente:", props.recordChecks);
+  // console.log(
+  //   "RECORD_METRICS disponibile?",
+  //   typeof RECORD_METRICS,
+  //   RECORD_METRICS?.length,
+  // );
 
   return CATEGORY_ORDER.map((category) => {
     const metricsInCategory = RECORD_METRICS.filter(
       (m) => m.category === category,
     );
-    console.log(
-      `Categoria ${category}: ${metricsInCategory.length} metriche definite`,
-    );
+
 
     const items = metricsInCategory
       .map((m) => props.recordChecks.find((r) => r.metricKey === m.key))
       .filter((r): r is RecordCheck => !!r);
 
-    console.log(`Categoria ${category}: ${items.length} match trovati`);
 
     return { category, label: CATEGORY_LABELS[category]!, items };
   }).filter((group) => group.items.length > 0);

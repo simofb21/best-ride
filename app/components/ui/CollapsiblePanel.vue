@@ -85,13 +85,33 @@ const isOpen = ref(props.defaultOpen);
 
 @media (max-width: 700px) {
   .panel.span-2 {
-    grid-column: span 1;
+    grid-column: span 1; /* Occupa 1 colonna nei layout a griglia */
   }
+
+  .panel-header {
+    padding: 12px 16px; /* Spaziatura più compatta */
+    font-size: 14px;
+  }
+
   .panel-body {
     display: none;
+    padding: 0 16px 16px; /* Adatta il padding al body quando aperto */
   }
+
   .panel-body.is-open {
     display: block;
+  }
+}
+
+/* --- Extra Small Mobile (<= 380px) --- */
+@media (max-width: 380px) {
+  .panel-header {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+
+  .panel-body {
+    padding: 0 12px 12px;
   }
 }
 </style>

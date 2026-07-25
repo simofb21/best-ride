@@ -84,12 +84,6 @@ const initMap = async () => {
     })
     .filter((p): p is [number, number] => p !== null);
 
-  console.log(
-    "Coordinate GPS elaborate per la mappa:",
-    points.length,
-    points.slice(0, 3),
-  );
-
   if (!points.length) return;
 
   // Inizializza la mappa sulla prima coordinata
@@ -198,6 +192,9 @@ watch(
   }
   .map-container {
     height: 260px;
+  }
+  body {
+    max-width: 300px;
   }
 }
 </style>
