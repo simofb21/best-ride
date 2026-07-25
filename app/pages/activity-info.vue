@@ -119,7 +119,9 @@ function formatDuration(totalSeconds: number): string {
   max-width: 1400px;
   margin: 0 auto;
   padding: 32px;
-  overflow-x: hidden; /* previene che elementi larghi spingano la pagina di lato */
+  padding-bottom: 80px;
+
+  /* overflow-x: hidden; previene che elementi larghi spingano la pagina di lato */
 }
 .state-message,
 .empty-state {
@@ -168,6 +170,7 @@ function formatDuration(totalSeconds: number): string {
 }
 .slot-laps {
   grid-area: laps;
+  margin-bottom: 20px;
 }
 
 @media (max-width: 900px) {
@@ -182,5 +185,14 @@ function formatDuration(totalSeconds: number): string {
       "zones"
       "laps";
   }
+}
+.slot-general,
+.slot-other,
+.slot-records,
+.slot-curve,
+.slot-map,
+.slot-zones,
+.slot-laps {
+  min-width: 0; /* fix classico per CSS Grid: previene overflow dei figli */
 }
 </style>

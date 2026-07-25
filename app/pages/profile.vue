@@ -166,6 +166,7 @@ async function handleProfileSave(draftData: Partial<ProfileData>) {
   max-width: 1000px;
   margin: 0 auto;
   padding: 32px 16px;
+  padding-bottom: 80px;
 }
 
 .page-title {

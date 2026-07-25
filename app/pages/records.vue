@@ -266,6 +266,7 @@ async function performDelete() {
   max-width: 1200px;
   margin: 0 auto;
   padding: 32px;
+  padding-bottom: 80px;
 }
 .records-page h1 {
   font-size: 24px;

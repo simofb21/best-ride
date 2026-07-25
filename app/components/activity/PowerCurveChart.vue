@@ -1,9 +1,6 @@
 <template>
-  <div class="card curve-card">
-    <div class="card-header">
-      <h2>Power curve</h2>
-      <span class="card-subtitle">Best average power by duration</span>
-    </div>
+  <CollapsiblePanel title="Power curve" icon="mdi-chart-bell-curve" full-width>
+    <p class="card-subtitle">Best average power by duration</p>
 
     <svg class="curve-chart" viewBox="0 0 900 260" preserveAspectRatio="none">
       <line
@@ -31,22 +28,23 @@
       />
     </svg>
 
-    <div class="curve-labels">
-      <span
-        v-for="point in chartData.coords"
-        :key="point.key"
-        class="curve-label"
-      >
-        <strong>{{ point.watts }}W</strong>
-        <small>{{ point.label }}</small>
-      </span>
+    <div class="labels-scroll">
+      <div class="curve-labels">
+        <span
+          v-for="point in chartData.coords"
+          :key="point.key"
+          class="curve-label"
+        >
+          <strong>{{ point.watts }}W</strong>
+          <small>{{ point.label }}</small>
+        </span>
+      </div>
     </div>
-  </div>
+  </CollapsiblePanel>
 </template>
 
 <script setup lang="ts">
 const props = defineProps<{ powerRecords: any[] }>();
-import CollapsiblePanel from "~/components/ui/CollapsiblePanel.vue";
 
 const DURATION_META: Record<string, { seconds: number; label: string }> = {
   peak_power: { seconds: 1, label: "Peak" },
@@ -112,27 +110,12 @@ const chartData = computed(() => {
 </script>
 
 <style scoped>
-.card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 24px;
-}
-.card-header {
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-  margin-bottom: 18px;
-}
-.card-header h2 {
-  margin: 0;
-  font-size: 16px;
-  font-weight: 700;
-}
 .card-subtitle {
   font-size: 12px;
   color: var(--text-muted);
+  margin: -8px 0 12px;
 }
+
 .curve-chart {
   width: 100%;
   height: 220px;
@@ -157,11 +140,19 @@ const chartData = computed(() => {
   stroke: var(--accent);
   stroke-width: 2.5;
 }
+
+.labels-scroll {
+  overflow-x: auto;
+  max-width: 100%;
+  margin-top: 10px;
+  -webkit-overflow-scrolling: touch;
+}
+
 .curve-labels {
   display: flex;
   justify-content: space-between;
-  margin-top: 10px;
   gap: 4px;
+  min-width: 700px; /* sotto questa soglia scrolla invece di comprimersi */
 }
 .curve-label {
   display: flex;
