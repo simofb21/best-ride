@@ -4,7 +4,7 @@
       <div v-for="stat in stats" :key="stat.label" class="stat-item">
         <span class="stat-label">{{ stat.label }}</span>
         <span class="stat-value"
-          >{{ stat.value
+          >{{ formatValue(stat)
           }}<small v-if="stat.unit"> {{ stat.unit }}</small></span
         >
       </div>
@@ -20,6 +20,13 @@ defineProps<{
   icon?: string;
   stats: Array<{ label: string; value: string | number; unit?: string }>;
 }>();
+
+const formatValue = (stat: { label: string; value: string | number }) => {
+  if (["average_speed", "max_speed"].includes(stat.label)) {
+    return Number(stat.value).toFixed(2);
+  }
+  return stat.value;
+};
 </script>
 
 <style scoped>

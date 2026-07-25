@@ -1,6 +1,10 @@
 <template>
   <div class="activity-info-page">
     <h1>Latest Activity</h1>
+    <p class="subtitle">
+      View the details of your most recent activity, including stats, records,
+      and more. Upload a new activity to see it here.
+    </p>
 
     <div v-if="loading" class="state-message">Loading...</div>
     <div v-else-if="loadError" class="empty-state">
@@ -115,6 +119,16 @@ function formatDuration(totalSeconds: number): string {
 </script>
 
 <style scoped>
+.activity-info-page h1 {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--text, #111827);
+}
+.subtitle {
+  color: var(--text-muted);
+  margin-bottom: 28px;
+}
 .activity-info-page {
   max-width: 1400px;
   margin: 0 auto;

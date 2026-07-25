@@ -81,12 +81,16 @@ export function buildActivitySummary(records: any[], session: any) {
     elevation_gain = computeElevationGainFromRecords(records);
   }
 
-  let average_speed = Number(average(speedValues).toFixed(1)); //calcola la velocità media dai record, arrotondata a 1 decimale
-  if (session && session.avg_speed != null) average_speed = session.avg_speed;
+  let average_speed = Number(average(speedValues).toFixed(2));
 
-  let max_speed = Number(maximum(speedValues).toFixed(1)); //calcola max speed
+  if (session && session.avg_speed != null) {
+    average_speed = Number(Number(session.avg_speed).toFixed(2));
+  }
+
+  let max_speed = Number(maximum(speedValues).toFixed(2));
+
   if (session && session.max_speed != null) {
-    max_speed = session.max_speed;
+    max_speed = Number(Number(session.max_speed).toFixed(2));
   }
 
   let average_cadence = Math.round(average(cadenceValues)); // calcola avg cadenza
@@ -138,7 +142,6 @@ export function buildActivitySummary(records: any[], session: any) {
   if (session && session.avg_temperature != null) {
     average_temperature = session.avg_temperature;
   }
-
   return {
     distance: distance,
     duration: duration,
