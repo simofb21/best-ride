@@ -10,6 +10,8 @@
             <th>Distance</th>
             <th>Avg Speed</th>
             <th>Avg Power</th>
+            <th>Avg Cadence</th>
+            <th>Avg Heart Rate</th>
           </tr>
         </thead>
         <tbody>
@@ -19,6 +21,8 @@
             <td>{{ lap.distanceKm }} km</td>
             <td>{{ lap.avgSpeedKmh }} km/h</td>
             <td>{{ lap.avgPowerWatts }} W</td>
+            <td>{{ lap.avgCadence }} rpm</td>
+            <td>{{ lap.avgHeartRate }} bpm</td>
           </tr>
         </tbody>
       </table>
@@ -35,6 +39,8 @@ defineProps<{
     distanceKm: number;
     avgSpeedKmh: number;
     avgPowerWatts: number;
+    avgCadence: number;
+    avgHeartRate: number;
   }>;
 }>();
 
