@@ -253,7 +253,6 @@ export type CustomRecordOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   entries?: Prisma.SortOrderInput | Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
-  _relevance?: Prisma.CustomRecordOrderByRelevanceInput
 }
 
 export type CustomRecordWhereUniqueInput = Prisma.AtLeast<{
@@ -383,12 +382,6 @@ export type CustomRecordListRelationFilter = {
 
 export type CustomRecordOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
-}
-
-export type CustomRecordOrderByRelevanceInput = {
-  fields: Prisma.CustomRecordOrderByRelevanceFieldEnum | Prisma.CustomRecordOrderByRelevanceFieldEnum[]
-  sort: Prisma.SortOrder
-  search: string
 }
 
 export type CustomRecordUserIdSlugCompoundUniqueInput = {
@@ -595,7 +588,29 @@ export type CustomRecordSelect<ExtArgs extends runtime.Types.Extensions.Internal
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["customRecord"]>
 
+export type CustomRecordSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  id?: boolean
+  userId?: boolean
+  slug?: boolean
+  label?: boolean
+  unit?: boolean
+  lowerIsBetter?: boolean
+  createdAt?: boolean
+  entries?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}, ExtArgs["result"]["customRecord"]>
 
+export type CustomRecordSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  id?: boolean
+  userId?: boolean
+  slug?: boolean
+  label?: boolean
+  unit?: boolean
+  lowerIsBetter?: boolean
+  createdAt?: boolean
+  entries?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}, ExtArgs["result"]["customRecord"]>
 
 export type CustomRecordSelectScalar = {
   id?: boolean
@@ -610,6 +625,12 @@ export type CustomRecordSelectScalar = {
 
 export type CustomRecordOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "slug" | "label" | "unit" | "lowerIsBetter" | "createdAt" | "entries", ExtArgs["result"]["customRecord"]>
 export type CustomRecordInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
+export type CustomRecordIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
+export type CustomRecordIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 
@@ -745,6 +766,30 @@ export interface CustomRecordDelegate<ExtArgs extends runtime.Types.Extensions.I
   createMany<T extends CustomRecordCreateManyArgs>(args?: Prisma.SelectSubset<T, CustomRecordCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
+   * Create many CustomRecords and returns the data saved in the database.
+   * @param {CustomRecordCreateManyAndReturnArgs} args - Arguments to create many CustomRecords.
+   * @example
+   * // Create many CustomRecords
+   * const customRecord = await prisma.customRecord.createManyAndReturn({
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * 
+   * // Create many CustomRecords and only return the `id`
+   * const customRecordWithIdOnly = await prisma.customRecord.createManyAndReturn({
+   *   select: { id: true },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * Note, that providing `undefined` is treated as the value not being there.
+   * Read more here: https://pris.ly/d/null-undefined
+   * 
+   */
+  createManyAndReturn<T extends CustomRecordCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, CustomRecordCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CustomRecordPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+  /**
    * Delete a CustomRecord.
    * @param {CustomRecordDeleteArgs} args - Arguments to delete one CustomRecord.
    * @example
@@ -807,6 +852,36 @@ export interface CustomRecordDelegate<ExtArgs extends runtime.Types.Extensions.I
    * 
    */
   updateMany<T extends CustomRecordUpdateManyArgs>(args: Prisma.SelectSubset<T, CustomRecordUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
+
+  /**
+   * Update zero or more CustomRecords and returns the data updated in the database.
+   * @param {CustomRecordUpdateManyAndReturnArgs} args - Arguments to update many CustomRecords.
+   * @example
+   * // Update many CustomRecords
+   * const customRecord = await prisma.customRecord.updateManyAndReturn({
+   *   where: {
+   *     // ... provide filter here
+   *   },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * 
+   * // Update zero or more CustomRecords and only return the `id`
+   * const customRecordWithIdOnly = await prisma.customRecord.updateManyAndReturn({
+   *   select: { id: true },
+   *   where: {
+   *     // ... provide filter here
+   *   },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * Note, that providing `undefined` is treated as the value not being there.
+   * Read more here: https://pris.ly/d/null-undefined
+   * 
+   */
+  updateManyAndReturn<T extends CustomRecordUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, CustomRecordUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CustomRecordPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
   /**
    * Create or update one CustomRecord.
@@ -1243,6 +1318,29 @@ export type CustomRecordCreateManyArgs<ExtArgs extends runtime.Types.Extensions.
 }
 
 /**
+ * CustomRecord createManyAndReturn
+ */
+export type CustomRecordCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CustomRecord
+   */
+  select?: Prisma.CustomRecordSelectCreateManyAndReturn<ExtArgs> | null
+  /**
+   * Omit specific fields from the CustomRecord
+   */
+  omit?: Prisma.CustomRecordOmit<ExtArgs> | null
+  /**
+   * The data used to create many CustomRecords.
+   */
+  data: Prisma.CustomRecordCreateManyInput | Prisma.CustomRecordCreateManyInput[]
+  skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CustomRecordIncludeCreateManyAndReturn<ExtArgs> | null
+}
+
+/**
  * CustomRecord update
  */
 export type CustomRecordUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1284,6 +1382,36 @@ export type CustomRecordUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.
    * Limit how many CustomRecords to update.
    */
   limit?: number
+}
+
+/**
+ * CustomRecord updateManyAndReturn
+ */
+export type CustomRecordUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CustomRecord
+   */
+  select?: Prisma.CustomRecordSelectUpdateManyAndReturn<ExtArgs> | null
+  /**
+   * Omit specific fields from the CustomRecord
+   */
+  omit?: Prisma.CustomRecordOmit<ExtArgs> | null
+  /**
+   * The data used to update CustomRecords.
+   */
+  data: Prisma.XOR<Prisma.CustomRecordUpdateManyMutationInput, Prisma.CustomRecordUncheckedUpdateManyInput>
+  /**
+   * Filter which CustomRecords to update
+   */
+  where?: Prisma.CustomRecordWhereInput
+  /**
+   * Limit how many CustomRecords to update.
+   */
+  limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CustomRecordIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**

@@ -256,7 +256,6 @@ export type Record3sOrderByWithRelationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
-  _relevance?: Prisma.Record3sOrderByRelevanceInput
 }
 
 export type Record3sWhereUniqueInput = Prisma.AtLeast<{
@@ -376,12 +375,6 @@ export type Record3sListRelationFilter = {
 
 export type Record3sOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
-}
-
-export type Record3sOrderByRelevanceInput = {
-  fields: Prisma.Record3sOrderByRelevanceFieldEnum | Prisma.Record3sOrderByRelevanceFieldEnum[]
-  sort: Prisma.SortOrder
-  search: string
 }
 
 export type Record3sUserIdRankCompoundUniqueInput = {
@@ -579,7 +572,27 @@ export type Record3sSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["record3s"]>
 
+export type Record3sSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  id?: boolean
+  userId?: boolean
+  rank?: boolean
+  value?: boolean
+  entryDate?: boolean
+  description?: boolean
+  updatedAt?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}, ExtArgs["result"]["record3s"]>
 
+export type Record3sSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  id?: boolean
+  userId?: boolean
+  rank?: boolean
+  value?: boolean
+  entryDate?: boolean
+  description?: boolean
+  updatedAt?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}, ExtArgs["result"]["record3s"]>
 
 export type Record3sSelectScalar = {
   id?: boolean
@@ -593,6 +606,12 @@ export type Record3sSelectScalar = {
 
 export type Record3sOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "rank" | "value" | "entryDate" | "description" | "updatedAt", ExtArgs["result"]["record3s"]>
 export type Record3sInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
+export type Record3sIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
+export type Record3sIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 
@@ -727,6 +746,30 @@ export interface Record3sDelegate<ExtArgs extends runtime.Types.Extensions.Inter
   createMany<T extends Record3sCreateManyArgs>(args?: Prisma.SelectSubset<T, Record3sCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
+   * Create many Record3s and returns the data saved in the database.
+   * @param {Record3sCreateManyAndReturnArgs} args - Arguments to create many Record3s.
+   * @example
+   * // Create many Record3s
+   * const record3s = await prisma.record3s.createManyAndReturn({
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * 
+   * // Create many Record3s and only return the `id`
+   * const record3sWithIdOnly = await prisma.record3s.createManyAndReturn({
+   *   select: { id: true },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * Note, that providing `undefined` is treated as the value not being there.
+   * Read more here: https://pris.ly/d/null-undefined
+   * 
+   */
+  createManyAndReturn<T extends Record3sCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, Record3sCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$Record3sPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+  /**
    * Delete a Record3s.
    * @param {Record3sDeleteArgs} args - Arguments to delete one Record3s.
    * @example
@@ -789,6 +832,36 @@ export interface Record3sDelegate<ExtArgs extends runtime.Types.Extensions.Inter
    * 
    */
   updateMany<T extends Record3sUpdateManyArgs>(args: Prisma.SelectSubset<T, Record3sUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
+
+  /**
+   * Update zero or more Record3s and returns the data updated in the database.
+   * @param {Record3sUpdateManyAndReturnArgs} args - Arguments to update many Record3s.
+   * @example
+   * // Update many Record3s
+   * const record3s = await prisma.record3s.updateManyAndReturn({
+   *   where: {
+   *     // ... provide filter here
+   *   },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * 
+   * // Update zero or more Record3s and only return the `id`
+   * const record3sWithIdOnly = await prisma.record3s.updateManyAndReturn({
+   *   select: { id: true },
+   *   where: {
+   *     // ... provide filter here
+   *   },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * Note, that providing `undefined` is treated as the value not being there.
+   * Read more here: https://pris.ly/d/null-undefined
+   * 
+   */
+  updateManyAndReturn<T extends Record3sUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, Record3sUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$Record3sPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
   /**
    * Create or update one Record3s.
@@ -1224,6 +1297,29 @@ export type Record3sCreateManyArgs<ExtArgs extends runtime.Types.Extensions.Inte
 }
 
 /**
+ * Record3s createManyAndReturn
+ */
+export type Record3sCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Record3s
+   */
+  select?: Prisma.Record3sSelectCreateManyAndReturn<ExtArgs> | null
+  /**
+   * Omit specific fields from the Record3s
+   */
+  omit?: Prisma.Record3sOmit<ExtArgs> | null
+  /**
+   * The data used to create many Record3s.
+   */
+  data: Prisma.Record3sCreateManyInput | Prisma.Record3sCreateManyInput[]
+  skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.Record3sIncludeCreateManyAndReturn<ExtArgs> | null
+}
+
+/**
  * Record3s update
  */
 export type Record3sUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1265,6 +1361,36 @@ export type Record3sUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Limit how many Record3s to update.
    */
   limit?: number
+}
+
+/**
+ * Record3s updateManyAndReturn
+ */
+export type Record3sUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Record3s
+   */
+  select?: Prisma.Record3sSelectUpdateManyAndReturn<ExtArgs> | null
+  /**
+   * Omit specific fields from the Record3s
+   */
+  omit?: Prisma.Record3sOmit<ExtArgs> | null
+  /**
+   * The data used to update Record3s.
+   */
+  data: Prisma.XOR<Prisma.Record3sUpdateManyMutationInput, Prisma.Record3sUncheckedUpdateManyInput>
+  /**
+   * Filter which Record3s to update
+   */
+  where?: Prisma.Record3sWhereInput
+  /**
+   * Limit how many Record3s to update.
+   */
+  limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.Record3sIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**

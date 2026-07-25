@@ -256,7 +256,6 @@ export type RecordMaxSpeedOrderByWithRelationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
-  _relevance?: Prisma.RecordMaxSpeedOrderByRelevanceInput
 }
 
 export type RecordMaxSpeedWhereUniqueInput = Prisma.AtLeast<{
@@ -376,12 +375,6 @@ export type RecordMaxSpeedListRelationFilter = {
 
 export type RecordMaxSpeedOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
-}
-
-export type RecordMaxSpeedOrderByRelevanceInput = {
-  fields: Prisma.RecordMaxSpeedOrderByRelevanceFieldEnum | Prisma.RecordMaxSpeedOrderByRelevanceFieldEnum[]
-  sort: Prisma.SortOrder
-  search: string
 }
 
 export type RecordMaxSpeedUserIdRankCompoundUniqueInput = {
@@ -579,7 +572,27 @@ export type RecordMaxSpeedSelect<ExtArgs extends runtime.Types.Extensions.Intern
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["recordMaxSpeed"]>
 
+export type RecordMaxSpeedSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  id?: boolean
+  userId?: boolean
+  rank?: boolean
+  value?: boolean
+  entryDate?: boolean
+  description?: boolean
+  updatedAt?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}, ExtArgs["result"]["recordMaxSpeed"]>
 
+export type RecordMaxSpeedSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  id?: boolean
+  userId?: boolean
+  rank?: boolean
+  value?: boolean
+  entryDate?: boolean
+  description?: boolean
+  updatedAt?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}, ExtArgs["result"]["recordMaxSpeed"]>
 
 export type RecordMaxSpeedSelectScalar = {
   id?: boolean
@@ -593,6 +606,12 @@ export type RecordMaxSpeedSelectScalar = {
 
 export type RecordMaxSpeedOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "rank" | "value" | "entryDate" | "description" | "updatedAt", ExtArgs["result"]["recordMaxSpeed"]>
 export type RecordMaxSpeedInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
+export type RecordMaxSpeedIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
+export type RecordMaxSpeedIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 
@@ -727,6 +746,30 @@ export interface RecordMaxSpeedDelegate<ExtArgs extends runtime.Types.Extensions
   createMany<T extends RecordMaxSpeedCreateManyArgs>(args?: Prisma.SelectSubset<T, RecordMaxSpeedCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
+   * Create many RecordMaxSpeeds and returns the data saved in the database.
+   * @param {RecordMaxSpeedCreateManyAndReturnArgs} args - Arguments to create many RecordMaxSpeeds.
+   * @example
+   * // Create many RecordMaxSpeeds
+   * const recordMaxSpeed = await prisma.recordMaxSpeed.createManyAndReturn({
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * 
+   * // Create many RecordMaxSpeeds and only return the `id`
+   * const recordMaxSpeedWithIdOnly = await prisma.recordMaxSpeed.createManyAndReturn({
+   *   select: { id: true },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * Note, that providing `undefined` is treated as the value not being there.
+   * Read more here: https://pris.ly/d/null-undefined
+   * 
+   */
+  createManyAndReturn<T extends RecordMaxSpeedCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, RecordMaxSpeedCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RecordMaxSpeedPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+  /**
    * Delete a RecordMaxSpeed.
    * @param {RecordMaxSpeedDeleteArgs} args - Arguments to delete one RecordMaxSpeed.
    * @example
@@ -789,6 +832,36 @@ export interface RecordMaxSpeedDelegate<ExtArgs extends runtime.Types.Extensions
    * 
    */
   updateMany<T extends RecordMaxSpeedUpdateManyArgs>(args: Prisma.SelectSubset<T, RecordMaxSpeedUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
+
+  /**
+   * Update zero or more RecordMaxSpeeds and returns the data updated in the database.
+   * @param {RecordMaxSpeedUpdateManyAndReturnArgs} args - Arguments to update many RecordMaxSpeeds.
+   * @example
+   * // Update many RecordMaxSpeeds
+   * const recordMaxSpeed = await prisma.recordMaxSpeed.updateManyAndReturn({
+   *   where: {
+   *     // ... provide filter here
+   *   },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * 
+   * // Update zero or more RecordMaxSpeeds and only return the `id`
+   * const recordMaxSpeedWithIdOnly = await prisma.recordMaxSpeed.updateManyAndReturn({
+   *   select: { id: true },
+   *   where: {
+   *     // ... provide filter here
+   *   },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * Note, that providing `undefined` is treated as the value not being there.
+   * Read more here: https://pris.ly/d/null-undefined
+   * 
+   */
+  updateManyAndReturn<T extends RecordMaxSpeedUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, RecordMaxSpeedUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RecordMaxSpeedPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
   /**
    * Create or update one RecordMaxSpeed.
@@ -1224,6 +1297,29 @@ export type RecordMaxSpeedCreateManyArgs<ExtArgs extends runtime.Types.Extension
 }
 
 /**
+ * RecordMaxSpeed createManyAndReturn
+ */
+export type RecordMaxSpeedCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the RecordMaxSpeed
+   */
+  select?: Prisma.RecordMaxSpeedSelectCreateManyAndReturn<ExtArgs> | null
+  /**
+   * Omit specific fields from the RecordMaxSpeed
+   */
+  omit?: Prisma.RecordMaxSpeedOmit<ExtArgs> | null
+  /**
+   * The data used to create many RecordMaxSpeeds.
+   */
+  data: Prisma.RecordMaxSpeedCreateManyInput | Prisma.RecordMaxSpeedCreateManyInput[]
+  skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RecordMaxSpeedIncludeCreateManyAndReturn<ExtArgs> | null
+}
+
+/**
  * RecordMaxSpeed update
  */
 export type RecordMaxSpeedUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1265,6 +1361,36 @@ export type RecordMaxSpeedUpdateManyArgs<ExtArgs extends runtime.Types.Extension
    * Limit how many RecordMaxSpeeds to update.
    */
   limit?: number
+}
+
+/**
+ * RecordMaxSpeed updateManyAndReturn
+ */
+export type RecordMaxSpeedUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the RecordMaxSpeed
+   */
+  select?: Prisma.RecordMaxSpeedSelectUpdateManyAndReturn<ExtArgs> | null
+  /**
+   * Omit specific fields from the RecordMaxSpeed
+   */
+  omit?: Prisma.RecordMaxSpeedOmit<ExtArgs> | null
+  /**
+   * The data used to update RecordMaxSpeeds.
+   */
+  data: Prisma.XOR<Prisma.RecordMaxSpeedUpdateManyMutationInput, Prisma.RecordMaxSpeedUncheckedUpdateManyInput>
+  /**
+   * Filter which RecordMaxSpeeds to update
+   */
+  where?: Prisma.RecordMaxSpeedWhereInput
+  /**
+   * Limit how many RecordMaxSpeeds to update.
+   */
+  limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RecordMaxSpeedIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**

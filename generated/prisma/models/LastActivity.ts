@@ -252,7 +252,6 @@ export type LastActivityOrderByWithRelationInput = {
   anaerobicThresholdUsed?: Prisma.SortOrder
   data?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
-  _relevance?: Prisma.LastActivityOrderByRelevanceInput
 }
 
 export type LastActivityWhereUniqueInput = Prisma.AtLeast<{
@@ -366,12 +365,6 @@ export type LastActivityUncheckedUpdateManyInput = {
 export type LastActivityNullableScalarRelationFilter = {
   is?: Prisma.LastActivityWhereInput | null
   isNot?: Prisma.LastActivityWhereInput | null
-}
-
-export type LastActivityOrderByRelevanceInput = {
-  fields: Prisma.LastActivityOrderByRelevanceFieldEnum | Prisma.LastActivityOrderByRelevanceFieldEnum[]
-  sort: Prisma.SortOrder
-  search: string
 }
 
 export type LastActivityCountOrderByAggregateInput = {
@@ -511,7 +504,27 @@ export type LastActivitySelect<ExtArgs extends runtime.Types.Extensions.Internal
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["lastActivity"]>
 
+export type LastActivitySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  id?: boolean
+  userId?: boolean
+  filename?: boolean
+  uploadedAt?: boolean
+  ftpUsed?: boolean
+  anaerobicThresholdUsed?: boolean
+  data?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}, ExtArgs["result"]["lastActivity"]>
 
+export type LastActivitySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  id?: boolean
+  userId?: boolean
+  filename?: boolean
+  uploadedAt?: boolean
+  ftpUsed?: boolean
+  anaerobicThresholdUsed?: boolean
+  data?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}, ExtArgs["result"]["lastActivity"]>
 
 export type LastActivitySelectScalar = {
   id?: boolean
@@ -525,6 +538,12 @@ export type LastActivitySelectScalar = {
 
 export type LastActivityOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "filename" | "uploadedAt" | "ftpUsed" | "anaerobicThresholdUsed" | "data", ExtArgs["result"]["lastActivity"]>
 export type LastActivityInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
+export type LastActivityIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
+export type LastActivityIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 
@@ -659,6 +678,30 @@ export interface LastActivityDelegate<ExtArgs extends runtime.Types.Extensions.I
   createMany<T extends LastActivityCreateManyArgs>(args?: Prisma.SelectSubset<T, LastActivityCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
+   * Create many LastActivities and returns the data saved in the database.
+   * @param {LastActivityCreateManyAndReturnArgs} args - Arguments to create many LastActivities.
+   * @example
+   * // Create many LastActivities
+   * const lastActivity = await prisma.lastActivity.createManyAndReturn({
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * 
+   * // Create many LastActivities and only return the `id`
+   * const lastActivityWithIdOnly = await prisma.lastActivity.createManyAndReturn({
+   *   select: { id: true },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * Note, that providing `undefined` is treated as the value not being there.
+   * Read more here: https://pris.ly/d/null-undefined
+   * 
+   */
+  createManyAndReturn<T extends LastActivityCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, LastActivityCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LastActivityPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+  /**
    * Delete a LastActivity.
    * @param {LastActivityDeleteArgs} args - Arguments to delete one LastActivity.
    * @example
@@ -721,6 +764,36 @@ export interface LastActivityDelegate<ExtArgs extends runtime.Types.Extensions.I
    * 
    */
   updateMany<T extends LastActivityUpdateManyArgs>(args: Prisma.SelectSubset<T, LastActivityUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
+
+  /**
+   * Update zero or more LastActivities and returns the data updated in the database.
+   * @param {LastActivityUpdateManyAndReturnArgs} args - Arguments to update many LastActivities.
+   * @example
+   * // Update many LastActivities
+   * const lastActivity = await prisma.lastActivity.updateManyAndReturn({
+   *   where: {
+   *     // ... provide filter here
+   *   },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * 
+   * // Update zero or more LastActivities and only return the `id`
+   * const lastActivityWithIdOnly = await prisma.lastActivity.updateManyAndReturn({
+   *   select: { id: true },
+   *   where: {
+   *     // ... provide filter here
+   *   },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * Note, that providing `undefined` is treated as the value not being there.
+   * Read more here: https://pris.ly/d/null-undefined
+   * 
+   */
+  updateManyAndReturn<T extends LastActivityUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, LastActivityUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LastActivityPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
   /**
    * Create or update one LastActivity.
@@ -1156,6 +1229,29 @@ export type LastActivityCreateManyArgs<ExtArgs extends runtime.Types.Extensions.
 }
 
 /**
+ * LastActivity createManyAndReturn
+ */
+export type LastActivityCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the LastActivity
+   */
+  select?: Prisma.LastActivitySelectCreateManyAndReturn<ExtArgs> | null
+  /**
+   * Omit specific fields from the LastActivity
+   */
+  omit?: Prisma.LastActivityOmit<ExtArgs> | null
+  /**
+   * The data used to create many LastActivities.
+   */
+  data: Prisma.LastActivityCreateManyInput | Prisma.LastActivityCreateManyInput[]
+  skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LastActivityIncludeCreateManyAndReturn<ExtArgs> | null
+}
+
+/**
  * LastActivity update
  */
 export type LastActivityUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1197,6 +1293,36 @@ export type LastActivityUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.
    * Limit how many LastActivities to update.
    */
   limit?: number
+}
+
+/**
+ * LastActivity updateManyAndReturn
+ */
+export type LastActivityUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the LastActivity
+   */
+  select?: Prisma.LastActivitySelectUpdateManyAndReturn<ExtArgs> | null
+  /**
+   * Omit specific fields from the LastActivity
+   */
+  omit?: Prisma.LastActivityOmit<ExtArgs> | null
+  /**
+   * The data used to update LastActivities.
+   */
+  data: Prisma.XOR<Prisma.LastActivityUpdateManyMutationInput, Prisma.LastActivityUncheckedUpdateManyInput>
+  /**
+   * Filter which LastActivities to update
+   */
+  where?: Prisma.LastActivityWhereInput
+  /**
+   * Limit how many LastActivities to update.
+   */
+  limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LastActivityIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**

@@ -256,7 +256,6 @@ export type Record30sOrderByWithRelationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
-  _relevance?: Prisma.Record30sOrderByRelevanceInput
 }
 
 export type Record30sWhereUniqueInput = Prisma.AtLeast<{
@@ -376,12 +375,6 @@ export type Record30sListRelationFilter = {
 
 export type Record30sOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
-}
-
-export type Record30sOrderByRelevanceInput = {
-  fields: Prisma.Record30sOrderByRelevanceFieldEnum | Prisma.Record30sOrderByRelevanceFieldEnum[]
-  sort: Prisma.SortOrder
-  search: string
 }
 
 export type Record30sUserIdRankCompoundUniqueInput = {
@@ -579,7 +572,27 @@ export type Record30sSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["record30s"]>
 
+export type Record30sSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  id?: boolean
+  userId?: boolean
+  rank?: boolean
+  value?: boolean
+  entryDate?: boolean
+  description?: boolean
+  updatedAt?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}, ExtArgs["result"]["record30s"]>
 
+export type Record30sSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  id?: boolean
+  userId?: boolean
+  rank?: boolean
+  value?: boolean
+  entryDate?: boolean
+  description?: boolean
+  updatedAt?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}, ExtArgs["result"]["record30s"]>
 
 export type Record30sSelectScalar = {
   id?: boolean
@@ -593,6 +606,12 @@ export type Record30sSelectScalar = {
 
 export type Record30sOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "rank" | "value" | "entryDate" | "description" | "updatedAt", ExtArgs["result"]["record30s"]>
 export type Record30sInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
+export type Record30sIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
+export type Record30sIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 
@@ -727,6 +746,30 @@ export interface Record30sDelegate<ExtArgs extends runtime.Types.Extensions.Inte
   createMany<T extends Record30sCreateManyArgs>(args?: Prisma.SelectSubset<T, Record30sCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
+   * Create many Record30s and returns the data saved in the database.
+   * @param {Record30sCreateManyAndReturnArgs} args - Arguments to create many Record30s.
+   * @example
+   * // Create many Record30s
+   * const record30s = await prisma.record30s.createManyAndReturn({
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * 
+   * // Create many Record30s and only return the `id`
+   * const record30sWithIdOnly = await prisma.record30s.createManyAndReturn({
+   *   select: { id: true },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * Note, that providing `undefined` is treated as the value not being there.
+   * Read more here: https://pris.ly/d/null-undefined
+   * 
+   */
+  createManyAndReturn<T extends Record30sCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, Record30sCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$Record30sPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+  /**
    * Delete a Record30s.
    * @param {Record30sDeleteArgs} args - Arguments to delete one Record30s.
    * @example
@@ -789,6 +832,36 @@ export interface Record30sDelegate<ExtArgs extends runtime.Types.Extensions.Inte
    * 
    */
   updateMany<T extends Record30sUpdateManyArgs>(args: Prisma.SelectSubset<T, Record30sUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
+
+  /**
+   * Update zero or more Record30s and returns the data updated in the database.
+   * @param {Record30sUpdateManyAndReturnArgs} args - Arguments to update many Record30s.
+   * @example
+   * // Update many Record30s
+   * const record30s = await prisma.record30s.updateManyAndReturn({
+   *   where: {
+   *     // ... provide filter here
+   *   },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * 
+   * // Update zero or more Record30s and only return the `id`
+   * const record30sWithIdOnly = await prisma.record30s.updateManyAndReturn({
+   *   select: { id: true },
+   *   where: {
+   *     // ... provide filter here
+   *   },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * Note, that providing `undefined` is treated as the value not being there.
+   * Read more here: https://pris.ly/d/null-undefined
+   * 
+   */
+  updateManyAndReturn<T extends Record30sUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, Record30sUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$Record30sPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
   /**
    * Create or update one Record30s.
@@ -1224,6 +1297,29 @@ export type Record30sCreateManyArgs<ExtArgs extends runtime.Types.Extensions.Int
 }
 
 /**
+ * Record30s createManyAndReturn
+ */
+export type Record30sCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Record30s
+   */
+  select?: Prisma.Record30sSelectCreateManyAndReturn<ExtArgs> | null
+  /**
+   * Omit specific fields from the Record30s
+   */
+  omit?: Prisma.Record30sOmit<ExtArgs> | null
+  /**
+   * The data used to create many Record30s.
+   */
+  data: Prisma.Record30sCreateManyInput | Prisma.Record30sCreateManyInput[]
+  skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.Record30sIncludeCreateManyAndReturn<ExtArgs> | null
+}
+
+/**
  * Record30s update
  */
 export type Record30sUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1265,6 +1361,36 @@ export type Record30sUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Limit how many Record30s to update.
    */
   limit?: number
+}
+
+/**
+ * Record30s updateManyAndReturn
+ */
+export type Record30sUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Record30s
+   */
+  select?: Prisma.Record30sSelectUpdateManyAndReturn<ExtArgs> | null
+  /**
+   * Omit specific fields from the Record30s
+   */
+  omit?: Prisma.Record30sOmit<ExtArgs> | null
+  /**
+   * The data used to update Record30s.
+   */
+  data: Prisma.XOR<Prisma.Record30sUpdateManyMutationInput, Prisma.Record30sUncheckedUpdateManyInput>
+  /**
+   * Filter which Record30s to update
+   */
+  where?: Prisma.Record30sWhereInput
+  /**
+   * Limit how many Record30s to update.
+   */
+  limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.Record30sIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**

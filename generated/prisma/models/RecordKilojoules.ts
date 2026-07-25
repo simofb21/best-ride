@@ -256,7 +256,6 @@ export type RecordKilojoulesOrderByWithRelationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
-  _relevance?: Prisma.RecordKilojoulesOrderByRelevanceInput
 }
 
 export type RecordKilojoulesWhereUniqueInput = Prisma.AtLeast<{
@@ -376,12 +375,6 @@ export type RecordKilojoulesListRelationFilter = {
 
 export type RecordKilojoulesOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
-}
-
-export type RecordKilojoulesOrderByRelevanceInput = {
-  fields: Prisma.RecordKilojoulesOrderByRelevanceFieldEnum | Prisma.RecordKilojoulesOrderByRelevanceFieldEnum[]
-  sort: Prisma.SortOrder
-  search: string
 }
 
 export type RecordKilojoulesUserIdRankCompoundUniqueInput = {
@@ -579,7 +572,27 @@ export type RecordKilojoulesSelect<ExtArgs extends runtime.Types.Extensions.Inte
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["recordKilojoules"]>
 
+export type RecordKilojoulesSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  id?: boolean
+  userId?: boolean
+  rank?: boolean
+  value?: boolean
+  entryDate?: boolean
+  description?: boolean
+  updatedAt?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}, ExtArgs["result"]["recordKilojoules"]>
 
+export type RecordKilojoulesSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  id?: boolean
+  userId?: boolean
+  rank?: boolean
+  value?: boolean
+  entryDate?: boolean
+  description?: boolean
+  updatedAt?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}, ExtArgs["result"]["recordKilojoules"]>
 
 export type RecordKilojoulesSelectScalar = {
   id?: boolean
@@ -593,6 +606,12 @@ export type RecordKilojoulesSelectScalar = {
 
 export type RecordKilojoulesOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "rank" | "value" | "entryDate" | "description" | "updatedAt", ExtArgs["result"]["recordKilojoules"]>
 export type RecordKilojoulesInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
+export type RecordKilojoulesIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
+export type RecordKilojoulesIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 
@@ -727,6 +746,30 @@ export interface RecordKilojoulesDelegate<ExtArgs extends runtime.Types.Extensio
   createMany<T extends RecordKilojoulesCreateManyArgs>(args?: Prisma.SelectSubset<T, RecordKilojoulesCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
+   * Create many RecordKilojoules and returns the data saved in the database.
+   * @param {RecordKilojoulesCreateManyAndReturnArgs} args - Arguments to create many RecordKilojoules.
+   * @example
+   * // Create many RecordKilojoules
+   * const recordKilojoules = await prisma.recordKilojoules.createManyAndReturn({
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * 
+   * // Create many RecordKilojoules and only return the `id`
+   * const recordKilojoulesWithIdOnly = await prisma.recordKilojoules.createManyAndReturn({
+   *   select: { id: true },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * Note, that providing `undefined` is treated as the value not being there.
+   * Read more here: https://pris.ly/d/null-undefined
+   * 
+   */
+  createManyAndReturn<T extends RecordKilojoulesCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, RecordKilojoulesCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RecordKilojoulesPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+  /**
    * Delete a RecordKilojoules.
    * @param {RecordKilojoulesDeleteArgs} args - Arguments to delete one RecordKilojoules.
    * @example
@@ -789,6 +832,36 @@ export interface RecordKilojoulesDelegate<ExtArgs extends runtime.Types.Extensio
    * 
    */
   updateMany<T extends RecordKilojoulesUpdateManyArgs>(args: Prisma.SelectSubset<T, RecordKilojoulesUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
+
+  /**
+   * Update zero or more RecordKilojoules and returns the data updated in the database.
+   * @param {RecordKilojoulesUpdateManyAndReturnArgs} args - Arguments to update many RecordKilojoules.
+   * @example
+   * // Update many RecordKilojoules
+   * const recordKilojoules = await prisma.recordKilojoules.updateManyAndReturn({
+   *   where: {
+   *     // ... provide filter here
+   *   },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * 
+   * // Update zero or more RecordKilojoules and only return the `id`
+   * const recordKilojoulesWithIdOnly = await prisma.recordKilojoules.updateManyAndReturn({
+   *   select: { id: true },
+   *   where: {
+   *     // ... provide filter here
+   *   },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * Note, that providing `undefined` is treated as the value not being there.
+   * Read more here: https://pris.ly/d/null-undefined
+   * 
+   */
+  updateManyAndReturn<T extends RecordKilojoulesUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, RecordKilojoulesUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RecordKilojoulesPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
   /**
    * Create or update one RecordKilojoules.
@@ -1224,6 +1297,29 @@ export type RecordKilojoulesCreateManyArgs<ExtArgs extends runtime.Types.Extensi
 }
 
 /**
+ * RecordKilojoules createManyAndReturn
+ */
+export type RecordKilojoulesCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the RecordKilojoules
+   */
+  select?: Prisma.RecordKilojoulesSelectCreateManyAndReturn<ExtArgs> | null
+  /**
+   * Omit specific fields from the RecordKilojoules
+   */
+  omit?: Prisma.RecordKilojoulesOmit<ExtArgs> | null
+  /**
+   * The data used to create many RecordKilojoules.
+   */
+  data: Prisma.RecordKilojoulesCreateManyInput | Prisma.RecordKilojoulesCreateManyInput[]
+  skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RecordKilojoulesIncludeCreateManyAndReturn<ExtArgs> | null
+}
+
+/**
  * RecordKilojoules update
  */
 export type RecordKilojoulesUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1265,6 +1361,36 @@ export type RecordKilojoulesUpdateManyArgs<ExtArgs extends runtime.Types.Extensi
    * Limit how many RecordKilojoules to update.
    */
   limit?: number
+}
+
+/**
+ * RecordKilojoules updateManyAndReturn
+ */
+export type RecordKilojoulesUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the RecordKilojoules
+   */
+  select?: Prisma.RecordKilojoulesSelectUpdateManyAndReturn<ExtArgs> | null
+  /**
+   * Omit specific fields from the RecordKilojoules
+   */
+  omit?: Prisma.RecordKilojoulesOmit<ExtArgs> | null
+  /**
+   * The data used to update RecordKilojoules.
+   */
+  data: Prisma.XOR<Prisma.RecordKilojoulesUpdateManyMutationInput, Prisma.RecordKilojoulesUncheckedUpdateManyInput>
+  /**
+   * Filter which RecordKilojoules to update
+   */
+  where?: Prisma.RecordKilojoulesWhereInput
+  /**
+   * Limit how many RecordKilojoules to update.
+   */
+  limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RecordKilojoulesIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**

@@ -256,7 +256,6 @@ export type Record5sOrderByWithRelationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
-  _relevance?: Prisma.Record5sOrderByRelevanceInput
 }
 
 export type Record5sWhereUniqueInput = Prisma.AtLeast<{
@@ -376,12 +375,6 @@ export type Record5sListRelationFilter = {
 
 export type Record5sOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
-}
-
-export type Record5sOrderByRelevanceInput = {
-  fields: Prisma.Record5sOrderByRelevanceFieldEnum | Prisma.Record5sOrderByRelevanceFieldEnum[]
-  sort: Prisma.SortOrder
-  search: string
 }
 
 export type Record5sUserIdRankCompoundUniqueInput = {
@@ -579,7 +572,27 @@ export type Record5sSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["record5s"]>
 
+export type Record5sSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  id?: boolean
+  userId?: boolean
+  rank?: boolean
+  value?: boolean
+  entryDate?: boolean
+  description?: boolean
+  updatedAt?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}, ExtArgs["result"]["record5s"]>
 
+export type Record5sSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  id?: boolean
+  userId?: boolean
+  rank?: boolean
+  value?: boolean
+  entryDate?: boolean
+  description?: boolean
+  updatedAt?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}, ExtArgs["result"]["record5s"]>
 
 export type Record5sSelectScalar = {
   id?: boolean
@@ -593,6 +606,12 @@ export type Record5sSelectScalar = {
 
 export type Record5sOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "rank" | "value" | "entryDate" | "description" | "updatedAt", ExtArgs["result"]["record5s"]>
 export type Record5sInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
+export type Record5sIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
+export type Record5sIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 
@@ -727,6 +746,30 @@ export interface Record5sDelegate<ExtArgs extends runtime.Types.Extensions.Inter
   createMany<T extends Record5sCreateManyArgs>(args?: Prisma.SelectSubset<T, Record5sCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
+   * Create many Record5s and returns the data saved in the database.
+   * @param {Record5sCreateManyAndReturnArgs} args - Arguments to create many Record5s.
+   * @example
+   * // Create many Record5s
+   * const record5s = await prisma.record5s.createManyAndReturn({
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * 
+   * // Create many Record5s and only return the `id`
+   * const record5sWithIdOnly = await prisma.record5s.createManyAndReturn({
+   *   select: { id: true },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * Note, that providing `undefined` is treated as the value not being there.
+   * Read more here: https://pris.ly/d/null-undefined
+   * 
+   */
+  createManyAndReturn<T extends Record5sCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, Record5sCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$Record5sPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+  /**
    * Delete a Record5s.
    * @param {Record5sDeleteArgs} args - Arguments to delete one Record5s.
    * @example
@@ -789,6 +832,36 @@ export interface Record5sDelegate<ExtArgs extends runtime.Types.Extensions.Inter
    * 
    */
   updateMany<T extends Record5sUpdateManyArgs>(args: Prisma.SelectSubset<T, Record5sUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
+
+  /**
+   * Update zero or more Record5s and returns the data updated in the database.
+   * @param {Record5sUpdateManyAndReturnArgs} args - Arguments to update many Record5s.
+   * @example
+   * // Update many Record5s
+   * const record5s = await prisma.record5s.updateManyAndReturn({
+   *   where: {
+   *     // ... provide filter here
+   *   },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * 
+   * // Update zero or more Record5s and only return the `id`
+   * const record5sWithIdOnly = await prisma.record5s.updateManyAndReturn({
+   *   select: { id: true },
+   *   where: {
+   *     // ... provide filter here
+   *   },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * Note, that providing `undefined` is treated as the value not being there.
+   * Read more here: https://pris.ly/d/null-undefined
+   * 
+   */
+  updateManyAndReturn<T extends Record5sUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, Record5sUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$Record5sPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
   /**
    * Create or update one Record5s.
@@ -1224,6 +1297,29 @@ export type Record5sCreateManyArgs<ExtArgs extends runtime.Types.Extensions.Inte
 }
 
 /**
+ * Record5s createManyAndReturn
+ */
+export type Record5sCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Record5s
+   */
+  select?: Prisma.Record5sSelectCreateManyAndReturn<ExtArgs> | null
+  /**
+   * Omit specific fields from the Record5s
+   */
+  omit?: Prisma.Record5sOmit<ExtArgs> | null
+  /**
+   * The data used to create many Record5s.
+   */
+  data: Prisma.Record5sCreateManyInput | Prisma.Record5sCreateManyInput[]
+  skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.Record5sIncludeCreateManyAndReturn<ExtArgs> | null
+}
+
+/**
  * Record5s update
  */
 export type Record5sUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1265,6 +1361,36 @@ export type Record5sUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Limit how many Record5s to update.
    */
   limit?: number
+}
+
+/**
+ * Record5s updateManyAndReturn
+ */
+export type Record5sUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Record5s
+   */
+  select?: Prisma.Record5sSelectUpdateManyAndReturn<ExtArgs> | null
+  /**
+   * Omit specific fields from the Record5s
+   */
+  omit?: Prisma.Record5sOmit<ExtArgs> | null
+  /**
+   * The data used to update Record5s.
+   */
+  data: Prisma.XOR<Prisma.Record5sUpdateManyMutationInput, Prisma.Record5sUncheckedUpdateManyInput>
+  /**
+   * Filter which Record5s to update
+   */
+  where?: Prisma.Record5sWhereInput
+  /**
+   * Limit how many Record5s to update.
+   */
+  limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.Record5sIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**

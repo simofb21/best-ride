@@ -256,7 +256,6 @@ export type RecordElevationGainOrderByWithRelationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
-  _relevance?: Prisma.RecordElevationGainOrderByRelevanceInput
 }
 
 export type RecordElevationGainWhereUniqueInput = Prisma.AtLeast<{
@@ -376,12 +375,6 @@ export type RecordElevationGainListRelationFilter = {
 
 export type RecordElevationGainOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
-}
-
-export type RecordElevationGainOrderByRelevanceInput = {
-  fields: Prisma.RecordElevationGainOrderByRelevanceFieldEnum | Prisma.RecordElevationGainOrderByRelevanceFieldEnum[]
-  sort: Prisma.SortOrder
-  search: string
 }
 
 export type RecordElevationGainUserIdRankCompoundUniqueInput = {
@@ -579,7 +572,27 @@ export type RecordElevationGainSelect<ExtArgs extends runtime.Types.Extensions.I
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["recordElevationGain"]>
 
+export type RecordElevationGainSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  id?: boolean
+  userId?: boolean
+  rank?: boolean
+  value?: boolean
+  entryDate?: boolean
+  description?: boolean
+  updatedAt?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}, ExtArgs["result"]["recordElevationGain"]>
 
+export type RecordElevationGainSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  id?: boolean
+  userId?: boolean
+  rank?: boolean
+  value?: boolean
+  entryDate?: boolean
+  description?: boolean
+  updatedAt?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}, ExtArgs["result"]["recordElevationGain"]>
 
 export type RecordElevationGainSelectScalar = {
   id?: boolean
@@ -593,6 +606,12 @@ export type RecordElevationGainSelectScalar = {
 
 export type RecordElevationGainOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "rank" | "value" | "entryDate" | "description" | "updatedAt", ExtArgs["result"]["recordElevationGain"]>
 export type RecordElevationGainInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
+export type RecordElevationGainIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
+export type RecordElevationGainIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 
@@ -727,6 +746,30 @@ export interface RecordElevationGainDelegate<ExtArgs extends runtime.Types.Exten
   createMany<T extends RecordElevationGainCreateManyArgs>(args?: Prisma.SelectSubset<T, RecordElevationGainCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
+   * Create many RecordElevationGains and returns the data saved in the database.
+   * @param {RecordElevationGainCreateManyAndReturnArgs} args - Arguments to create many RecordElevationGains.
+   * @example
+   * // Create many RecordElevationGains
+   * const recordElevationGain = await prisma.recordElevationGain.createManyAndReturn({
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * 
+   * // Create many RecordElevationGains and only return the `id`
+   * const recordElevationGainWithIdOnly = await prisma.recordElevationGain.createManyAndReturn({
+   *   select: { id: true },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * Note, that providing `undefined` is treated as the value not being there.
+   * Read more here: https://pris.ly/d/null-undefined
+   * 
+   */
+  createManyAndReturn<T extends RecordElevationGainCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, RecordElevationGainCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RecordElevationGainPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+  /**
    * Delete a RecordElevationGain.
    * @param {RecordElevationGainDeleteArgs} args - Arguments to delete one RecordElevationGain.
    * @example
@@ -789,6 +832,36 @@ export interface RecordElevationGainDelegate<ExtArgs extends runtime.Types.Exten
    * 
    */
   updateMany<T extends RecordElevationGainUpdateManyArgs>(args: Prisma.SelectSubset<T, RecordElevationGainUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
+
+  /**
+   * Update zero or more RecordElevationGains and returns the data updated in the database.
+   * @param {RecordElevationGainUpdateManyAndReturnArgs} args - Arguments to update many RecordElevationGains.
+   * @example
+   * // Update many RecordElevationGains
+   * const recordElevationGain = await prisma.recordElevationGain.updateManyAndReturn({
+   *   where: {
+   *     // ... provide filter here
+   *   },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * 
+   * // Update zero or more RecordElevationGains and only return the `id`
+   * const recordElevationGainWithIdOnly = await prisma.recordElevationGain.updateManyAndReturn({
+   *   select: { id: true },
+   *   where: {
+   *     // ... provide filter here
+   *   },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * Note, that providing `undefined` is treated as the value not being there.
+   * Read more here: https://pris.ly/d/null-undefined
+   * 
+   */
+  updateManyAndReturn<T extends RecordElevationGainUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, RecordElevationGainUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RecordElevationGainPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
   /**
    * Create or update one RecordElevationGain.
@@ -1224,6 +1297,29 @@ export type RecordElevationGainCreateManyArgs<ExtArgs extends runtime.Types.Exte
 }
 
 /**
+ * RecordElevationGain createManyAndReturn
+ */
+export type RecordElevationGainCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the RecordElevationGain
+   */
+  select?: Prisma.RecordElevationGainSelectCreateManyAndReturn<ExtArgs> | null
+  /**
+   * Omit specific fields from the RecordElevationGain
+   */
+  omit?: Prisma.RecordElevationGainOmit<ExtArgs> | null
+  /**
+   * The data used to create many RecordElevationGains.
+   */
+  data: Prisma.RecordElevationGainCreateManyInput | Prisma.RecordElevationGainCreateManyInput[]
+  skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RecordElevationGainIncludeCreateManyAndReturn<ExtArgs> | null
+}
+
+/**
  * RecordElevationGain update
  */
 export type RecordElevationGainUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1265,6 +1361,36 @@ export type RecordElevationGainUpdateManyArgs<ExtArgs extends runtime.Types.Exte
    * Limit how many RecordElevationGains to update.
    */
   limit?: number
+}
+
+/**
+ * RecordElevationGain updateManyAndReturn
+ */
+export type RecordElevationGainUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the RecordElevationGain
+   */
+  select?: Prisma.RecordElevationGainSelectUpdateManyAndReturn<ExtArgs> | null
+  /**
+   * Omit specific fields from the RecordElevationGain
+   */
+  omit?: Prisma.RecordElevationGainOmit<ExtArgs> | null
+  /**
+   * The data used to update RecordElevationGains.
+   */
+  data: Prisma.XOR<Prisma.RecordElevationGainUpdateManyMutationInput, Prisma.RecordElevationGainUncheckedUpdateManyInput>
+  /**
+   * Filter which RecordElevationGains to update
+   */
+  where?: Prisma.RecordElevationGainWhereInput
+  /**
+   * Limit how many RecordElevationGains to update.
+   */
+  limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RecordElevationGainIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**

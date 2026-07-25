@@ -256,7 +256,6 @@ export type RecordPeakPowerOrderByWithRelationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
-  _relevance?: Prisma.RecordPeakPowerOrderByRelevanceInput
 }
 
 export type RecordPeakPowerWhereUniqueInput = Prisma.AtLeast<{
@@ -376,12 +375,6 @@ export type RecordPeakPowerListRelationFilter = {
 
 export type RecordPeakPowerOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
-}
-
-export type RecordPeakPowerOrderByRelevanceInput = {
-  fields: Prisma.RecordPeakPowerOrderByRelevanceFieldEnum | Prisma.RecordPeakPowerOrderByRelevanceFieldEnum[]
-  sort: Prisma.SortOrder
-  search: string
 }
 
 export type RecordPeakPowerUserIdRankCompoundUniqueInput = {
@@ -587,7 +580,27 @@ export type RecordPeakPowerSelect<ExtArgs extends runtime.Types.Extensions.Inter
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["recordPeakPower"]>
 
+export type RecordPeakPowerSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  id?: boolean
+  userId?: boolean
+  rank?: boolean
+  value?: boolean
+  entryDate?: boolean
+  description?: boolean
+  updatedAt?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}, ExtArgs["result"]["recordPeakPower"]>
 
+export type RecordPeakPowerSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  id?: boolean
+  userId?: boolean
+  rank?: boolean
+  value?: boolean
+  entryDate?: boolean
+  description?: boolean
+  updatedAt?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}, ExtArgs["result"]["recordPeakPower"]>
 
 export type RecordPeakPowerSelectScalar = {
   id?: boolean
@@ -601,6 +614,12 @@ export type RecordPeakPowerSelectScalar = {
 
 export type RecordPeakPowerOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "rank" | "value" | "entryDate" | "description" | "updatedAt", ExtArgs["result"]["recordPeakPower"]>
 export type RecordPeakPowerInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
+export type RecordPeakPowerIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
+export type RecordPeakPowerIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 
@@ -735,6 +754,30 @@ export interface RecordPeakPowerDelegate<ExtArgs extends runtime.Types.Extension
   createMany<T extends RecordPeakPowerCreateManyArgs>(args?: Prisma.SelectSubset<T, RecordPeakPowerCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
+   * Create many RecordPeakPowers and returns the data saved in the database.
+   * @param {RecordPeakPowerCreateManyAndReturnArgs} args - Arguments to create many RecordPeakPowers.
+   * @example
+   * // Create many RecordPeakPowers
+   * const recordPeakPower = await prisma.recordPeakPower.createManyAndReturn({
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * 
+   * // Create many RecordPeakPowers and only return the `id`
+   * const recordPeakPowerWithIdOnly = await prisma.recordPeakPower.createManyAndReturn({
+   *   select: { id: true },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * Note, that providing `undefined` is treated as the value not being there.
+   * Read more here: https://pris.ly/d/null-undefined
+   * 
+   */
+  createManyAndReturn<T extends RecordPeakPowerCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, RecordPeakPowerCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RecordPeakPowerPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+  /**
    * Delete a RecordPeakPower.
    * @param {RecordPeakPowerDeleteArgs} args - Arguments to delete one RecordPeakPower.
    * @example
@@ -797,6 +840,36 @@ export interface RecordPeakPowerDelegate<ExtArgs extends runtime.Types.Extension
    * 
    */
   updateMany<T extends RecordPeakPowerUpdateManyArgs>(args: Prisma.SelectSubset<T, RecordPeakPowerUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
+
+  /**
+   * Update zero or more RecordPeakPowers and returns the data updated in the database.
+   * @param {RecordPeakPowerUpdateManyAndReturnArgs} args - Arguments to update many RecordPeakPowers.
+   * @example
+   * // Update many RecordPeakPowers
+   * const recordPeakPower = await prisma.recordPeakPower.updateManyAndReturn({
+   *   where: {
+   *     // ... provide filter here
+   *   },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * 
+   * // Update zero or more RecordPeakPowers and only return the `id`
+   * const recordPeakPowerWithIdOnly = await prisma.recordPeakPower.updateManyAndReturn({
+   *   select: { id: true },
+   *   where: {
+   *     // ... provide filter here
+   *   },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * Note, that providing `undefined` is treated as the value not being there.
+   * Read more here: https://pris.ly/d/null-undefined
+   * 
+   */
+  updateManyAndReturn<T extends RecordPeakPowerUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, RecordPeakPowerUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RecordPeakPowerPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
   /**
    * Create or update one RecordPeakPower.
@@ -1232,6 +1305,29 @@ export type RecordPeakPowerCreateManyArgs<ExtArgs extends runtime.Types.Extensio
 }
 
 /**
+ * RecordPeakPower createManyAndReturn
+ */
+export type RecordPeakPowerCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the RecordPeakPower
+   */
+  select?: Prisma.RecordPeakPowerSelectCreateManyAndReturn<ExtArgs> | null
+  /**
+   * Omit specific fields from the RecordPeakPower
+   */
+  omit?: Prisma.RecordPeakPowerOmit<ExtArgs> | null
+  /**
+   * The data used to create many RecordPeakPowers.
+   */
+  data: Prisma.RecordPeakPowerCreateManyInput | Prisma.RecordPeakPowerCreateManyInput[]
+  skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RecordPeakPowerIncludeCreateManyAndReturn<ExtArgs> | null
+}
+
+/**
  * RecordPeakPower update
  */
 export type RecordPeakPowerUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1273,6 +1369,36 @@ export type RecordPeakPowerUpdateManyArgs<ExtArgs extends runtime.Types.Extensio
    * Limit how many RecordPeakPowers to update.
    */
   limit?: number
+}
+
+/**
+ * RecordPeakPower updateManyAndReturn
+ */
+export type RecordPeakPowerUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the RecordPeakPower
+   */
+  select?: Prisma.RecordPeakPowerSelectUpdateManyAndReturn<ExtArgs> | null
+  /**
+   * Omit specific fields from the RecordPeakPower
+   */
+  omit?: Prisma.RecordPeakPowerOmit<ExtArgs> | null
+  /**
+   * The data used to update RecordPeakPowers.
+   */
+  data: Prisma.XOR<Prisma.RecordPeakPowerUpdateManyMutationInput, Prisma.RecordPeakPowerUncheckedUpdateManyInput>
+  /**
+   * Filter which RecordPeakPowers to update
+   */
+  where?: Prisma.RecordPeakPowerWhereInput
+  /**
+   * Limit how many RecordPeakPowers to update.
+   */
+  limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RecordPeakPowerIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**

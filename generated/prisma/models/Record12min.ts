@@ -256,7 +256,6 @@ export type Record12minOrderByWithRelationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
-  _relevance?: Prisma.Record12minOrderByRelevanceInput
 }
 
 export type Record12minWhereUniqueInput = Prisma.AtLeast<{
@@ -376,12 +375,6 @@ export type Record12minListRelationFilter = {
 
 export type Record12minOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
-}
-
-export type Record12minOrderByRelevanceInput = {
-  fields: Prisma.Record12minOrderByRelevanceFieldEnum | Prisma.Record12minOrderByRelevanceFieldEnum[]
-  sort: Prisma.SortOrder
-  search: string
 }
 
 export type Record12minUserIdRankCompoundUniqueInput = {
@@ -579,7 +572,27 @@ export type Record12minSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["record12min"]>
 
+export type Record12minSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  id?: boolean
+  userId?: boolean
+  rank?: boolean
+  value?: boolean
+  entryDate?: boolean
+  description?: boolean
+  updatedAt?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}, ExtArgs["result"]["record12min"]>
 
+export type Record12minSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  id?: boolean
+  userId?: boolean
+  rank?: boolean
+  value?: boolean
+  entryDate?: boolean
+  description?: boolean
+  updatedAt?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}, ExtArgs["result"]["record12min"]>
 
 export type Record12minSelectScalar = {
   id?: boolean
@@ -593,6 +606,12 @@ export type Record12minSelectScalar = {
 
 export type Record12minOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "rank" | "value" | "entryDate" | "description" | "updatedAt", ExtArgs["result"]["record12min"]>
 export type Record12minInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
+export type Record12minIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
+export type Record12minIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 
@@ -727,6 +746,30 @@ export interface Record12minDelegate<ExtArgs extends runtime.Types.Extensions.In
   createMany<T extends Record12minCreateManyArgs>(args?: Prisma.SelectSubset<T, Record12minCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
+   * Create many Record12mins and returns the data saved in the database.
+   * @param {Record12minCreateManyAndReturnArgs} args - Arguments to create many Record12mins.
+   * @example
+   * // Create many Record12mins
+   * const record12min = await prisma.record12min.createManyAndReturn({
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * 
+   * // Create many Record12mins and only return the `id`
+   * const record12minWithIdOnly = await prisma.record12min.createManyAndReturn({
+   *   select: { id: true },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * Note, that providing `undefined` is treated as the value not being there.
+   * Read more here: https://pris.ly/d/null-undefined
+   * 
+   */
+  createManyAndReturn<T extends Record12minCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, Record12minCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$Record12minPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+  /**
    * Delete a Record12min.
    * @param {Record12minDeleteArgs} args - Arguments to delete one Record12min.
    * @example
@@ -789,6 +832,36 @@ export interface Record12minDelegate<ExtArgs extends runtime.Types.Extensions.In
    * 
    */
   updateMany<T extends Record12minUpdateManyArgs>(args: Prisma.SelectSubset<T, Record12minUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
+
+  /**
+   * Update zero or more Record12mins and returns the data updated in the database.
+   * @param {Record12minUpdateManyAndReturnArgs} args - Arguments to update many Record12mins.
+   * @example
+   * // Update many Record12mins
+   * const record12min = await prisma.record12min.updateManyAndReturn({
+   *   where: {
+   *     // ... provide filter here
+   *   },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * 
+   * // Update zero or more Record12mins and only return the `id`
+   * const record12minWithIdOnly = await prisma.record12min.updateManyAndReturn({
+   *   select: { id: true },
+   *   where: {
+   *     // ... provide filter here
+   *   },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * Note, that providing `undefined` is treated as the value not being there.
+   * Read more here: https://pris.ly/d/null-undefined
+   * 
+   */
+  updateManyAndReturn<T extends Record12minUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, Record12minUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$Record12minPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
   /**
    * Create or update one Record12min.
@@ -1224,6 +1297,29 @@ export type Record12minCreateManyArgs<ExtArgs extends runtime.Types.Extensions.I
 }
 
 /**
+ * Record12min createManyAndReturn
+ */
+export type Record12minCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Record12min
+   */
+  select?: Prisma.Record12minSelectCreateManyAndReturn<ExtArgs> | null
+  /**
+   * Omit specific fields from the Record12min
+   */
+  omit?: Prisma.Record12minOmit<ExtArgs> | null
+  /**
+   * The data used to create many Record12mins.
+   */
+  data: Prisma.Record12minCreateManyInput | Prisma.Record12minCreateManyInput[]
+  skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.Record12minIncludeCreateManyAndReturn<ExtArgs> | null
+}
+
+/**
  * Record12min update
  */
 export type Record12minUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1265,6 +1361,36 @@ export type Record12minUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.I
    * Limit how many Record12mins to update.
    */
   limit?: number
+}
+
+/**
+ * Record12min updateManyAndReturn
+ */
+export type Record12minUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Record12min
+   */
+  select?: Prisma.Record12minSelectUpdateManyAndReturn<ExtArgs> | null
+  /**
+   * Omit specific fields from the Record12min
+   */
+  omit?: Prisma.Record12minOmit<ExtArgs> | null
+  /**
+   * The data used to update Record12mins.
+   */
+  data: Prisma.XOR<Prisma.Record12minUpdateManyMutationInput, Prisma.Record12minUncheckedUpdateManyInput>
+  /**
+   * Filter which Record12mins to update
+   */
+  where?: Prisma.Record12minWhereInput
+  /**
+   * Limit how many Record12mins to update.
+   */
+  limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.Record12minIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**

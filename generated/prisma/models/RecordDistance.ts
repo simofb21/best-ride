@@ -256,7 +256,6 @@ export type RecordDistanceOrderByWithRelationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
-  _relevance?: Prisma.RecordDistanceOrderByRelevanceInput
 }
 
 export type RecordDistanceWhereUniqueInput = Prisma.AtLeast<{
@@ -376,12 +375,6 @@ export type RecordDistanceListRelationFilter = {
 
 export type RecordDistanceOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
-}
-
-export type RecordDistanceOrderByRelevanceInput = {
-  fields: Prisma.RecordDistanceOrderByRelevanceFieldEnum | Prisma.RecordDistanceOrderByRelevanceFieldEnum[]
-  sort: Prisma.SortOrder
-  search: string
 }
 
 export type RecordDistanceUserIdRankCompoundUniqueInput = {
@@ -579,7 +572,27 @@ export type RecordDistanceSelect<ExtArgs extends runtime.Types.Extensions.Intern
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["recordDistance"]>
 
+export type RecordDistanceSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  id?: boolean
+  userId?: boolean
+  rank?: boolean
+  value?: boolean
+  entryDate?: boolean
+  description?: boolean
+  updatedAt?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}, ExtArgs["result"]["recordDistance"]>
 
+export type RecordDistanceSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  id?: boolean
+  userId?: boolean
+  rank?: boolean
+  value?: boolean
+  entryDate?: boolean
+  description?: boolean
+  updatedAt?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}, ExtArgs["result"]["recordDistance"]>
 
 export type RecordDistanceSelectScalar = {
   id?: boolean
@@ -593,6 +606,12 @@ export type RecordDistanceSelectScalar = {
 
 export type RecordDistanceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "rank" | "value" | "entryDate" | "description" | "updatedAt", ExtArgs["result"]["recordDistance"]>
 export type RecordDistanceInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
+export type RecordDistanceIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
+export type RecordDistanceIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 
@@ -727,6 +746,30 @@ export interface RecordDistanceDelegate<ExtArgs extends runtime.Types.Extensions
   createMany<T extends RecordDistanceCreateManyArgs>(args?: Prisma.SelectSubset<T, RecordDistanceCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
+   * Create many RecordDistances and returns the data saved in the database.
+   * @param {RecordDistanceCreateManyAndReturnArgs} args - Arguments to create many RecordDistances.
+   * @example
+   * // Create many RecordDistances
+   * const recordDistance = await prisma.recordDistance.createManyAndReturn({
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * 
+   * // Create many RecordDistances and only return the `id`
+   * const recordDistanceWithIdOnly = await prisma.recordDistance.createManyAndReturn({
+   *   select: { id: true },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * Note, that providing `undefined` is treated as the value not being there.
+   * Read more here: https://pris.ly/d/null-undefined
+   * 
+   */
+  createManyAndReturn<T extends RecordDistanceCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, RecordDistanceCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RecordDistancePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+  /**
    * Delete a RecordDistance.
    * @param {RecordDistanceDeleteArgs} args - Arguments to delete one RecordDistance.
    * @example
@@ -789,6 +832,36 @@ export interface RecordDistanceDelegate<ExtArgs extends runtime.Types.Extensions
    * 
    */
   updateMany<T extends RecordDistanceUpdateManyArgs>(args: Prisma.SelectSubset<T, RecordDistanceUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
+
+  /**
+   * Update zero or more RecordDistances and returns the data updated in the database.
+   * @param {RecordDistanceUpdateManyAndReturnArgs} args - Arguments to update many RecordDistances.
+   * @example
+   * // Update many RecordDistances
+   * const recordDistance = await prisma.recordDistance.updateManyAndReturn({
+   *   where: {
+   *     // ... provide filter here
+   *   },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * 
+   * // Update zero or more RecordDistances and only return the `id`
+   * const recordDistanceWithIdOnly = await prisma.recordDistance.updateManyAndReturn({
+   *   select: { id: true },
+   *   where: {
+   *     // ... provide filter here
+   *   },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * Note, that providing `undefined` is treated as the value not being there.
+   * Read more here: https://pris.ly/d/null-undefined
+   * 
+   */
+  updateManyAndReturn<T extends RecordDistanceUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, RecordDistanceUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RecordDistancePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
   /**
    * Create or update one RecordDistance.
@@ -1224,6 +1297,29 @@ export type RecordDistanceCreateManyArgs<ExtArgs extends runtime.Types.Extension
 }
 
 /**
+ * RecordDistance createManyAndReturn
+ */
+export type RecordDistanceCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the RecordDistance
+   */
+  select?: Prisma.RecordDistanceSelectCreateManyAndReturn<ExtArgs> | null
+  /**
+   * Omit specific fields from the RecordDistance
+   */
+  omit?: Prisma.RecordDistanceOmit<ExtArgs> | null
+  /**
+   * The data used to create many RecordDistances.
+   */
+  data: Prisma.RecordDistanceCreateManyInput | Prisma.RecordDistanceCreateManyInput[]
+  skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RecordDistanceIncludeCreateManyAndReturn<ExtArgs> | null
+}
+
+/**
  * RecordDistance update
  */
 export type RecordDistanceUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1265,6 +1361,36 @@ export type RecordDistanceUpdateManyArgs<ExtArgs extends runtime.Types.Extension
    * Limit how many RecordDistances to update.
    */
   limit?: number
+}
+
+/**
+ * RecordDistance updateManyAndReturn
+ */
+export type RecordDistanceUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the RecordDistance
+   */
+  select?: Prisma.RecordDistanceSelectUpdateManyAndReturn<ExtArgs> | null
+  /**
+   * Omit specific fields from the RecordDistance
+   */
+  omit?: Prisma.RecordDistanceOmit<ExtArgs> | null
+  /**
+   * The data used to update RecordDistances.
+   */
+  data: Prisma.XOR<Prisma.RecordDistanceUpdateManyMutationInput, Prisma.RecordDistanceUncheckedUpdateManyInput>
+  /**
+   * Filter which RecordDistances to update
+   */
+  where?: Prisma.RecordDistanceWhereInput
+  /**
+   * Limit how many RecordDistances to update.
+   */
+  limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RecordDistanceIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**

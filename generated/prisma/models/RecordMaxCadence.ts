@@ -256,7 +256,6 @@ export type RecordMaxCadenceOrderByWithRelationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
-  _relevance?: Prisma.RecordMaxCadenceOrderByRelevanceInput
 }
 
 export type RecordMaxCadenceWhereUniqueInput = Prisma.AtLeast<{
@@ -376,12 +375,6 @@ export type RecordMaxCadenceListRelationFilter = {
 
 export type RecordMaxCadenceOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
-}
-
-export type RecordMaxCadenceOrderByRelevanceInput = {
-  fields: Prisma.RecordMaxCadenceOrderByRelevanceFieldEnum | Prisma.RecordMaxCadenceOrderByRelevanceFieldEnum[]
-  sort: Prisma.SortOrder
-  search: string
 }
 
 export type RecordMaxCadenceUserIdRankCompoundUniqueInput = {
@@ -579,7 +572,27 @@ export type RecordMaxCadenceSelect<ExtArgs extends runtime.Types.Extensions.Inte
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["recordMaxCadence"]>
 
+export type RecordMaxCadenceSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  id?: boolean
+  userId?: boolean
+  rank?: boolean
+  value?: boolean
+  entryDate?: boolean
+  description?: boolean
+  updatedAt?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}, ExtArgs["result"]["recordMaxCadence"]>
 
+export type RecordMaxCadenceSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  id?: boolean
+  userId?: boolean
+  rank?: boolean
+  value?: boolean
+  entryDate?: boolean
+  description?: boolean
+  updatedAt?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}, ExtArgs["result"]["recordMaxCadence"]>
 
 export type RecordMaxCadenceSelectScalar = {
   id?: boolean
@@ -593,6 +606,12 @@ export type RecordMaxCadenceSelectScalar = {
 
 export type RecordMaxCadenceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "rank" | "value" | "entryDate" | "description" | "updatedAt", ExtArgs["result"]["recordMaxCadence"]>
 export type RecordMaxCadenceInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
+export type RecordMaxCadenceIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
+export type RecordMaxCadenceIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 
@@ -727,6 +746,30 @@ export interface RecordMaxCadenceDelegate<ExtArgs extends runtime.Types.Extensio
   createMany<T extends RecordMaxCadenceCreateManyArgs>(args?: Prisma.SelectSubset<T, RecordMaxCadenceCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
+   * Create many RecordMaxCadences and returns the data saved in the database.
+   * @param {RecordMaxCadenceCreateManyAndReturnArgs} args - Arguments to create many RecordMaxCadences.
+   * @example
+   * // Create many RecordMaxCadences
+   * const recordMaxCadence = await prisma.recordMaxCadence.createManyAndReturn({
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * 
+   * // Create many RecordMaxCadences and only return the `id`
+   * const recordMaxCadenceWithIdOnly = await prisma.recordMaxCadence.createManyAndReturn({
+   *   select: { id: true },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * Note, that providing `undefined` is treated as the value not being there.
+   * Read more here: https://pris.ly/d/null-undefined
+   * 
+   */
+  createManyAndReturn<T extends RecordMaxCadenceCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, RecordMaxCadenceCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RecordMaxCadencePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+  /**
    * Delete a RecordMaxCadence.
    * @param {RecordMaxCadenceDeleteArgs} args - Arguments to delete one RecordMaxCadence.
    * @example
@@ -789,6 +832,36 @@ export interface RecordMaxCadenceDelegate<ExtArgs extends runtime.Types.Extensio
    * 
    */
   updateMany<T extends RecordMaxCadenceUpdateManyArgs>(args: Prisma.SelectSubset<T, RecordMaxCadenceUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
+
+  /**
+   * Update zero or more RecordMaxCadences and returns the data updated in the database.
+   * @param {RecordMaxCadenceUpdateManyAndReturnArgs} args - Arguments to update many RecordMaxCadences.
+   * @example
+   * // Update many RecordMaxCadences
+   * const recordMaxCadence = await prisma.recordMaxCadence.updateManyAndReturn({
+   *   where: {
+   *     // ... provide filter here
+   *   },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * 
+   * // Update zero or more RecordMaxCadences and only return the `id`
+   * const recordMaxCadenceWithIdOnly = await prisma.recordMaxCadence.updateManyAndReturn({
+   *   select: { id: true },
+   *   where: {
+   *     // ... provide filter here
+   *   },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * Note, that providing `undefined` is treated as the value not being there.
+   * Read more here: https://pris.ly/d/null-undefined
+   * 
+   */
+  updateManyAndReturn<T extends RecordMaxCadenceUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, RecordMaxCadenceUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RecordMaxCadencePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
   /**
    * Create or update one RecordMaxCadence.
@@ -1224,6 +1297,29 @@ export type RecordMaxCadenceCreateManyArgs<ExtArgs extends runtime.Types.Extensi
 }
 
 /**
+ * RecordMaxCadence createManyAndReturn
+ */
+export type RecordMaxCadenceCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the RecordMaxCadence
+   */
+  select?: Prisma.RecordMaxCadenceSelectCreateManyAndReturn<ExtArgs> | null
+  /**
+   * Omit specific fields from the RecordMaxCadence
+   */
+  omit?: Prisma.RecordMaxCadenceOmit<ExtArgs> | null
+  /**
+   * The data used to create many RecordMaxCadences.
+   */
+  data: Prisma.RecordMaxCadenceCreateManyInput | Prisma.RecordMaxCadenceCreateManyInput[]
+  skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RecordMaxCadenceIncludeCreateManyAndReturn<ExtArgs> | null
+}
+
+/**
  * RecordMaxCadence update
  */
 export type RecordMaxCadenceUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1265,6 +1361,36 @@ export type RecordMaxCadenceUpdateManyArgs<ExtArgs extends runtime.Types.Extensi
    * Limit how many RecordMaxCadences to update.
    */
   limit?: number
+}
+
+/**
+ * RecordMaxCadence updateManyAndReturn
+ */
+export type RecordMaxCadenceUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the RecordMaxCadence
+   */
+  select?: Prisma.RecordMaxCadenceSelectUpdateManyAndReturn<ExtArgs> | null
+  /**
+   * Omit specific fields from the RecordMaxCadence
+   */
+  omit?: Prisma.RecordMaxCadenceOmit<ExtArgs> | null
+  /**
+   * The data used to update RecordMaxCadences.
+   */
+  data: Prisma.XOR<Prisma.RecordMaxCadenceUpdateManyMutationInput, Prisma.RecordMaxCadenceUncheckedUpdateManyInput>
+  /**
+   * Filter which RecordMaxCadences to update
+   */
+  where?: Prisma.RecordMaxCadenceWhereInput
+  /**
+   * Limit how many RecordMaxCadences to update.
+   */
+  limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RecordMaxCadenceIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**

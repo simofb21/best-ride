@@ -256,7 +256,6 @@ export type RecordMaxHeartrateOrderByWithRelationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
-  _relevance?: Prisma.RecordMaxHeartrateOrderByRelevanceInput
 }
 
 export type RecordMaxHeartrateWhereUniqueInput = Prisma.AtLeast<{
@@ -376,12 +375,6 @@ export type RecordMaxHeartrateListRelationFilter = {
 
 export type RecordMaxHeartrateOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
-}
-
-export type RecordMaxHeartrateOrderByRelevanceInput = {
-  fields: Prisma.RecordMaxHeartrateOrderByRelevanceFieldEnum | Prisma.RecordMaxHeartrateOrderByRelevanceFieldEnum[]
-  sort: Prisma.SortOrder
-  search: string
 }
 
 export type RecordMaxHeartrateUserIdRankCompoundUniqueInput = {
@@ -579,7 +572,27 @@ export type RecordMaxHeartrateSelect<ExtArgs extends runtime.Types.Extensions.In
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["recordMaxHeartrate"]>
 
+export type RecordMaxHeartrateSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  id?: boolean
+  userId?: boolean
+  rank?: boolean
+  value?: boolean
+  entryDate?: boolean
+  description?: boolean
+  updatedAt?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}, ExtArgs["result"]["recordMaxHeartrate"]>
 
+export type RecordMaxHeartrateSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  id?: boolean
+  userId?: boolean
+  rank?: boolean
+  value?: boolean
+  entryDate?: boolean
+  description?: boolean
+  updatedAt?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}, ExtArgs["result"]["recordMaxHeartrate"]>
 
 export type RecordMaxHeartrateSelectScalar = {
   id?: boolean
@@ -593,6 +606,12 @@ export type RecordMaxHeartrateSelectScalar = {
 
 export type RecordMaxHeartrateOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "rank" | "value" | "entryDate" | "description" | "updatedAt", ExtArgs["result"]["recordMaxHeartrate"]>
 export type RecordMaxHeartrateInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
+export type RecordMaxHeartrateIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
+export type RecordMaxHeartrateIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 
@@ -727,6 +746,30 @@ export interface RecordMaxHeartrateDelegate<ExtArgs extends runtime.Types.Extens
   createMany<T extends RecordMaxHeartrateCreateManyArgs>(args?: Prisma.SelectSubset<T, RecordMaxHeartrateCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
+   * Create many RecordMaxHeartrates and returns the data saved in the database.
+   * @param {RecordMaxHeartrateCreateManyAndReturnArgs} args - Arguments to create many RecordMaxHeartrates.
+   * @example
+   * // Create many RecordMaxHeartrates
+   * const recordMaxHeartrate = await prisma.recordMaxHeartrate.createManyAndReturn({
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * 
+   * // Create many RecordMaxHeartrates and only return the `id`
+   * const recordMaxHeartrateWithIdOnly = await prisma.recordMaxHeartrate.createManyAndReturn({
+   *   select: { id: true },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * Note, that providing `undefined` is treated as the value not being there.
+   * Read more here: https://pris.ly/d/null-undefined
+   * 
+   */
+  createManyAndReturn<T extends RecordMaxHeartrateCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, RecordMaxHeartrateCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RecordMaxHeartratePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+  /**
    * Delete a RecordMaxHeartrate.
    * @param {RecordMaxHeartrateDeleteArgs} args - Arguments to delete one RecordMaxHeartrate.
    * @example
@@ -789,6 +832,36 @@ export interface RecordMaxHeartrateDelegate<ExtArgs extends runtime.Types.Extens
    * 
    */
   updateMany<T extends RecordMaxHeartrateUpdateManyArgs>(args: Prisma.SelectSubset<T, RecordMaxHeartrateUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
+
+  /**
+   * Update zero or more RecordMaxHeartrates and returns the data updated in the database.
+   * @param {RecordMaxHeartrateUpdateManyAndReturnArgs} args - Arguments to update many RecordMaxHeartrates.
+   * @example
+   * // Update many RecordMaxHeartrates
+   * const recordMaxHeartrate = await prisma.recordMaxHeartrate.updateManyAndReturn({
+   *   where: {
+   *     // ... provide filter here
+   *   },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * 
+   * // Update zero or more RecordMaxHeartrates and only return the `id`
+   * const recordMaxHeartrateWithIdOnly = await prisma.recordMaxHeartrate.updateManyAndReturn({
+   *   select: { id: true },
+   *   where: {
+   *     // ... provide filter here
+   *   },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * Note, that providing `undefined` is treated as the value not being there.
+   * Read more here: https://pris.ly/d/null-undefined
+   * 
+   */
+  updateManyAndReturn<T extends RecordMaxHeartrateUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, RecordMaxHeartrateUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RecordMaxHeartratePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
   /**
    * Create or update one RecordMaxHeartrate.
@@ -1224,6 +1297,29 @@ export type RecordMaxHeartrateCreateManyArgs<ExtArgs extends runtime.Types.Exten
 }
 
 /**
+ * RecordMaxHeartrate createManyAndReturn
+ */
+export type RecordMaxHeartrateCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the RecordMaxHeartrate
+   */
+  select?: Prisma.RecordMaxHeartrateSelectCreateManyAndReturn<ExtArgs> | null
+  /**
+   * Omit specific fields from the RecordMaxHeartrate
+   */
+  omit?: Prisma.RecordMaxHeartrateOmit<ExtArgs> | null
+  /**
+   * The data used to create many RecordMaxHeartrates.
+   */
+  data: Prisma.RecordMaxHeartrateCreateManyInput | Prisma.RecordMaxHeartrateCreateManyInput[]
+  skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RecordMaxHeartrateIncludeCreateManyAndReturn<ExtArgs> | null
+}
+
+/**
  * RecordMaxHeartrate update
  */
 export type RecordMaxHeartrateUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1265,6 +1361,36 @@ export type RecordMaxHeartrateUpdateManyArgs<ExtArgs extends runtime.Types.Exten
    * Limit how many RecordMaxHeartrates to update.
    */
   limit?: number
+}
+
+/**
+ * RecordMaxHeartrate updateManyAndReturn
+ */
+export type RecordMaxHeartrateUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the RecordMaxHeartrate
+   */
+  select?: Prisma.RecordMaxHeartrateSelectUpdateManyAndReturn<ExtArgs> | null
+  /**
+   * Omit specific fields from the RecordMaxHeartrate
+   */
+  omit?: Prisma.RecordMaxHeartrateOmit<ExtArgs> | null
+  /**
+   * The data used to update RecordMaxHeartrates.
+   */
+  data: Prisma.XOR<Prisma.RecordMaxHeartrateUpdateManyMutationInput, Prisma.RecordMaxHeartrateUncheckedUpdateManyInput>
+  /**
+   * Filter which RecordMaxHeartrates to update
+   */
+  where?: Prisma.RecordMaxHeartrateWhereInput
+  /**
+   * Limit how many RecordMaxHeartrates to update.
+   */
+  limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RecordMaxHeartrateIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
