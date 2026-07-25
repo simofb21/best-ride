@@ -98,7 +98,7 @@
 <script setup lang="ts">
 definePageMeta({ middleware: "auth" });
 import RecordCategorySection from "~/components/records/RecordCategorySection.vue";
-import { RECORD_METRICS } from "../../shared/utils/recordMetric";
+import { RECORD_METRICS } from "@/../shared/utils/recordMetric";
 import { ref, computed, watch } from "vue";
 const records = ref<Record<string, any[]>>({});
 const errorMessage = ref("");
