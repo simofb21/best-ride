@@ -50,7 +50,6 @@
 </template>
 
 <script setup lang="ts">
-import CollapsiblePanel from "~/components/CollapsiblePanel.vue";
 import ActivityStatsPanel from "~/components/activity/ActivityStatsPanel.vue";
 import PowerCurveChart from "~/components/activity/PowerCurveChart.vue";
 definePageMeta({ middleware: "auth" });
