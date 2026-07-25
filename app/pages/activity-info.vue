@@ -7,7 +7,9 @@
       <p>{{ loadError }}</p>
       <NuxtLink to="/upload" class="cta-btn">Upload an activity</NuxtLink>
     </div>
-
+    <p v-else-if="!data" class="state-message">
+      No activity found yet. Upload one to get started.
+    </p>
     <div v-else-if="data" class="activity-layout">
       <div class="slot-general">
         <ActivityStatsPanel
