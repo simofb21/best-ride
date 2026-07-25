@@ -142,17 +142,19 @@ const chartData = computed(() => {
 }
 
 .labels-scroll {
+  width: 100%;
   overflow-x: auto;
-  max-width: 100%;
   margin-top: 10px;
   -webkit-overflow-scrolling: touch;
+  /* debug temporaneo: rende visibile chiaramente se sta scrollando */
+  scrollbar-width: thin;
 }
 
 .curve-labels {
   display: flex;
-  justify-content: space-between;
   gap: 4px;
-  min-width: 700px; /* sotto questa soglia scrolla invece di comprimersi */
+  min-width: 700px;
+  width: max-content; /* forza la larghezza reale del contenuto, non 100% del genitore */
 }
 .curve-label {
   display: flex;
