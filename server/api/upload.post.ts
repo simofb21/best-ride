@@ -136,7 +136,7 @@ export default defineEventHandler(async (event) => {
       currentBest,
     });
   }
-console.log("recordChecks generati:", JSON.stringify(recordChecks, null, 2));
+console.log("elevation_gain calcolato:", activity.elevation_gain);
   return {
     activity: { ...activity, normalized_power: normalizedPower },
     power_records,

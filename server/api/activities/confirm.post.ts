@@ -76,6 +76,7 @@ export default defineEventHandler(async (event) => {
   });
 
   for (const check of recordChecks) {
+
     if (!check.wouldEnterAt) continue;
 
     const model = getModel(check.metricKey);

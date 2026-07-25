@@ -34,21 +34,52 @@ function extractNumericField(records: any[], field: string): number[] {
   return result;
 }
 
+function computeElevationGainFromRecords(records: any[]): number {
+  // Fallback: se la sessione non riporta total_ascent, lo calcoliamo
+  // sommando solo le variazioni POSITIVE di altitudine tra un punto e il successivo
+  let altitudes: number[] = [];
+  for (let i = 0; i < records.length; i++) {
+    let valore = records[i].altitude;
+    if (typeof valore === "number") {
+      altitudes.push(valore);
+    }
+  }
+
+  if (altitudes.length < 2) {
+    return 0;
+  }
+
+  let gain = 0;
+  for (let i = 1; i < altitudes.length; i++) {
+    let diff = altitudes[i] - altitudes[i - 1];
+    if (diff > 0) {
+      gain = gain + diff;
+    }
+  }
+  return Math.round(gain);
+}
+
 export function buildActivitySummary(records: any[], session: any) {
-  // Estrae i valori numerici di potenza, cadenza, frequenza cardiaca e velocità dai record
+  // Estrae i valori numerici di potenza, cadenza, frequenza cardiaca, velocità e temperatura dai record
   let powerValues = extractNumericField(records, "power");
   let cadenceValues = extractNumericField(records, "cadence");
   let hrValues = extractNumericField(records, "heart_rate");
   let speedValues = extractNumericField(records, "speed");
+  let temperatureValues = extractNumericField(records, "temperature");
+
   let distance = 0;
   if (session && session.total_distance)
     distance = Number(session.total_distance.toFixed(2));
   let duration = records.length;
   if (session && session.total_elapsed_time)
     duration = Math.round(session.total_elapsed_time);
+
   let elevation_gain = 0;
-  if (session && session.total_ascent != null)
-    elevation_gain = session.total_ascent;
+  if (session && session.total_ascent != null) {
+    elevation_gain = Math.round(session.total_ascent * 1000); // km -> metri
+  } else {
+    elevation_gain = computeElevationGainFromRecords(records);
+  }
 
   let average_speed = Number(average(speedValues).toFixed(1)); //calcola la velocità media dai record, arrotondata a 1 decimale
   if (session && session.avg_speed != null) average_speed = session.avg_speed;
@@ -100,6 +131,14 @@ export function buildActivitySummary(records: any[], session: any) {
     kcalories = session.total_calories;
   }
 
+  let average_temperature: number | null = null;
+  if (temperatureValues.length > 0) {
+    average_temperature = Number(average(temperatureValues).toFixed(1));
+  }
+  if (session && session.avg_temperature != null) {
+    average_temperature = session.avg_temperature;
+  }
+
   return {
     distance: distance,
     duration: duration,
@@ -113,6 +152,7 @@ export function buildActivitySummary(records: any[], session: any) {
     max_watts: max_watts,
     kilojoules: kilojoules,
     kcalories: kcalories,
+    average_temperature: average_temperature,
     activityDate: session?.start_time ?? records[0]?.timestamp ?? new Date(),
   };
 }
