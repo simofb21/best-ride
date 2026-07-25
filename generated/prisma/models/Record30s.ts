@@ -47,7 +47,6 @@ export type Record30sMinAggregateOutputType = {
   value: runtime.Decimal | null
   entryDate: Date | null
   description: string | null
-  activityId: string | null
   updatedAt: Date | null
 }
 
@@ -58,7 +57,6 @@ export type Record30sMaxAggregateOutputType = {
   value: runtime.Decimal | null
   entryDate: Date | null
   description: string | null
-  activityId: string | null
   updatedAt: Date | null
 }
 
@@ -69,7 +67,6 @@ export type Record30sCountAggregateOutputType = {
   value: number
   entryDate: number
   description: number
-  activityId: number
   updatedAt: number
   _all: number
 }
@@ -96,7 +93,6 @@ export type Record30sMinAggregateInputType = {
   value?: true
   entryDate?: true
   description?: true
-  activityId?: true
   updatedAt?: true
 }
 
@@ -107,7 +103,6 @@ export type Record30sMaxAggregateInputType = {
   value?: true
   entryDate?: true
   description?: true
-  activityId?: true
   updatedAt?: true
 }
 
@@ -118,7 +113,6 @@ export type Record30sCountAggregateInputType = {
   value?: true
   entryDate?: true
   description?: true
-  activityId?: true
   updatedAt?: true
   _all?: true
 }
@@ -216,7 +210,6 @@ export type Record30sGroupByOutputType = {
   value: runtime.Decimal
   entryDate: Date
   description: string | null
-  activityId: string | null
   updatedAt: Date
   _count: Record30sCountAggregateOutputType | null
   _avg: Record30sAvgAggregateOutputType | null
@@ -250,7 +243,6 @@ export type Record30sWhereInput = {
   value?: Prisma.DecimalFilter<"Record30s"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate?: Prisma.DateTimeFilter<"Record30s"> | Date | string
   description?: Prisma.StringNullableFilter<"Record30s"> | string | null
-  activityId?: Prisma.StringNullableFilter<"Record30s"> | string | null
   updatedAt?: Prisma.DateTimeFilter<"Record30s"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
@@ -262,7 +254,6 @@ export type Record30sOrderByWithRelationInput = {
   value?: Prisma.SortOrder
   entryDate?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
-  activityId?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
   _relevance?: Prisma.Record30sOrderByRelevanceInput
@@ -279,7 +270,6 @@ export type Record30sWhereUniqueInput = Prisma.AtLeast<{
   value?: Prisma.DecimalFilter<"Record30s"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate?: Prisma.DateTimeFilter<"Record30s"> | Date | string
   description?: Prisma.StringNullableFilter<"Record30s"> | string | null
-  activityId?: Prisma.StringNullableFilter<"Record30s"> | string | null
   updatedAt?: Prisma.DateTimeFilter<"Record30s"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id" | "userId_rank">
@@ -291,7 +281,6 @@ export type Record30sOrderByWithAggregationInput = {
   value?: Prisma.SortOrder
   entryDate?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
-  activityId?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.Record30sCountOrderByAggregateInput
   _avg?: Prisma.Record30sAvgOrderByAggregateInput
@@ -310,7 +299,6 @@ export type Record30sScalarWhereWithAggregatesInput = {
   value?: Prisma.DecimalWithAggregatesFilter<"Record30s"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate?: Prisma.DateTimeWithAggregatesFilter<"Record30s"> | Date | string
   description?: Prisma.StringNullableWithAggregatesFilter<"Record30s"> | string | null
-  activityId?: Prisma.StringNullableWithAggregatesFilter<"Record30s"> | string | null
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Record30s"> | Date | string
 }
 
@@ -319,7 +307,6 @@ export type Record30sCreateInput = {
   value: runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate: Date | string
   description?: string | null
-  activityId?: string | null
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutRecord30sInput
 }
@@ -331,7 +318,6 @@ export type Record30sUncheckedCreateInput = {
   value: runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate: Date | string
   description?: string | null
-  activityId?: string | null
   updatedAt?: Date | string
 }
 
@@ -340,7 +326,6 @@ export type Record30sUpdateInput = {
   value?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  activityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutRecord30sNestedInput
 }
@@ -352,7 +337,6 @@ export type Record30sUncheckedUpdateInput = {
   value?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  activityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -363,7 +347,6 @@ export type Record30sCreateManyInput = {
   value: runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate: Date | string
   description?: string | null
-  activityId?: string | null
   updatedAt?: Date | string
 }
 
@@ -372,7 +355,6 @@ export type Record30sUpdateManyMutationInput = {
   value?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  activityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -383,7 +365,6 @@ export type Record30sUncheckedUpdateManyInput = {
   value?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  activityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -415,7 +396,6 @@ export type Record30sCountOrderByAggregateInput = {
   value?: Prisma.SortOrder
   entryDate?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  activityId?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
@@ -433,7 +413,6 @@ export type Record30sMaxOrderByAggregateInput = {
   value?: Prisma.SortOrder
   entryDate?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  activityId?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
@@ -444,7 +423,6 @@ export type Record30sMinOrderByAggregateInput = {
   value?: Prisma.SortOrder
   entryDate?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  activityId?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
@@ -502,7 +480,6 @@ export type Record30sCreateWithoutUserInput = {
   value: runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate: Date | string
   description?: string | null
-  activityId?: string | null
   updatedAt?: Date | string
 }
 
@@ -512,7 +489,6 @@ export type Record30sUncheckedCreateWithoutUserInput = {
   value: runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate: Date | string
   description?: string | null
-  activityId?: string | null
   updatedAt?: Date | string
 }
 
@@ -552,7 +528,6 @@ export type Record30sScalarWhereInput = {
   value?: Prisma.DecimalFilter<"Record30s"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate?: Prisma.DateTimeFilter<"Record30s"> | Date | string
   description?: Prisma.StringNullableFilter<"Record30s"> | string | null
-  activityId?: Prisma.StringNullableFilter<"Record30s"> | string | null
   updatedAt?: Prisma.DateTimeFilter<"Record30s"> | Date | string
 }
 
@@ -562,7 +537,6 @@ export type Record30sCreateManyUserInput = {
   value: runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate: Date | string
   description?: string | null
-  activityId?: string | null
   updatedAt?: Date | string
 }
 
@@ -571,7 +545,6 @@ export type Record30sUpdateWithoutUserInput = {
   value?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  activityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -581,7 +554,6 @@ export type Record30sUncheckedUpdateWithoutUserInput = {
   value?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  activityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -591,7 +563,6 @@ export type Record30sUncheckedUpdateManyWithoutUserInput = {
   value?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  activityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -604,7 +575,6 @@ export type Record30sSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   value?: boolean
   entryDate?: boolean
   description?: boolean
-  activityId?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["record30s"]>
@@ -618,11 +588,10 @@ export type Record30sSelectScalar = {
   value?: boolean
   entryDate?: boolean
   description?: boolean
-  activityId?: boolean
   updatedAt?: boolean
 }
 
-export type Record30sOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "rank" | "value" | "entryDate" | "description" | "activityId" | "updatedAt", ExtArgs["result"]["record30s"]>
+export type Record30sOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "rank" | "value" | "entryDate" | "description" | "updatedAt", ExtArgs["result"]["record30s"]>
 export type Record30sInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -639,7 +608,6 @@ export type $Record30sPayload<ExtArgs extends runtime.Types.Extensions.InternalA
     value: runtime.Decimal
     entryDate: Date
     description: string | null
-    activityId: string | null
     updatedAt: Date
   }, ExtArgs["result"]["record30s"]>
   composites: {}
@@ -1017,7 +985,6 @@ export interface Record30sFieldRefs {
   readonly value: Prisma.FieldRef<"Record30s", 'Decimal'>
   readonly entryDate: Prisma.FieldRef<"Record30s", 'DateTime'>
   readonly description: Prisma.FieldRef<"Record30s", 'String'>
-  readonly activityId: Prisma.FieldRef<"Record30s", 'String'>
   readonly updatedAt: Prisma.FieldRef<"Record30s", 'DateTime'>
 }
     

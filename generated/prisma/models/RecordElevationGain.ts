@@ -47,7 +47,6 @@ export type RecordElevationGainMinAggregateOutputType = {
   value: runtime.Decimal | null
   entryDate: Date | null
   description: string | null
-  activityId: string | null
   updatedAt: Date | null
 }
 
@@ -58,7 +57,6 @@ export type RecordElevationGainMaxAggregateOutputType = {
   value: runtime.Decimal | null
   entryDate: Date | null
   description: string | null
-  activityId: string | null
   updatedAt: Date | null
 }
 
@@ -69,7 +67,6 @@ export type RecordElevationGainCountAggregateOutputType = {
   value: number
   entryDate: number
   description: number
-  activityId: number
   updatedAt: number
   _all: number
 }
@@ -96,7 +93,6 @@ export type RecordElevationGainMinAggregateInputType = {
   value?: true
   entryDate?: true
   description?: true
-  activityId?: true
   updatedAt?: true
 }
 
@@ -107,7 +103,6 @@ export type RecordElevationGainMaxAggregateInputType = {
   value?: true
   entryDate?: true
   description?: true
-  activityId?: true
   updatedAt?: true
 }
 
@@ -118,7 +113,6 @@ export type RecordElevationGainCountAggregateInputType = {
   value?: true
   entryDate?: true
   description?: true
-  activityId?: true
   updatedAt?: true
   _all?: true
 }
@@ -216,7 +210,6 @@ export type RecordElevationGainGroupByOutputType = {
   value: runtime.Decimal
   entryDate: Date
   description: string | null
-  activityId: string | null
   updatedAt: Date
   _count: RecordElevationGainCountAggregateOutputType | null
   _avg: RecordElevationGainAvgAggregateOutputType | null
@@ -250,7 +243,6 @@ export type RecordElevationGainWhereInput = {
   value?: Prisma.DecimalFilter<"RecordElevationGain"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate?: Prisma.DateTimeFilter<"RecordElevationGain"> | Date | string
   description?: Prisma.StringNullableFilter<"RecordElevationGain"> | string | null
-  activityId?: Prisma.StringNullableFilter<"RecordElevationGain"> | string | null
   updatedAt?: Prisma.DateTimeFilter<"RecordElevationGain"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
@@ -262,7 +254,6 @@ export type RecordElevationGainOrderByWithRelationInput = {
   value?: Prisma.SortOrder
   entryDate?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
-  activityId?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
   _relevance?: Prisma.RecordElevationGainOrderByRelevanceInput
@@ -279,7 +270,6 @@ export type RecordElevationGainWhereUniqueInput = Prisma.AtLeast<{
   value?: Prisma.DecimalFilter<"RecordElevationGain"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate?: Prisma.DateTimeFilter<"RecordElevationGain"> | Date | string
   description?: Prisma.StringNullableFilter<"RecordElevationGain"> | string | null
-  activityId?: Prisma.StringNullableFilter<"RecordElevationGain"> | string | null
   updatedAt?: Prisma.DateTimeFilter<"RecordElevationGain"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id" | "userId_rank">
@@ -291,7 +281,6 @@ export type RecordElevationGainOrderByWithAggregationInput = {
   value?: Prisma.SortOrder
   entryDate?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
-  activityId?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.RecordElevationGainCountOrderByAggregateInput
   _avg?: Prisma.RecordElevationGainAvgOrderByAggregateInput
@@ -310,7 +299,6 @@ export type RecordElevationGainScalarWhereWithAggregatesInput = {
   value?: Prisma.DecimalWithAggregatesFilter<"RecordElevationGain"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate?: Prisma.DateTimeWithAggregatesFilter<"RecordElevationGain"> | Date | string
   description?: Prisma.StringNullableWithAggregatesFilter<"RecordElevationGain"> | string | null
-  activityId?: Prisma.StringNullableWithAggregatesFilter<"RecordElevationGain"> | string | null
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"RecordElevationGain"> | Date | string
 }
 
@@ -319,7 +307,6 @@ export type RecordElevationGainCreateInput = {
   value: runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate: Date | string
   description?: string | null
-  activityId?: string | null
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutRecordElevationGainInput
 }
@@ -331,7 +318,6 @@ export type RecordElevationGainUncheckedCreateInput = {
   value: runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate: Date | string
   description?: string | null
-  activityId?: string | null
   updatedAt?: Date | string
 }
 
@@ -340,7 +326,6 @@ export type RecordElevationGainUpdateInput = {
   value?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  activityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutRecordElevationGainNestedInput
 }
@@ -352,7 +337,6 @@ export type RecordElevationGainUncheckedUpdateInput = {
   value?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  activityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -363,7 +347,6 @@ export type RecordElevationGainCreateManyInput = {
   value: runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate: Date | string
   description?: string | null
-  activityId?: string | null
   updatedAt?: Date | string
 }
 
@@ -372,7 +355,6 @@ export type RecordElevationGainUpdateManyMutationInput = {
   value?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  activityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -383,7 +365,6 @@ export type RecordElevationGainUncheckedUpdateManyInput = {
   value?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  activityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -415,7 +396,6 @@ export type RecordElevationGainCountOrderByAggregateInput = {
   value?: Prisma.SortOrder
   entryDate?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  activityId?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
@@ -433,7 +413,6 @@ export type RecordElevationGainMaxOrderByAggregateInput = {
   value?: Prisma.SortOrder
   entryDate?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  activityId?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
@@ -444,7 +423,6 @@ export type RecordElevationGainMinOrderByAggregateInput = {
   value?: Prisma.SortOrder
   entryDate?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  activityId?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
@@ -502,7 +480,6 @@ export type RecordElevationGainCreateWithoutUserInput = {
   value: runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate: Date | string
   description?: string | null
-  activityId?: string | null
   updatedAt?: Date | string
 }
 
@@ -512,7 +489,6 @@ export type RecordElevationGainUncheckedCreateWithoutUserInput = {
   value: runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate: Date | string
   description?: string | null
-  activityId?: string | null
   updatedAt?: Date | string
 }
 
@@ -552,7 +528,6 @@ export type RecordElevationGainScalarWhereInput = {
   value?: Prisma.DecimalFilter<"RecordElevationGain"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate?: Prisma.DateTimeFilter<"RecordElevationGain"> | Date | string
   description?: Prisma.StringNullableFilter<"RecordElevationGain"> | string | null
-  activityId?: Prisma.StringNullableFilter<"RecordElevationGain"> | string | null
   updatedAt?: Prisma.DateTimeFilter<"RecordElevationGain"> | Date | string
 }
 
@@ -562,7 +537,6 @@ export type RecordElevationGainCreateManyUserInput = {
   value: runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate: Date | string
   description?: string | null
-  activityId?: string | null
   updatedAt?: Date | string
 }
 
@@ -571,7 +545,6 @@ export type RecordElevationGainUpdateWithoutUserInput = {
   value?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  activityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -581,7 +554,6 @@ export type RecordElevationGainUncheckedUpdateWithoutUserInput = {
   value?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  activityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -591,7 +563,6 @@ export type RecordElevationGainUncheckedUpdateManyWithoutUserInput = {
   value?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  activityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -604,7 +575,6 @@ export type RecordElevationGainSelect<ExtArgs extends runtime.Types.Extensions.I
   value?: boolean
   entryDate?: boolean
   description?: boolean
-  activityId?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["recordElevationGain"]>
@@ -618,11 +588,10 @@ export type RecordElevationGainSelectScalar = {
   value?: boolean
   entryDate?: boolean
   description?: boolean
-  activityId?: boolean
   updatedAt?: boolean
 }
 
-export type RecordElevationGainOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "rank" | "value" | "entryDate" | "description" | "activityId" | "updatedAt", ExtArgs["result"]["recordElevationGain"]>
+export type RecordElevationGainOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "rank" | "value" | "entryDate" | "description" | "updatedAt", ExtArgs["result"]["recordElevationGain"]>
 export type RecordElevationGainInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -639,7 +608,6 @@ export type $RecordElevationGainPayload<ExtArgs extends runtime.Types.Extensions
     value: runtime.Decimal
     entryDate: Date
     description: string | null
-    activityId: string | null
     updatedAt: Date
   }, ExtArgs["result"]["recordElevationGain"]>
   composites: {}
@@ -1017,7 +985,6 @@ export interface RecordElevationGainFieldRefs {
   readonly value: Prisma.FieldRef<"RecordElevationGain", 'Decimal'>
   readonly entryDate: Prisma.FieldRef<"RecordElevationGain", 'DateTime'>
   readonly description: Prisma.FieldRef<"RecordElevationGain", 'String'>
-  readonly activityId: Prisma.FieldRef<"RecordElevationGain", 'String'>
   readonly updatedAt: Prisma.FieldRef<"RecordElevationGain", 'DateTime'>
 }
     

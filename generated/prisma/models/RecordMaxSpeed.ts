@@ -47,7 +47,6 @@ export type RecordMaxSpeedMinAggregateOutputType = {
   value: runtime.Decimal | null
   entryDate: Date | null
   description: string | null
-  activityId: string | null
   updatedAt: Date | null
 }
 
@@ -58,7 +57,6 @@ export type RecordMaxSpeedMaxAggregateOutputType = {
   value: runtime.Decimal | null
   entryDate: Date | null
   description: string | null
-  activityId: string | null
   updatedAt: Date | null
 }
 
@@ -69,7 +67,6 @@ export type RecordMaxSpeedCountAggregateOutputType = {
   value: number
   entryDate: number
   description: number
-  activityId: number
   updatedAt: number
   _all: number
 }
@@ -96,7 +93,6 @@ export type RecordMaxSpeedMinAggregateInputType = {
   value?: true
   entryDate?: true
   description?: true
-  activityId?: true
   updatedAt?: true
 }
 
@@ -107,7 +103,6 @@ export type RecordMaxSpeedMaxAggregateInputType = {
   value?: true
   entryDate?: true
   description?: true
-  activityId?: true
   updatedAt?: true
 }
 
@@ -118,7 +113,6 @@ export type RecordMaxSpeedCountAggregateInputType = {
   value?: true
   entryDate?: true
   description?: true
-  activityId?: true
   updatedAt?: true
   _all?: true
 }
@@ -216,7 +210,6 @@ export type RecordMaxSpeedGroupByOutputType = {
   value: runtime.Decimal
   entryDate: Date
   description: string | null
-  activityId: string | null
   updatedAt: Date
   _count: RecordMaxSpeedCountAggregateOutputType | null
   _avg: RecordMaxSpeedAvgAggregateOutputType | null
@@ -250,7 +243,6 @@ export type RecordMaxSpeedWhereInput = {
   value?: Prisma.DecimalFilter<"RecordMaxSpeed"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate?: Prisma.DateTimeFilter<"RecordMaxSpeed"> | Date | string
   description?: Prisma.StringNullableFilter<"RecordMaxSpeed"> | string | null
-  activityId?: Prisma.StringNullableFilter<"RecordMaxSpeed"> | string | null
   updatedAt?: Prisma.DateTimeFilter<"RecordMaxSpeed"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
@@ -262,7 +254,6 @@ export type RecordMaxSpeedOrderByWithRelationInput = {
   value?: Prisma.SortOrder
   entryDate?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
-  activityId?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
   _relevance?: Prisma.RecordMaxSpeedOrderByRelevanceInput
@@ -279,7 +270,6 @@ export type RecordMaxSpeedWhereUniqueInput = Prisma.AtLeast<{
   value?: Prisma.DecimalFilter<"RecordMaxSpeed"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate?: Prisma.DateTimeFilter<"RecordMaxSpeed"> | Date | string
   description?: Prisma.StringNullableFilter<"RecordMaxSpeed"> | string | null
-  activityId?: Prisma.StringNullableFilter<"RecordMaxSpeed"> | string | null
   updatedAt?: Prisma.DateTimeFilter<"RecordMaxSpeed"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id" | "userId_rank">
@@ -291,7 +281,6 @@ export type RecordMaxSpeedOrderByWithAggregationInput = {
   value?: Prisma.SortOrder
   entryDate?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
-  activityId?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.RecordMaxSpeedCountOrderByAggregateInput
   _avg?: Prisma.RecordMaxSpeedAvgOrderByAggregateInput
@@ -310,7 +299,6 @@ export type RecordMaxSpeedScalarWhereWithAggregatesInput = {
   value?: Prisma.DecimalWithAggregatesFilter<"RecordMaxSpeed"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate?: Prisma.DateTimeWithAggregatesFilter<"RecordMaxSpeed"> | Date | string
   description?: Prisma.StringNullableWithAggregatesFilter<"RecordMaxSpeed"> | string | null
-  activityId?: Prisma.StringNullableWithAggregatesFilter<"RecordMaxSpeed"> | string | null
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"RecordMaxSpeed"> | Date | string
 }
 
@@ -319,7 +307,6 @@ export type RecordMaxSpeedCreateInput = {
   value: runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate: Date | string
   description?: string | null
-  activityId?: string | null
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutRecordMaxSpeedInput
 }
@@ -331,7 +318,6 @@ export type RecordMaxSpeedUncheckedCreateInput = {
   value: runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate: Date | string
   description?: string | null
-  activityId?: string | null
   updatedAt?: Date | string
 }
 
@@ -340,7 +326,6 @@ export type RecordMaxSpeedUpdateInput = {
   value?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  activityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutRecordMaxSpeedNestedInput
 }
@@ -352,7 +337,6 @@ export type RecordMaxSpeedUncheckedUpdateInput = {
   value?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  activityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -363,7 +347,6 @@ export type RecordMaxSpeedCreateManyInput = {
   value: runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate: Date | string
   description?: string | null
-  activityId?: string | null
   updatedAt?: Date | string
 }
 
@@ -372,7 +355,6 @@ export type RecordMaxSpeedUpdateManyMutationInput = {
   value?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  activityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -383,7 +365,6 @@ export type RecordMaxSpeedUncheckedUpdateManyInput = {
   value?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  activityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -415,7 +396,6 @@ export type RecordMaxSpeedCountOrderByAggregateInput = {
   value?: Prisma.SortOrder
   entryDate?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  activityId?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
@@ -433,7 +413,6 @@ export type RecordMaxSpeedMaxOrderByAggregateInput = {
   value?: Prisma.SortOrder
   entryDate?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  activityId?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
@@ -444,7 +423,6 @@ export type RecordMaxSpeedMinOrderByAggregateInput = {
   value?: Prisma.SortOrder
   entryDate?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  activityId?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
@@ -502,7 +480,6 @@ export type RecordMaxSpeedCreateWithoutUserInput = {
   value: runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate: Date | string
   description?: string | null
-  activityId?: string | null
   updatedAt?: Date | string
 }
 
@@ -512,7 +489,6 @@ export type RecordMaxSpeedUncheckedCreateWithoutUserInput = {
   value: runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate: Date | string
   description?: string | null
-  activityId?: string | null
   updatedAt?: Date | string
 }
 
@@ -552,7 +528,6 @@ export type RecordMaxSpeedScalarWhereInput = {
   value?: Prisma.DecimalFilter<"RecordMaxSpeed"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate?: Prisma.DateTimeFilter<"RecordMaxSpeed"> | Date | string
   description?: Prisma.StringNullableFilter<"RecordMaxSpeed"> | string | null
-  activityId?: Prisma.StringNullableFilter<"RecordMaxSpeed"> | string | null
   updatedAt?: Prisma.DateTimeFilter<"RecordMaxSpeed"> | Date | string
 }
 
@@ -562,7 +537,6 @@ export type RecordMaxSpeedCreateManyUserInput = {
   value: runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate: Date | string
   description?: string | null
-  activityId?: string | null
   updatedAt?: Date | string
 }
 
@@ -571,7 +545,6 @@ export type RecordMaxSpeedUpdateWithoutUserInput = {
   value?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  activityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -581,7 +554,6 @@ export type RecordMaxSpeedUncheckedUpdateWithoutUserInput = {
   value?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  activityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -591,7 +563,6 @@ export type RecordMaxSpeedUncheckedUpdateManyWithoutUserInput = {
   value?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  activityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -604,7 +575,6 @@ export type RecordMaxSpeedSelect<ExtArgs extends runtime.Types.Extensions.Intern
   value?: boolean
   entryDate?: boolean
   description?: boolean
-  activityId?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["recordMaxSpeed"]>
@@ -618,11 +588,10 @@ export type RecordMaxSpeedSelectScalar = {
   value?: boolean
   entryDate?: boolean
   description?: boolean
-  activityId?: boolean
   updatedAt?: boolean
 }
 
-export type RecordMaxSpeedOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "rank" | "value" | "entryDate" | "description" | "activityId" | "updatedAt", ExtArgs["result"]["recordMaxSpeed"]>
+export type RecordMaxSpeedOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "rank" | "value" | "entryDate" | "description" | "updatedAt", ExtArgs["result"]["recordMaxSpeed"]>
 export type RecordMaxSpeedInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -639,7 +608,6 @@ export type $RecordMaxSpeedPayload<ExtArgs extends runtime.Types.Extensions.Inte
     value: runtime.Decimal
     entryDate: Date
     description: string | null
-    activityId: string | null
     updatedAt: Date
   }, ExtArgs["result"]["recordMaxSpeed"]>
   composites: {}
@@ -1017,7 +985,6 @@ export interface RecordMaxSpeedFieldRefs {
   readonly value: Prisma.FieldRef<"RecordMaxSpeed", 'Decimal'>
   readonly entryDate: Prisma.FieldRef<"RecordMaxSpeed", 'DateTime'>
   readonly description: Prisma.FieldRef<"RecordMaxSpeed", 'String'>
-  readonly activityId: Prisma.FieldRef<"RecordMaxSpeed", 'String'>
   readonly updatedAt: Prisma.FieldRef<"RecordMaxSpeed", 'DateTime'>
 }
     

@@ -47,7 +47,6 @@ export type RecordPeakPowerMinAggregateOutputType = {
   value: runtime.Decimal | null
   entryDate: Date | null
   description: string | null
-  activityId: string | null
   updatedAt: Date | null
 }
 
@@ -58,7 +57,6 @@ export type RecordPeakPowerMaxAggregateOutputType = {
   value: runtime.Decimal | null
   entryDate: Date | null
   description: string | null
-  activityId: string | null
   updatedAt: Date | null
 }
 
@@ -69,7 +67,6 @@ export type RecordPeakPowerCountAggregateOutputType = {
   value: number
   entryDate: number
   description: number
-  activityId: number
   updatedAt: number
   _all: number
 }
@@ -96,7 +93,6 @@ export type RecordPeakPowerMinAggregateInputType = {
   value?: true
   entryDate?: true
   description?: true
-  activityId?: true
   updatedAt?: true
 }
 
@@ -107,7 +103,6 @@ export type RecordPeakPowerMaxAggregateInputType = {
   value?: true
   entryDate?: true
   description?: true
-  activityId?: true
   updatedAt?: true
 }
 
@@ -118,7 +113,6 @@ export type RecordPeakPowerCountAggregateInputType = {
   value?: true
   entryDate?: true
   description?: true
-  activityId?: true
   updatedAt?: true
   _all?: true
 }
@@ -216,7 +210,6 @@ export type RecordPeakPowerGroupByOutputType = {
   value: runtime.Decimal
   entryDate: Date
   description: string | null
-  activityId: string | null
   updatedAt: Date
   _count: RecordPeakPowerCountAggregateOutputType | null
   _avg: RecordPeakPowerAvgAggregateOutputType | null
@@ -250,7 +243,6 @@ export type RecordPeakPowerWhereInput = {
   value?: Prisma.DecimalFilter<"RecordPeakPower"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate?: Prisma.DateTimeFilter<"RecordPeakPower"> | Date | string
   description?: Prisma.StringNullableFilter<"RecordPeakPower"> | string | null
-  activityId?: Prisma.StringNullableFilter<"RecordPeakPower"> | string | null
   updatedAt?: Prisma.DateTimeFilter<"RecordPeakPower"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
@@ -262,7 +254,6 @@ export type RecordPeakPowerOrderByWithRelationInput = {
   value?: Prisma.SortOrder
   entryDate?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
-  activityId?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
   _relevance?: Prisma.RecordPeakPowerOrderByRelevanceInput
@@ -279,7 +270,6 @@ export type RecordPeakPowerWhereUniqueInput = Prisma.AtLeast<{
   value?: Prisma.DecimalFilter<"RecordPeakPower"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate?: Prisma.DateTimeFilter<"RecordPeakPower"> | Date | string
   description?: Prisma.StringNullableFilter<"RecordPeakPower"> | string | null
-  activityId?: Prisma.StringNullableFilter<"RecordPeakPower"> | string | null
   updatedAt?: Prisma.DateTimeFilter<"RecordPeakPower"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id" | "userId_rank">
@@ -291,7 +281,6 @@ export type RecordPeakPowerOrderByWithAggregationInput = {
   value?: Prisma.SortOrder
   entryDate?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
-  activityId?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.RecordPeakPowerCountOrderByAggregateInput
   _avg?: Prisma.RecordPeakPowerAvgOrderByAggregateInput
@@ -310,7 +299,6 @@ export type RecordPeakPowerScalarWhereWithAggregatesInput = {
   value?: Prisma.DecimalWithAggregatesFilter<"RecordPeakPower"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate?: Prisma.DateTimeWithAggregatesFilter<"RecordPeakPower"> | Date | string
   description?: Prisma.StringNullableWithAggregatesFilter<"RecordPeakPower"> | string | null
-  activityId?: Prisma.StringNullableWithAggregatesFilter<"RecordPeakPower"> | string | null
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"RecordPeakPower"> | Date | string
 }
 
@@ -319,7 +307,6 @@ export type RecordPeakPowerCreateInput = {
   value: runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate: Date | string
   description?: string | null
-  activityId?: string | null
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutRecordPeakPowerInput
 }
@@ -331,7 +318,6 @@ export type RecordPeakPowerUncheckedCreateInput = {
   value: runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate: Date | string
   description?: string | null
-  activityId?: string | null
   updatedAt?: Date | string
 }
 
@@ -340,7 +326,6 @@ export type RecordPeakPowerUpdateInput = {
   value?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  activityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutRecordPeakPowerNestedInput
 }
@@ -352,7 +337,6 @@ export type RecordPeakPowerUncheckedUpdateInput = {
   value?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  activityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -363,7 +347,6 @@ export type RecordPeakPowerCreateManyInput = {
   value: runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate: Date | string
   description?: string | null
-  activityId?: string | null
   updatedAt?: Date | string
 }
 
@@ -372,7 +355,6 @@ export type RecordPeakPowerUpdateManyMutationInput = {
   value?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  activityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -383,7 +365,6 @@ export type RecordPeakPowerUncheckedUpdateManyInput = {
   value?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  activityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -415,7 +396,6 @@ export type RecordPeakPowerCountOrderByAggregateInput = {
   value?: Prisma.SortOrder
   entryDate?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  activityId?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
@@ -433,7 +413,6 @@ export type RecordPeakPowerMaxOrderByAggregateInput = {
   value?: Prisma.SortOrder
   entryDate?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  activityId?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
@@ -444,7 +423,6 @@ export type RecordPeakPowerMinOrderByAggregateInput = {
   value?: Prisma.SortOrder
   entryDate?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  activityId?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
@@ -510,7 +488,6 @@ export type RecordPeakPowerCreateWithoutUserInput = {
   value: runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate: Date | string
   description?: string | null
-  activityId?: string | null
   updatedAt?: Date | string
 }
 
@@ -520,7 +497,6 @@ export type RecordPeakPowerUncheckedCreateWithoutUserInput = {
   value: runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate: Date | string
   description?: string | null
-  activityId?: string | null
   updatedAt?: Date | string
 }
 
@@ -560,7 +536,6 @@ export type RecordPeakPowerScalarWhereInput = {
   value?: Prisma.DecimalFilter<"RecordPeakPower"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate?: Prisma.DateTimeFilter<"RecordPeakPower"> | Date | string
   description?: Prisma.StringNullableFilter<"RecordPeakPower"> | string | null
-  activityId?: Prisma.StringNullableFilter<"RecordPeakPower"> | string | null
   updatedAt?: Prisma.DateTimeFilter<"RecordPeakPower"> | Date | string
 }
 
@@ -570,7 +545,6 @@ export type RecordPeakPowerCreateManyUserInput = {
   value: runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate: Date | string
   description?: string | null
-  activityId?: string | null
   updatedAt?: Date | string
 }
 
@@ -579,7 +553,6 @@ export type RecordPeakPowerUpdateWithoutUserInput = {
   value?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  activityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -589,7 +562,6 @@ export type RecordPeakPowerUncheckedUpdateWithoutUserInput = {
   value?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  activityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -599,7 +571,6 @@ export type RecordPeakPowerUncheckedUpdateManyWithoutUserInput = {
   value?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  activityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -612,7 +583,6 @@ export type RecordPeakPowerSelect<ExtArgs extends runtime.Types.Extensions.Inter
   value?: boolean
   entryDate?: boolean
   description?: boolean
-  activityId?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["recordPeakPower"]>
@@ -626,11 +596,10 @@ export type RecordPeakPowerSelectScalar = {
   value?: boolean
   entryDate?: boolean
   description?: boolean
-  activityId?: boolean
   updatedAt?: boolean
 }
 
-export type RecordPeakPowerOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "rank" | "value" | "entryDate" | "description" | "activityId" | "updatedAt", ExtArgs["result"]["recordPeakPower"]>
+export type RecordPeakPowerOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "rank" | "value" | "entryDate" | "description" | "updatedAt", ExtArgs["result"]["recordPeakPower"]>
 export type RecordPeakPowerInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -647,7 +616,6 @@ export type $RecordPeakPowerPayload<ExtArgs extends runtime.Types.Extensions.Int
     value: runtime.Decimal
     entryDate: Date
     description: string | null
-    activityId: string | null
     updatedAt: Date
   }, ExtArgs["result"]["recordPeakPower"]>
   composites: {}
@@ -1025,7 +993,6 @@ export interface RecordPeakPowerFieldRefs {
   readonly value: Prisma.FieldRef<"RecordPeakPower", 'Decimal'>
   readonly entryDate: Prisma.FieldRef<"RecordPeakPower", 'DateTime'>
   readonly description: Prisma.FieldRef<"RecordPeakPower", 'String'>
-  readonly activityId: Prisma.FieldRef<"RecordPeakPower", 'String'>
   readonly updatedAt: Prisma.FieldRef<"RecordPeakPower", 'DateTime'>
 }
     

@@ -1,5 +1,12 @@
 import { prisma } from "../utils/db";
 import { computeTrainingLoad } from "../utils/trainingLoad";
+import { computeHeartRateCurve } from "../utils/heartRateCurve";
+import { extractGpsTrack } from "../utils/gpsTrack";
+import { extractLaps } from "../utils/laps";
+import {
+  computePowerZoneTime,
+  computeHeartRateZoneTime,
+} from "../utils/zoneTime";
 
 export default defineEventHandler(async (event) => {
   const session = await requireUserSession(event);
@@ -26,13 +33,26 @@ export default defineEventHandler(async (event) => {
   const activity = buildActivitySummary(records, session_);
   const normalizedPower = computeNormalizedPower(records);
   const power_records = computePowerCurve(records);
+  const heartRateCurve = computeHeartRateCurve(records);
+  const gpsTrack = extractGpsTrack(records);
+  const laps = extractLaps(data);
 
+  // "user" va recuperato PRIMA di usarlo in qualunque calcolo successivo
   const user = await prisma.user.findUnique({ where: { id: userId } });
+  const ftp = user?.ftp ?? 250;
+  const anaerobicThreshold = user?.anaerobicThreshold ?? 160;
+
   const training_load = computeTrainingLoad({
     normalizedPower,
-    ftp: user?.ftp ?? 250,
+    ftp,
     durationSeconds: activity.duration,
   });
+
+  const powerZoneTime = computePowerZoneTime(records, ftp);
+  const heartRateZoneTime = computeHeartRateZoneTime(
+    records,
+    anaerobicThreshold,
+  );
 
   const candidateValues: Record<string, number> = {
     peak_power: power_records[0].short_intervals.peak_power,
@@ -56,12 +76,12 @@ export default defineEventHandler(async (event) => {
     elevation_gain: Math.round(activity.elevation_gain),
     duration: activity.duration,
     kilojoules: activity.kilojoules,
-    max_cadence: activity.average_cadence, // TODO: sostituire con vero max_cadence quando disponibile
+    max_cadence: activity.average_cadence, // TODO: vero max_cadence quando disponibile
     max_speed: Number(activity.max_speed.toFixed(1)),
     max_heartrate: activity.max_heartrate,
-    hr_5min: 0, // TODO: sliding window su heart_rate, come la power curve
-    hr_20min: 0,
-    hr_1h: 0,
+    hr_5min: heartRateCurve.hr_5min,
+    hr_20min: heartRateCurve.hr_20min,
+    hr_1h: heartRateCurve.hr_1h,
   };
 
   const recordChecks: Array<{
@@ -88,9 +108,6 @@ export default defineEventHandler(async (event) => {
     const lowerIsBetter = metricConfig.lowerIsBetter;
     const currentBest = existing[0] ? Number(existing[0].value) : null;
 
-    // Ordino SEMPRE l'intera lista (esistenti + candidato) secondo lowerIsBetter,
-    // indipendentemente da quante entry ci sono già — questo evita il bug
-    // per cui un valore veniva piazzato "in fondo" senza un vero confronto.
     const combined = [
       ...existing.map((e: any) => ({
         value: Number(e.value),
@@ -119,12 +136,17 @@ export default defineEventHandler(async (event) => {
       currentBest,
     });
   }
-
+  console.log("ciao");
+console.log("recordChecks generati:", JSON.stringify(recordChecks, null, 2));
   return {
     activity: { ...activity, normalized_power: normalizedPower },
     power_records,
     training_load,
     recordChecks,
+    gpsTrack,
+    laps,
+    powerZoneTime,
+    heartRateZoneTime,
     filename: fitFile.filename,
   };
 });

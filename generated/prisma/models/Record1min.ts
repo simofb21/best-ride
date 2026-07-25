@@ -47,7 +47,6 @@ export type Record1minMinAggregateOutputType = {
   value: runtime.Decimal | null
   entryDate: Date | null
   description: string | null
-  activityId: string | null
   updatedAt: Date | null
 }
 
@@ -58,7 +57,6 @@ export type Record1minMaxAggregateOutputType = {
   value: runtime.Decimal | null
   entryDate: Date | null
   description: string | null
-  activityId: string | null
   updatedAt: Date | null
 }
 
@@ -69,7 +67,6 @@ export type Record1minCountAggregateOutputType = {
   value: number
   entryDate: number
   description: number
-  activityId: number
   updatedAt: number
   _all: number
 }
@@ -96,7 +93,6 @@ export type Record1minMinAggregateInputType = {
   value?: true
   entryDate?: true
   description?: true
-  activityId?: true
   updatedAt?: true
 }
 
@@ -107,7 +103,6 @@ export type Record1minMaxAggregateInputType = {
   value?: true
   entryDate?: true
   description?: true
-  activityId?: true
   updatedAt?: true
 }
 
@@ -118,7 +113,6 @@ export type Record1minCountAggregateInputType = {
   value?: true
   entryDate?: true
   description?: true
-  activityId?: true
   updatedAt?: true
   _all?: true
 }
@@ -216,7 +210,6 @@ export type Record1minGroupByOutputType = {
   value: runtime.Decimal
   entryDate: Date
   description: string | null
-  activityId: string | null
   updatedAt: Date
   _count: Record1minCountAggregateOutputType | null
   _avg: Record1minAvgAggregateOutputType | null
@@ -250,7 +243,6 @@ export type Record1minWhereInput = {
   value?: Prisma.DecimalFilter<"Record1min"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate?: Prisma.DateTimeFilter<"Record1min"> | Date | string
   description?: Prisma.StringNullableFilter<"Record1min"> | string | null
-  activityId?: Prisma.StringNullableFilter<"Record1min"> | string | null
   updatedAt?: Prisma.DateTimeFilter<"Record1min"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
@@ -262,7 +254,6 @@ export type Record1minOrderByWithRelationInput = {
   value?: Prisma.SortOrder
   entryDate?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
-  activityId?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
   _relevance?: Prisma.Record1minOrderByRelevanceInput
@@ -279,7 +270,6 @@ export type Record1minWhereUniqueInput = Prisma.AtLeast<{
   value?: Prisma.DecimalFilter<"Record1min"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate?: Prisma.DateTimeFilter<"Record1min"> | Date | string
   description?: Prisma.StringNullableFilter<"Record1min"> | string | null
-  activityId?: Prisma.StringNullableFilter<"Record1min"> | string | null
   updatedAt?: Prisma.DateTimeFilter<"Record1min"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id" | "userId_rank">
@@ -291,7 +281,6 @@ export type Record1minOrderByWithAggregationInput = {
   value?: Prisma.SortOrder
   entryDate?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
-  activityId?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.Record1minCountOrderByAggregateInput
   _avg?: Prisma.Record1minAvgOrderByAggregateInput
@@ -310,7 +299,6 @@ export type Record1minScalarWhereWithAggregatesInput = {
   value?: Prisma.DecimalWithAggregatesFilter<"Record1min"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate?: Prisma.DateTimeWithAggregatesFilter<"Record1min"> | Date | string
   description?: Prisma.StringNullableWithAggregatesFilter<"Record1min"> | string | null
-  activityId?: Prisma.StringNullableWithAggregatesFilter<"Record1min"> | string | null
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Record1min"> | Date | string
 }
 
@@ -319,7 +307,6 @@ export type Record1minCreateInput = {
   value: runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate: Date | string
   description?: string | null
-  activityId?: string | null
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutRecord1minInput
 }
@@ -331,7 +318,6 @@ export type Record1minUncheckedCreateInput = {
   value: runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate: Date | string
   description?: string | null
-  activityId?: string | null
   updatedAt?: Date | string
 }
 
@@ -340,7 +326,6 @@ export type Record1minUpdateInput = {
   value?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  activityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutRecord1minNestedInput
 }
@@ -352,7 +337,6 @@ export type Record1minUncheckedUpdateInput = {
   value?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  activityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -363,7 +347,6 @@ export type Record1minCreateManyInput = {
   value: runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate: Date | string
   description?: string | null
-  activityId?: string | null
   updatedAt?: Date | string
 }
 
@@ -372,7 +355,6 @@ export type Record1minUpdateManyMutationInput = {
   value?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  activityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -383,7 +365,6 @@ export type Record1minUncheckedUpdateManyInput = {
   value?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  activityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -415,7 +396,6 @@ export type Record1minCountOrderByAggregateInput = {
   value?: Prisma.SortOrder
   entryDate?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  activityId?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
@@ -433,7 +413,6 @@ export type Record1minMaxOrderByAggregateInput = {
   value?: Prisma.SortOrder
   entryDate?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  activityId?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
@@ -444,7 +423,6 @@ export type Record1minMinOrderByAggregateInput = {
   value?: Prisma.SortOrder
   entryDate?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  activityId?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
@@ -502,7 +480,6 @@ export type Record1minCreateWithoutUserInput = {
   value: runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate: Date | string
   description?: string | null
-  activityId?: string | null
   updatedAt?: Date | string
 }
 
@@ -512,7 +489,6 @@ export type Record1minUncheckedCreateWithoutUserInput = {
   value: runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate: Date | string
   description?: string | null
-  activityId?: string | null
   updatedAt?: Date | string
 }
 
@@ -552,7 +528,6 @@ export type Record1minScalarWhereInput = {
   value?: Prisma.DecimalFilter<"Record1min"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate?: Prisma.DateTimeFilter<"Record1min"> | Date | string
   description?: Prisma.StringNullableFilter<"Record1min"> | string | null
-  activityId?: Prisma.StringNullableFilter<"Record1min"> | string | null
   updatedAt?: Prisma.DateTimeFilter<"Record1min"> | Date | string
 }
 
@@ -562,7 +537,6 @@ export type Record1minCreateManyUserInput = {
   value: runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate: Date | string
   description?: string | null
-  activityId?: string | null
   updatedAt?: Date | string
 }
 
@@ -571,7 +545,6 @@ export type Record1minUpdateWithoutUserInput = {
   value?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  activityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -581,7 +554,6 @@ export type Record1minUncheckedUpdateWithoutUserInput = {
   value?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  activityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -591,7 +563,6 @@ export type Record1minUncheckedUpdateManyWithoutUserInput = {
   value?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   entryDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  activityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -604,7 +575,6 @@ export type Record1minSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   value?: boolean
   entryDate?: boolean
   description?: boolean
-  activityId?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["record1min"]>
@@ -618,11 +588,10 @@ export type Record1minSelectScalar = {
   value?: boolean
   entryDate?: boolean
   description?: boolean
-  activityId?: boolean
   updatedAt?: boolean
 }
 
-export type Record1minOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "rank" | "value" | "entryDate" | "description" | "activityId" | "updatedAt", ExtArgs["result"]["record1min"]>
+export type Record1minOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "rank" | "value" | "entryDate" | "description" | "updatedAt", ExtArgs["result"]["record1min"]>
 export type Record1minInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -639,7 +608,6 @@ export type $Record1minPayload<ExtArgs extends runtime.Types.Extensions.Internal
     value: runtime.Decimal
     entryDate: Date
     description: string | null
-    activityId: string | null
     updatedAt: Date
   }, ExtArgs["result"]["record1min"]>
   composites: {}
@@ -1017,7 +985,6 @@ export interface Record1minFieldRefs {
   readonly value: Prisma.FieldRef<"Record1min", 'Decimal'>
   readonly entryDate: Prisma.FieldRef<"Record1min", 'DateTime'>
   readonly description: Prisma.FieldRef<"Record1min", 'String'>
-  readonly activityId: Prisma.FieldRef<"Record1min", 'String'>
   readonly updatedAt: Prisma.FieldRef<"Record1min", 'DateTime'>
 }
     

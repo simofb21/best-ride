@@ -5,46 +5,76 @@ export default defineEventHandler(async (event) => {
   const userId = session.user.id;
 
   const body = await readBody(event);
-  const { activity, power_records, training_load, recordChecks, filename } =
-    body;
+  const {
+    activity,
+    power_records,
+    training_load,
+    recordChecks,
+    filename,
+    gpsTrack,
+    laps,
+    powerZoneTime,
+    heartRateZoneTime,
+  } = body;
 
   const activityDate = new Date(activity.activityDate);
   const user = await prisma.user.findUnique({ where: { id: userId } });
 
-  // 1. Salva/sovrascrive l'ultima attività
   await prisma.lastActivity.upsert({
     where: { userId },
     update: {
       filename,
       ftpUsed: user?.ftp ?? 0,
       anaerobicThresholdUsed: user?.anaerobicThreshold ?? 0,
-      data: { activity, power_records, training_load },
+      data: {
+        activity,
+        power_records,
+        training_load,
+        recordChecks,
+        gpsTrack,
+        laps,
+        powerZoneTime,
+        heartRateZoneTime,
+      },
     },
     create: {
       userId,
       filename,
       ftpUsed: 0,
       anaerobicThresholdUsed: 0,
-      data: { activity, power_records, training_load },
+      data: {
+        activity,
+        power_records,
+        training_load,
+        recordChecks,
+        gpsTrack,
+        laps,
+        powerZoneTime,
+        heartRateZoneTime,
+      },
     },
   });
 
-  // 2. Aggiorna i totali annuali: somma la distanza e le ore di QUESTA attività
-  const activityHours = activity.duration / 3600; // duration è in secondi
+  const activityHours = activity.duration / 3600;
+
+  if (user?.yearlyDistanceKm == null || user?.yearlyHours == null) {
+    await prisma.user.update({
+      where: { id: userId },
+      data: {
+        yearlyDistanceKm: user?.yearlyDistanceKm ?? 0,
+        yearlyHours: user?.yearlyHours ?? 0,
+      },
+    });
+  }
 
   await prisma.user.update({
     where: { id: userId },
     data: {
-      yearlyDistanceKm: {
-        increment: activity.distance,
-      },
-      yearlyHours: {
-        increment: Number(activityHours.toFixed(2)),
-      },
+      yearlyDistanceKm: { increment: activity.distance },
+      yearlyHours: { increment: Number(activityHours.toFixed(2)) },
     },
   });
 
-  // 3. Aggiorna i record fissi, usando la data reale dell'attività
   for (const check of recordChecks) {
     if (!check.wouldEnterAt) continue;
 
@@ -71,6 +101,7 @@ export default defineEventHandler(async (event) => {
       if (primaryDiff !== 0) return primaryDiff;
       return new Date(b.entryDate).getTime() - new Date(a.entryDate).getTime();
     });
+
     const newTop3 = combined.slice(0, 3);
 
     for (let i = 0; i < newTop3.length; i++) {

@@ -153,7 +153,6 @@ export const RecordPeakPowerScalarFieldEnum = {
   value: 'value',
   entryDate: 'entryDate',
   description: 'description',
-  activityId: 'activityId',
   updatedAt: 'updatedAt'
 } as const
 
@@ -167,7 +166,6 @@ export const Record3sScalarFieldEnum = {
   value: 'value',
   entryDate: 'entryDate',
   description: 'description',
-  activityId: 'activityId',
   updatedAt: 'updatedAt'
 } as const
 
@@ -181,7 +179,6 @@ export const Record5sScalarFieldEnum = {
   value: 'value',
   entryDate: 'entryDate',
   description: 'description',
-  activityId: 'activityId',
   updatedAt: 'updatedAt'
 } as const
 
@@ -195,7 +192,6 @@ export const Record10sScalarFieldEnum = {
   value: 'value',
   entryDate: 'entryDate',
   description: 'description',
-  activityId: 'activityId',
   updatedAt: 'updatedAt'
 } as const
 
@@ -209,7 +205,6 @@ export const Record20sScalarFieldEnum = {
   value: 'value',
   entryDate: 'entryDate',
   description: 'description',
-  activityId: 'activityId',
   updatedAt: 'updatedAt'
 } as const
 
@@ -223,7 +218,6 @@ export const Record30sScalarFieldEnum = {
   value: 'value',
   entryDate: 'entryDate',
   description: 'description',
-  activityId: 'activityId',
   updatedAt: 'updatedAt'
 } as const
 
@@ -237,7 +231,6 @@ export const Record1minScalarFieldEnum = {
   value: 'value',
   entryDate: 'entryDate',
   description: 'description',
-  activityId: 'activityId',
   updatedAt: 'updatedAt'
 } as const
 
@@ -251,7 +244,6 @@ export const Record2minScalarFieldEnum = {
   value: 'value',
   entryDate: 'entryDate',
   description: 'description',
-  activityId: 'activityId',
   updatedAt: 'updatedAt'
 } as const
 
@@ -265,7 +257,6 @@ export const Record3minScalarFieldEnum = {
   value: 'value',
   entryDate: 'entryDate',
   description: 'description',
-  activityId: 'activityId',
   updatedAt: 'updatedAt'
 } as const
 
@@ -279,7 +270,6 @@ export const Record5minScalarFieldEnum = {
   value: 'value',
   entryDate: 'entryDate',
   description: 'description',
-  activityId: 'activityId',
   updatedAt: 'updatedAt'
 } as const
 
@@ -293,7 +283,6 @@ export const Record8minScalarFieldEnum = {
   value: 'value',
   entryDate: 'entryDate',
   description: 'description',
-  activityId: 'activityId',
   updatedAt: 'updatedAt'
 } as const
 
@@ -307,7 +296,6 @@ export const Record10minScalarFieldEnum = {
   value: 'value',
   entryDate: 'entryDate',
   description: 'description',
-  activityId: 'activityId',
   updatedAt: 'updatedAt'
 } as const
 
@@ -321,7 +309,6 @@ export const Record12minScalarFieldEnum = {
   value: 'value',
   entryDate: 'entryDate',
   description: 'description',
-  activityId: 'activityId',
   updatedAt: 'updatedAt'
 } as const
 
@@ -335,7 +322,6 @@ export const Record15minScalarFieldEnum = {
   value: 'value',
   entryDate: 'entryDate',
   description: 'description',
-  activityId: 'activityId',
   updatedAt: 'updatedAt'
 } as const
 
@@ -349,7 +335,6 @@ export const Record20minScalarFieldEnum = {
   value: 'value',
   entryDate: 'entryDate',
   description: 'description',
-  activityId: 'activityId',
   updatedAt: 'updatedAt'
 } as const
 
@@ -363,7 +348,6 @@ export const Record30minScalarFieldEnum = {
   value: 'value',
   entryDate: 'entryDate',
   description: 'description',
-  activityId: 'activityId',
   updatedAt: 'updatedAt'
 } as const
 
@@ -377,7 +361,6 @@ export const Record60minScalarFieldEnum = {
   value: 'value',
   entryDate: 'entryDate',
   description: 'description',
-  activityId: 'activityId',
   updatedAt: 'updatedAt'
 } as const
 
@@ -391,7 +374,6 @@ export const RecordDistanceScalarFieldEnum = {
   value: 'value',
   entryDate: 'entryDate',
   description: 'description',
-  activityId: 'activityId',
   updatedAt: 'updatedAt'
 } as const
 
@@ -405,7 +387,6 @@ export const RecordElevationGainScalarFieldEnum = {
   value: 'value',
   entryDate: 'entryDate',
   description: 'description',
-  activityId: 'activityId',
   updatedAt: 'updatedAt'
 } as const
 
@@ -419,7 +400,6 @@ export const RecordDurationScalarFieldEnum = {
   value: 'value',
   entryDate: 'entryDate',
   description: 'description',
-  activityId: 'activityId',
   updatedAt: 'updatedAt'
 } as const
 
@@ -433,7 +413,6 @@ export const RecordKilojoulesScalarFieldEnum = {
   value: 'value',
   entryDate: 'entryDate',
   description: 'description',
-  activityId: 'activityId',
   updatedAt: 'updatedAt'
 } as const
 
@@ -447,7 +426,6 @@ export const RecordMaxCadenceScalarFieldEnum = {
   value: 'value',
   entryDate: 'entryDate',
   description: 'description',
-  activityId: 'activityId',
   updatedAt: 'updatedAt'
 } as const
 
@@ -461,7 +439,6 @@ export const RecordMaxSpeedScalarFieldEnum = {
   value: 'value',
   entryDate: 'entryDate',
   description: 'description',
-  activityId: 'activityId',
   updatedAt: 'updatedAt'
 } as const
 
@@ -475,7 +452,6 @@ export const RecordMaxHeartrateScalarFieldEnum = {
   value: 'value',
   entryDate: 'entryDate',
   description: 'description',
-  activityId: 'activityId',
   updatedAt: 'updatedAt'
 } as const
 
@@ -489,7 +465,6 @@ export const RecordHr5minScalarFieldEnum = {
   value: 'value',
   entryDate: 'entryDate',
   description: 'description',
-  activityId: 'activityId',
   updatedAt: 'updatedAt'
 } as const
 
@@ -503,7 +478,6 @@ export const RecordHr20minScalarFieldEnum = {
   value: 'value',
   entryDate: 'entryDate',
   description: 'description',
-  activityId: 'activityId',
   updatedAt: 'updatedAt'
 } as const
 
@@ -517,7 +491,6 @@ export const RecordHr1hScalarFieldEnum = {
   value: 'value',
   entryDate: 'entryDate',
   description: 'description',
-  activityId: 'activityId',
   updatedAt: 'updatedAt'
 } as const
 
@@ -600,216 +573,189 @@ export type CustomRecordOrderByRelevanceFieldEnum = (typeof CustomRecordOrderByR
 
 
 export const RecordPeakPowerOrderByRelevanceFieldEnum = {
-  description: 'description',
-  activityId: 'activityId'
+  description: 'description'
 } as const
 
 export type RecordPeakPowerOrderByRelevanceFieldEnum = (typeof RecordPeakPowerOrderByRelevanceFieldEnum)[keyof typeof RecordPeakPowerOrderByRelevanceFieldEnum]
 
 
 export const Record3sOrderByRelevanceFieldEnum = {
-  description: 'description',
-  activityId: 'activityId'
+  description: 'description'
 } as const
 
 export type Record3sOrderByRelevanceFieldEnum = (typeof Record3sOrderByRelevanceFieldEnum)[keyof typeof Record3sOrderByRelevanceFieldEnum]
 
 
 export const Record5sOrderByRelevanceFieldEnum = {
-  description: 'description',
-  activityId: 'activityId'
+  description: 'description'
 } as const
 
 export type Record5sOrderByRelevanceFieldEnum = (typeof Record5sOrderByRelevanceFieldEnum)[keyof typeof Record5sOrderByRelevanceFieldEnum]
 
 
 export const Record10sOrderByRelevanceFieldEnum = {
-  description: 'description',
-  activityId: 'activityId'
+  description: 'description'
 } as const
 
 export type Record10sOrderByRelevanceFieldEnum = (typeof Record10sOrderByRelevanceFieldEnum)[keyof typeof Record10sOrderByRelevanceFieldEnum]
 
 
 export const Record20sOrderByRelevanceFieldEnum = {
-  description: 'description',
-  activityId: 'activityId'
+  description: 'description'
 } as const
 
 export type Record20sOrderByRelevanceFieldEnum = (typeof Record20sOrderByRelevanceFieldEnum)[keyof typeof Record20sOrderByRelevanceFieldEnum]
 
 
 export const Record30sOrderByRelevanceFieldEnum = {
-  description: 'description',
-  activityId: 'activityId'
+  description: 'description'
 } as const
 
 export type Record30sOrderByRelevanceFieldEnum = (typeof Record30sOrderByRelevanceFieldEnum)[keyof typeof Record30sOrderByRelevanceFieldEnum]
 
 
 export const Record1minOrderByRelevanceFieldEnum = {
-  description: 'description',
-  activityId: 'activityId'
+  description: 'description'
 } as const
 
 export type Record1minOrderByRelevanceFieldEnum = (typeof Record1minOrderByRelevanceFieldEnum)[keyof typeof Record1minOrderByRelevanceFieldEnum]
 
 
 export const Record2minOrderByRelevanceFieldEnum = {
-  description: 'description',
-  activityId: 'activityId'
+  description: 'description'
 } as const
 
 export type Record2minOrderByRelevanceFieldEnum = (typeof Record2minOrderByRelevanceFieldEnum)[keyof typeof Record2minOrderByRelevanceFieldEnum]
 
 
 export const Record3minOrderByRelevanceFieldEnum = {
-  description: 'description',
-  activityId: 'activityId'
+  description: 'description'
 } as const
 
 export type Record3minOrderByRelevanceFieldEnum = (typeof Record3minOrderByRelevanceFieldEnum)[keyof typeof Record3minOrderByRelevanceFieldEnum]
 
 
 export const Record5minOrderByRelevanceFieldEnum = {
-  description: 'description',
-  activityId: 'activityId'
+  description: 'description'
 } as const
 
 export type Record5minOrderByRelevanceFieldEnum = (typeof Record5minOrderByRelevanceFieldEnum)[keyof typeof Record5minOrderByRelevanceFieldEnum]
 
 
 export const Record8minOrderByRelevanceFieldEnum = {
-  description: 'description',
-  activityId: 'activityId'
+  description: 'description'
 } as const
 
 export type Record8minOrderByRelevanceFieldEnum = (typeof Record8minOrderByRelevanceFieldEnum)[keyof typeof Record8minOrderByRelevanceFieldEnum]
 
 
 export const Record10minOrderByRelevanceFieldEnum = {
-  description: 'description',
-  activityId: 'activityId'
+  description: 'description'
 } as const
 
 export type Record10minOrderByRelevanceFieldEnum = (typeof Record10minOrderByRelevanceFieldEnum)[keyof typeof Record10minOrderByRelevanceFieldEnum]
 
 
 export const Record12minOrderByRelevanceFieldEnum = {
-  description: 'description',
-  activityId: 'activityId'
+  description: 'description'
 } as const
 
 export type Record12minOrderByRelevanceFieldEnum = (typeof Record12minOrderByRelevanceFieldEnum)[keyof typeof Record12minOrderByRelevanceFieldEnum]
 
 
 export const Record15minOrderByRelevanceFieldEnum = {
-  description: 'description',
-  activityId: 'activityId'
+  description: 'description'
 } as const
 
 export type Record15minOrderByRelevanceFieldEnum = (typeof Record15minOrderByRelevanceFieldEnum)[keyof typeof Record15minOrderByRelevanceFieldEnum]
 
 
 export const Record20minOrderByRelevanceFieldEnum = {
-  description: 'description',
-  activityId: 'activityId'
+  description: 'description'
 } as const
 
 export type Record20minOrderByRelevanceFieldEnum = (typeof Record20minOrderByRelevanceFieldEnum)[keyof typeof Record20minOrderByRelevanceFieldEnum]
 
 
 export const Record30minOrderByRelevanceFieldEnum = {
-  description: 'description',
-  activityId: 'activityId'
+  description: 'description'
 } as const
 
 export type Record30minOrderByRelevanceFieldEnum = (typeof Record30minOrderByRelevanceFieldEnum)[keyof typeof Record30minOrderByRelevanceFieldEnum]
 
 
 export const Record60minOrderByRelevanceFieldEnum = {
-  description: 'description',
-  activityId: 'activityId'
+  description: 'description'
 } as const
 
 export type Record60minOrderByRelevanceFieldEnum = (typeof Record60minOrderByRelevanceFieldEnum)[keyof typeof Record60minOrderByRelevanceFieldEnum]
 
 
 export const RecordDistanceOrderByRelevanceFieldEnum = {
-  description: 'description',
-  activityId: 'activityId'
+  description: 'description'
 } as const
 
 export type RecordDistanceOrderByRelevanceFieldEnum = (typeof RecordDistanceOrderByRelevanceFieldEnum)[keyof typeof RecordDistanceOrderByRelevanceFieldEnum]
 
 
 export const RecordElevationGainOrderByRelevanceFieldEnum = {
-  description: 'description',
-  activityId: 'activityId'
+  description: 'description'
 } as const
 
 export type RecordElevationGainOrderByRelevanceFieldEnum = (typeof RecordElevationGainOrderByRelevanceFieldEnum)[keyof typeof RecordElevationGainOrderByRelevanceFieldEnum]
 
 
 export const RecordDurationOrderByRelevanceFieldEnum = {
-  description: 'description',
-  activityId: 'activityId'
+  description: 'description'
 } as const
 
 export type RecordDurationOrderByRelevanceFieldEnum = (typeof RecordDurationOrderByRelevanceFieldEnum)[keyof typeof RecordDurationOrderByRelevanceFieldEnum]
 
 
 export const RecordKilojoulesOrderByRelevanceFieldEnum = {
-  description: 'description',
-  activityId: 'activityId'
+  description: 'description'
 } as const
 
 export type RecordKilojoulesOrderByRelevanceFieldEnum = (typeof RecordKilojoulesOrderByRelevanceFieldEnum)[keyof typeof RecordKilojoulesOrderByRelevanceFieldEnum]
 
 
 export const RecordMaxCadenceOrderByRelevanceFieldEnum = {
-  description: 'description',
-  activityId: 'activityId'
+  description: 'description'
 } as const
 
 export type RecordMaxCadenceOrderByRelevanceFieldEnum = (typeof RecordMaxCadenceOrderByRelevanceFieldEnum)[keyof typeof RecordMaxCadenceOrderByRelevanceFieldEnum]
 
 
 export const RecordMaxSpeedOrderByRelevanceFieldEnum = {
-  description: 'description',
-  activityId: 'activityId'
+  description: 'description'
 } as const
 
 export type RecordMaxSpeedOrderByRelevanceFieldEnum = (typeof RecordMaxSpeedOrderByRelevanceFieldEnum)[keyof typeof RecordMaxSpeedOrderByRelevanceFieldEnum]
 
 
 export const RecordMaxHeartrateOrderByRelevanceFieldEnum = {
-  description: 'description',
-  activityId: 'activityId'
+  description: 'description'
 } as const
 
 export type RecordMaxHeartrateOrderByRelevanceFieldEnum = (typeof RecordMaxHeartrateOrderByRelevanceFieldEnum)[keyof typeof RecordMaxHeartrateOrderByRelevanceFieldEnum]
 
 
 export const RecordHr5minOrderByRelevanceFieldEnum = {
-  description: 'description',
-  activityId: 'activityId'
+  description: 'description'
 } as const
 
 export type RecordHr5minOrderByRelevanceFieldEnum = (typeof RecordHr5minOrderByRelevanceFieldEnum)[keyof typeof RecordHr5minOrderByRelevanceFieldEnum]
 
 
 export const RecordHr20minOrderByRelevanceFieldEnum = {
-  description: 'description',
-  activityId: 'activityId'
+  description: 'description'
 } as const
 
 export type RecordHr20minOrderByRelevanceFieldEnum = (typeof RecordHr20minOrderByRelevanceFieldEnum)[keyof typeof RecordHr20minOrderByRelevanceFieldEnum]
 
 
 export const RecordHr1hOrderByRelevanceFieldEnum = {
-  description: 'description',
-  activityId: 'activityId'
+  description: 'description'
 } as const
 
 export type RecordHr1hOrderByRelevanceFieldEnum = (typeof RecordHr1hOrderByRelevanceFieldEnum)[keyof typeof RecordHr1hOrderByRelevanceFieldEnum]
