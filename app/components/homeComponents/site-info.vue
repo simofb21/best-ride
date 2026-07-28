@@ -41,7 +41,7 @@
     </section>
 
     <section class="cta">
-      <CtaButton to="/register">Get started — it's free</CtaButton>
+      <CtaButton to="/login">Get started — it's free</CtaButton>
       <CtaButton to="/login">Already have an account?</CtaButton>
       <CtaButton to="/tutorial" secondary>See how it works</CtaButton>
     </section>

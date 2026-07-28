@@ -142,6 +142,7 @@ function formatDuration(totalSeconds: number): string {
   padding: 60px 32px;
   text-align: center;
   color: var(--text-muted);
+  margin-bottom: 1rem;
 }
 .cta-btn {
   background: var(--accent);

@@ -170,12 +170,6 @@
           prepend-icon="mdi-login"
           @click="drawer = false"
         />
-        <v-list-item
-          to="/register"
-          title="Sign up"
-          prepend-icon="mdi-account-plus"
-          @click="drawer = false"
-        />
       </template>
     </v-list>
   </v-navigation-drawer>

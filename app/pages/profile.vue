@@ -10,7 +10,7 @@
       <div class="desktop-layout">
         <!-- 1. Box Personal Info espanso su tutta la larghezza -->
         <PersonalInfoCard :profile="profile" @update="handleProfileSave" />
-
+        <DeleteSection />
         <!-- 2. Box W/kg -->
         <FtpCard :ftp="profile.ftp" :weight-kg="profile.weightKg" />
 
@@ -46,7 +46,7 @@
             <PersonalInfoCard :profile="profile" @update="handleProfileSave" />
           </div>
         </div>
-
+        <DeleteSection />
         <!-- Rettangolo 2: Power Profile (Include FTP Card + Radar + Testo) -->
         <div class="mobile-accordion">
           <button
@@ -123,7 +123,7 @@ import FtpCard from "~/components/profile/FtpCard.vue";
 import PowerProfileRadar from "~/components/profile/PowerProfileRadar.vue";
 import FtpZones from "~/components/profile/FtpZones.vue";
 import ThresholdZones from "~/components/profile/ThresholdZones.vue";
-
+import DeleteSection from "~/components/profile/DeleteSection.vue";
 definePageMeta({ middleware: "auth" });
 
 const profile = ref<ProfileData | null>(null);

@@ -7,9 +7,17 @@ export default defineNuxtRouteMiddleware(async (to) => {
 
   if (to.path === "/complete-profile") return;
 
-  const { hasAccepted } = await $fetch("/api/profile/consent-status");
+  try {
+    const { hasAccepted } = await $fetch("/api/profile/consent-status", {
+      headers: import.meta.server ? useRequestHeaders(["cookie"]) : undefined,
+    });
 
-  if (!hasAccepted) {
-    return navigateTo("/complete-profile");
+    if (!hasAccepted) {
+      return navigateTo("/complete-profile");
+    }
+  } catch (err) {
+    console.error("Errore nel controllo consenso privacy:", err);
+    // In caso di errore imprevisto, non blocchiamo la navigazione:
+    // meglio lasciar passare che rompere l'intera app
   }
 });

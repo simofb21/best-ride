@@ -65,7 +65,7 @@ model Account {
   providerId String
   createdAt  DateTime @default(now())
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerId])
   @@map("accounts")
@@ -79,7 +79,7 @@ model LastActivity {
   anaerobicThresholdUsed Int
   data                   Json
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("last_activity")
 }
@@ -94,7 +94,7 @@ model CustomRecord {
   createdAt     DateTime @default(now())
   entries       Json?
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, slug])
   @@map("custom_records")
@@ -113,7 +113,7 @@ model RecordPeakPower {
   description String?  @db.VarChar(500)
   updatedAt   DateTime @updatedAt
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, rank])
   @@map("record_peak_power")
@@ -128,7 +128,7 @@ model Record3s {
   description String?  @db.VarChar(500)
   updatedAt   DateTime @updatedAt
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, rank])
   @@map("record_3s")
@@ -143,7 +143,7 @@ model Record5s {
   description String?  @db.VarChar(500)
   updatedAt   DateTime @updatedAt
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, rank])
   @@map("record_5s")
@@ -158,7 +158,7 @@ model Record10s {
   description String?  @db.VarChar(500)
   updatedAt   DateTime @updatedAt
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, rank])
   @@map("record_10s")
@@ -173,7 +173,7 @@ model Record20s {
   description String?  @db.VarChar(500)
   updatedAt   DateTime @updatedAt
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, rank])
   @@map("record_20s")
@@ -188,7 +188,7 @@ model Record30s {
   description String?  @db.VarChar(500)
   updatedAt   DateTime @updatedAt
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, rank])
   @@map("record_30s")
@@ -203,7 +203,7 @@ model Record1min {
   description String?  @db.VarChar(500)
   updatedAt   DateTime @updatedAt
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, rank])
   @@map("record_1min")
@@ -218,7 +218,7 @@ model Record2min {
   description String?  @db.VarChar(500)
   updatedAt   DateTime @updatedAt
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, rank])
   @@map("record_2min")
@@ -233,7 +233,7 @@ model Record3min {
   description String?  @db.VarChar(500)
   updatedAt   DateTime @updatedAt
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, rank])
   @@map("record_3min")
@@ -248,7 +248,7 @@ model Record5min {
   description String?  @db.VarChar(500)
   updatedAt   DateTime @updatedAt
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, rank])
   @@map("record_5min")
@@ -263,7 +263,7 @@ model Record8min {
   description String?  @db.VarChar(500)
   updatedAt   DateTime @updatedAt
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, rank])
   @@map("record_8min")
@@ -278,7 +278,7 @@ model Record10min {
   description String?  @db.VarChar(500)
   updatedAt   DateTime @updatedAt
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, rank])
   @@map("record_10min")
@@ -293,7 +293,7 @@ model Record12min {
   description String?  @db.VarChar(500)
   updatedAt   DateTime @updatedAt
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, rank])
   @@map("record_12min")
@@ -308,7 +308,7 @@ model Record15min {
   description String?  @db.VarChar(500)
   updatedAt   DateTime @updatedAt
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, rank])
   @@map("record_15min")
@@ -323,7 +323,7 @@ model Record20min {
   description String?  @db.VarChar(500)
   updatedAt   DateTime @updatedAt
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, rank])
   @@map("record_20min")
@@ -338,7 +338,7 @@ model Record30min {
   description String?  @db.VarChar(500)
   updatedAt   DateTime @updatedAt
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, rank])
   @@map("record_30min")
@@ -353,7 +353,7 @@ model Record60min {
   description String?  @db.VarChar(500)
   updatedAt   DateTime @updatedAt
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, rank])
   @@map("record_60min")
@@ -372,7 +372,7 @@ model RecordDistance {
   description String?  @db.VarChar(500)
   updatedAt   DateTime @updatedAt
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, rank])
   @@map("record_distance")
@@ -387,7 +387,7 @@ model RecordElevationGain {
   description String?  @db.VarChar(500)
   updatedAt   DateTime @updatedAt
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, rank])
   @@map("record_elevation_gain")
@@ -402,7 +402,7 @@ model RecordDuration {
   description String?  @db.VarChar(500)
   updatedAt   DateTime @updatedAt
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, rank])
   @@map("record_duration")
@@ -417,7 +417,7 @@ model RecordKilojoules {
   description String?  @db.VarChar(500)
   updatedAt   DateTime @updatedAt
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, rank])
   @@map("record_kilojoules")
@@ -432,7 +432,7 @@ model RecordMaxCadence {
   description String?  @db.VarChar(500)
   updatedAt   DateTime @updatedAt
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, rank])
   @@map("record_max_cadence")
@@ -447,7 +447,7 @@ model RecordMaxSpeed {
   description String?  @db.VarChar(500)
   updatedAt   DateTime @updatedAt
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, rank])
   @@map("record_max_speed")
@@ -462,7 +462,7 @@ model RecordMaxHeartrate {
   description String?  @db.VarChar(500)
   updatedAt   DateTime @updatedAt
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, rank])
   @@map("record_max_heartrate")
@@ -477,7 +477,7 @@ model RecordHr5min {
   description String?  @db.VarChar(500)
   updatedAt   DateTime @updatedAt
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, rank])
   @@map("record_hr_5min")
@@ -492,7 +492,7 @@ model RecordHr20min {
   description String?  @db.VarChar(500)
   updatedAt   DateTime @updatedAt
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, rank])
   @@map("record_hr_20min")
@@ -507,7 +507,7 @@ model RecordHr1h {
   description String?  @db.VarChar(500)
   updatedAt   DateTime @updatedAt
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, rank])
   @@map("record_hr_1h")
