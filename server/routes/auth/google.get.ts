@@ -61,7 +61,18 @@ export default defineOAuthGoogleEventHandler({
       },
     });
 
-    return sendRedirect(event, "/complete-profile");
+    // Ricontrolla lo stato AGGIORNATO dell'utente (non quello di findOrCreateUserFromOAuth,
+    // che potrebbe non avere il campo fresco se l'utente esisteva già)
+    const freshUser = await prisma.user.findUnique({
+      where: { id: user.id },
+      select: { privacyAcceptedAt: true },
+    });
+
+    if (!freshUser?.privacyAcceptedAt) {
+      return sendRedirect(event, "/complete-profile");
+    }
+
+    return sendRedirect(event, "/");
   },
   onError(event, error) {
     console.error("Google OAuth error:", error);
