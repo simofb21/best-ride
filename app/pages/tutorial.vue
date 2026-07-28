@@ -299,10 +299,12 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import { onMounted } from "vue";
 
+onMounted(() => {
+  document.title = "Tutorial & Guide - Best Ride";
+});
 // Se utilizzi il middleware di autenticazione come nella pagina profilati
-definePageMeta({ middleware: "auth" });
-
 // Stato della fisarmonica per Mobile (aperta di default sulla intro)
 const activeSection = ref<string | null>("intro");
 

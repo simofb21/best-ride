@@ -149,6 +149,11 @@
 
 <script setup lang="ts">
 import RecordCard from "~/components/records/RecordCard.vue";
+import { onMounted } from "vue";
+
+onMounted(() => {
+  document.title = "Custom Records - Best Ride";
+});
 definePageMeta({ middleware: "auth" });
 
 interface CustomRecordEntry {

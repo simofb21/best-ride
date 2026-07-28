@@ -125,7 +125,9 @@ import FtpZones from "~/components/profile/FtpZones.vue";
 import ThresholdZones from "~/components/profile/ThresholdZones.vue";
 import DeleteSection from "~/components/profile/DeleteSection.vue";
 definePageMeta({ middleware: "auth" });
-
+onMounted(() => {
+  document.title = "My Profile - Best Ride";
+});
 const profile = ref<ProfileData | null>(null);
 const loading = ref(true);
 const errorMessage = ref("");

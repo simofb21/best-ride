@@ -63,6 +63,8 @@ const loading = ref(true);
 const loadError = ref("");
 
 onMounted(async () => {
+  document.title = "Latest Activity - Best Ride";
+
   try {
     data.value = await $fetch("/api/activities/last");
   } catch (err: any) {
@@ -142,9 +144,15 @@ function formatDuration(totalSeconds: number): string {
   padding: 60px 32px;
   text-align: center;
   color: var(--text-muted);
-  margin-bottom: 1rem;
+}
+.empty-state {
+  font-size: 16px;
+  color: red;
+  margin-bottom: 4rem;
 }
 .cta-btn {
+  display: inline-block; /* <-- AGGIUNGI QUESTO */
+  margin-top: 24px; /* Ora questo margine funzionerà perfettamente! */
   background: var(--accent);
   color: #fff;
   padding: 10px 20px;

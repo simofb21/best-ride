@@ -102,7 +102,11 @@ import { RECORD_METRICS } from "@/../shared/utils/recordMetric";
 import { ref, computed, watch } from "vue";
 const records = ref<Record<string, any[]>>({});
 const errorMessage = ref("");
+import { onMounted } from "vue";
 
+onMounted(() => {
+  document.title = "My Records - Best Ride";
+});
 const metricsByCategory = computed(() => {
   const grouped: Record<string, typeof RECORD_METRICS> = {};
   for (const cat of ["general", "heart_rate", "other"] as const) {

@@ -24,6 +24,11 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted } from "vue";
+
+onMounted(() => {
+  document.title = "Login - Best Ride";
+});
 // Se torniamo qui dopo un fallimento OAuth (google.get.ts fa redirect a /login?error=...),
 // mostriamo un messaggio d'errore leggibile invece di un errore criptico
 const route = useRoute();

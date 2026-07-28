@@ -156,5 +156,10 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted } from "vue";
+
+onMounted(() => {
+  document.title = "Privacy Policy - Best Ride";
+});
 const lastUpdated = "July 2026";
 </script>

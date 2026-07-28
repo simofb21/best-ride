@@ -60,6 +60,11 @@
 import Dashboard from "~/components/homeComponents/dashboard.vue";
 import SiteInfo from "~/components/homeComponents/site-info.vue";
 const { loggedIn } = useUserSession();
+import { onMounted } from "vue";
+
+onMounted(() => {
+  document.title = "Home - Best Ride";
+});
 </script>
 
 <style scoped>

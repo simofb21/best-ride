@@ -97,7 +97,11 @@
 
 <script setup lang="ts">
 import ActivityRecordsPanel from "~/components/activity/ActivityRecordsPanel.vue";
+import { onMounted } from "vue";
 
+onMounted(() => {
+  document.title = "Upload .fit File - Best Ride";
+});
 definePageMeta({ middleware: "auth" });
 
 const selectedFile = ref<File | null>(null);

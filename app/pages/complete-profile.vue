@@ -93,7 +93,11 @@ const consentGiven = ref(false);
 const privacyAccepted = ref(false);
 const loading = ref(false);
 const error = ref("");
+import { onMounted } from "vue";
 
+onMounted(() => {
+  document.title = "Complete Profile - Best Ride";
+});
 const profile = ref({
   weightKg: null as number | null,
   ftp: null as number | null,
