@@ -3,7 +3,10 @@ export default defineNuxtConfig({
   css: ["@mdi/font/css/materialdesignicons.min.css", "@/assets/css/theme.css"],
 
   compatibilityDate: "2025-07-15",
-  devtools: { enabled: true },
+
+  devtools: {
+    enabled: true,
+  },
 
   modules: [
     "@nuxtjs/tailwindcss",
@@ -12,6 +15,10 @@ export default defineNuxtConfig({
     "nuxt-auth-utils",
     "vuetify-nuxt-module",
   ],
+
+  imports: {
+    exclude: ["useLayout"],
+  },
 
   colorMode: {
     classSuffix: "",

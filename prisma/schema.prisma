@@ -8,20 +8,22 @@ datasource db {
 }
 
 model User {
-  id                 Int      @id @default(autoincrement())
-  email              String   @unique
-  passwordHash       String
+  id                 Int       @id @default(autoincrement())
+  email              String    @unique
   firstName          String
   lastName           String
-  weightKg           Decimal? @db.Decimal(5, 2)
+  weightKg           Decimal?  @db.Decimal(5, 2)
   ftp                Int?
   anaerobicThreshold Int?
-  yearlyDistanceKm      Decimal? @db.Decimal(8, 2)
-  yearlyHours           Decimal? @db.Decimal(6, 1) 
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @updatedAt
-  sex               String? @db.VarChar(1)
-  dateOfBirth       DateTime? @db.Date
+  yearlyDistanceKm   Decimal?  @db.Decimal(8, 2)
+  yearlyHours        Decimal?  @db.Decimal(6, 1)
+  sex                String?   @db.VarChar(1)
+  dateOfBirth        DateTime? @db.Date
+  privacyAcceptedAt  DateTime?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  accounts      Account[]
   lastActivity  LastActivity?
   customRecords CustomRecord[]
 
@@ -56,7 +58,18 @@ model User {
 
   @@map("users")
 }
+model Account {
+  id         Int      @id @default(autoincrement())
+  userId     Int
+  provider   String   // "google", in futuro "apple", ecc.
+  providerId String
+  createdAt  DateTime @default(now())
 
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([provider, providerId])
+  @@map("accounts")
+}
 model LastActivity {
   id                     Int      @id @default(autoincrement())
   userId                 Int      @unique

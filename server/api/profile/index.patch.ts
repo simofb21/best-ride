@@ -2,13 +2,21 @@ import { z } from "zod";
 import { prisma } from "../../utils/db";
 
 const updateProfileSchema = z.object({
-  firstName: z.string().min(1).max(50),
-  lastName: z.string().min(1).max(50),
-  weightKg: z.coerce.number().min(20).max(300),
-  ftp: z.coerce.number().int().min(0).max(1000),
-  anaerobicThreshold: z.coerce.number().int().min(0).max(250),
+  firstName: z.string().min(1).max(50).optional(),
+  lastName: z.string().min(1).max(50).optional(),
+  weightKg: z.coerce.number().min(20).max(300).optional().nullable(),
+  ftp: z.coerce.number().int().min(0).max(1000).optional().nullable(),
+  anaerobicThreshold: z.coerce
+    .number()
+    .int()
+    .min(0)
+    .max(250)
+    .optional()
+    .nullable(),
   sex: z.enum(["M", "F"]).optional().nullable(),
-  dateOfBirth: z.string().optional().nullable(), // formato "YYYY-MM-DD" da <input type="date">
+  dateOfBirth: z.string().optional().nullable(),
+  yearlyDistanceKm: z.coerce.number().min(0).optional().nullable(),
+  yearlyHours: z.coerce.number().min(0).optional().nullable(),
 });
 
 export default defineEventHandler(async (event) => {

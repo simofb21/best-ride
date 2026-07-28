@@ -47,7 +47,6 @@ export type UserSumAggregateOutputType = {
 export type UserMinAggregateOutputType = {
   id: number | null
   email: string | null
-  passwordHash: string | null
   firstName: string | null
   lastName: string | null
   weightKg: runtime.Decimal | null
@@ -55,16 +54,16 @@ export type UserMinAggregateOutputType = {
   anaerobicThreshold: number | null
   yearlyDistanceKm: runtime.Decimal | null
   yearlyHours: runtime.Decimal | null
-  createdAt: Date | null
-  updatedAt: Date | null
   sex: string | null
   dateOfBirth: Date | null
+  privacyAcceptedAt: Date | null
+  createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type UserMaxAggregateOutputType = {
   id: number | null
   email: string | null
-  passwordHash: string | null
   firstName: string | null
   lastName: string | null
   weightKg: runtime.Decimal | null
@@ -72,16 +71,16 @@ export type UserMaxAggregateOutputType = {
   anaerobicThreshold: number | null
   yearlyDistanceKm: runtime.Decimal | null
   yearlyHours: runtime.Decimal | null
-  createdAt: Date | null
-  updatedAt: Date | null
   sex: string | null
   dateOfBirth: Date | null
+  privacyAcceptedAt: Date | null
+  createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type UserCountAggregateOutputType = {
   id: number
   email: number
-  passwordHash: number
   firstName: number
   lastName: number
   weightKg: number
@@ -89,10 +88,11 @@ export type UserCountAggregateOutputType = {
   anaerobicThreshold: number
   yearlyDistanceKm: number
   yearlyHours: number
-  createdAt: number
-  updatedAt: number
   sex: number
   dateOfBirth: number
+  privacyAcceptedAt: number
+  createdAt: number
+  updatedAt: number
   _all: number
 }
 
@@ -118,7 +118,6 @@ export type UserSumAggregateInputType = {
 export type UserMinAggregateInputType = {
   id?: true
   email?: true
-  passwordHash?: true
   firstName?: true
   lastName?: true
   weightKg?: true
@@ -126,16 +125,16 @@ export type UserMinAggregateInputType = {
   anaerobicThreshold?: true
   yearlyDistanceKm?: true
   yearlyHours?: true
-  createdAt?: true
-  updatedAt?: true
   sex?: true
   dateOfBirth?: true
+  privacyAcceptedAt?: true
+  createdAt?: true
+  updatedAt?: true
 }
 
 export type UserMaxAggregateInputType = {
   id?: true
   email?: true
-  passwordHash?: true
   firstName?: true
   lastName?: true
   weightKg?: true
@@ -143,16 +142,16 @@ export type UserMaxAggregateInputType = {
   anaerobicThreshold?: true
   yearlyDistanceKm?: true
   yearlyHours?: true
-  createdAt?: true
-  updatedAt?: true
   sex?: true
   dateOfBirth?: true
+  privacyAcceptedAt?: true
+  createdAt?: true
+  updatedAt?: true
 }
 
 export type UserCountAggregateInputType = {
   id?: true
   email?: true
-  passwordHash?: true
   firstName?: true
   lastName?: true
   weightKg?: true
@@ -160,10 +159,11 @@ export type UserCountAggregateInputType = {
   anaerobicThreshold?: true
   yearlyDistanceKm?: true
   yearlyHours?: true
-  createdAt?: true
-  updatedAt?: true
   sex?: true
   dateOfBirth?: true
+  privacyAcceptedAt?: true
+  createdAt?: true
+  updatedAt?: true
   _all?: true
 }
 
@@ -256,7 +256,6 @@ export type UserGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
 export type UserGroupByOutputType = {
   id: number
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg: runtime.Decimal | null
@@ -264,10 +263,11 @@ export type UserGroupByOutputType = {
   anaerobicThreshold: number | null
   yearlyDistanceKm: runtime.Decimal | null
   yearlyHours: runtime.Decimal | null
-  createdAt: Date
-  updatedAt: Date
   sex: string | null
   dateOfBirth: Date | null
+  privacyAcceptedAt: Date | null
+  createdAt: Date
+  updatedAt: Date
   _count: UserCountAggregateOutputType | null
   _avg: UserAvgAggregateOutputType | null
   _sum: UserSumAggregateOutputType | null
@@ -296,7 +296,6 @@ export type UserWhereInput = {
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   id?: Prisma.IntFilter<"User"> | number
   email?: Prisma.StringFilter<"User"> | string
-  passwordHash?: Prisma.StringFilter<"User"> | string
   firstName?: Prisma.StringFilter<"User"> | string
   lastName?: Prisma.StringFilter<"User"> | string
   weightKg?: Prisma.DecimalNullableFilter<"User"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -304,10 +303,12 @@ export type UserWhereInput = {
   anaerobicThreshold?: Prisma.IntNullableFilter<"User"> | number | null
   yearlyDistanceKm?: Prisma.DecimalNullableFilter<"User"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.DecimalNullableFilter<"User"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   sex?: Prisma.StringNullableFilter<"User"> | string | null
   dateOfBirth?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  privacyAcceptedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  accounts?: Prisma.AccountListRelationFilter
   lastActivity?: Prisma.XOR<Prisma.LastActivityNullableScalarRelationFilter, Prisma.LastActivityWhereInput> | null
   customRecords?: Prisma.CustomRecordListRelationFilter
   recordPeakPower?: Prisma.RecordPeakPowerListRelationFilter
@@ -342,7 +343,6 @@ export type UserWhereInput = {
 export type UserOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
-  passwordHash?: Prisma.SortOrder
   firstName?: Prisma.SortOrder
   lastName?: Prisma.SortOrder
   weightKg?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -350,10 +350,12 @@ export type UserOrderByWithRelationInput = {
   anaerobicThreshold?: Prisma.SortOrderInput | Prisma.SortOrder
   yearlyDistanceKm?: Prisma.SortOrderInput | Prisma.SortOrder
   yearlyHours?: Prisma.SortOrderInput | Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
   sex?: Prisma.SortOrderInput | Prisma.SortOrder
   dateOfBirth?: Prisma.SortOrderInput | Prisma.SortOrder
+  privacyAcceptedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+  accounts?: Prisma.AccountOrderByRelationAggregateInput
   lastActivity?: Prisma.LastActivityOrderByWithRelationInput
   customRecords?: Prisma.CustomRecordOrderByRelationAggregateInput
   recordPeakPower?: Prisma.RecordPeakPowerOrderByRelationAggregateInput
@@ -391,7 +393,6 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   OR?: Prisma.UserWhereInput[]
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
-  passwordHash?: Prisma.StringFilter<"User"> | string
   firstName?: Prisma.StringFilter<"User"> | string
   lastName?: Prisma.StringFilter<"User"> | string
   weightKg?: Prisma.DecimalNullableFilter<"User"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -399,10 +400,12 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   anaerobicThreshold?: Prisma.IntNullableFilter<"User"> | number | null
   yearlyDistanceKm?: Prisma.DecimalNullableFilter<"User"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.DecimalNullableFilter<"User"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   sex?: Prisma.StringNullableFilter<"User"> | string | null
   dateOfBirth?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  privacyAcceptedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  accounts?: Prisma.AccountListRelationFilter
   lastActivity?: Prisma.XOR<Prisma.LastActivityNullableScalarRelationFilter, Prisma.LastActivityWhereInput> | null
   customRecords?: Prisma.CustomRecordListRelationFilter
   recordPeakPower?: Prisma.RecordPeakPowerListRelationFilter
@@ -437,7 +440,6 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
 export type UserOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
-  passwordHash?: Prisma.SortOrder
   firstName?: Prisma.SortOrder
   lastName?: Prisma.SortOrder
   weightKg?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -445,10 +447,11 @@ export type UserOrderByWithAggregationInput = {
   anaerobicThreshold?: Prisma.SortOrderInput | Prisma.SortOrder
   yearlyDistanceKm?: Prisma.SortOrderInput | Prisma.SortOrder
   yearlyHours?: Prisma.SortOrderInput | Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
   sex?: Prisma.SortOrderInput | Prisma.SortOrder
   dateOfBirth?: Prisma.SortOrderInput | Prisma.SortOrder
+  privacyAcceptedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
   _avg?: Prisma.UserAvgOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
@@ -462,7 +465,6 @@ export type UserScalarWhereWithAggregatesInput = {
   NOT?: Prisma.UserScalarWhereWithAggregatesInput | Prisma.UserScalarWhereWithAggregatesInput[]
   id?: Prisma.IntWithAggregatesFilter<"User"> | number
   email?: Prisma.StringWithAggregatesFilter<"User"> | string
-  passwordHash?: Prisma.StringWithAggregatesFilter<"User"> | string
   firstName?: Prisma.StringWithAggregatesFilter<"User"> | string
   lastName?: Prisma.StringWithAggregatesFilter<"User"> | string
   weightKg?: Prisma.DecimalNullableWithAggregatesFilter<"User"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -470,15 +472,15 @@ export type UserScalarWhereWithAggregatesInput = {
   anaerobicThreshold?: Prisma.IntNullableWithAggregatesFilter<"User"> | number | null
   yearlyDistanceKm?: Prisma.DecimalNullableWithAggregatesFilter<"User"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.DecimalNullableWithAggregatesFilter<"User"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
-  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   sex?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   dateOfBirth?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+  privacyAcceptedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+  createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
+  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
 }
 
 export type UserCreateInput = {
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -486,10 +488,12 @@ export type UserCreateInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerCreateNestedManyWithoutUserInput
@@ -524,7 +528,6 @@ export type UserCreateInput = {
 export type UserUncheckedCreateInput = {
   id?: number
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -532,10 +535,12 @@ export type UserUncheckedCreateInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordUncheckedCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedCreateNestedManyWithoutUserInput
@@ -569,7 +574,6 @@ export type UserUncheckedCreateInput = {
 
 export type UserUpdateInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -577,10 +581,12 @@ export type UserUpdateInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUpdateManyWithoutUserNestedInput
@@ -615,7 +621,6 @@ export type UserUpdateInput = {
 export type UserUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -623,10 +628,12 @@ export type UserUncheckedUpdateInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUncheckedUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedUpdateManyWithoutUserNestedInput
@@ -661,7 +668,6 @@ export type UserUncheckedUpdateInput = {
 export type UserCreateManyInput = {
   id?: number
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -669,15 +675,15 @@ export type UserCreateManyInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type UserUpdateManyMutationInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -685,16 +691,16 @@ export type UserUpdateManyMutationInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type UserUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -702,16 +708,16 @@ export type UserUncheckedUpdateManyInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type UserCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
-  passwordHash?: Prisma.SortOrder
   firstName?: Prisma.SortOrder
   lastName?: Prisma.SortOrder
   weightKg?: Prisma.SortOrder
@@ -719,10 +725,11 @@ export type UserCountOrderByAggregateInput = {
   anaerobicThreshold?: Prisma.SortOrder
   yearlyDistanceKm?: Prisma.SortOrder
   yearlyHours?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
   sex?: Prisma.SortOrder
   dateOfBirth?: Prisma.SortOrder
+  privacyAcceptedAt?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type UserAvgOrderByAggregateInput = {
@@ -737,7 +744,6 @@ export type UserAvgOrderByAggregateInput = {
 export type UserMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
-  passwordHash?: Prisma.SortOrder
   firstName?: Prisma.SortOrder
   lastName?: Prisma.SortOrder
   weightKg?: Prisma.SortOrder
@@ -745,16 +751,16 @@ export type UserMaxOrderByAggregateInput = {
   anaerobicThreshold?: Prisma.SortOrder
   yearlyDistanceKm?: Prisma.SortOrder
   yearlyHours?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
   sex?: Prisma.SortOrder
   dateOfBirth?: Prisma.SortOrder
+  privacyAcceptedAt?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type UserMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
-  passwordHash?: Prisma.SortOrder
   firstName?: Prisma.SortOrder
   lastName?: Prisma.SortOrder
   weightKg?: Prisma.SortOrder
@@ -762,10 +768,11 @@ export type UserMinOrderByAggregateInput = {
   anaerobicThreshold?: Prisma.SortOrder
   yearlyDistanceKm?: Prisma.SortOrder
   yearlyHours?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
   sex?: Prisma.SortOrder
   dateOfBirth?: Prisma.SortOrder
+  privacyAcceptedAt?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type UserSumOrderByAggregateInput = {
@@ -802,10 +809,6 @@ export type NullableIntFieldUpdateOperationsInput = {
   divide?: number
 }
 
-export type DateTimeFieldUpdateOperationsInput = {
-  set?: Date | string
-}
-
 export type NullableStringFieldUpdateOperationsInput = {
   set?: string | null
 }
@@ -814,12 +817,30 @@ export type NullableDateTimeFieldUpdateOperationsInput = {
   set?: Date | string | null
 }
 
+export type DateTimeFieldUpdateOperationsInput = {
+  set?: Date | string
+}
+
 export type IntFieldUpdateOperationsInput = {
   set?: number
   increment?: number
   decrement?: number
   multiply?: number
   divide?: number
+}
+
+export type UserCreateNestedOneWithoutAccountsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAccountsInput, Prisma.UserUncheckedCreateWithoutAccountsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAccountsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutAccountsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAccountsInput, Prisma.UserUncheckedCreateWithoutAccountsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAccountsInput
+  upsert?: Prisma.UserUpsertWithoutAccountsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAccountsInput, Prisma.UserUpdateWithoutAccountsInput>, Prisma.UserUncheckedUpdateWithoutAccountsInput>
 }
 
 export type UserCreateNestedOneWithoutLastActivityInput = {
@@ -1228,9 +1249,8 @@ export type UserUpdateOneRequiredWithoutRecordHr1hNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutRecordHr1hInput, Prisma.UserUpdateWithoutRecordHr1hInput>, Prisma.UserUncheckedUpdateWithoutRecordHr1hInput>
 }
 
-export type UserCreateWithoutLastActivityInput = {
+export type UserCreateWithoutAccountsInput = {
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1238,10 +1258,210 @@ export type UserCreateWithoutLastActivityInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
+  customRecords?: Prisma.CustomRecordCreateNestedManyWithoutUserInput
+  recordPeakPower?: Prisma.RecordPeakPowerCreateNestedManyWithoutUserInput
+  record3s?: Prisma.Record3sCreateNestedManyWithoutUserInput
+  record5s?: Prisma.Record5sCreateNestedManyWithoutUserInput
+  record10s?: Prisma.Record10sCreateNestedManyWithoutUserInput
+  record20s?: Prisma.Record20sCreateNestedManyWithoutUserInput
+  record30s?: Prisma.Record30sCreateNestedManyWithoutUserInput
+  record1min?: Prisma.Record1minCreateNestedManyWithoutUserInput
+  record2min?: Prisma.Record2minCreateNestedManyWithoutUserInput
+  record3min?: Prisma.Record3minCreateNestedManyWithoutUserInput
+  record5min?: Prisma.Record5minCreateNestedManyWithoutUserInput
+  record8min?: Prisma.Record8minCreateNestedManyWithoutUserInput
+  record10min?: Prisma.Record10minCreateNestedManyWithoutUserInput
+  record12min?: Prisma.Record12minCreateNestedManyWithoutUserInput
+  record15min?: Prisma.Record15minCreateNestedManyWithoutUserInput
+  record20min?: Prisma.Record20minCreateNestedManyWithoutUserInput
+  record30min?: Prisma.Record30minCreateNestedManyWithoutUserInput
+  record60min?: Prisma.Record60minCreateNestedManyWithoutUserInput
+  recordDistance?: Prisma.RecordDistanceCreateNestedManyWithoutUserInput
+  recordElevationGain?: Prisma.RecordElevationGainCreateNestedManyWithoutUserInput
+  recordDuration?: Prisma.RecordDurationCreateNestedManyWithoutUserInput
+  recordKilojoules?: Prisma.RecordKilojoulesCreateNestedManyWithoutUserInput
+  recordMaxCadence?: Prisma.RecordMaxCadenceCreateNestedManyWithoutUserInput
+  recordMaxSpeed?: Prisma.RecordMaxSpeedCreateNestedManyWithoutUserInput
+  recordMaxHeartrate?: Prisma.RecordMaxHeartrateCreateNestedManyWithoutUserInput
+  recordHr5min?: Prisma.RecordHr5minCreateNestedManyWithoutUserInput
+  recordHr20min?: Prisma.RecordHr20minCreateNestedManyWithoutUserInput
+  recordHr1h?: Prisma.RecordHr1hCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutAccountsInput = {
+  id?: number
+  email: string
+  firstName: string
+  lastName: string
+  weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  ftp?: number | null
+  anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  sex?: string | null
+  dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
+  customRecords?: Prisma.CustomRecordUncheckedCreateNestedManyWithoutUserInput
+  recordPeakPower?: Prisma.RecordPeakPowerUncheckedCreateNestedManyWithoutUserInput
+  record3s?: Prisma.Record3sUncheckedCreateNestedManyWithoutUserInput
+  record5s?: Prisma.Record5sUncheckedCreateNestedManyWithoutUserInput
+  record10s?: Prisma.Record10sUncheckedCreateNestedManyWithoutUserInput
+  record20s?: Prisma.Record20sUncheckedCreateNestedManyWithoutUserInput
+  record30s?: Prisma.Record30sUncheckedCreateNestedManyWithoutUserInput
+  record1min?: Prisma.Record1minUncheckedCreateNestedManyWithoutUserInput
+  record2min?: Prisma.Record2minUncheckedCreateNestedManyWithoutUserInput
+  record3min?: Prisma.Record3minUncheckedCreateNestedManyWithoutUserInput
+  record5min?: Prisma.Record5minUncheckedCreateNestedManyWithoutUserInput
+  record8min?: Prisma.Record8minUncheckedCreateNestedManyWithoutUserInput
+  record10min?: Prisma.Record10minUncheckedCreateNestedManyWithoutUserInput
+  record12min?: Prisma.Record12minUncheckedCreateNestedManyWithoutUserInput
+  record15min?: Prisma.Record15minUncheckedCreateNestedManyWithoutUserInput
+  record20min?: Prisma.Record20minUncheckedCreateNestedManyWithoutUserInput
+  record30min?: Prisma.Record30minUncheckedCreateNestedManyWithoutUserInput
+  record60min?: Prisma.Record60minUncheckedCreateNestedManyWithoutUserInput
+  recordDistance?: Prisma.RecordDistanceUncheckedCreateNestedManyWithoutUserInput
+  recordElevationGain?: Prisma.RecordElevationGainUncheckedCreateNestedManyWithoutUserInput
+  recordDuration?: Prisma.RecordDurationUncheckedCreateNestedManyWithoutUserInput
+  recordKilojoules?: Prisma.RecordKilojoulesUncheckedCreateNestedManyWithoutUserInput
+  recordMaxCadence?: Prisma.RecordMaxCadenceUncheckedCreateNestedManyWithoutUserInput
+  recordMaxSpeed?: Prisma.RecordMaxSpeedUncheckedCreateNestedManyWithoutUserInput
+  recordMaxHeartrate?: Prisma.RecordMaxHeartrateUncheckedCreateNestedManyWithoutUserInput
+  recordHr5min?: Prisma.RecordHr5minUncheckedCreateNestedManyWithoutUserInput
+  recordHr20min?: Prisma.RecordHr20minUncheckedCreateNestedManyWithoutUserInput
+  recordHr1h?: Prisma.RecordHr1hUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutAccountsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutAccountsInput, Prisma.UserUncheckedCreateWithoutAccountsInput>
+}
+
+export type UserUpsertWithoutAccountsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutAccountsInput, Prisma.UserUncheckedUpdateWithoutAccountsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutAccountsInput, Prisma.UserUncheckedCreateWithoutAccountsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutAccountsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutAccountsInput, Prisma.UserUncheckedUpdateWithoutAccountsInput>
+}
+
+export type UserUpdateWithoutAccountsInput = {
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
+  customRecords?: Prisma.CustomRecordUpdateManyWithoutUserNestedInput
+  recordPeakPower?: Prisma.RecordPeakPowerUpdateManyWithoutUserNestedInput
+  record3s?: Prisma.Record3sUpdateManyWithoutUserNestedInput
+  record5s?: Prisma.Record5sUpdateManyWithoutUserNestedInput
+  record10s?: Prisma.Record10sUpdateManyWithoutUserNestedInput
+  record20s?: Prisma.Record20sUpdateManyWithoutUserNestedInput
+  record30s?: Prisma.Record30sUpdateManyWithoutUserNestedInput
+  record1min?: Prisma.Record1minUpdateManyWithoutUserNestedInput
+  record2min?: Prisma.Record2minUpdateManyWithoutUserNestedInput
+  record3min?: Prisma.Record3minUpdateManyWithoutUserNestedInput
+  record5min?: Prisma.Record5minUpdateManyWithoutUserNestedInput
+  record8min?: Prisma.Record8minUpdateManyWithoutUserNestedInput
+  record10min?: Prisma.Record10minUpdateManyWithoutUserNestedInput
+  record12min?: Prisma.Record12minUpdateManyWithoutUserNestedInput
+  record15min?: Prisma.Record15minUpdateManyWithoutUserNestedInput
+  record20min?: Prisma.Record20minUpdateManyWithoutUserNestedInput
+  record30min?: Prisma.Record30minUpdateManyWithoutUserNestedInput
+  record60min?: Prisma.Record60minUpdateManyWithoutUserNestedInput
+  recordDistance?: Prisma.RecordDistanceUpdateManyWithoutUserNestedInput
+  recordElevationGain?: Prisma.RecordElevationGainUpdateManyWithoutUserNestedInput
+  recordDuration?: Prisma.RecordDurationUpdateManyWithoutUserNestedInput
+  recordKilojoules?: Prisma.RecordKilojoulesUpdateManyWithoutUserNestedInput
+  recordMaxCadence?: Prisma.RecordMaxCadenceUpdateManyWithoutUserNestedInput
+  recordMaxSpeed?: Prisma.RecordMaxSpeedUpdateManyWithoutUserNestedInput
+  recordMaxHeartrate?: Prisma.RecordMaxHeartrateUpdateManyWithoutUserNestedInput
+  recordHr5min?: Prisma.RecordHr5minUpdateManyWithoutUserNestedInput
+  recordHr20min?: Prisma.RecordHr20minUpdateManyWithoutUserNestedInput
+  recordHr1h?: Prisma.RecordHr1hUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutAccountsInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  ftp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
+  customRecords?: Prisma.CustomRecordUncheckedUpdateManyWithoutUserNestedInput
+  recordPeakPower?: Prisma.RecordPeakPowerUncheckedUpdateManyWithoutUserNestedInput
+  record3s?: Prisma.Record3sUncheckedUpdateManyWithoutUserNestedInput
+  record5s?: Prisma.Record5sUncheckedUpdateManyWithoutUserNestedInput
+  record10s?: Prisma.Record10sUncheckedUpdateManyWithoutUserNestedInput
+  record20s?: Prisma.Record20sUncheckedUpdateManyWithoutUserNestedInput
+  record30s?: Prisma.Record30sUncheckedUpdateManyWithoutUserNestedInput
+  record1min?: Prisma.Record1minUncheckedUpdateManyWithoutUserNestedInput
+  record2min?: Prisma.Record2minUncheckedUpdateManyWithoutUserNestedInput
+  record3min?: Prisma.Record3minUncheckedUpdateManyWithoutUserNestedInput
+  record5min?: Prisma.Record5minUncheckedUpdateManyWithoutUserNestedInput
+  record8min?: Prisma.Record8minUncheckedUpdateManyWithoutUserNestedInput
+  record10min?: Prisma.Record10minUncheckedUpdateManyWithoutUserNestedInput
+  record12min?: Prisma.Record12minUncheckedUpdateManyWithoutUserNestedInput
+  record15min?: Prisma.Record15minUncheckedUpdateManyWithoutUserNestedInput
+  record20min?: Prisma.Record20minUncheckedUpdateManyWithoutUserNestedInput
+  record30min?: Prisma.Record30minUncheckedUpdateManyWithoutUserNestedInput
+  record60min?: Prisma.Record60minUncheckedUpdateManyWithoutUserNestedInput
+  recordDistance?: Prisma.RecordDistanceUncheckedUpdateManyWithoutUserNestedInput
+  recordElevationGain?: Prisma.RecordElevationGainUncheckedUpdateManyWithoutUserNestedInput
+  recordDuration?: Prisma.RecordDurationUncheckedUpdateManyWithoutUserNestedInput
+  recordKilojoules?: Prisma.RecordKilojoulesUncheckedUpdateManyWithoutUserNestedInput
+  recordMaxCadence?: Prisma.RecordMaxCadenceUncheckedUpdateManyWithoutUserNestedInput
+  recordMaxSpeed?: Prisma.RecordMaxSpeedUncheckedUpdateManyWithoutUserNestedInput
+  recordMaxHeartrate?: Prisma.RecordMaxHeartrateUncheckedUpdateManyWithoutUserNestedInput
+  recordHr5min?: Prisma.RecordHr5minUncheckedUpdateManyWithoutUserNestedInput
+  recordHr20min?: Prisma.RecordHr20minUncheckedUpdateManyWithoutUserNestedInput
+  recordHr1h?: Prisma.RecordHr1hUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutLastActivityInput = {
+  email: string
+  firstName: string
+  lastName: string
+  weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  ftp?: number | null
+  anaerobicThreshold?: number | null
+  yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  sex?: string | null
+  dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   customRecords?: Prisma.CustomRecordCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerCreateNestedManyWithoutUserInput
   record3s?: Prisma.Record3sCreateNestedManyWithoutUserInput
@@ -1275,7 +1495,6 @@ export type UserCreateWithoutLastActivityInput = {
 export type UserUncheckedCreateWithoutLastActivityInput = {
   id?: number
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1283,10 +1502,12 @@ export type UserUncheckedCreateWithoutLastActivityInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   customRecords?: Prisma.CustomRecordUncheckedCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedCreateNestedManyWithoutUserInput
   record3s?: Prisma.Record3sUncheckedCreateNestedManyWithoutUserInput
@@ -1335,7 +1556,6 @@ export type UserUpdateToOneWithWhereWithoutLastActivityInput = {
 
 export type UserUpdateWithoutLastActivityInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1343,10 +1563,12 @@ export type UserUpdateWithoutLastActivityInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUpdateManyWithoutUserNestedInput
   record3s?: Prisma.Record3sUpdateManyWithoutUserNestedInput
@@ -1380,7 +1602,6 @@ export type UserUpdateWithoutLastActivityInput = {
 export type UserUncheckedUpdateWithoutLastActivityInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1388,10 +1609,12 @@ export type UserUncheckedUpdateWithoutLastActivityInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUncheckedUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedUpdateManyWithoutUserNestedInput
   record3s?: Prisma.Record3sUncheckedUpdateManyWithoutUserNestedInput
@@ -1424,7 +1647,6 @@ export type UserUncheckedUpdateWithoutLastActivityInput = {
 
 export type UserCreateWithoutCustomRecordsInput = {
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1432,10 +1654,12 @@ export type UserCreateWithoutCustomRecordsInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerCreateNestedManyWithoutUserInput
   record3s?: Prisma.Record3sCreateNestedManyWithoutUserInput
@@ -1469,7 +1693,6 @@ export type UserCreateWithoutCustomRecordsInput = {
 export type UserUncheckedCreateWithoutCustomRecordsInput = {
   id?: number
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1477,10 +1700,12 @@ export type UserUncheckedCreateWithoutCustomRecordsInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedCreateNestedManyWithoutUserInput
   record3s?: Prisma.Record3sUncheckedCreateNestedManyWithoutUserInput
@@ -1529,7 +1754,6 @@ export type UserUpdateToOneWithWhereWithoutCustomRecordsInput = {
 
 export type UserUpdateWithoutCustomRecordsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1537,10 +1761,12 @@ export type UserUpdateWithoutCustomRecordsInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUpdateManyWithoutUserNestedInput
   record3s?: Prisma.Record3sUpdateManyWithoutUserNestedInput
@@ -1574,7 +1800,6 @@ export type UserUpdateWithoutCustomRecordsInput = {
 export type UserUncheckedUpdateWithoutCustomRecordsInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1582,10 +1807,12 @@ export type UserUncheckedUpdateWithoutCustomRecordsInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedUpdateManyWithoutUserNestedInput
   record3s?: Prisma.Record3sUncheckedUpdateManyWithoutUserNestedInput
@@ -1618,7 +1845,6 @@ export type UserUncheckedUpdateWithoutCustomRecordsInput = {
 
 export type UserCreateWithoutRecordPeakPowerInput = {
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1626,10 +1852,12 @@ export type UserCreateWithoutRecordPeakPowerInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordCreateNestedManyWithoutUserInput
   record3s?: Prisma.Record3sCreateNestedManyWithoutUserInput
@@ -1663,7 +1891,6 @@ export type UserCreateWithoutRecordPeakPowerInput = {
 export type UserUncheckedCreateWithoutRecordPeakPowerInput = {
   id?: number
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1671,10 +1898,12 @@ export type UserUncheckedCreateWithoutRecordPeakPowerInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordUncheckedCreateNestedManyWithoutUserInput
   record3s?: Prisma.Record3sUncheckedCreateNestedManyWithoutUserInput
@@ -1723,7 +1952,6 @@ export type UserUpdateToOneWithWhereWithoutRecordPeakPowerInput = {
 
 export type UserUpdateWithoutRecordPeakPowerInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1731,10 +1959,12 @@ export type UserUpdateWithoutRecordPeakPowerInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUpdateManyWithoutUserNestedInput
   record3s?: Prisma.Record3sUpdateManyWithoutUserNestedInput
@@ -1768,7 +1998,6 @@ export type UserUpdateWithoutRecordPeakPowerInput = {
 export type UserUncheckedUpdateWithoutRecordPeakPowerInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1776,10 +2005,12 @@ export type UserUncheckedUpdateWithoutRecordPeakPowerInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUncheckedUpdateManyWithoutUserNestedInput
   record3s?: Prisma.Record3sUncheckedUpdateManyWithoutUserNestedInput
@@ -1812,7 +2043,6 @@ export type UserUncheckedUpdateWithoutRecordPeakPowerInput = {
 
 export type UserCreateWithoutRecord3sInput = {
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1820,10 +2050,12 @@ export type UserCreateWithoutRecord3sInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerCreateNestedManyWithoutUserInput
@@ -1857,7 +2089,6 @@ export type UserCreateWithoutRecord3sInput = {
 export type UserUncheckedCreateWithoutRecord3sInput = {
   id?: number
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1865,10 +2096,12 @@ export type UserUncheckedCreateWithoutRecord3sInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordUncheckedCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedCreateNestedManyWithoutUserInput
@@ -1917,7 +2150,6 @@ export type UserUpdateToOneWithWhereWithoutRecord3sInput = {
 
 export type UserUpdateWithoutRecord3sInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1925,10 +2157,12 @@ export type UserUpdateWithoutRecord3sInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUpdateManyWithoutUserNestedInput
@@ -1962,7 +2196,6 @@ export type UserUpdateWithoutRecord3sInput = {
 export type UserUncheckedUpdateWithoutRecord3sInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1970,10 +2203,12 @@ export type UserUncheckedUpdateWithoutRecord3sInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUncheckedUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedUpdateManyWithoutUserNestedInput
@@ -2006,7 +2241,6 @@ export type UserUncheckedUpdateWithoutRecord3sInput = {
 
 export type UserCreateWithoutRecord5sInput = {
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -2014,10 +2248,12 @@ export type UserCreateWithoutRecord5sInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerCreateNestedManyWithoutUserInput
@@ -2051,7 +2287,6 @@ export type UserCreateWithoutRecord5sInput = {
 export type UserUncheckedCreateWithoutRecord5sInput = {
   id?: number
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -2059,10 +2294,12 @@ export type UserUncheckedCreateWithoutRecord5sInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordUncheckedCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedCreateNestedManyWithoutUserInput
@@ -2111,7 +2348,6 @@ export type UserUpdateToOneWithWhereWithoutRecord5sInput = {
 
 export type UserUpdateWithoutRecord5sInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -2119,10 +2355,12 @@ export type UserUpdateWithoutRecord5sInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUpdateManyWithoutUserNestedInput
@@ -2156,7 +2394,6 @@ export type UserUpdateWithoutRecord5sInput = {
 export type UserUncheckedUpdateWithoutRecord5sInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -2164,10 +2401,12 @@ export type UserUncheckedUpdateWithoutRecord5sInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUncheckedUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedUpdateManyWithoutUserNestedInput
@@ -2200,7 +2439,6 @@ export type UserUncheckedUpdateWithoutRecord5sInput = {
 
 export type UserCreateWithoutRecord10sInput = {
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -2208,10 +2446,12 @@ export type UserCreateWithoutRecord10sInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerCreateNestedManyWithoutUserInput
@@ -2245,7 +2485,6 @@ export type UserCreateWithoutRecord10sInput = {
 export type UserUncheckedCreateWithoutRecord10sInput = {
   id?: number
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -2253,10 +2492,12 @@ export type UserUncheckedCreateWithoutRecord10sInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordUncheckedCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedCreateNestedManyWithoutUserInput
@@ -2305,7 +2546,6 @@ export type UserUpdateToOneWithWhereWithoutRecord10sInput = {
 
 export type UserUpdateWithoutRecord10sInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -2313,10 +2553,12 @@ export type UserUpdateWithoutRecord10sInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUpdateManyWithoutUserNestedInput
@@ -2350,7 +2592,6 @@ export type UserUpdateWithoutRecord10sInput = {
 export type UserUncheckedUpdateWithoutRecord10sInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -2358,10 +2599,12 @@ export type UserUncheckedUpdateWithoutRecord10sInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUncheckedUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedUpdateManyWithoutUserNestedInput
@@ -2394,7 +2637,6 @@ export type UserUncheckedUpdateWithoutRecord10sInput = {
 
 export type UserCreateWithoutRecord20sInput = {
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -2402,10 +2644,12 @@ export type UserCreateWithoutRecord20sInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerCreateNestedManyWithoutUserInput
@@ -2439,7 +2683,6 @@ export type UserCreateWithoutRecord20sInput = {
 export type UserUncheckedCreateWithoutRecord20sInput = {
   id?: number
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -2447,10 +2690,12 @@ export type UserUncheckedCreateWithoutRecord20sInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordUncheckedCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedCreateNestedManyWithoutUserInput
@@ -2499,7 +2744,6 @@ export type UserUpdateToOneWithWhereWithoutRecord20sInput = {
 
 export type UserUpdateWithoutRecord20sInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -2507,10 +2751,12 @@ export type UserUpdateWithoutRecord20sInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUpdateManyWithoutUserNestedInput
@@ -2544,7 +2790,6 @@ export type UserUpdateWithoutRecord20sInput = {
 export type UserUncheckedUpdateWithoutRecord20sInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -2552,10 +2797,12 @@ export type UserUncheckedUpdateWithoutRecord20sInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUncheckedUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedUpdateManyWithoutUserNestedInput
@@ -2588,7 +2835,6 @@ export type UserUncheckedUpdateWithoutRecord20sInput = {
 
 export type UserCreateWithoutRecord30sInput = {
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -2596,10 +2842,12 @@ export type UserCreateWithoutRecord30sInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerCreateNestedManyWithoutUserInput
@@ -2633,7 +2881,6 @@ export type UserCreateWithoutRecord30sInput = {
 export type UserUncheckedCreateWithoutRecord30sInput = {
   id?: number
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -2641,10 +2888,12 @@ export type UserUncheckedCreateWithoutRecord30sInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordUncheckedCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedCreateNestedManyWithoutUserInput
@@ -2693,7 +2942,6 @@ export type UserUpdateToOneWithWhereWithoutRecord30sInput = {
 
 export type UserUpdateWithoutRecord30sInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -2701,10 +2949,12 @@ export type UserUpdateWithoutRecord30sInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUpdateManyWithoutUserNestedInput
@@ -2738,7 +2988,6 @@ export type UserUpdateWithoutRecord30sInput = {
 export type UserUncheckedUpdateWithoutRecord30sInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -2746,10 +2995,12 @@ export type UserUncheckedUpdateWithoutRecord30sInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUncheckedUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedUpdateManyWithoutUserNestedInput
@@ -2782,7 +3033,6 @@ export type UserUncheckedUpdateWithoutRecord30sInput = {
 
 export type UserCreateWithoutRecord1minInput = {
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -2790,10 +3040,12 @@ export type UserCreateWithoutRecord1minInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerCreateNestedManyWithoutUserInput
@@ -2827,7 +3079,6 @@ export type UserCreateWithoutRecord1minInput = {
 export type UserUncheckedCreateWithoutRecord1minInput = {
   id?: number
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -2835,10 +3086,12 @@ export type UserUncheckedCreateWithoutRecord1minInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordUncheckedCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedCreateNestedManyWithoutUserInput
@@ -2887,7 +3140,6 @@ export type UserUpdateToOneWithWhereWithoutRecord1minInput = {
 
 export type UserUpdateWithoutRecord1minInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -2895,10 +3147,12 @@ export type UserUpdateWithoutRecord1minInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUpdateManyWithoutUserNestedInput
@@ -2932,7 +3186,6 @@ export type UserUpdateWithoutRecord1minInput = {
 export type UserUncheckedUpdateWithoutRecord1minInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -2940,10 +3193,12 @@ export type UserUncheckedUpdateWithoutRecord1minInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUncheckedUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedUpdateManyWithoutUserNestedInput
@@ -2976,7 +3231,6 @@ export type UserUncheckedUpdateWithoutRecord1minInput = {
 
 export type UserCreateWithoutRecord2minInput = {
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -2984,10 +3238,12 @@ export type UserCreateWithoutRecord2minInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerCreateNestedManyWithoutUserInput
@@ -3021,7 +3277,6 @@ export type UserCreateWithoutRecord2minInput = {
 export type UserUncheckedCreateWithoutRecord2minInput = {
   id?: number
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -3029,10 +3284,12 @@ export type UserUncheckedCreateWithoutRecord2minInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordUncheckedCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedCreateNestedManyWithoutUserInput
@@ -3081,7 +3338,6 @@ export type UserUpdateToOneWithWhereWithoutRecord2minInput = {
 
 export type UserUpdateWithoutRecord2minInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -3089,10 +3345,12 @@ export type UserUpdateWithoutRecord2minInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUpdateManyWithoutUserNestedInput
@@ -3126,7 +3384,6 @@ export type UserUpdateWithoutRecord2minInput = {
 export type UserUncheckedUpdateWithoutRecord2minInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -3134,10 +3391,12 @@ export type UserUncheckedUpdateWithoutRecord2minInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUncheckedUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedUpdateManyWithoutUserNestedInput
@@ -3170,7 +3429,6 @@ export type UserUncheckedUpdateWithoutRecord2minInput = {
 
 export type UserCreateWithoutRecord3minInput = {
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -3178,10 +3436,12 @@ export type UserCreateWithoutRecord3minInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerCreateNestedManyWithoutUserInput
@@ -3215,7 +3475,6 @@ export type UserCreateWithoutRecord3minInput = {
 export type UserUncheckedCreateWithoutRecord3minInput = {
   id?: number
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -3223,10 +3482,12 @@ export type UserUncheckedCreateWithoutRecord3minInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordUncheckedCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedCreateNestedManyWithoutUserInput
@@ -3275,7 +3536,6 @@ export type UserUpdateToOneWithWhereWithoutRecord3minInput = {
 
 export type UserUpdateWithoutRecord3minInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -3283,10 +3543,12 @@ export type UserUpdateWithoutRecord3minInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUpdateManyWithoutUserNestedInput
@@ -3320,7 +3582,6 @@ export type UserUpdateWithoutRecord3minInput = {
 export type UserUncheckedUpdateWithoutRecord3minInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -3328,10 +3589,12 @@ export type UserUncheckedUpdateWithoutRecord3minInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUncheckedUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedUpdateManyWithoutUserNestedInput
@@ -3364,7 +3627,6 @@ export type UserUncheckedUpdateWithoutRecord3minInput = {
 
 export type UserCreateWithoutRecord5minInput = {
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -3372,10 +3634,12 @@ export type UserCreateWithoutRecord5minInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerCreateNestedManyWithoutUserInput
@@ -3409,7 +3673,6 @@ export type UserCreateWithoutRecord5minInput = {
 export type UserUncheckedCreateWithoutRecord5minInput = {
   id?: number
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -3417,10 +3680,12 @@ export type UserUncheckedCreateWithoutRecord5minInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordUncheckedCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedCreateNestedManyWithoutUserInput
@@ -3469,7 +3734,6 @@ export type UserUpdateToOneWithWhereWithoutRecord5minInput = {
 
 export type UserUpdateWithoutRecord5minInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -3477,10 +3741,12 @@ export type UserUpdateWithoutRecord5minInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUpdateManyWithoutUserNestedInput
@@ -3514,7 +3780,6 @@ export type UserUpdateWithoutRecord5minInput = {
 export type UserUncheckedUpdateWithoutRecord5minInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -3522,10 +3787,12 @@ export type UserUncheckedUpdateWithoutRecord5minInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUncheckedUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedUpdateManyWithoutUserNestedInput
@@ -3558,7 +3825,6 @@ export type UserUncheckedUpdateWithoutRecord5minInput = {
 
 export type UserCreateWithoutRecord8minInput = {
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -3566,10 +3832,12 @@ export type UserCreateWithoutRecord8minInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerCreateNestedManyWithoutUserInput
@@ -3603,7 +3871,6 @@ export type UserCreateWithoutRecord8minInput = {
 export type UserUncheckedCreateWithoutRecord8minInput = {
   id?: number
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -3611,10 +3878,12 @@ export type UserUncheckedCreateWithoutRecord8minInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordUncheckedCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedCreateNestedManyWithoutUserInput
@@ -3663,7 +3932,6 @@ export type UserUpdateToOneWithWhereWithoutRecord8minInput = {
 
 export type UserUpdateWithoutRecord8minInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -3671,10 +3939,12 @@ export type UserUpdateWithoutRecord8minInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUpdateManyWithoutUserNestedInput
@@ -3708,7 +3978,6 @@ export type UserUpdateWithoutRecord8minInput = {
 export type UserUncheckedUpdateWithoutRecord8minInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -3716,10 +3985,12 @@ export type UserUncheckedUpdateWithoutRecord8minInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUncheckedUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedUpdateManyWithoutUserNestedInput
@@ -3752,7 +4023,6 @@ export type UserUncheckedUpdateWithoutRecord8minInput = {
 
 export type UserCreateWithoutRecord10minInput = {
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -3760,10 +4030,12 @@ export type UserCreateWithoutRecord10minInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerCreateNestedManyWithoutUserInput
@@ -3797,7 +4069,6 @@ export type UserCreateWithoutRecord10minInput = {
 export type UserUncheckedCreateWithoutRecord10minInput = {
   id?: number
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -3805,10 +4076,12 @@ export type UserUncheckedCreateWithoutRecord10minInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordUncheckedCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedCreateNestedManyWithoutUserInput
@@ -3857,7 +4130,6 @@ export type UserUpdateToOneWithWhereWithoutRecord10minInput = {
 
 export type UserUpdateWithoutRecord10minInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -3865,10 +4137,12 @@ export type UserUpdateWithoutRecord10minInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUpdateManyWithoutUserNestedInput
@@ -3902,7 +4176,6 @@ export type UserUpdateWithoutRecord10minInput = {
 export type UserUncheckedUpdateWithoutRecord10minInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -3910,10 +4183,12 @@ export type UserUncheckedUpdateWithoutRecord10minInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUncheckedUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedUpdateManyWithoutUserNestedInput
@@ -3946,7 +4221,6 @@ export type UserUncheckedUpdateWithoutRecord10minInput = {
 
 export type UserCreateWithoutRecord12minInput = {
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -3954,10 +4228,12 @@ export type UserCreateWithoutRecord12minInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerCreateNestedManyWithoutUserInput
@@ -3991,7 +4267,6 @@ export type UserCreateWithoutRecord12minInput = {
 export type UserUncheckedCreateWithoutRecord12minInput = {
   id?: number
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -3999,10 +4274,12 @@ export type UserUncheckedCreateWithoutRecord12minInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordUncheckedCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedCreateNestedManyWithoutUserInput
@@ -4051,7 +4328,6 @@ export type UserUpdateToOneWithWhereWithoutRecord12minInput = {
 
 export type UserUpdateWithoutRecord12minInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -4059,10 +4335,12 @@ export type UserUpdateWithoutRecord12minInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUpdateManyWithoutUserNestedInput
@@ -4096,7 +4374,6 @@ export type UserUpdateWithoutRecord12minInput = {
 export type UserUncheckedUpdateWithoutRecord12minInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -4104,10 +4381,12 @@ export type UserUncheckedUpdateWithoutRecord12minInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUncheckedUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedUpdateManyWithoutUserNestedInput
@@ -4140,7 +4419,6 @@ export type UserUncheckedUpdateWithoutRecord12minInput = {
 
 export type UserCreateWithoutRecord15minInput = {
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -4148,10 +4426,12 @@ export type UserCreateWithoutRecord15minInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerCreateNestedManyWithoutUserInput
@@ -4185,7 +4465,6 @@ export type UserCreateWithoutRecord15minInput = {
 export type UserUncheckedCreateWithoutRecord15minInput = {
   id?: number
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -4193,10 +4472,12 @@ export type UserUncheckedCreateWithoutRecord15minInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordUncheckedCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedCreateNestedManyWithoutUserInput
@@ -4245,7 +4526,6 @@ export type UserUpdateToOneWithWhereWithoutRecord15minInput = {
 
 export type UserUpdateWithoutRecord15minInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -4253,10 +4533,12 @@ export type UserUpdateWithoutRecord15minInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUpdateManyWithoutUserNestedInput
@@ -4290,7 +4572,6 @@ export type UserUpdateWithoutRecord15minInput = {
 export type UserUncheckedUpdateWithoutRecord15minInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -4298,10 +4579,12 @@ export type UserUncheckedUpdateWithoutRecord15minInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUncheckedUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedUpdateManyWithoutUserNestedInput
@@ -4334,7 +4617,6 @@ export type UserUncheckedUpdateWithoutRecord15minInput = {
 
 export type UserCreateWithoutRecord20minInput = {
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -4342,10 +4624,12 @@ export type UserCreateWithoutRecord20minInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerCreateNestedManyWithoutUserInput
@@ -4379,7 +4663,6 @@ export type UserCreateWithoutRecord20minInput = {
 export type UserUncheckedCreateWithoutRecord20minInput = {
   id?: number
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -4387,10 +4670,12 @@ export type UserUncheckedCreateWithoutRecord20minInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordUncheckedCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedCreateNestedManyWithoutUserInput
@@ -4439,7 +4724,6 @@ export type UserUpdateToOneWithWhereWithoutRecord20minInput = {
 
 export type UserUpdateWithoutRecord20minInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -4447,10 +4731,12 @@ export type UserUpdateWithoutRecord20minInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUpdateManyWithoutUserNestedInput
@@ -4484,7 +4770,6 @@ export type UserUpdateWithoutRecord20minInput = {
 export type UserUncheckedUpdateWithoutRecord20minInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -4492,10 +4777,12 @@ export type UserUncheckedUpdateWithoutRecord20minInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUncheckedUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedUpdateManyWithoutUserNestedInput
@@ -4528,7 +4815,6 @@ export type UserUncheckedUpdateWithoutRecord20minInput = {
 
 export type UserCreateWithoutRecord30minInput = {
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -4536,10 +4822,12 @@ export type UserCreateWithoutRecord30minInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerCreateNestedManyWithoutUserInput
@@ -4573,7 +4861,6 @@ export type UserCreateWithoutRecord30minInput = {
 export type UserUncheckedCreateWithoutRecord30minInput = {
   id?: number
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -4581,10 +4868,12 @@ export type UserUncheckedCreateWithoutRecord30minInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordUncheckedCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedCreateNestedManyWithoutUserInput
@@ -4633,7 +4922,6 @@ export type UserUpdateToOneWithWhereWithoutRecord30minInput = {
 
 export type UserUpdateWithoutRecord30minInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -4641,10 +4929,12 @@ export type UserUpdateWithoutRecord30minInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUpdateManyWithoutUserNestedInput
@@ -4678,7 +4968,6 @@ export type UserUpdateWithoutRecord30minInput = {
 export type UserUncheckedUpdateWithoutRecord30minInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -4686,10 +4975,12 @@ export type UserUncheckedUpdateWithoutRecord30minInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUncheckedUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedUpdateManyWithoutUserNestedInput
@@ -4722,7 +5013,6 @@ export type UserUncheckedUpdateWithoutRecord30minInput = {
 
 export type UserCreateWithoutRecord60minInput = {
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -4730,10 +5020,12 @@ export type UserCreateWithoutRecord60minInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerCreateNestedManyWithoutUserInput
@@ -4767,7 +5059,6 @@ export type UserCreateWithoutRecord60minInput = {
 export type UserUncheckedCreateWithoutRecord60minInput = {
   id?: number
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -4775,10 +5066,12 @@ export type UserUncheckedCreateWithoutRecord60minInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordUncheckedCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedCreateNestedManyWithoutUserInput
@@ -4827,7 +5120,6 @@ export type UserUpdateToOneWithWhereWithoutRecord60minInput = {
 
 export type UserUpdateWithoutRecord60minInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -4835,10 +5127,12 @@ export type UserUpdateWithoutRecord60minInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUpdateManyWithoutUserNestedInput
@@ -4872,7 +5166,6 @@ export type UserUpdateWithoutRecord60minInput = {
 export type UserUncheckedUpdateWithoutRecord60minInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -4880,10 +5173,12 @@ export type UserUncheckedUpdateWithoutRecord60minInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUncheckedUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedUpdateManyWithoutUserNestedInput
@@ -4916,7 +5211,6 @@ export type UserUncheckedUpdateWithoutRecord60minInput = {
 
 export type UserCreateWithoutRecordDistanceInput = {
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -4924,10 +5218,12 @@ export type UserCreateWithoutRecordDistanceInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerCreateNestedManyWithoutUserInput
@@ -4961,7 +5257,6 @@ export type UserCreateWithoutRecordDistanceInput = {
 export type UserUncheckedCreateWithoutRecordDistanceInput = {
   id?: number
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -4969,10 +5264,12 @@ export type UserUncheckedCreateWithoutRecordDistanceInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordUncheckedCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedCreateNestedManyWithoutUserInput
@@ -5021,7 +5318,6 @@ export type UserUpdateToOneWithWhereWithoutRecordDistanceInput = {
 
 export type UserUpdateWithoutRecordDistanceInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -5029,10 +5325,12 @@ export type UserUpdateWithoutRecordDistanceInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUpdateManyWithoutUserNestedInput
@@ -5066,7 +5364,6 @@ export type UserUpdateWithoutRecordDistanceInput = {
 export type UserUncheckedUpdateWithoutRecordDistanceInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -5074,10 +5371,12 @@ export type UserUncheckedUpdateWithoutRecordDistanceInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUncheckedUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedUpdateManyWithoutUserNestedInput
@@ -5110,7 +5409,6 @@ export type UserUncheckedUpdateWithoutRecordDistanceInput = {
 
 export type UserCreateWithoutRecordElevationGainInput = {
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -5118,10 +5416,12 @@ export type UserCreateWithoutRecordElevationGainInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerCreateNestedManyWithoutUserInput
@@ -5155,7 +5455,6 @@ export type UserCreateWithoutRecordElevationGainInput = {
 export type UserUncheckedCreateWithoutRecordElevationGainInput = {
   id?: number
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -5163,10 +5462,12 @@ export type UserUncheckedCreateWithoutRecordElevationGainInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordUncheckedCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedCreateNestedManyWithoutUserInput
@@ -5215,7 +5516,6 @@ export type UserUpdateToOneWithWhereWithoutRecordElevationGainInput = {
 
 export type UserUpdateWithoutRecordElevationGainInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -5223,10 +5523,12 @@ export type UserUpdateWithoutRecordElevationGainInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUpdateManyWithoutUserNestedInput
@@ -5260,7 +5562,6 @@ export type UserUpdateWithoutRecordElevationGainInput = {
 export type UserUncheckedUpdateWithoutRecordElevationGainInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -5268,10 +5569,12 @@ export type UserUncheckedUpdateWithoutRecordElevationGainInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUncheckedUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedUpdateManyWithoutUserNestedInput
@@ -5304,7 +5607,6 @@ export type UserUncheckedUpdateWithoutRecordElevationGainInput = {
 
 export type UserCreateWithoutRecordDurationInput = {
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -5312,10 +5614,12 @@ export type UserCreateWithoutRecordDurationInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerCreateNestedManyWithoutUserInput
@@ -5349,7 +5653,6 @@ export type UserCreateWithoutRecordDurationInput = {
 export type UserUncheckedCreateWithoutRecordDurationInput = {
   id?: number
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -5357,10 +5660,12 @@ export type UserUncheckedCreateWithoutRecordDurationInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordUncheckedCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedCreateNestedManyWithoutUserInput
@@ -5409,7 +5714,6 @@ export type UserUpdateToOneWithWhereWithoutRecordDurationInput = {
 
 export type UserUpdateWithoutRecordDurationInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -5417,10 +5721,12 @@ export type UserUpdateWithoutRecordDurationInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUpdateManyWithoutUserNestedInput
@@ -5454,7 +5760,6 @@ export type UserUpdateWithoutRecordDurationInput = {
 export type UserUncheckedUpdateWithoutRecordDurationInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -5462,10 +5767,12 @@ export type UserUncheckedUpdateWithoutRecordDurationInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUncheckedUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedUpdateManyWithoutUserNestedInput
@@ -5498,7 +5805,6 @@ export type UserUncheckedUpdateWithoutRecordDurationInput = {
 
 export type UserCreateWithoutRecordKilojoulesInput = {
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -5506,10 +5812,12 @@ export type UserCreateWithoutRecordKilojoulesInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerCreateNestedManyWithoutUserInput
@@ -5543,7 +5851,6 @@ export type UserCreateWithoutRecordKilojoulesInput = {
 export type UserUncheckedCreateWithoutRecordKilojoulesInput = {
   id?: number
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -5551,10 +5858,12 @@ export type UserUncheckedCreateWithoutRecordKilojoulesInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordUncheckedCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedCreateNestedManyWithoutUserInput
@@ -5603,7 +5912,6 @@ export type UserUpdateToOneWithWhereWithoutRecordKilojoulesInput = {
 
 export type UserUpdateWithoutRecordKilojoulesInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -5611,10 +5919,12 @@ export type UserUpdateWithoutRecordKilojoulesInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUpdateManyWithoutUserNestedInput
@@ -5648,7 +5958,6 @@ export type UserUpdateWithoutRecordKilojoulesInput = {
 export type UserUncheckedUpdateWithoutRecordKilojoulesInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -5656,10 +5965,12 @@ export type UserUncheckedUpdateWithoutRecordKilojoulesInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUncheckedUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedUpdateManyWithoutUserNestedInput
@@ -5692,7 +6003,6 @@ export type UserUncheckedUpdateWithoutRecordKilojoulesInput = {
 
 export type UserCreateWithoutRecordMaxCadenceInput = {
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -5700,10 +6010,12 @@ export type UserCreateWithoutRecordMaxCadenceInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerCreateNestedManyWithoutUserInput
@@ -5737,7 +6049,6 @@ export type UserCreateWithoutRecordMaxCadenceInput = {
 export type UserUncheckedCreateWithoutRecordMaxCadenceInput = {
   id?: number
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -5745,10 +6056,12 @@ export type UserUncheckedCreateWithoutRecordMaxCadenceInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordUncheckedCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedCreateNestedManyWithoutUserInput
@@ -5797,7 +6110,6 @@ export type UserUpdateToOneWithWhereWithoutRecordMaxCadenceInput = {
 
 export type UserUpdateWithoutRecordMaxCadenceInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -5805,10 +6117,12 @@ export type UserUpdateWithoutRecordMaxCadenceInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUpdateManyWithoutUserNestedInput
@@ -5842,7 +6156,6 @@ export type UserUpdateWithoutRecordMaxCadenceInput = {
 export type UserUncheckedUpdateWithoutRecordMaxCadenceInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -5850,10 +6163,12 @@ export type UserUncheckedUpdateWithoutRecordMaxCadenceInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUncheckedUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedUpdateManyWithoutUserNestedInput
@@ -5886,7 +6201,6 @@ export type UserUncheckedUpdateWithoutRecordMaxCadenceInput = {
 
 export type UserCreateWithoutRecordMaxSpeedInput = {
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -5894,10 +6208,12 @@ export type UserCreateWithoutRecordMaxSpeedInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerCreateNestedManyWithoutUserInput
@@ -5931,7 +6247,6 @@ export type UserCreateWithoutRecordMaxSpeedInput = {
 export type UserUncheckedCreateWithoutRecordMaxSpeedInput = {
   id?: number
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -5939,10 +6254,12 @@ export type UserUncheckedCreateWithoutRecordMaxSpeedInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordUncheckedCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedCreateNestedManyWithoutUserInput
@@ -5991,7 +6308,6 @@ export type UserUpdateToOneWithWhereWithoutRecordMaxSpeedInput = {
 
 export type UserUpdateWithoutRecordMaxSpeedInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -5999,10 +6315,12 @@ export type UserUpdateWithoutRecordMaxSpeedInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUpdateManyWithoutUserNestedInput
@@ -6036,7 +6354,6 @@ export type UserUpdateWithoutRecordMaxSpeedInput = {
 export type UserUncheckedUpdateWithoutRecordMaxSpeedInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -6044,10 +6361,12 @@ export type UserUncheckedUpdateWithoutRecordMaxSpeedInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUncheckedUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedUpdateManyWithoutUserNestedInput
@@ -6080,7 +6399,6 @@ export type UserUncheckedUpdateWithoutRecordMaxSpeedInput = {
 
 export type UserCreateWithoutRecordMaxHeartrateInput = {
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -6088,10 +6406,12 @@ export type UserCreateWithoutRecordMaxHeartrateInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerCreateNestedManyWithoutUserInput
@@ -6125,7 +6445,6 @@ export type UserCreateWithoutRecordMaxHeartrateInput = {
 export type UserUncheckedCreateWithoutRecordMaxHeartrateInput = {
   id?: number
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -6133,10 +6452,12 @@ export type UserUncheckedCreateWithoutRecordMaxHeartrateInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordUncheckedCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedCreateNestedManyWithoutUserInput
@@ -6185,7 +6506,6 @@ export type UserUpdateToOneWithWhereWithoutRecordMaxHeartrateInput = {
 
 export type UserUpdateWithoutRecordMaxHeartrateInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -6193,10 +6513,12 @@ export type UserUpdateWithoutRecordMaxHeartrateInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUpdateManyWithoutUserNestedInput
@@ -6230,7 +6552,6 @@ export type UserUpdateWithoutRecordMaxHeartrateInput = {
 export type UserUncheckedUpdateWithoutRecordMaxHeartrateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -6238,10 +6559,12 @@ export type UserUncheckedUpdateWithoutRecordMaxHeartrateInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUncheckedUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedUpdateManyWithoutUserNestedInput
@@ -6274,7 +6597,6 @@ export type UserUncheckedUpdateWithoutRecordMaxHeartrateInput = {
 
 export type UserCreateWithoutRecordHr5minInput = {
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -6282,10 +6604,12 @@ export type UserCreateWithoutRecordHr5minInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerCreateNestedManyWithoutUserInput
@@ -6319,7 +6643,6 @@ export type UserCreateWithoutRecordHr5minInput = {
 export type UserUncheckedCreateWithoutRecordHr5minInput = {
   id?: number
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -6327,10 +6650,12 @@ export type UserUncheckedCreateWithoutRecordHr5minInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordUncheckedCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedCreateNestedManyWithoutUserInput
@@ -6379,7 +6704,6 @@ export type UserUpdateToOneWithWhereWithoutRecordHr5minInput = {
 
 export type UserUpdateWithoutRecordHr5minInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -6387,10 +6711,12 @@ export type UserUpdateWithoutRecordHr5minInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUpdateManyWithoutUserNestedInput
@@ -6424,7 +6750,6 @@ export type UserUpdateWithoutRecordHr5minInput = {
 export type UserUncheckedUpdateWithoutRecordHr5minInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -6432,10 +6757,12 @@ export type UserUncheckedUpdateWithoutRecordHr5minInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUncheckedUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedUpdateManyWithoutUserNestedInput
@@ -6468,7 +6795,6 @@ export type UserUncheckedUpdateWithoutRecordHr5minInput = {
 
 export type UserCreateWithoutRecordHr20minInput = {
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -6476,10 +6802,12 @@ export type UserCreateWithoutRecordHr20minInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerCreateNestedManyWithoutUserInput
@@ -6513,7 +6841,6 @@ export type UserCreateWithoutRecordHr20minInput = {
 export type UserUncheckedCreateWithoutRecordHr20minInput = {
   id?: number
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -6521,10 +6848,12 @@ export type UserUncheckedCreateWithoutRecordHr20minInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordUncheckedCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedCreateNestedManyWithoutUserInput
@@ -6573,7 +6902,6 @@ export type UserUpdateToOneWithWhereWithoutRecordHr20minInput = {
 
 export type UserUpdateWithoutRecordHr20minInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -6581,10 +6909,12 @@ export type UserUpdateWithoutRecordHr20minInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUpdateManyWithoutUserNestedInput
@@ -6618,7 +6948,6 @@ export type UserUpdateWithoutRecordHr20minInput = {
 export type UserUncheckedUpdateWithoutRecordHr20minInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -6626,10 +6955,12 @@ export type UserUncheckedUpdateWithoutRecordHr20minInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUncheckedUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedUpdateManyWithoutUserNestedInput
@@ -6662,7 +6993,6 @@ export type UserUncheckedUpdateWithoutRecordHr20minInput = {
 
 export type UserCreateWithoutRecordHr1hInput = {
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -6670,10 +7000,12 @@ export type UserCreateWithoutRecordHr1hInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   lastActivity?: Prisma.LastActivityCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerCreateNestedManyWithoutUserInput
@@ -6707,7 +7039,6 @@ export type UserCreateWithoutRecordHr1hInput = {
 export type UserUncheckedCreateWithoutRecordHr1hInput = {
   id?: number
   email: string
-  passwordHash: string
   firstName: string
   lastName: string
   weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -6715,10 +7046,12 @@ export type UserUncheckedCreateWithoutRecordHr1hInput = {
   anaerobicThreshold?: number | null
   yearlyDistanceKm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
   sex?: string | null
   dateOfBirth?: Date | string | null
+  privacyAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   lastActivity?: Prisma.LastActivityUncheckedCreateNestedOneWithoutUserInput
   customRecords?: Prisma.CustomRecordUncheckedCreateNestedManyWithoutUserInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedCreateNestedManyWithoutUserInput
@@ -6767,7 +7100,6 @@ export type UserUpdateToOneWithWhereWithoutRecordHr1hInput = {
 
 export type UserUpdateWithoutRecordHr1hInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -6775,10 +7107,12 @@ export type UserUpdateWithoutRecordHr1hInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   lastActivity?: Prisma.LastActivityUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUpdateManyWithoutUserNestedInput
@@ -6812,7 +7146,6 @@ export type UserUpdateWithoutRecordHr1hInput = {
 export type UserUncheckedUpdateWithoutRecordHr1hInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -6820,10 +7153,12 @@ export type UserUncheckedUpdateWithoutRecordHr1hInput = {
   anaerobicThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   yearlyDistanceKm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   yearlyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   lastActivity?: Prisma.LastActivityUncheckedUpdateOneWithoutUserNestedInput
   customRecords?: Prisma.CustomRecordUncheckedUpdateManyWithoutUserNestedInput
   recordPeakPower?: Prisma.RecordPeakPowerUncheckedUpdateManyWithoutUserNestedInput
@@ -6860,6 +7195,7 @@ export type UserUncheckedUpdateWithoutRecordHr1hInput = {
  */
 
 export type UserCountOutputType = {
+  accounts: number
   customRecords: number
   recordPeakPower: number
   record3s: number
@@ -6891,6 +7227,7 @@ export type UserCountOutputType = {
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  accounts?: boolean | UserCountOutputTypeCountAccountsArgs
   customRecords?: boolean | UserCountOutputTypeCountCustomRecordsArgs
   recordPeakPower?: boolean | UserCountOutputTypeCountRecordPeakPowerArgs
   record3s?: boolean | UserCountOutputTypeCountRecord3sArgs
@@ -6929,6 +7266,13 @@ export type UserCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensi
    * Select specific fields to fetch from the UserCountOutputType
    */
   select?: Prisma.UserCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountAccountsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AccountWhereInput
 }
 
 /**
@@ -7131,7 +7475,6 @@ export type UserCountOutputTypeCountRecordHr1hArgs<ExtArgs extends runtime.Types
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   email?: boolean
-  passwordHash?: boolean
   firstName?: boolean
   lastName?: boolean
   weightKg?: boolean
@@ -7139,10 +7482,12 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   anaerobicThreshold?: boolean
   yearlyDistanceKm?: boolean
   yearlyHours?: boolean
-  createdAt?: boolean
-  updatedAt?: boolean
   sex?: boolean
   dateOfBirth?: boolean
+  privacyAcceptedAt?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
+  accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
   lastActivity?: boolean | Prisma.User$lastActivityArgs<ExtArgs>
   customRecords?: boolean | Prisma.User$customRecordsArgs<ExtArgs>
   recordPeakPower?: boolean | Prisma.User$recordPeakPowerArgs<ExtArgs>
@@ -7178,7 +7523,6 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
 export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   email?: boolean
-  passwordHash?: boolean
   firstName?: boolean
   lastName?: boolean
   weightKg?: boolean
@@ -7186,16 +7530,16 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   anaerobicThreshold?: boolean
   yearlyDistanceKm?: boolean
   yearlyHours?: boolean
-  createdAt?: boolean
-  updatedAt?: boolean
   sex?: boolean
   dateOfBirth?: boolean
+  privacyAcceptedAt?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   email?: boolean
-  passwordHash?: boolean
   firstName?: boolean
   lastName?: boolean
   weightKg?: boolean
@@ -7203,16 +7547,16 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   anaerobicThreshold?: boolean
   yearlyDistanceKm?: boolean
   yearlyHours?: boolean
-  createdAt?: boolean
-  updatedAt?: boolean
   sex?: boolean
   dateOfBirth?: boolean
+  privacyAcceptedAt?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectScalar = {
   id?: boolean
   email?: boolean
-  passwordHash?: boolean
   firstName?: boolean
   lastName?: boolean
   weightKg?: boolean
@@ -7220,14 +7564,16 @@ export type UserSelectScalar = {
   anaerobicThreshold?: boolean
   yearlyDistanceKm?: boolean
   yearlyHours?: boolean
-  createdAt?: boolean
-  updatedAt?: boolean
   sex?: boolean
   dateOfBirth?: boolean
+  privacyAcceptedAt?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "passwordHash" | "firstName" | "lastName" | "weightKg" | "ftp" | "anaerobicThreshold" | "yearlyDistanceKm" | "yearlyHours" | "createdAt" | "updatedAt" | "sex" | "dateOfBirth", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "firstName" | "lastName" | "weightKg" | "ftp" | "anaerobicThreshold" | "yearlyDistanceKm" | "yearlyHours" | "sex" | "dateOfBirth" | "privacyAcceptedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
   lastActivity?: boolean | Prisma.User$lastActivityArgs<ExtArgs>
   customRecords?: boolean | Prisma.User$customRecordsArgs<ExtArgs>
   recordPeakPower?: boolean | Prisma.User$recordPeakPowerArgs<ExtArgs>
@@ -7265,6 +7611,7 @@ export type UserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
 export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "User"
   objects: {
+    accounts: Prisma.$AccountPayload<ExtArgs>[]
     lastActivity: Prisma.$LastActivityPayload<ExtArgs> | null
     customRecords: Prisma.$CustomRecordPayload<ExtArgs>[]
     recordPeakPower: Prisma.$RecordPeakPowerPayload<ExtArgs>[]
@@ -7298,7 +7645,6 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
     email: string
-    passwordHash: string
     firstName: string
     lastName: string
     weightKg: runtime.Decimal | null
@@ -7306,10 +7652,11 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     anaerobicThreshold: number | null
     yearlyDistanceKm: runtime.Decimal | null
     yearlyHours: runtime.Decimal | null
-    createdAt: Date
-    updatedAt: Date
     sex: string | null
     dateOfBirth: Date | null
+    privacyAcceptedAt: Date | null
+    createdAt: Date
+    updatedAt: Date
   }, ExtArgs["result"]["user"]>
   composites: {}
 }
@@ -7704,6 +8051,7 @@ readonly fields: UserFieldRefs;
  */
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  accounts<T extends Prisma.User$accountsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   lastActivity<T extends Prisma.User$lastActivityArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$lastActivityArgs<ExtArgs>>): Prisma.Prisma__LastActivityClient<runtime.Types.Result.GetResult<Prisma.$LastActivityPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   customRecords<T extends Prisma.User$customRecordsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$customRecordsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CustomRecordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   recordPeakPower<T extends Prisma.User$recordPeakPowerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$recordPeakPowerArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RecordPeakPowerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -7764,7 +8112,6 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
 export interface UserFieldRefs {
   readonly id: Prisma.FieldRef<"User", 'Int'>
   readonly email: Prisma.FieldRef<"User", 'String'>
-  readonly passwordHash: Prisma.FieldRef<"User", 'String'>
   readonly firstName: Prisma.FieldRef<"User", 'String'>
   readonly lastName: Prisma.FieldRef<"User", 'String'>
   readonly weightKg: Prisma.FieldRef<"User", 'Decimal'>
@@ -7772,10 +8119,11 @@ export interface UserFieldRefs {
   readonly anaerobicThreshold: Prisma.FieldRef<"User", 'Int'>
   readonly yearlyDistanceKm: Prisma.FieldRef<"User", 'Decimal'>
   readonly yearlyHours: Prisma.FieldRef<"User", 'Decimal'>
-  readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
-  readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly sex: Prisma.FieldRef<"User", 'String'>
   readonly dateOfBirth: Prisma.FieldRef<"User", 'DateTime'>
+  readonly privacyAcceptedAt: Prisma.FieldRef<"User", 'DateTime'>
+  readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
+  readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
 }
     
 
@@ -8166,6 +8514,30 @@ export type UserDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Limit how many Users to delete.
    */
   limit?: number
+}
+
+/**
+ * User.accounts
+ */
+export type User$accountsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Account
+   */
+  select?: Prisma.AccountSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Account
+   */
+  omit?: Prisma.AccountOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AccountInclude<ExtArgs> | null
+  where?: Prisma.AccountWhereInput
+  orderBy?: Prisma.AccountOrderByWithRelationInput | Prisma.AccountOrderByWithRelationInput[]
+  cursor?: Prisma.AccountWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AccountScalarFieldEnum | Prisma.AccountScalarFieldEnum[]
 }
 
 /**

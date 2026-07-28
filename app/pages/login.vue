@@ -1,118 +1,99 @@
+<!-- app/pages/login.vue -->
 <template>
-  <div class="login-page">
-    <div class="login-card">
-      <h1>Log in</h1>
+  <div class="auth-page">
+    <div class="auth-card">
+      <h1>Welcome to Best Ride</h1>
+      <p class="subtitle">Sign in to track your rides and records</p>
 
-      <form @submit.prevent="handleLogin">
-        <label>
-          Email
-          <input v-model="email" type="email" required autocomplete="email" />
-        </label>
+      <a href="/auth/google" class="google-btn">
+        <v-icon icon="mdi-google" size="18" />
+        Continue with Google
+      </a>
 
-        <label>
-          Password
-          <input
-            v-model="password"
-            type="password"
-            required
-            autocomplete="current-password"
-          />
-        </label>
+      <!-- Quando aggiungerai altri provider (Apple, ecc.), basterà aggiungere qui: -->
+      <!--
+      <a href="/auth/apple" class="google-btn">
+        <v-icon icon="mdi-apple" size="18" />
+        Continue with Apple
+      </a>
+      -->
 
-        <p v-if="error" class="error">{{ error }}</p>
-
-        <button type="submit" :disabled="loading">
-          {{ loading ? "Logging in..." : "Log in" }}
-        </button>
-      </form>
+      <p v-if="errorMessage" class="error-banner">{{ errorMessage }}</p>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-const email = ref("");
-const password = ref("");
-const loading = ref(false);
-const error = ref("");
-
-const { fetch: refreshSession } = useUserSession();
-
-async function handleLogin() {
-  loading.value = true;
-  error.value = "";
-
-  try {
-    await $fetch("/api/auth/login", {
-      method: "POST",
-      body: { email: email.value, password: password.value },
-    });
-
-    // Ricarica la sessione lato client, così useUserSession() sa subito che siamo loggati
-    await refreshSession();
-    await navigateTo("/");
-  } catch (err: any) {
-    error.value = err?.data?.message || "Login failed";
-  } finally {
-    loading.value = false;
+// Se torniamo qui dopo un fallimento OAuth (google.get.ts fa redirect a /login?error=...),
+// mostriamo un messaggio d'errore leggibile invece di un errore criptico
+const route = useRoute();
+const errorMessage = computed(() => {
+  if (route.query.error === "google_auth_failed") {
+    return "Something went wrong signing in with Google. Please try again.";
   }
-}
+  return "";
+});
 </script>
 
 <style scoped>
-.login-page {
+.auth-page {
   display: flex;
   justify-content: center;
-  padding: 60px 20px;
+  padding: 80px 20px;
+  min-height: 60vh;
 }
-.login-card {
+
+.auth-card {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 14px;
   padding: 32px;
   width: 100%;
   max-width: 380px;
+  text-align: center;
 }
-.login-card h1 {
-  margin: 0 0 20px;
+
+.auth-card h1 {
+  margin: 0 0 8px;
   font-size: 22px;
+  color: var(--text);
 }
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-label {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  font-size: 13px;
+
+.subtitle {
   color: var(--text-muted);
+  font-size: 14px;
+  margin: 0 0 24px;
 }
-input {
-  padding: 10px 12px;
-  border-radius: 8px;
+
+.google-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px;
   border: 1px solid var(--border);
+  border-radius: 10px;
   background: var(--bg);
   color: var(--text);
+  font-weight: 600;
+  text-decoration: none;
   font-size: 14px;
+  transition:
+    border-color 0.15s,
+    background-color 0.15s;
 }
-button {
-  margin-top: 8px;
-  padding: 12px;
-  border: none;
-  border-radius: 10px;
-  background: var(--accent);
-  color: #fff;
-  font-weight: 700;
-  cursor: pointer;
+.google-btn:hover {
+  border-color: var(--accent);
+  background: var(--surface-alt);
 }
-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-.error {
+
+.error-banner {
+  margin-top: 16px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
   color: #ef4444;
   font-size: 13px;
-  margin: 0;
 }
 </style>
