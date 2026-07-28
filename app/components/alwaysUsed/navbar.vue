@@ -98,7 +98,6 @@
       </template>
       <template v-else>
         <v-btn to="/login" variant="text"> Login </v-btn>
-        <v-btn to="/register" class="signup"> Sign up </v-btn>
       </template>
     </div>
     <!-- MOBILE BUTTON -->
