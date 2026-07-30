@@ -13,6 +13,14 @@
     </div>
 
     <div v-else-if="data" class="activity-layout">
+      <ShareActivityButton
+        v-if="data"
+        :activity-data="{
+          activity: data.activity,
+          training_load: data.training_load,
+          power_records: data.power_records,
+        }"
+      />
       <div class="slot-general">
         <ActivityStatsPanel
           title="General"
@@ -56,6 +64,7 @@
 <script setup lang="ts">
 import ActivityStatsPanel from "~/components/activity/ActivityStatsPanel.vue";
 import PowerCurveChart from "~/components/activity/PowerCurveChart.vue";
+import ShareActivityButton from "~/components/activity/ShareActivity.vue";
 definePageMeta({ middleware: "auth" });
 
 const data = ref<any>(null);
