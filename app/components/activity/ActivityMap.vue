@@ -64,7 +64,6 @@ const initMap = async () => {
 
       if (typeof lat !== "number" || typeof lng !== "number") return null;
 
-      // 🚨 FIX TEMPORANEO: Se i valori sono micro-decimali (es. 0.0000039),
       // significa che sono stati divisi per errore per (180 / 2^31). Ristabiliamo i semicircles!
       if (Math.abs(lat) < 0.1 && lat !== 0) {
         lat = lat / SEMICIRCLES_TO_DEGREES;
