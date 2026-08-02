@@ -1,7 +1,7 @@
 <template>
   <div class="records-page">
     <h1>My Records</h1>
-    <p class="subtitle">
+    <p class="eyebrow">
       Fill in your records manually, or let them be set automatically when you
       upload an activity.
     </p>
@@ -278,10 +278,7 @@ async function performDelete() {
   margin-bottom: 8px;
   color: var(--text, #111827);
 }
-.subtitle {
-  color: var(--text-muted);
-  margin-bottom: 28px;
-}
+
 .dialog-form {
   display: flex;
   flex-direction: column;

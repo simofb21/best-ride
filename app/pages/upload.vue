@@ -2,8 +2,8 @@
   <div class="page">
     <header class="page-header">
       <div>
-        <p class="eyebrow">Activity Analysis</p>
-        <h1>Upload a .fit file</h1>
+        <h1 class="page-title">Activity Analysis</h1>
+        <p class="eyebrow">Upload a .fit file</p>
       </div>
     </header>
 
@@ -189,13 +189,7 @@ async function confirmSaveActivity() {
   margin: 0 auto;
   padding: 32px 20px;
 }
-.eyebrow {
-  font-size: 12px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 6px;
-}
+
 .dropzone {
   border: 1.5px dashed var(--border);
   border-radius: 14px;

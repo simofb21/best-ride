@@ -29,6 +29,9 @@ export default defineNuxtConfig({
       icons: {
         defaultSet: "mdi",
       },
+      moduleOptions: {
+        importComposables: false,
+      },
     },
   },
 

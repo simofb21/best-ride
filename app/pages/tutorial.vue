@@ -1,7 +1,7 @@
 <template>
   <div class="tutorial-page">
     <h1 class="page-title">Tutorial & Guida</h1>
-    <p class="subtitle">
+    <p class="eyebrow">
       Scopri come sfruttare al massimo Best Ride e analizzare le tue prestazioni
       in bici.
     </p>

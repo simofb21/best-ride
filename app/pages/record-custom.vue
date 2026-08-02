@@ -2,7 +2,7 @@
 <template>
   <div class="custom-records-page">
     <h1>Custom Records</h1>
-    <p class="subtitle">
+    <p class="eyebrow">
       Create your own records and track up to 3 best performances for each.
     </p>
 

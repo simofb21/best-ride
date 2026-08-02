@@ -36,3 +36,15 @@ body {
   min-height: 100vh;
 }
 
+.eyebrow {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1rem;
+}
+.page-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+}
