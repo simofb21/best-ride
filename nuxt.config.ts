@@ -50,7 +50,7 @@ export default defineNuxtConfig({
       lang: "it",
       icons: [
         {
-          src: "/icons/icon-192x192.png",
+          src: "/icons/launchericon-192x192.png",
           sizes: "192x192",
           type: "image/png",
         },
