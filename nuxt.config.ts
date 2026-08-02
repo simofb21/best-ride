@@ -1,4 +1,4 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
+// nuxt.config.ts
 export default defineNuxtConfig({
   css: ["@mdi/font/css/materialdesignicons.min.css", "@/assets/css/theme.css"],
 
@@ -29,20 +29,45 @@ export default defineNuxtConfig({
       icons: {
         defaultSet: "mdi",
       },
-      moduleOptions: {
-        importComposables: false,
-      },
+    },
+    moduleOptions: {
+      importComposables: false,
     },
   },
 
   pwa: {
-    manifest: {
-      name: "La mia PWA",
-      short_name: "MyPWA",
-      display: "standalone",
+    registerType: "autoUpdate",
 
+    manifest: {
+      name: "Best Ride",
+      short_name: "Best Ride",
+      description: "Track your power. Chase your records.",
+      theme_color: "#22c55e",
+      background_color: "#0b0f14",
+      display: "standalone",
+      orientation: "portrait",
+      start_url: "/",
+      lang: "it",
+      icons: [
+        {
+          src: "/icons/icon-192x192.png",
+          sizes: "192x192",
+          type: "image/png",
+        },
+        {
+          src: "/icons/launchericon-512x512.png",
+          sizes: "512x512",
+          type: "image/png",
+        },
+        {
+          src: "/icons/launchericon-512x512.png",
+          sizes: "512x512",
+          type: "image/png",
+          purpose: "maskable",
+        },
+      ],
       share_target: {
-        action: "/share",
+        action: "/share-upload",
         method: "POST",
         enctype: "multipart/form-data",
         params: {
@@ -50,15 +75,50 @@ export default defineNuxtConfig({
             {
               name: "file",
               accept: [
-                ".zip",
                 ".fit",
+                ".zip",
                 "application/zip",
                 "application/octet-stream",
+                "application/x-zip-compressed",
               ],
             },
           ],
         },
       },
+    },
+
+    workbox: {
+      navigateFallback: "/",
+      globPatterns: ["**/*.{js,css,html,png,svg,ico,woff,woff2}"],
+      runtimeCaching: [
+        {
+          urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
+          handler: "CacheFirst",
+          options: {
+            cacheName: "google-fonts-cache",
+            expiration: {
+              maxEntries: 10,
+              maxAgeSeconds: 60 * 60 * 24 * 365, // 1 anno
+            },
+          },
+        },
+        {
+          urlPattern: /^\/api\/.*/i,
+          handler: "NetworkFirst",
+          options: {
+            cacheName: "api-cache",
+            expiration: {
+              maxEntries: 50,
+              maxAgeSeconds: 60 * 5, // 5 minuti
+            },
+          },
+        },
+      ],
+    },
+
+    devOptions: {
+      enabled: true,
+      type: "module",
     },
   },
 });
