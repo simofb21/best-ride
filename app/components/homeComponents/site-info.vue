@@ -32,7 +32,7 @@
       </div>
       <div class="feature-card">
         <v-icon icon="mdi-gauge" size="24" />
-        <span>Training Load (TSS / IF)</span>
+        <span>Training Load </span>
       </div>
       <div class="feature-card">
         <v-icon icon="mdi-star-outline" size="24" />

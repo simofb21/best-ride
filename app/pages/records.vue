@@ -168,7 +168,7 @@ async function fetchRecords() {
 
     records.value = normalized;
   } catch (err: any) {
-    errorMessage.value = "Impossibile caricare i dati dei record.";
+    errorMessage.value = "Impossible to load records.";
     console.error("Errore nel recupero dei record:", err);
   }
 }

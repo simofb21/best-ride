@@ -44,63 +44,58 @@ export const POWER_PROFILE_DURATIONS: DurationProfile[] = [
     key: "power_5s",
     label: "Neuromuscular Power (5s)",
     shortLabel: '5"',
-    thresholdsMale: [7, 9, 11.5, 14, 16.5, 19, 21],
-    thresholdsFemale: [5.5, 7, 9, 11, 13, 15.5, 17],
+    thresholdsMale: [7, 9, 11.5, 14, 16.5, 19],
+    thresholdsFemale: [5.5, 7, 9, 11, 13, 15.5],
   },
   {
     key: "power_30s",
     label: "30s Power",
     shortLabel: '30"',
-    // Calibrato su: 10.8 W/kg = livello 3 (Serio)
-    // Scala: ogni livello ~2 W/kg di differenza
-    thresholdsMale: [5, 7, 9.5, 12, 14.5, 17, 20],
-    thresholdsFemale: [4, 5.5, 7.5, 9.5, 11.5, 13.5, 16],
+    thresholdsMale: [5, 7, 9.5, 12, 14.5, 17],
+    thresholdsFemale: [4, 5.5, 7.5, 9.5, 11.5, 13.5],
   },
   {
     key: "power_1min",
     label: "Anaerobic Capacity (1min)",
     shortLabel: "1'",
-    thresholdsMale: [3, 4.5, 6, 7.5, 9, 10.5, 12],
-    thresholdsFemale: [2.5, 3.5, 5, 6.5, 8, 9.5, 11],
+    thresholdsMale: [3, 4.5, 6, 7.5, 9, 10.5],
+    thresholdsFemale: [2.5, 3.5, 5, 6.5, 8, 9.5],
   },
   {
     key: "power_2min",
     label: "2min Power",
     shortLabel: "2'",
-    // Tra 1min e 5min, degradazione progressiva
-    thresholdsMale: [2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 9],
-    thresholdsFemale: [2, 2.8, 3.6, 4.5, 5.5, 6.5, 8],
+    thresholdsMale: [2.5, 3.5, 4.5, 5.5, 6.5, 7.5],
+    thresholdsFemale: [2, 2.8, 3.6, 4.5, 5.5, 6.5],
   },
   {
     key: "power_5min",
     label: "VO2max Power (5min)",
     shortLabel: "5'",
-    thresholdsMale: [2.5, 3.2, 3.8, 4.5, 5.2, 6.2, 7.5],
-    thresholdsFemale: [2.0, 2.7, 3.2, 3.8, 4.5, 5.2, 6.2],
+    thresholdsMale: [2.5, 3.2, 3.8, 4.5, 5.2, 6.2],
+    thresholdsFemale: [2.0, 2.7, 3.2, 3.8, 4.5, 5.2],
   },
   {
     key: "power_12min",
     label: "12min Power",
     shortLabel: "12'",
-    // Tra 5min e 20min, ~5% più alto del 20min per stessa fascia
-    // 4.3 W/kg (tuoi 20min) + 5% = ~4.5 W/kg per livello 3 a 12min
-    thresholdsMale: [2.0, 2.7, 3.5, 4.2, 4.9, 5.8, 7.0],
-    thresholdsFemale: [1.7, 2.2, 2.9, 3.5, 4.1, 4.9, 5.9],
+    thresholdsMale: [2.0, 2.7, 3.5, 4.2, 4.9, 5.8],
+    thresholdsFemale: [1.7, 2.2, 2.9, 3.5, 4.1, 4.9],
   },
   {
     key: "power_20min",
     label: "20min Power",
     shortLabel: "20'",
-    // Calibrato su: 4.3 W/kg = livello 3 (Serio), simile a FTP ma ~5% più alto
-    thresholdsMale: [2.0, 2.8, 3.5, 4.3, 5.0, 5.9, 7.0],
-    thresholdsFemale: [1.7, 2.3, 2.9, 3.6, 4.2, 5.0, 5.9],
+    thresholdsMale: [2.0, 2.8, 3.5, 4.3, 5.0, 5.9],
+    thresholdsFemale: [1.7, 2.3, 2.9, 3.6, 4.2, 5.0],
   },
   {
     key: "ftp",
     label: "Functional Threshold (FTP)",
     shortLabel: "FTP",
-    thresholdsMale: [2.0, 2.6, 3.2, 3.7, 4.2, 5.1, 6.0],
-    thresholdsFemale: [1.7, 2.2, 2.7, 3.1, 3.6, 4.3, 5.1],
+    // lasciato invariato come richiesto
+    thresholdsMale: [2.0, 3.0, 4.3, 5.0, 5.5, 6.0],
+    thresholdsFemale: [1.7, 2.2, 2.7, 3.6, 4.5, 5.1],
   },
 ];
 
@@ -177,8 +172,15 @@ export function normalizeToScore(wkg: number, thresholds: number[]): number {
 }
 
 export function getTierLabel(wkg: number, thresholds: number[]): string {
-  for (let i = thresholds.length - 1; i >= 0; i--) {
-    if (wkg >= thresholds[i]!) return PERFORMANCE_TIERS[i]!;
+  if (wkg < thresholds[0]!) {
+    return PERFORMANCE_TIERS[0]!;
   }
-  return PERFORMANCE_TIERS[0]!;
+
+  for (let i = 0; i < thresholds.length - 1; i++) {
+    if (wkg < thresholds[i + 1]!) {
+      return PERFORMANCE_TIERS[i + 1]!;
+    }
+  }
+
+  return PERFORMANCE_TIERS[PERFORMANCE_TIERS.length - 1]!;
 }
