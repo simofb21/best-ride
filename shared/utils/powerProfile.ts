@@ -3,12 +3,12 @@
 // Scala di riferimento originale a 7 livelli, valori in W/kg per ciascuna durata.
 // Nomenclatura e soglie nostre, non riprese da tabelle pubblicate di terzi.
 export const PERFORMANCE_TIERS = [
-  "Divano",
-  "Novizio",
-  "Serio",
+  "Sofa Level",
+  "Easy Ride Cyclist",
+  "Serious Cyclist",
   "Amapro",
-  "Dilettante",
-  "Professionale",
+  "Continental",
+  "Professional",
   "World Tour",
 ] as const;
 
@@ -44,57 +44,63 @@ export const POWER_PROFILE_DURATIONS: DurationProfile[] = [
     key: "power_5s",
     label: "Neuromuscular Power (5s)",
     shortLabel: '5"',
-    thresholdsMale: [9, 11, 13, 15, 17, 19, 21],
-    thresholdsFemale: [7.5, 9.2, 10.9, 12.6, 14.3, 16, 17.7],
+    thresholdsMale: [7, 9, 11.5, 14, 16.5, 19, 21],
+    thresholdsFemale: [5.5, 7, 9, 11, 13, 15.5, 17],
   },
   {
     key: "power_30s",
     label: "30s Power",
     shortLabel: '30"',
-    thresholdsMale: [7.5, 9, 10.5, 12, 13.5, 15, 16.5],
-    thresholdsFemale: [6.3, 7.6, 8.9, 10.2, 11.5, 12.8, 14.1],
+    // Calibrato su: 10.8 W/kg = livello 3 (Serio)
+    // Scala: ogni livello ~2 W/kg di differenza
+    thresholdsMale: [5, 7, 9.5, 12, 14.5, 17, 20],
+    thresholdsFemale: [4, 5.5, 7.5, 9.5, 11.5, 13.5, 16],
   },
   {
     key: "power_1min",
     label: "Anaerobic Capacity (1min)",
     shortLabel: "1'",
-    thresholdsMale: [6, 7.5, 9, 10.5, 12, 13.5, 15],
-    thresholdsFemale: [5, 6.3, 7.6, 8.9, 10.2, 11.5, 12.8],
+    thresholdsMale: [3, 4.5, 6, 7.5, 9, 10.5, 12],
+    thresholdsFemale: [2.5, 3.5, 5, 6.5, 8, 9.5, 11],
   },
   {
     key: "power_2min",
     label: "2min Power",
     shortLabel: "2'",
-    thresholdsMale: [5, 6, 7, 8, 9, 10, 11],
-    thresholdsFemale: [4.2, 5.1, 6.0, 6.9, 7.8, 8.7, 9.6],
+    // Tra 1min e 5min, degradazione progressiva
+    thresholdsMale: [2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 9],
+    thresholdsFemale: [2, 2.8, 3.6, 4.5, 5.5, 6.5, 8],
   },
   {
     key: "power_5min",
     label: "VO2max Power (5min)",
     shortLabel: "5'",
-    thresholdsMale: [4, 4.7, 5.4, 6.1, 6.8, 7.5, 8.2],
-    thresholdsFemale: [3.4, 4.0, 4.6, 5.2, 5.8, 6.4, 7.0],
+    thresholdsMale: [2.5, 3.2, 3.8, 4.5, 5.2, 6.2, 7.5],
+    thresholdsFemale: [2.0, 2.7, 3.2, 3.8, 4.5, 5.2, 6.2],
   },
   {
     key: "power_12min",
     label: "12min Power",
     shortLabel: "12'",
-    thresholdsMale: [3.6, 4.2, 4.8, 5.4, 6.0, 6.6, 7.2],
-    thresholdsFemale: [3.1, 3.6, 4.1, 4.6, 5.1, 5.6, 6.1],
+    // Tra 5min e 20min, ~5% più alto del 20min per stessa fascia
+    // 4.3 W/kg (tuoi 20min) + 5% = ~4.5 W/kg per livello 3 a 12min
+    thresholdsMale: [2.0, 2.7, 3.5, 4.2, 4.9, 5.8, 7.0],
+    thresholdsFemale: [1.7, 2.2, 2.9, 3.5, 4.1, 4.9, 5.9],
   },
   {
     key: "power_20min",
     label: "20min Power",
     shortLabel: "20'",
-    thresholdsMale: [3.4, 4.0, 4.5, 5.0, 5.6, 6.2, 6.8],
-    thresholdsFemale: [2.9, 3.4, 3.8, 4.3, 4.8, 5.3, 5.8],
+    // Calibrato su: 4.3 W/kg = livello 3 (Serio), simile a FTP ma ~5% più alto
+    thresholdsMale: [2.0, 2.8, 3.5, 4.3, 5.0, 5.9, 7.0],
+    thresholdsFemale: [1.7, 2.3, 2.9, 3.6, 4.2, 5.0, 5.9],
   },
   {
     key: "ftp",
     label: "Functional Threshold (FTP)",
     shortLabel: "FTP",
-    thresholdsMale: [2.8, 3.3, 3.8, 4.3, 4.8, 5.3, 5.8],
-    thresholdsFemale: [2.4, 2.8, 3.2, 3.7, 4.1, 4.5, 5.0],
+    thresholdsMale: [2.0, 2.6, 3.2, 3.7, 4.2, 5.1, 6.0],
+    thresholdsFemale: [1.7, 2.2, 2.7, 3.1, 3.6, 4.3, 5.1],
   },
 ];
 

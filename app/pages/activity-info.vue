@@ -115,8 +115,8 @@ const otherStats = computed(() => {
       value: a.average_temperature ?? "—",
       unit: a.average_temperature ? "°C" : "",
     },
-    { label: "TSS", value: t?.tss ?? "—" },
-    { label: "Intensity Factor", value: t?.intensity_factor ?? "—" },
+    { label: "Stress of the Activity", value: t?.tss ?? "—" },
+    { label: "Fatigue/FTP", value: t?.intensity_factor ?? "—" },
     { label: "Energy", value: a.kilojoules, unit: "kJ" },
     { label: "Calories", value: a.kcalories, unit: "kcal" },
   ];

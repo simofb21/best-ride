@@ -61,7 +61,7 @@
 
     <!-- ANTEPRIMA SOLO RECORD (Senza Mappe/Grafici) -->
     <section v-if="result" class="results">
-      <h2>Activity Analyzed</h2>
+      <h2>Activity Analyzed!!!</h2>
       <p class="subtitle">Here are the record achievements from this ride:</p>
 
       <!-- Mostra solo i record di questa attività -->
@@ -241,6 +241,12 @@ async function confirmSaveActivity() {
   display: flex;
   flex-direction: column;
   gap: 20px;
+}
+.results h2 {
+  margin: 0;
+  color: darkgreen;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+  font-size: 1.8rem;
 }
 .confirm-section {
   background: var(--surface);
