@@ -24,4 +24,4 @@ logs
 !.env.example
 
 todo.md
-/app/generated/prisma
+generated/prisma
