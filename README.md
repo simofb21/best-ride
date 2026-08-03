@@ -25,3 +25,11 @@ Il progetto si sviluppa intorno a tre pilastri fondamentali:
 
 ## Filosofia
 Niente classifiche pubbliche, niente "Kudos", niente canoni mensili. Solo tu, la tua bicicletta e la sfida contro il tuo rivale più forte: te stesso.
+## Sviluppi futuri
+Al momento l'applicazione(salvo alcune parti) è in lingua inglese, punteremo ad offrire una traduzione, almeno in italiano. 
+Un'altra cosa da sistemare in futuro sicuramente è il fatto che il caricamento dei dati di allenamento sia complesso, non intuitivo e non automatico. Cercheremo di trovare un modo per far sì  che il caricamento dei dati diventi più semplice.
+## Tecnologie utilizzate
+Questo è stato il mio primo vero progetto Full Stack realizzato in autonomia, senza collaboratori.
+Ho scelto di utilizzare **Nuxt.JS** , poiché avevo già buona esperienza con Javascript e in particolare con Vue.js per il frontend. 
+Per Il Database invece ho usato Prisma con un DB PostgreSQL.
+Il Progetto è OPEN SOURCE.
