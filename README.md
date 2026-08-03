@@ -314,7 +314,7 @@ Future plans:
 
 ---
 
-# 💻 Open Source
+# Open Source
 
 This was my first complete **Full Stack project developed independently**, without collaborators.
 
