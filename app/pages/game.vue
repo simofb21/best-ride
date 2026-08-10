@@ -2,7 +2,7 @@
   <div class="cycling-game-container">
     <!-- FASE 1: PERSONALIZZAZIONE ATLETA -->
     <div v-if="gameState === 'customize'" class="screen-card">
-      <h2><i class="mdi mdi-palette"></i> Personalizza il tuo Ciclista</h2>
+      <h2><i class="mdi mdi-palette"></i> Personalizza Ciclista</h2>
 
       <div class="customization-wrapper">
         <canvas
@@ -15,7 +15,7 @@
         <div class="controls-group">
           <!-- Colore Divisa -->
           <div class="control-item">
-            <label><i class="mdi mdi-tshirt-crew"></i> Maglia / Divisa:</label>
+            <label><i class="mdi mdi-tshirt-crew"></i> Maglia:</label>
             <div class="color-picker">
               <button
                 v-for="color in jerseyColors"
@@ -32,7 +32,7 @@
 
           <!-- Colore Bici -->
           <div class="control-item">
-            <label><i class="mdi mdi-bike"></i> Telaio Bici:</label>
+            <label><i class="mdi mdi-bike"></i> Telaio:</label>
             <div class="color-picker">
               <button
                 v-for="color in bikeColors"
@@ -72,7 +72,12 @@
     </div>
 
     <!-- FASE 2 & 3: GIOCO E GAME OVER -->
-    <div v-show="gameState !== 'customize'" class="game-wrapper">
+    <div
+      v-show="gameState !== 'customize'"
+      class="game-wrapper"
+      @touchstart="handleTouchStart"
+      @touchend="handleTouchEnd"
+    >
       <!-- HUD SUPPERIORE -->
       <div class="hud">
         <div class="hud-item">
@@ -102,22 +107,10 @@
         class="game-canvas"
       ></canvas>
 
-      <!-- Controlli Touch Mobile -->
-      <div class="mobile-controls">
-        <button @click="moveLeft" class="btn-touch">
-          <i class="mdi mdi-chevron-left"></i>
-        </button>
-        <button @click="jump" class="btn-touch btn-jump">
-          <i class="mdi mdi-arrow-up-bold"></i> SALTO
-        </button>
-        <button @click="moveRight" class="btn-touch">
-          <i class="mdi mdi-chevron-right"></i>
-        </button>
-      </div>
-
-      <div class="controls-hint">
-        Usa <kbd>◄</kbd> <kbd>►</kbd> o <kbd>A</kbd>/<kbd>D</kbd> per curvate |
-        <kbd>SPAZIO</kbd> per saltare moto
+      <!-- Overlay Indicazioni Gesture per Mobile -->
+      <div class="gesture-hint">
+        <i class="mdi mdi-gesture-swipe-horizontal"></i> Trascina per sterzare |
+        <i class="mdi mdi-gesture-swipe-up"></i> Swipe in alto per saltare
       </div>
 
       <!-- Overlay Game Over -->
@@ -128,8 +121,7 @@
           Hai percorso <strong>{{ Math.floor(score) }}</strong> metri!
         </p>
         <p class="final-speed">
-          Velocità massima raggiunta:
-          <strong>{{ displaySpeed.toFixed(1) }} km/h</strong>
+          Velocità max: <strong>{{ displaySpeed.toFixed(1) }} km/h</strong>
         </p>
 
         <div class="overlay-actions">
@@ -152,8 +144,8 @@ import { ref, reactive, onMounted, onUnmounted, nextTick } from "vue";
 const gameState = ref("customize"); // 'customize' | 'playing' | 'gameover'
 const score = ref(0);
 const highScore = ref(0);
-const speedKmh = ref(20.0); // Velocità base iniziale in km/h
-const displaySpeed = ref(20.0); // Velocità calcolata con Salite/Discese
+const speedKmh = ref(20.0);
+const displaySpeed = ref(20.0);
 
 const jerseyColors = [
   "#e63946",
@@ -192,7 +184,7 @@ const gameCanvasRef = ref(null);
 
 // --- LOGICA DI GIOCO ---
 let animationFrameId = null;
-let currentLane = 1; // 0: Sinistra, 1: Centro, 2: Destra
+let currentLane = 1;
 let playerX = 180;
 let targetX = 180;
 
@@ -204,22 +196,54 @@ const GRAVITY = 0.55;
 
 // Elementi scenario
 let obstacles = [];
-let terrainPatches = []; // Salite e Discese sul lato della strada
+let terrainPatches = [];
 let roadOffset = 0;
-let pedalCycle = 0; // Per l'animazione delle gambe
+let pedalCycle = 0;
 
-const LANES = [60, 180, 300]; // Posizioni X delle 3 corsie
-const RIGHT_SIDE_LANE = 2; // Salite/Discese posizionate sulla corsia destra (lato strada)
+const LANES = [60, 180, 300];
+const RIGHT_SIDE_LANE = 2;
 
-// --- DISEGNO DEL CICLISTA DETTAGLIATO (Vista dall'alto) ---
+// --- GESTIONE TOUCH GESTURES (SWIPE) ---
+let touchStartX = 0;
+let touchStartY = 0;
+const MIN_SWIPE_DISTANCE = 30; // Pixel minimi per rilevare lo swipe
+
+function handleTouchStart(e) {
+  if (gameState.value !== "playing") return;
+  touchStartX = e.touches[0].clientX;
+  touchStartY = e.touches[0].clientY;
+}
+
+function handleTouchEnd(e) {
+  if (gameState.value !== "playing") return;
+  const touchEndX = e.changedTouches[0].clientX;
+  const touchEndY = e.changedTouches[0].clientY;
+
+  const deltaX = touchEndX - touchStartX;
+  const deltaY = touchEndY - touchStartY;
+
+  // Determina l'asse prevalente dello swipe
+  if (Math.abs(deltaX) > Math.abs(deltaY)) {
+    // Swipe Orizzontale
+    if (Math.abs(deltaX) > MIN_SWIPE_DISTANCE) {
+      if (deltaX > 0) moveRight();
+      else moveLeft();
+    }
+  } else {
+    // Swipe Verticale
+    if (deltaY < -MIN_SWIPE_DISTANCE) {
+      jump(); // Swipe Verso l'alto
+    }
+  }
+}
+
+// --- DISEGNO ATLETA CANVA ---
 function drawCyclist(ctx, x, y, config, jumpOffsetY = 0) {
   ctx.save();
-
-  // Posizione con offset del salto
   const actualY = y + jumpOffsetY;
   ctx.translate(x, actualY);
 
-  // 1. OMBRA (si rimpicciolisce ed è sfalsata quando salta)
+  // Ombra
   ctx.save();
   const shadowScale = Math.max(0.4, 1 + jumpOffsetY / 80);
   ctx.translate(0, -jumpOffsetY * 0.8);
@@ -230,16 +254,15 @@ function drawCyclist(ctx, x, y, config, jumpOffsetY = 0) {
   ctx.fill();
   ctx.restore();
 
-  // 2. RUOTA POSTERIORE
+  // Ruota Posteriore
   ctx.fillStyle = "#111111";
   ctx.beginPath();
   ctx.roundRect(-3.5, 14, 7, 22, 3);
   ctx.fill();
-  // Cerchione metallico
   ctx.fillStyle = "#888";
   ctx.fillRect(-1.5, 16, 3, 18);
 
-  // 3. RUOTA ANTERIORE
+  // Ruota Anteriore
   ctx.fillStyle = "#111111";
   ctx.beginPath();
   ctx.roundRect(-3.5, -34, 7, 22, 3);
@@ -247,18 +270,16 @@ function drawCyclist(ctx, x, y, config, jumpOffsetY = 0) {
   ctx.fillStyle = "#888";
   ctx.fillRect(-1.5, -32, 3, 18);
 
-  // 4. TELAIO DELLA BICI (Tubi profilati)
+  // Telaio
   ctx.strokeStyle = config.bikeColor;
   ctx.lineWidth = 4.5;
   ctx.lineCap = "round";
-
-  // Tubo principale dal cannotto sterzo al movimento centrale
   ctx.beginPath();
   ctx.moveTo(0, -20);
   ctx.lineTo(0, 12);
   ctx.stroke();
 
-  // Forcella anteriore e posteriore
+  // Forcelle
   ctx.strokeStyle = "#333";
   ctx.lineWidth = 2.5;
   ctx.beginPath();
@@ -268,7 +289,7 @@ function drawCyclist(ctx, x, y, config, jumpOffsetY = 0) {
   ctx.lineTo(6, 16);
   ctx.stroke();
 
-  // 5. MANUBRIO CURVO (Drop Bar)
+  // Manubrio
   ctx.strokeStyle = "#222";
   ctx.lineWidth = 3;
   ctx.beginPath();
@@ -280,34 +301,30 @@ function drawCyclist(ctx, x, y, config, jumpOffsetY = 0) {
   ctx.lineTo(15, -16);
   ctx.stroke();
 
-  // Nastro Manubrio
   ctx.fillStyle = config.jerseyColor;
   ctx.fillRect(-16, -23, 4, 5);
   ctx.fillRect(12, -23, 4, 5);
 
-  // 6. ANIMAZIONE GAMBE E PEDALI
+  // Gambe & Pedali
   pedalCycle += 0.15;
   const legOffsetLeft = Math.sin(pedalCycle) * 8;
   const legOffsetRight = Math.sin(pedalCycle + Math.PI) * 8;
 
-  ctx.strokeStyle = "#f1c27d"; // Colore pelle
+  ctx.strokeStyle = "#f1c27d";
   ctx.lineWidth = 4.5;
-
-  // Gamba Sinistra
   ctx.beginPath();
   ctx.moveTo(-7, 2);
   ctx.lineTo(-11, 4 + legOffsetLeft);
   ctx.lineTo(-4, 8 + legOffsetLeft);
   ctx.stroke();
 
-  // Gamba Destra
   ctx.beginPath();
   ctx.moveTo(7, 2);
   ctx.lineTo(11, 4 + legOffsetRight);
   ctx.lineTo(4, 8 + legOffsetRight);
   ctx.stroke();
 
-  // 7. BUSTO E MAGLIA (Forma anatomica)
+  // Busto Maglia
   ctx.fillStyle = config.jerseyColor;
   ctx.beginPath();
   ctx.moveTo(-11, -12);
@@ -317,11 +334,10 @@ function drawCyclist(ctx, x, y, config, jumpOffsetY = 0) {
   ctx.closePath();
   ctx.fill();
 
-  // Righe/Dettagli della Maglia
   ctx.fillStyle = "rgba(255, 255, 255, 0.3)";
   ctx.fillRect(-4, -10, 8, 18);
 
-  // Braccia piegate sul manubrio
+  // Braccia
   ctx.strokeStyle = config.jerseyColor;
   ctx.lineWidth = 4;
   ctx.beginPath();
@@ -331,26 +347,20 @@ function drawCyclist(ctx, x, y, config, jumpOffsetY = 0) {
   ctx.lineTo(14, -18);
   ctx.stroke();
 
-  // 8. CASCO AERODINAMICO
+  // Casco Aerodinamico
   ctx.fillStyle = config.helmetColor;
   ctx.beginPath();
-  // Forma a goccia del casco da crono/strada
   ctx.moveTo(0, -18);
   ctx.quadraticCurveTo(9, -12, 7, 0);
   ctx.quadraticCurveTo(0, 8, -7, 0);
   ctx.quadraticCurveTo(-9, -12, 0, -18);
   ctx.fill();
 
-  // Scanalature aerodinamiche sul casco
   ctx.strokeStyle = "rgba(0, 0, 0, 0.3)";
   ctx.lineWidth = 1.5;
   ctx.beginPath();
   ctx.moveTo(0, -16);
   ctx.lineTo(0, 4);
-  ctx.moveTo(-4, -12);
-  ctx.lineTo(-3, 2);
-  ctx.moveTo(4, -12);
-  ctx.lineTo(3, 2);
   ctx.stroke();
 
   // Visiera Occhiali
@@ -362,24 +372,21 @@ function drawCyclist(ctx, x, y, config, jumpOffsetY = 0) {
   ctx.restore();
 }
 
-// --- ANTEPRIMA INIZIALE ---
 function drawPreview() {
   if (!previewCanvasRef.value) return;
   const ctx = previewCanvasRef.value.getContext("2d");
   ctx.clearRect(0, 0, 200, 200);
 
-  ctx.fillStyle = "#f1f5f9";
+  ctx.fillStyle = "#f8fafc";
   ctx.fillRect(0, 0, 200, 200);
 
   ctx.save();
-  ctx.scale(1.7, 1.7);
-  drawCyclist(ctx, 58, 62, playerConfig, 0);
+  ctx.scale(1.6, 1.6);
+  drawCyclist(ctx, 62, 65, playerConfig, 0);
   ctx.restore();
 }
 
-// --- GENERAZIONE TERRENO (Salite e Discese) ---
 function spawnTerrainPatch() {
-  // Compaiono periodicamente solo sul lato destro della strada (corsia LANES[2])
   const types = ["salita", "discesa"];
   const selectedType = types[Math.floor(Math.random() * types.length)];
 
@@ -392,20 +399,16 @@ function spawnTerrainPatch() {
   });
 }
 
-// --- DISEGNO TERRENO ---
 function drawTerrainPatch(ctx, patch) {
   ctx.save();
   ctx.translate(patch.x, patch.y);
 
   const isSalita = patch.type === "salita";
-
-  // Sfondo campitura
   ctx.fillStyle = isSalita
     ? "rgba(217, 119, 6, 0.25)"
     : "rgba(16, 185, 129, 0.25)";
   ctx.fillRect(-patch.width / 2, -patch.height / 2, patch.width, patch.height);
 
-  // Bordo laterale
   ctx.strokeStyle = isSalita ? "#d97706" : "#10b981";
   ctx.lineWidth = 3;
   ctx.strokeRect(
@@ -415,7 +418,6 @@ function drawTerrainPatch(ctx, patch) {
     patch.height,
   );
 
-  // Frecce direzionali e Testo
   ctx.fillStyle = isSalita ? "#b45309" : "#047857";
   ctx.font = "bold 12px sans-serif";
   ctx.textAlign = "center";
@@ -424,7 +426,6 @@ function drawTerrainPatch(ctx, patch) {
   ctx.restore();
 }
 
-// --- GENERAZIONE OSTACOLI ---
 function createObstacle() {
   const laneIndex = Math.floor(Math.random() * 3);
   const types = [
@@ -445,34 +446,27 @@ function createObstacle() {
   });
 }
 
-// --- DISEGNO OSTACOLI ---
 function drawObstacle(ctx, obs) {
   ctx.save();
   ctx.translate(obs.x, obs.y);
 
-  // Ombra
   ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
   ctx.fillRect(-obs.width / 2 + 4, -obs.height / 2 + 4, obs.width, obs.height);
 
-  // Corpo veicolo
   ctx.fillStyle = obs.color;
   ctx.beginPath();
   ctx.roundRect(-obs.width / 2, -obs.height / 2, obs.width, obs.height, 6);
   ctx.fill();
 
-  // Dettagli in base al tipo
   ctx.fillStyle = "#0f172a";
   if (obs.type === "car" || obs.type === "truck") {
-    // Parabrezza e Lunotto
     ctx.fillRect(-obs.width / 2 + 4, -obs.height / 2 + 10, obs.width - 8, 14);
     ctx.fillRect(-obs.width / 2 + 4, obs.height / 2 - 18, obs.width - 8, 10);
   } else {
-    // Moto
     ctx.fillStyle = "#1e293b";
     ctx.fillRect(-4, -obs.height / 2 + 6, 8, 12);
   }
 
-  // Luci rosse posteriori
   ctx.fillStyle = "#dc2626";
   ctx.fillRect(-obs.width / 2 + 3, obs.height / 2 - 3, 6, 3);
   ctx.fillRect(obs.width / 2 - 9, obs.height / 2 - 3, 6, 3);
@@ -480,7 +474,7 @@ function drawObstacle(ctx, obs) {
   ctx.restore();
 }
 
-// --- CONTROLLI UTENTE ---
+// --- CONTROLLI ---
 function moveLeft() {
   if (currentLane > 0 && gameState.value === "playing") {
     currentLane--;
@@ -505,23 +499,26 @@ function jump() {
 function handleKeyDown(e) {
   if (e.key === "ArrowLeft" || e.key === "a" || e.key === "A") moveLeft();
   if (e.key === "ArrowRight" || e.key === "d" || e.key === "D") moveRight();
-  if (e.code === "Space") {
+  if (
+    e.code === "Space" ||
+    e.key === "ArrowUp" ||
+    e.key === "w" ||
+    e.key === "W"
+  ) {
     e.preventDefault();
     jump();
   }
 }
 
-// --- GAME LOOP PRINCIPALE ---
+// --- GAME LOOP ---
 function gameLoop() {
   if (gameState.value !== "playing") return;
 
   const canvas = gameCanvasRef.value;
   const ctx = canvas.getContext("2d");
 
-  // 1. GESTIONE VELOCITÀ E ACCELERAZIONE (+0.2 km/h ogni secondo -> ~0.0033 km/h a frame)
   speedKmh.value += 0.2 / 60;
 
-  // Verifica se il giocatore si trova su Salita o Discesa
   let speedModifier = 0;
   const playerY = 490;
 
@@ -531,15 +528,14 @@ function gameLoop() {
       playerY > patch.y - patch.height / 2 &&
       playerY < patch.y + patch.height / 2
     ) {
-      if (patch.type === "salita") speedModifier = -6.0; // Rallenta in salita
-      if (patch.type === "discesa") speedModifier = +8.0; // Accelerata in discesa
+      if (patch.type === "salita") speedModifier = -6.0;
+      if (patch.type === "discesa") speedModifier = +8.0;
     }
   }
 
   displaySpeed.value = Math.max(10, speedKmh.value + speedModifier);
   const pixelSpeed = displaySpeed.value * 0.28;
 
-  // 2. FISICA SALTO
   if (isJumping) {
     jumpY += jumpVelocity;
     jumpVelocity += GRAVITY;
@@ -549,16 +545,14 @@ function gameLoop() {
     }
   }
 
-  // 3. DISEGNO SFONDO E STRADA
-  ctx.fillStyle = "#334155"; // Asfalto
+  // Disegno Sfondo
+  ctx.fillStyle = "#334155";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  // Marciapiedi
   ctx.fillStyle = "#64748b";
   ctx.fillRect(0, 0, 12, canvas.height);
   ctx.fillRect(canvas.width - 12, 0, 12, canvas.height);
 
-  // Linee corsia tratteggiate
   roadOffset = (roadOffset + pixelSpeed) % 40;
   ctx.strokeStyle = "#ffffff";
   ctx.lineWidth = 4;
@@ -573,46 +567,34 @@ function gameLoop() {
   ctx.stroke();
   ctx.setLineDash([]);
 
-  // 4. AGGIORNAMENTO E DISEGNO TERRENO (Salite/Discese)
+  // Salite / Discese
   if (Math.random() < 0.005) {
     const lastPatch = terrainPatches[terrainPatches.length - 1];
-    if (!lastPatch || lastPatch.y > 300) {
-      spawnTerrainPatch();
-    }
+    if (!lastPatch || lastPatch.y > 300) spawnTerrainPatch();
   }
 
   for (let i = terrainPatches.length - 1; i >= 0; i--) {
     const patch = terrainPatches[i];
     patch.y += pixelSpeed;
-
     drawTerrainPatch(ctx, patch);
 
-    if (patch.y > canvas.height + 200) {
-      terrainPatches.splice(i, 1);
-    }
+    if (patch.y > canvas.height + 200) terrainPatches.splice(i, 1);
   }
 
-  // 5. MOVIMENTO FLUIDO CICLISTA (Lerp)
   playerX += (targetX - playerX) * 0.25;
-
-  // 6. DISEGNO CICLISTA
   drawCyclist(ctx, playerX, playerY, playerConfig, jumpY);
 
-  // 7. GENERAZIONE E DISEGNO OSTACOLI
+  // Ostacoli
   if (Math.random() < 0.018) {
     const lastObs = obstacles[obstacles.length - 1];
-    if (!lastObs || lastObs.y > 140) {
-      createObstacle();
-    }
+    if (!lastObs || lastObs.y > 140) createObstacle();
   }
 
   for (let i = obstacles.length - 1; i >= 0; i--) {
     const obs = obstacles[i];
     obs.y += pixelSpeed * obs.speedMult;
-
     drawObstacle(ctx, obs);
 
-    // Bounding Box Collisione
     const playerBox = {
       x: playerX - 12,
       y: playerY - 20 + jumpY,
@@ -633,28 +615,20 @@ function gameLoop() {
       playerBox.y + playerBox.h > obsBox.y;
 
     if (isColliding) {
-      // SE SALTA: Evita SOLO i motorini (moto) se il salto è abbastanza alto (jumpY < -15)
       const canEvadeWithJump = obs.type === "moto" && jumpY < -15;
-
       if (!canEvadeWithJump) {
         endGame();
         return;
       }
     }
 
-    // Rimuovi ostacoli fuori mappa
-    if (obs.y > canvas.height + 100) {
-      obstacles.splice(i, 1);
-    }
+    if (obs.y > canvas.height + 100) obstacles.splice(i, 1);
   }
 
-  // 8. METRI PERCORSI
   score.value += pixelSpeed * 0.04;
-
   animationFrameId = requestAnimationFrame(gameLoop);
 }
 
-// --- GESTIONE STATI DI GIOCO ---
 function startGame() {
   score.value = 0;
   speedKmh.value = 20.0;
@@ -684,7 +658,6 @@ function endGame() {
   }
 }
 
-// --- LIFECYCLE HOOKS ---
 onMounted(() => {
   const savedRecord = localStorage.getItem("cycling_game_highscore");
   if (savedRecord) highScore.value = parseInt(savedRecord, 10);
@@ -700,7 +673,6 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-/* Import CDN Material Design Icons integrato */
 @import url("https://cdn.jsdelivr.net/npm/@mdi/font@7.2.96/css/materialdesignicons.min.css");
 
 .cycling-game-container {
@@ -710,26 +682,31 @@ onUnmounted(() => {
   justify-content: center;
   width: 100%;
   max-width: 480px;
+  min-height: 100dvh;
   margin: 0 auto;
+  padding: 12px;
+  box-sizing: border-box;
   font-family:
     system-ui,
     -apple-system,
     sans-serif;
   color: #0f172a;
   user-select: none;
+  touch-action: none; /* Disabilita lo scroll nativo della pagina durante il gioco */
 }
 
 .screen-card {
   background: #ffffff;
-  border-radius: 16px;
-  padding: 24px;
+  border-radius: 20px;
+  padding: 20px;
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
   width: 100%;
+  max-width: 380px;
   text-align: center;
 }
 
 .screen-card h2 {
-  font-size: 1.3rem;
+  font-size: 1.25rem;
   margin-bottom: 12px;
   display: flex;
   align-items: center;
@@ -741,12 +718,14 @@ onUnmounted(() => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
-  margin: 16px 0;
+  gap: 12px;
+  margin: 12px 0;
 }
 
 .preview-canvas {
-  border-radius: 12px;
+  width: 160px;
+  height: 160px;
+  border-radius: 16px;
   border: 2px solid #e2e8f0;
   background-color: #f8fafc;
 }
@@ -755,18 +734,18 @@ onUnmounted(() => {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
 .control-item {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 6px;
+  gap: 4px;
 }
 
 .control-item label {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 600;
   color: #475569;
   display: flex;
@@ -781,8 +760,8 @@ onUnmounted(() => {
 }
 
 .color-picker button {
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   border: 2px solid transparent;
   cursor: pointer;
@@ -796,16 +775,22 @@ onUnmounted(() => {
 
 .game-wrapper {
   position: relative;
-  width: 360px;
+  width: 100%;
+  max-width: 360px;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
 .game-canvas {
-  border-radius: 12px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  height: auto;
+  max-height: 78dvh;
+  aspect-ratio: 360 / 600;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
   background: #334155;
+  object-fit: contain;
 }
 
 .hud {
@@ -815,83 +800,48 @@ onUnmounted(() => {
   right: 10px;
   display: flex;
   justify-content: space-around;
-  background: rgba(15, 23, 42, 0.85);
+  background: rgba(15, 23, 42, 0.88);
   color: #ffffff;
-  padding: 8px 12px;
-  border-radius: 20px;
-  font-size: 0.85rem;
-  backdrop-filter: blur(4px);
+  padding: 8px 10px;
+  border-radius: 16px;
+  font-size: 0.8rem;
+  backdrop-filter: blur(6px);
   z-index: 2;
 }
 
 .hud-item {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 4px;
 }
 
 .hud-item i {
   color: #38bdf8;
 }
 
-.mobile-controls {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  margin-top: 10px;
-  gap: 8px;
-}
-
-.btn-touch {
-  flex: 1;
-  padding: 14px;
-  font-size: 1.4rem;
-  background: #f1f5f9;
-  border: 1px solid #cbd5e1;
-  border-radius: 12px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.btn-jump {
-  flex: 1.5;
-  font-size: 0.95rem;
-  font-weight: bold;
-  gap: 6px;
-  background: #e2e8f0;
-}
-
-.btn-touch:active {
-  background: #cbd5e1;
-}
-
-.controls-hint {
-  font-size: 0.75rem;
+.gesture-hint {
+  font-size: 0.72rem;
   color: #64748b;
   margin-top: 8px;
   text-align: center;
-}
-
-kbd {
-  background: #e2e8f0;
-  padding: 2px 4px;
-  border-radius: 4px;
-  font-family: monospace;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
 }
 
 .gameover-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(15, 23, 42, 0.9);
-  border-radius: 12px;
+  background: rgba(15, 23, 42, 0.92);
+  border-radius: 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   color: #fff;
   z-index: 10;
+  padding: 16px;
 }
 
 .crash-icon {
@@ -900,7 +850,7 @@ kbd {
 }
 
 .final-speed {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   color: #94a3b8;
   margin-top: 4px;
 }
@@ -910,17 +860,17 @@ kbd {
   flex-direction: column;
   gap: 10px;
   margin-top: 20px;
-  width: 75%;
+  width: 80%;
 }
 
 .btn-primary {
   width: 100%;
-  padding: 12px 20px;
+  padding: 12px 16px;
   background: #2563eb;
   color: white;
   font-weight: bold;
   border: none;
-  border-radius: 10px;
+  border-radius: 12px;
   cursor: pointer;
   font-size: 0.95rem;
   display: flex;
@@ -931,11 +881,11 @@ kbd {
 
 .btn-secondary {
   width: 100%;
-  padding: 10px 20px;
+  padding: 10px 16px;
   background: transparent;
   color: #cbd5e1;
   border: 1px solid #cbd5e1;
-  border-radius: 10px;
+  border-radius: 12px;
   cursor: pointer;
   display: flex;
   align-items: center;
