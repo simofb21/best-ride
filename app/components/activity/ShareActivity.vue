@@ -26,6 +26,7 @@ const props = defineProps<{
     activity: any;
     training_load?: any;
     power_records: any[];
+    gpsTrack?: Array<{ lat: number; lng: number }>;
   };
 }>();
 import {
