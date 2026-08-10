@@ -81,6 +81,9 @@
             <span v-if="stamina > 50" class="speed-badge boost"
               >+30% BOOST</span
             >
+            <span v-else-if="stamina === 0" class="speed-badge slow"
+              >DRAINING</span
+            >
             <span v-else-if="stamina < 25" class="speed-badge slow">SLOW</span>
           </div>
         </div>
@@ -155,14 +158,14 @@
 
         <h2>{{ gameOverReason === "crash" ? "CRASH!" : "OUT OF ENERGY!" }}</h2>
         <p v-if="gameOverReason === 'exhausted'" class="subtitle">
-          You ran out of stamina!
+          Speed dropped to 0 km/h!
         </p>
 
         <p>
           Distance covered: <strong>{{ Math.floor(score) }}</strong> meters
         </p>
         <p class="final-speed">
-          Top Speed: <strong>{{ displaySpeed.toFixed(1) }} km/h</strong>
+          Top Speed: <strong>{{ maxSpeed.toFixed(1) }} km/h</strong>
         </p>
 
         <div class="overlay-actions">
@@ -189,6 +192,7 @@ const score = ref(0);
 const highScore = ref(0);
 const speedKmh = ref(20.0);
 const displaySpeed = ref(20.0);
+const maxSpeed = ref(20.0); // Traccia la velocità massima raggiunta
 
 // STAMINA SYSTEM
 const stamina = ref(100);
@@ -325,8 +329,8 @@ function drawCyclist(ctx, x, y, config, jumpOffsetY = 0) {
   ctx.lineTo(15, -22);
   ctx.stroke();
 
-  // Pedaling Animation
-  pedalCycle += 0.15;
+  // Pedaling Animation (Velocità pedata proporzionale alla velocità)
+  pedalCycle += Math.max(0.02, displaySpeed.value * 0.006);
   const legOffsetLeft = Math.sin(pedalCycle) * 8;
   const legOffsetRight = Math.sin(pedalCycle + Math.PI) * 8;
 
@@ -500,7 +504,7 @@ function createObstacle() {
   const laneIndex = Math.floor(Math.random() * 3);
   const types = [
     { type: "car", width: 46, height: 78, speedMult: 0.95, color: "#ef4444" },
-    { type: "truck", width: 52, height: 115, speedMult: 0.8, color: "#8b5cf6" }, // Viola
+    { type: "truck", width: 52, height: 115, speedMult: 0.8, color: "#8b5cf6" },
     { type: "moto", width: 24, height: 42, speedMult: 1.25, color: "#f59e0b" },
   ];
   const selected = types[Math.floor(Math.random() * types.length)];
@@ -581,44 +585,60 @@ function gameLoop() {
   const canvas = gameCanvasRef.value;
   const ctx = canvas.getContext("2d");
 
-  // Drain Stamina Over Time
-  stamina.value -= STAMINA_DRAIN_PER_FRAME;
-  if (stamina.value <= 0) {
-    stamina.value = 0;
-    endGame("exhausted");
-    return;
-  }
+  // 1. Drain Stamina Over Time
+  stamina.value = Math.max(0, stamina.value - STAMINA_DRAIN_PER_FRAME);
 
-  speedKmh.value += 0.2 / 60;
-
-  let speedModifier = 0;
   const playerY = 490;
 
-  // Check slope modifier
+  // 2. Terrain Slope Modifiers (Accelerazione/Decelerazione pendenza)
+  let terrainAccel = 0;
   for (const patch of terrainPatches) {
     if (
       Math.abs(playerX - patch.x) < 40 &&
       playerY > patch.y - patch.height / 2 &&
       playerY < patch.y + patch.height / 2
     ) {
-      if (patch.type === "uphill") speedModifier = -6.0;
-      if (patch.type === "downhill") speedModifier = +8.0;
+      if (patch.type === "uphill") terrainAccel = -0.12;
+      if (patch.type === "downhill") terrainAccel = +0.15;
     }
   }
 
-  // Stamina speed multiplier
-  let staminaSpeedMultiplier = 1.0;
-  if (stamina.value > 50) {
-    staminaSpeedMultiplier = 1.3;
-  } else if (stamina.value < 25) {
-    staminaSpeedMultiplier = 0.7;
+  // 3. Nuova Logica di Accelerazione / Decelerazione Fluida
+  const BASE_ACCEL = 0.2 / 60; // Base di incremento velocità al secondo
+
+  if (stamina.value === 0) {
+    // Stamina Esaurita: Crollo rapido della velocità!
+    speedKmh.value -= 0.22;
+  } else if (stamina.value > 50) {
+    // Boost Stamina (>50%): Accelerazione base + 30% bonus
+    speedKmh.value += BASE_ACCEL * 1.3 + terrainAccel;
+  } else if (stamina.value >= 25) {
+    // Stamina Normale (25-50%): Accelerazione standard
+    speedKmh.value += BASE_ACCEL + terrainAccel;
+  } else {
+    // Stamina Bassa (<25%): Decelerazione progressiva e fluida
+    speedKmh.value -= 0.04 + Math.abs(terrainAccel < 0 ? terrainAccel : 0);
   }
 
-  const baseCalculatedSpeed = speedKmh.value + speedModifier;
-  displaySpeed.value = Math.max(
-    10,
-    baseCalculatedSpeed * staminaSpeedMultiplier,
-  );
+  // Controllo Morte per Esaurimento Energia (Velocità <= 0)
+  if (stamina.value === 0 && speedKmh.value <= 0) {
+    speedKmh.value = 0;
+    displaySpeed.value = 0;
+    endGame("exhausted");
+    return;
+  }
+
+  // Minimo di velocità quando si ha ancora stamina
+  if (stamina.value > 0 && speedKmh.value < 10) {
+    speedKmh.value = 10;
+  }
+
+  displaySpeed.value = speedKmh.value;
+
+  // Registra la Max Speed raggiunta
+  if (displaySpeed.value > maxSpeed.value) {
+    maxSpeed.value = displaySpeed.value;
+  }
 
   const pixelSpeed = displaySpeed.value * 0.28;
 
@@ -754,6 +774,7 @@ function startGame() {
   stamina.value = 100;
   speedKmh.value = 20.0;
   displaySpeed.value = 20.0;
+  maxSpeed.value = 20.0;
   currentLane = 1;
   playerX = LANES[1];
   targetX = LANES[1];
