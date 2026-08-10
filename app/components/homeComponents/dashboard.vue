@@ -45,6 +45,10 @@
           <v-icon icon="mdi-star-outline" size="26" />
           <span>Custom records</span>
         </NuxtLink>
+         <NuxtLink to="/game" class="shortcut-card">
+          <v-icon icon="mdi-nintendo-game-boy" size="26" />
+          <span>Play Game</span>
+        </NuxtLink>
       </div>
     </template>
   </div>
@@ -155,7 +159,7 @@ const ftpMessage = computed(() => {
 
 .shortcuts {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 16px;
   width: 100%;
   max-width: 900px;

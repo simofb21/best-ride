@@ -16,7 +16,14 @@
       >
         Tutorial
       </v-btn>
-
+      <v-btn
+        to="/game"
+        variant="text"
+        class="nav-link"
+        prepend-icon="mdi-controller "
+      >
+        Play Game
+      </v-btn>
       <template v-if="loggedIn">
         <v-btn
           to="/upload"
@@ -115,6 +122,12 @@
         to="/tutorial"
         title="Tutorial"
         prepend-icon="mdi-cast-education"
+        @click="drawer = false"
+      />
+       <v-list-item
+        to="/game"
+        title="Play Game"
+        prepend-icon="mdi-controller "
         @click="drawer = false"
       />
       <template v-if="loggedIn">

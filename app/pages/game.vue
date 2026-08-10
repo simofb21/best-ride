@@ -1,8 +1,8 @@
 <template>
   <div class="cycling-game-container">
-    <!-- FASE 1: PERSONALIZZAZIONE ATLETA -->
+    <!-- PHASE 1: CUSTOMIZE RIDER -->
     <div v-if="gameState === 'customize'" class="screen-card">
-      <h2><i class="mdi mdi-palette"></i> Personalizza Ciclista</h2>
+      <h2><i class="mdi mdi-palette"></i> Customize Rider</h2>
 
       <div class="customization-wrapper">
         <canvas
@@ -13,91 +13,104 @@
         ></canvas>
 
         <div class="controls-group">
-          <!-- Colore Divisa -->
+          <!-- Jersey Color RGB -->
           <div class="control-item">
-            <label><i class="mdi mdi-tshirt-crew"></i> Maglia:</label>
-            <div class="color-picker">
-              <button
-                v-for="color in jerseyColors"
-                :key="color"
-                :style="{ backgroundColor: color }"
-                :class="{ active: playerConfig.jerseyColor === color }"
-                @click="
-                  playerConfig.jerseyColor = color;
-                  drawPreview();
-                "
-              ></button>
+            <label><i class="mdi mdi-tshirt-crew"></i> Jersey Color:</label>
+            <div class="color-picker-wrapper">
+              <input
+                type="color"
+                v-model="playerConfig.jerseyColor"
+                @input="drawPreview"
+                class="color-input"
+              />
+              <span class="color-hex">{{ playerConfig.jerseyColor }}</span>
             </div>
           </div>
 
-          <!-- Colore Bici -->
+          <!-- Bike Frame Color RGB -->
           <div class="control-item">
-            <label><i class="mdi mdi-bike"></i> Telaio:</label>
-            <div class="color-picker">
-              <button
-                v-for="color in bikeColors"
-                :key="color"
-                :style="{ backgroundColor: color }"
-                :class="{ active: playerConfig.bikeColor === color }"
-                @click="
-                  playerConfig.bikeColor = color;
-                  drawPreview();
-                "
-              ></button>
+            <label><i class="mdi mdi-bike"></i> Bike Frame Color:</label>
+            <div class="color-picker-wrapper">
+              <input
+                type="color"
+                v-model="playerConfig.bikeColor"
+                @input="drawPreview"
+                class="color-input"
+              />
+              <span class="color-hex">{{ playerConfig.bikeColor }}</span>
             </div>
           </div>
 
-          <!-- Colore Casco -->
+          <!-- Helmet Color RGB -->
           <div class="control-item">
-            <label><i class="mdi mdi-racing-helmet"></i> Casco:</label>
-            <div class="color-picker">
-              <button
-                v-for="color in helmetColors"
-                :key="color"
-                :style="{ backgroundColor: color }"
-                :class="{ active: playerConfig.helmetColor === color }"
-                @click="
-                  playerConfig.helmetColor = color;
-                  drawPreview();
-                "
-              ></button>
+            <label><i class="mdi mdi-racing-helmet"></i> Helmet Color:</label>
+            <div class="color-picker-wrapper">
+              <input
+                type="color"
+                v-model="playerConfig.helmetColor"
+                @input="drawPreview"
+                class="color-input"
+              />
+              <span class="color-hex">{{ playerConfig.helmetColor }}</span>
             </div>
           </div>
         </div>
       </div>
 
       <button class="btn-primary" @click="startGame">
-        <i class="mdi mdi-flag-checkered"></i> INIZIA LA GARA
+        <i class="mdi mdi-flag-checkered"></i> START RACE
       </button>
     </div>
 
-    <!-- FASE 2 & 3: GIOCO E GAME OVER -->
+    <!-- PHASE 2 & 3: GAMEPLAY & OVERLAYS -->
     <div
       v-show="gameState !== 'customize'"
       class="game-wrapper"
       @touchstart="handleTouchStart"
       @touchend="handleTouchEnd"
     >
-      <!-- HUD SUPPERIORE -->
+      <!-- TOP HUD -->
       <div class="hud">
-        <div class="hud-item">
+        <!-- SPEED & BOOST BADGE -->
+        <div class="hud-item speed-hud">
           <i class="mdi mdi-speedometer"></i>
-          <span
-            ><strong>{{ displaySpeed.toFixed(1) }}</strong> km/h</span
-          >
+          <div class="speed-text-container">
+            <span
+              ><strong>{{ displaySpeed.toFixed(1) }}</strong> km/h</span
+            >
+            <span v-if="stamina > 50" class="speed-badge boost"
+              >+30% BOOST</span
+            >
+            <span v-else-if="stamina < 25" class="speed-badge slow">SLOW</span>
+          </div>
         </div>
+
+        <!-- STAMINA BAR HUD -->
+        <div class="hud-item stamina-hud">
+          <i
+            class="mdi mdi-lightning-bolt"
+            :style="{ color: staminaColor }"
+          ></i>
+          <div class="stamina-bar-bg">
+            <div
+              class="stamina-bar-fill"
+              :style="{ width: stamina + '%', backgroundColor: staminaColor }"
+            ></div>
+          </div>
+        </div>
+
+        <!-- DISTANCE SCORE -->
         <div class="hud-item">
           <i class="mdi mdi-map-marker-distance"></i>
           <span
             ><strong>{{ Math.floor(score) }}</strong> m</span
           >
         </div>
-        <div class="hud-item">
-          <i class="mdi mdi-trophy"></i>
-          <span
-            ><strong>{{ highScore }}</strong> m</span
-          >
-        </div>
+
+        <!-- PAUSE BUTTON -->
+        <button class="pause-btn" @click="togglePause" title="Pause Game">
+          <i class="mdi" :class="isPaused ? 'mdi-play' : 'mdi-pause'"></i>
+        </button>
       </div>
 
       <canvas
@@ -107,29 +120,57 @@
         class="game-canvas"
       ></canvas>
 
-      <!-- Overlay Indicazioni Gesture per Mobile -->
+      <!-- GESTURE CONTROLS HINT -->
       <div class="gesture-hint">
-        <i class="mdi mdi-gesture-swipe-horizontal"></i> Trascina per sterzare |
-        <i class="mdi mdi-gesture-swipe-up"></i> Swipe in alto per saltare
+        <i class="mdi mdi-gesture-swipe-horizontal"></i> Swipe |
+        <i class="mdi mdi-gesture-swipe-up"></i> Jump |
+        <i class="mdi mdi-keyboard-outline"></i> 'P' to Pause
       </div>
 
-      <!-- Overlay Game Over -->
-      <div v-if="gameState === 'gameover'" class="gameover-overlay">
-        <i class="mdi mdi-car-burst crash-icon"></i>
-        <h2>CRASH!</h2>
+      <!-- PAUSE OVERLAY -->
+      <div v-if="isPaused && gameState === 'playing'" class="modal-overlay">
+        <i class="mdi mdi-pause-circle pause-icon"></i>
+        <h2>GAME PAUSED</h2>
+
+        <div class="overlay-actions">
+          <button class="btn-primary" @click="togglePause">
+            <i class="mdi mdi-play"></i> Resume
+          </button>
+          <button class="btn-secondary" @click="startGame">
+            <i class="mdi mdi-restart"></i> Restart Race
+          </button>
+          <button class="btn-secondary" @click="exitToCustomize">
+            <i class="mdi mdi-account-edit"></i> Edit Rider
+          </button>
+        </div>
+      </div>
+
+      <!-- GAME OVER OVERLAY -->
+      <div v-if="gameState === 'gameover'" class="modal-overlay">
+        <i
+          v-if="gameOverReason === 'crash'"
+          class="mdi mdi-car-burst crash-icon"
+        ></i>
+        <i v-else class="mdi mdi-battery-alert exhausted-icon"></i>
+
+        <h2>{{ gameOverReason === "crash" ? "CRASH!" : "OUT OF ENERGY!" }}</h2>
+        <p v-if="gameOverReason === 'exhausted'" class="subtitle">
+          You ran out of stamina!
+        </p>
+
         <p>
-          Hai percorso <strong>{{ Math.floor(score) }}</strong> metri!
+          Distance covered: <strong>{{ Math.floor(score) }}</strong> meters
         </p>
         <p class="final-speed">
-          Velocità max: <strong>{{ displaySpeed.toFixed(1) }} km/h</strong>
+          Top Speed: <strong>{{ displaySpeed.toFixed(1) }} km/h</strong>
         </p>
 
         <div class="overlay-actions">
           <button class="btn-primary" @click="startGame">
-            <i class="mdi mdi-restart"></i> Riprova
+            <i class="mdi mdi-restart"></i> Try Again
           </button>
-          <button class="btn-secondary" @click="gameState = 'customize'">
-            <i class="mdi mdi-account-edit"></i> Modifica Atleta
+          <button class="btn-secondary" @click="exitToCustomize">
+            <i class="mdi mdi-account-edit"></i> Edit Rider
           </button>
         </div>
       </div>
@@ -138,112 +179,117 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, onUnmounted, nextTick } from "vue";
+import { ref, reactive, computed, onMounted, onUnmounted, nextTick } from "vue";
 
-// --- STATI E CONFIGURAZIONI ---
+// --- GAME STATE & CONFIGURATION ---
 const gameState = ref("customize"); // 'customize' | 'playing' | 'gameover'
+const isPaused = ref(false);
+const gameOverReason = ref("crash"); // 'crash' | 'exhausted'
 const score = ref(0);
 const highScore = ref(0);
 const speedKmh = ref(20.0);
 const displaySpeed = ref(20.0);
 
-const jerseyColors = [
-  "#e63946",
-  "#1d3557",
-  "#2a9d8f",
-  "#e9c46a",
-  "#9b5de5",
-  "#ffffff",
-];
-const bikeColors = [
-  "#000000",
-  "#f4a261",
-  "#00b4d8",
-  "#70e000",
-  "#d62828",
-  "#e0aaff",
-];
-const helmetColors = [
-  "#ffffff",
-  "#000000",
-  "#ffb703",
-  "#fb8500",
-  "#8338ec",
-  "#06d6a0",
-];
+// STAMINA SYSTEM
+const stamina = ref(100);
+const STAMINA_DRAIN_PER_FRAME = 100 / (25 * 60); // ~25 secondi a 60fps
 
+const staminaColor = computed(() => {
+  if (stamina.value > 50) return "#22c55e";
+  if (stamina.value > 25) return "#eab308";
+  return "#ef4444";
+});
+
+// RGB Full Color Customization
 const playerConfig = reactive({
-  jerseyColor: jerseyColors[0],
-  bikeColor: bikeColors[0],
-  helmetColor: helmetColors[0],
+  jerseyColor: "#e63946",
+  bikeColor: "#1d3557",
+  helmetColor: "#ffffff",
 });
 
 // --- CANVAS REFS ---
 const previewCanvasRef = ref(null);
 const gameCanvasRef = ref(null);
 
-// --- LOGICA DI GIOCO ---
+// --- GAMEPLAY LOGIC ---
 let animationFrameId = null;
 let currentLane = 1;
 let playerX = 180;
 let targetX = 180;
 
-// Salto
+// Jump Physics
 let isJumping = false;
 let jumpY = 0;
 let jumpVelocity = 0;
 const GRAVITY = 0.55;
 
-// Elementi scenario
+// Entities
 let obstacles = [];
 let terrainPatches = [];
+let energyGels = [];
 let roadOffset = 0;
 let pedalCycle = 0;
 
 const LANES = [60, 180, 300];
 const RIGHT_SIDE_LANE = 2;
 
-// --- GESTIONE TOUCH GESTURES (SWIPE) ---
+// --- MOBILE TOUCH CONTROLS ---
 let touchStartX = 0;
 let touchStartY = 0;
-const MIN_SWIPE_DISTANCE = 30; // Pixel minimi per rilevare lo swipe
+const MIN_SWIPE_DISTANCE = 30;
 
 function handleTouchStart(e) {
-  if (gameState.value !== "playing") return;
+  if (gameState.value !== "playing" || isPaused.value) return;
   touchStartX = e.touches[0].clientX;
   touchStartY = e.touches[0].clientY;
 }
 
 function handleTouchEnd(e) {
-  if (gameState.value !== "playing") return;
+  if (gameState.value !== "playing" || isPaused.value) return;
   const touchEndX = e.changedTouches[0].clientX;
   const touchEndY = e.changedTouches[0].clientY;
 
   const deltaX = touchEndX - touchStartX;
   const deltaY = touchEndY - touchStartY;
 
-  // Determina l'asse prevalente dello swipe
   if (Math.abs(deltaX) > Math.abs(deltaY)) {
-    // Swipe Orizzontale
     if (Math.abs(deltaX) > MIN_SWIPE_DISTANCE) {
       if (deltaX > 0) moveRight();
       else moveLeft();
     }
   } else {
-    // Swipe Verticale
     if (deltaY < -MIN_SWIPE_DISTANCE) {
-      jump(); // Swipe Verso l'alto
+      jump();
     }
   }
 }
 
-// --- DISEGNO ATLETA CANVA ---
+// --- PAUSE LOGIC ---
+function togglePause() {
+  if (gameState.value !== "playing") return;
+
+  isPaused.value = !isPaused.value;
+
+  if (isPaused.value) {
+    cancelAnimationFrame(animationFrameId);
+  } else {
+    gameLoop();
+  }
+}
+
+function exitToCustomize() {
+  isPaused.value = false;
+  gameState.value = "customize";
+  cancelAnimationFrame(animationFrameId);
+}
+
+// --- CANVAS RIDER RENDERING ---
 function drawCyclist(ctx, x, y, config, jumpOffsetY = 0) {
   ctx.save();
   const actualY = y + jumpOffsetY;
   ctx.translate(x, actualY);
 
-  // Ombra
+  // Shadow
   ctx.save();
   const shadowScale = Math.max(0.4, 1 + jumpOffsetY / 80);
   ctx.translate(0, -jumpOffsetY * 0.8);
@@ -254,23 +300,15 @@ function drawCyclist(ctx, x, y, config, jumpOffsetY = 0) {
   ctx.fill();
   ctx.restore();
 
-  // Ruota Posteriore
+  // Wheels & Frame
   ctx.fillStyle = "#111111";
   ctx.beginPath();
   ctx.roundRect(-3.5, 14, 7, 22, 3);
   ctx.fill();
-  ctx.fillStyle = "#888";
-  ctx.fillRect(-1.5, 16, 3, 18);
-
-  // Ruota Anteriore
-  ctx.fillStyle = "#111111";
   ctx.beginPath();
   ctx.roundRect(-3.5, -34, 7, 22, 3);
   ctx.fill();
-  ctx.fillStyle = "#888";
-  ctx.fillRect(-1.5, -32, 3, 18);
 
-  // Telaio
   ctx.strokeStyle = config.bikeColor;
   ctx.lineWidth = 4.5;
   ctx.lineCap = "round";
@@ -279,33 +317,15 @@ function drawCyclist(ctx, x, y, config, jumpOffsetY = 0) {
   ctx.lineTo(0, 12);
   ctx.stroke();
 
-  // Forcelle
-  ctx.strokeStyle = "#333";
-  ctx.lineWidth = 2.5;
-  ctx.beginPath();
-  ctx.moveTo(-5, -22);
-  ctx.lineTo(5, -22);
-  ctx.moveTo(-6, 16);
-  ctx.lineTo(6, 16);
-  ctx.stroke();
-
-  // Manubrio
+  // Handlebars
   ctx.strokeStyle = "#222";
   ctx.lineWidth = 3;
   ctx.beginPath();
   ctx.moveTo(-15, -22);
   ctx.lineTo(15, -22);
-  ctx.moveTo(-15, -22);
-  ctx.lineTo(-15, -16);
-  ctx.moveTo(15, -22);
-  ctx.lineTo(15, -16);
   ctx.stroke();
 
-  ctx.fillStyle = config.jerseyColor;
-  ctx.fillRect(-16, -23, 4, 5);
-  ctx.fillRect(12, -23, 4, 5);
-
-  // Gambe & Pedali
+  // Pedaling Animation
   pedalCycle += 0.15;
   const legOffsetLeft = Math.sin(pedalCycle) * 8;
   const legOffsetRight = Math.sin(pedalCycle + Math.PI) * 8;
@@ -324,7 +344,7 @@ function drawCyclist(ctx, x, y, config, jumpOffsetY = 0) {
   ctx.lineTo(4, 8 + legOffsetRight);
   ctx.stroke();
 
-  // Busto Maglia
+  // Jersey Torso
   ctx.fillStyle = config.jerseyColor;
   ctx.beginPath();
   ctx.moveTo(-11, -12);
@@ -334,39 +354,13 @@ function drawCyclist(ctx, x, y, config, jumpOffsetY = 0) {
   ctx.closePath();
   ctx.fill();
 
-  ctx.fillStyle = "rgba(255, 255, 255, 0.3)";
-  ctx.fillRect(-4, -10, 8, 18);
-
-  // Braccia
-  ctx.strokeStyle = config.jerseyColor;
-  ctx.lineWidth = 4;
-  ctx.beginPath();
-  ctx.moveTo(-10, -10);
-  ctx.lineTo(-14, -18);
-  ctx.moveTo(10, -10);
-  ctx.lineTo(14, -18);
-  ctx.stroke();
-
-  // Casco Aerodinamico
+  // Helmet
   ctx.fillStyle = config.helmetColor;
   ctx.beginPath();
   ctx.moveTo(0, -18);
   ctx.quadraticCurveTo(9, -12, 7, 0);
   ctx.quadraticCurveTo(0, 8, -7, 0);
   ctx.quadraticCurveTo(-9, -12, 0, -18);
-  ctx.fill();
-
-  ctx.strokeStyle = "rgba(0, 0, 0, 0.3)";
-  ctx.lineWidth = 1.5;
-  ctx.beginPath();
-  ctx.moveTo(0, -16);
-  ctx.lineTo(0, 4);
-  ctx.stroke();
-
-  // Visiera Occhiali
-  ctx.fillStyle = "#111827";
-  ctx.beginPath();
-  ctx.roundRect(-7, -15, 14, 3.5, 2);
   ctx.fill();
 
   ctx.restore();
@@ -386,8 +380,56 @@ function drawPreview() {
   ctx.restore();
 }
 
+// --- ENERGY GELS ---
+function spawnEnergyGel() {
+  const laneIndex = Math.floor(Math.random() * 3);
+  energyGels.push({
+    x: LANES[laneIndex],
+    y: -40,
+    width: 26,
+    height: 32,
+    pulse: 0,
+  });
+}
+
+function drawEnergyGel(ctx, gel) {
+  ctx.save();
+  gel.pulse += 0.08;
+  const glow = Math.sin(gel.pulse) * 3;
+
+  ctx.translate(gel.x, gel.y);
+  ctx.shadowColor = "#06b6d4";
+  ctx.shadowBlur = 8 + glow;
+
+  ctx.fillStyle = "#06b6d4";
+  ctx.beginPath();
+  ctx.moveTo(-10, -14);
+  ctx.lineTo(10, -14);
+  ctx.lineTo(12, 14);
+  ctx.lineTo(-12, 14);
+  ctx.closePath();
+  ctx.fill();
+
+  ctx.fillStyle = "#67e8f9";
+  ctx.fillRect(-6, -16, 12, 4);
+
+  ctx.fillStyle = "#ffffff";
+  ctx.beginPath();
+  ctx.moveTo(1, -8);
+  ctx.lineTo(-4, 0);
+  ctx.lineTo(0, 0);
+  ctx.lineTo(-1, 8);
+  ctx.lineTo(4, 0);
+  ctx.lineTo(0, 0);
+  ctx.closePath();
+  ctx.fill();
+
+  ctx.restore();
+}
+
+// --- TERRAIN SLOPES ---
 function spawnTerrainPatch() {
-  const types = ["salita", "discesa"];
+  const types = ["uphill", "downhill"];
   const selectedType = types[Math.floor(Math.random() * types.length)];
 
   terrainPatches.push({
@@ -403,34 +445,62 @@ function drawTerrainPatch(ctx, patch) {
   ctx.save();
   ctx.translate(patch.x, patch.y);
 
-  const isSalita = patch.type === "salita";
-  ctx.fillStyle = isSalita
-    ? "rgba(217, 119, 6, 0.25)"
-    : "rgba(16, 185, 129, 0.25)";
-  ctx.fillRect(-patch.width / 2, -patch.height / 2, patch.width, patch.height);
+  const isUphill = patch.type === "uphill";
+  const w = patch.width;
+  const h = patch.height;
 
-  ctx.strokeStyle = isSalita ? "#d97706" : "#10b981";
+  const grad = ctx.createLinearGradient(0, -h / 2, 0, h / 2);
+  if (isUphill) {
+    grad.addColorStop(0, "rgba(180, 83, 9, 0.75)");
+    grad.addColorStop(0.5, "rgba(245, 158, 11, 0.45)");
+    grad.addColorStop(1, "rgba(217, 119, 6, 0.15)");
+  } else {
+    grad.addColorStop(0, "rgba(16, 185, 129, 0.15)");
+    grad.addColorStop(0.5, "rgba(16, 185, 129, 0.45)");
+    grad.addColorStop(1, "rgba(4, 120, 87, 0.75)");
+  }
+
+  ctx.fillStyle = grad;
+  ctx.beginPath();
+  ctx.roundRect(-w / 2, -h / 2, w, h, 8);
+  ctx.fill();
+
+  ctx.strokeStyle = isUphill ? "#d97706" : "#10b981";
   ctx.lineWidth = 3;
-  ctx.strokeRect(
-    -patch.width / 2,
-    -patch.height / 2,
-    patch.width,
-    patch.height,
-  );
+  ctx.strokeRect(-w / 2, -h / 2, w, h);
 
-  ctx.fillStyle = isSalita ? "#b45309" : "#047857";
-  ctx.font = "bold 12px sans-serif";
+  ctx.strokeStyle = "rgba(255, 255, 255, 0.7)";
+  ctx.lineWidth = 2.5;
+
+  for (let i = 0; i < 3; i++) {
+    const yOffset = -h / 3 + (i * h) / 3;
+    ctx.beginPath();
+    if (isUphill) {
+      ctx.moveTo(-w / 3, yOffset + 8);
+      ctx.lineTo(0, yOffset - 4);
+      ctx.lineTo(w / 3, yOffset + 8);
+    } else {
+      ctx.moveTo(-w / 3, yOffset - 4);
+      ctx.lineTo(0, yOffset + 8);
+      ctx.lineTo(w / 3, yOffset - 4);
+    }
+    ctx.stroke();
+  }
+
+  ctx.fillStyle = "#ffffff";
+  ctx.font = "bold 11px system-ui, sans-serif";
   ctx.textAlign = "center";
-  ctx.fillText(isSalita ? "▲ SALITA" : "▼ DISCESA", 0, 0);
+  ctx.fillText(isUphill ? "▲ UPHILL" : "▼ DOWNHILL", 0, 2);
 
   ctx.restore();
 }
 
+// --- OBSTACLES ---
 function createObstacle() {
   const laneIndex = Math.floor(Math.random() * 3);
   const types = [
     { type: "car", width: 46, height: 78, speedMult: 0.95, color: "#ef4444" },
-    { type: "truck", width: 52, height: 115, speedMult: 0.8, color: "#334155" },
+    { type: "truck", width: 52, height: 115, speedMult: 0.8, color: "#8b5cf6" }, // Viola
     { type: "moto", width: 24, height: 42, speedMult: 1.25, color: "#f59e0b" },
   ];
   const selected = types[Math.floor(Math.random() * types.length)];
@@ -458,45 +528,39 @@ function drawObstacle(ctx, obs) {
   ctx.roundRect(-obs.width / 2, -obs.height / 2, obs.width, obs.height, 6);
   ctx.fill();
 
-  ctx.fillStyle = "#0f172a";
-  if (obs.type === "car" || obs.type === "truck") {
-    ctx.fillRect(-obs.width / 2 + 4, -obs.height / 2 + 10, obs.width - 8, 14);
-    ctx.fillRect(-obs.width / 2 + 4, obs.height / 2 - 18, obs.width - 8, 10);
-  } else {
-    ctx.fillStyle = "#1e293b";
-    ctx.fillRect(-4, -obs.height / 2 + 6, 8, 12);
-  }
-
-  ctx.fillStyle = "#dc2626";
-  ctx.fillRect(-obs.width / 2 + 3, obs.height / 2 - 3, 6, 3);
-  ctx.fillRect(obs.width / 2 - 9, obs.height / 2 - 3, 6, 3);
-
   ctx.restore();
 }
 
-// --- CONTROLLI ---
+// --- CONTROLS ---
 function moveLeft() {
-  if (currentLane > 0 && gameState.value === "playing") {
+  if (currentLane > 0 && gameState.value === "playing" && !isPaused.value) {
     currentLane--;
     targetX = LANES[currentLane];
   }
 }
 
 function moveRight() {
-  if (currentLane < 2 && gameState.value === "playing") {
+  if (currentLane < 2 && gameState.value === "playing" && !isPaused.value) {
     currentLane++;
     targetX = LANES[currentLane];
   }
 }
 
 function jump() {
-  if (!isJumping && gameState.value === "playing") {
+  if (!isJumping && gameState.value === "playing" && !isPaused.value) {
     isJumping = true;
     jumpVelocity = -10.5;
   }
 }
 
 function handleKeyDown(e) {
+  if (e.key === "p" || e.key === "P" || e.key === "Escape") {
+    togglePause();
+    return;
+  }
+
+  if (isPaused.value) return;
+
   if (e.key === "ArrowLeft" || e.key === "a" || e.key === "A") moveLeft();
   if (e.key === "ArrowRight" || e.key === "d" || e.key === "D") moveRight();
   if (
@@ -512,28 +576,50 @@ function handleKeyDown(e) {
 
 // --- GAME LOOP ---
 function gameLoop() {
-  if (gameState.value !== "playing") return;
+  if (gameState.value !== "playing" || isPaused.value) return;
 
   const canvas = gameCanvasRef.value;
   const ctx = canvas.getContext("2d");
+
+  // Drain Stamina Over Time
+  stamina.value -= STAMINA_DRAIN_PER_FRAME;
+  if (stamina.value <= 0) {
+    stamina.value = 0;
+    endGame("exhausted");
+    return;
+  }
 
   speedKmh.value += 0.2 / 60;
 
   let speedModifier = 0;
   const playerY = 490;
 
+  // Check slope modifier
   for (const patch of terrainPatches) {
     if (
       Math.abs(playerX - patch.x) < 40 &&
       playerY > patch.y - patch.height / 2 &&
       playerY < patch.y + patch.height / 2
     ) {
-      if (patch.type === "salita") speedModifier = -6.0;
-      if (patch.type === "discesa") speedModifier = +8.0;
+      if (patch.type === "uphill") speedModifier = -6.0;
+      if (patch.type === "downhill") speedModifier = +8.0;
     }
   }
 
-  displaySpeed.value = Math.max(10, speedKmh.value + speedModifier);
+  // Stamina speed multiplier
+  let staminaSpeedMultiplier = 1.0;
+  if (stamina.value > 50) {
+    staminaSpeedMultiplier = 1.3;
+  } else if (stamina.value < 25) {
+    staminaSpeedMultiplier = 0.7;
+  }
+
+  const baseCalculatedSpeed = speedKmh.value + speedModifier;
+  displaySpeed.value = Math.max(
+    10,
+    baseCalculatedSpeed * staminaSpeedMultiplier,
+  );
+
   const pixelSpeed = displaySpeed.value * 0.28;
 
   if (isJumping) {
@@ -545,7 +631,7 @@ function gameLoop() {
     }
   }
 
-  // Disegno Sfondo
+  // Draw Background
   ctx.fillStyle = "#334155";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -553,6 +639,7 @@ function gameLoop() {
   ctx.fillRect(0, 0, 12, canvas.height);
   ctx.fillRect(canvas.width - 12, 0, 12, canvas.height);
 
+  // Lane Dividers
   roadOffset = (roadOffset + pixelSpeed) % 40;
   ctx.strokeStyle = "#ffffff";
   ctx.lineWidth = 4;
@@ -567,7 +654,7 @@ function gameLoop() {
   ctx.stroke();
   ctx.setLineDash([]);
 
-  // Salite / Discese
+  // Slopes
   if (Math.random() < 0.005) {
     const lastPatch = terrainPatches[terrainPatches.length - 1];
     if (!lastPatch || lastPatch.y > 300) spawnTerrainPatch();
@@ -577,15 +664,48 @@ function gameLoop() {
     const patch = terrainPatches[i];
     patch.y += pixelSpeed;
     drawTerrainPatch(ctx, patch);
-
     if (patch.y > canvas.height + 200) terrainPatches.splice(i, 1);
+  }
+
+  // Energy Gels
+  if (Math.random() < 0.015) {
+    const lastGel = energyGels[energyGels.length - 1];
+    if (!lastGel || lastGel.y > 160) spawnEnergyGel();
+  }
+
+  for (let i = energyGels.length - 1; i >= 0; i--) {
+    const gel = energyGels[i];
+    gel.y += pixelSpeed;
+    drawEnergyGel(ctx, gel);
+
+    const playerBox = { x: playerX - 16, y: playerY - 20, w: 32, h: 40 };
+    const gelBox = {
+      x: gel.x - gel.width / 2,
+      y: gel.y - gel.height / 2,
+      w: gel.width,
+      h: gel.height,
+    };
+
+    const isCollected =
+      playerBox.x < gelBox.x + gelBox.w &&
+      playerBox.x + playerBox.w > gelBox.x &&
+      playerBox.y < gelBox.y + gelBox.h &&
+      playerBox.y + playerBox.h > gelBox.y;
+
+    if (isCollected) {
+      stamina.value = Math.min(100, stamina.value + 25);
+      energyGels.splice(i, 1);
+      continue;
+    }
+
+    if (gel.y > canvas.height + 50) energyGels.splice(i, 1);
   }
 
   playerX += (targetX - playerX) * 0.25;
   drawCyclist(ctx, playerX, playerY, playerConfig, jumpY);
 
-  // Ostacoli
-  if (Math.random() < 0.018) {
+  // Obstacles
+  if (Math.random() < 0.016) {
     const lastObs = obstacles[obstacles.length - 1];
     if (!lastObs || lastObs.y > 140) createObstacle();
   }
@@ -617,7 +737,7 @@ function gameLoop() {
     if (isColliding) {
       const canEvadeWithJump = obs.type === "moto" && jumpY < -15;
       if (!canEvadeWithJump) {
-        endGame();
+        endGame("crash");
         return;
       }
     }
@@ -631,6 +751,7 @@ function gameLoop() {
 
 function startGame() {
   score.value = 0;
+  stamina.value = 100;
   speedKmh.value = 20.0;
   displaySpeed.value = 20.0;
   currentLane = 1;
@@ -638,8 +759,10 @@ function startGame() {
   targetX = LANES[1];
   isJumping = false;
   jumpY = 0;
+  isPaused.value = false;
   obstacles = [];
   terrainPatches = [];
+  energyGels = [];
   gameState.value = "playing";
 
   nextTick(() => {
@@ -648,8 +771,10 @@ function startGame() {
   });
 }
 
-function endGame() {
+function endGame(reason = "crash") {
+  gameOverReason.value = reason;
   gameState.value = "gameover";
+  isPaused.value = false;
   cancelAnimationFrame(animationFrameId);
 
   if (Math.floor(score.value) > highScore.value) {
@@ -692,7 +817,7 @@ onUnmounted(() => {
     sans-serif;
   color: #0f172a;
   user-select: none;
-  touch-action: none; /* Disabilita lo scroll nativo della pagina durante il gioco */
+  touch-action: none;
 }
 
 .screen-card {
@@ -734,7 +859,7 @@ onUnmounted(() => {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
 .control-item {
@@ -753,24 +878,41 @@ onUnmounted(() => {
   gap: 4px;
 }
 
-.color-picker {
+.color-picker-wrapper {
   display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
 }
 
-.color-picker button {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  border: 2px solid transparent;
+.color-input {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 40px;
+  height: 40px;
+  background-color: transparent;
+  border: none;
   cursor: pointer;
-  transition: transform 0.1s ease;
 }
 
-.color-picker button.active {
-  border-color: #000;
-  transform: scale(1.15);
+.color-input::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.color-input::-webkit-color-swatch {
+  border: 2px solid #cbd5e1;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.color-hex {
+  font-family: monospace;
+  font-size: 0.85rem;
+  color: #64748b;
+  text-transform: uppercase;
+  background: #f1f5f9;
+  padding: 4px 8px;
+  border-radius: 6px;
 }
 
 .game-wrapper {
@@ -793,18 +935,20 @@ onUnmounted(() => {
   object-fit: contain;
 }
 
+/* HUD & PAUSE BUTTON */
 .hud {
   position: absolute;
   top: 10px;
   left: 10px;
   right: 10px;
   display: flex;
-  justify-content: space-around;
+  align-items: center;
+  justify-content: space-between;
   background: rgba(15, 23, 42, 0.88);
   color: #ffffff;
   padding: 8px 10px;
   border-radius: 16px;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   backdrop-filter: blur(6px);
   z-index: 2;
 }
@@ -815,8 +959,76 @@ onUnmounted(() => {
   gap: 4px;
 }
 
-.hud-item i {
-  color: #38bdf8;
+.speed-hud {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.speed-text-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1.1;
+}
+
+.speed-badge {
+  font-size: 0.6rem;
+  font-weight: 800;
+  padding: 1px 4px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.speed-badge.boost {
+  background-color: #22c55e;
+  color: #ffffff;
+}
+
+.speed-badge.slow {
+  background-color: #ef4444;
+  color: #ffffff;
+}
+
+.stamina-hud {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.stamina-bar-bg {
+  width: 45px;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.stamina-bar-fill {
+  height: 100%;
+  transition:
+    width 0.1s linear,
+    background-color 0.3s ease;
+}
+
+.pause-btn {
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  color: #ffffff;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: background 0.2s;
+}
+
+.pause-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
 }
 
 .gesture-hint {
@@ -830,7 +1042,8 @@ onUnmounted(() => {
   gap: 4px;
 }
 
-.gameover-overlay {
+/* OVERLAYS (PAUSE & GAMEOVER) */
+.modal-overlay {
   position: absolute;
   inset: 0;
   background: rgba(15, 23, 42, 0.92);
@@ -844,9 +1057,25 @@ onUnmounted(() => {
   padding: 16px;
 }
 
+.pause-icon {
+  font-size: 3.5rem;
+  color: #38bdf8;
+}
+
 .crash-icon {
   font-size: 3.5rem;
   color: #ef4444;
+}
+
+.exhausted-icon {
+  font-size: 3.5rem;
+  color: #eab308;
+}
+
+.subtitle {
+  font-size: 0.85rem;
+  color: #f87171;
+  margin-bottom: 8px;
 }
 
 .final-speed {
@@ -895,5 +1124,9 @@ onUnmounted(() => {
 
 .btn-primary:hover {
   background: #1d4ed8;
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.05);
 }
 </style>

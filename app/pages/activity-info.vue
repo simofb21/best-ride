@@ -19,7 +19,7 @@
           activity: data.activity,
           training_load: data.training_load,
           power_records: data.power_records,
-          gpsTrack: data.gpsTrack
+          gpsTrack: data.gpsTrack,
         }"
       />
       <div class="slot-general">

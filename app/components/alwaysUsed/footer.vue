@@ -26,6 +26,7 @@
         <NuxtLink to="/record-custom" class="footer-link"
           >Custom Records</NuxtLink
         >
+        <NuxtLink to="/game" class="footer-link">Play Game</NuxtLink>
       </div>
 
       <div class="footer-col">
@@ -136,6 +137,14 @@
     >
       <v-icon icon="mdi-account-outline" size="22" />
       <span>Profile</span>
+    </NuxtLink>
+    <NuxtLink
+      to="/game"
+      class="tab-item"
+      :class="{ active: isActive('/game') }"
+    >
+      <v-icon icon="mdi-nintendo-game-boy" size="22" />
+      <span>Game</span>
     </NuxtLink>
   </nav>
 </template>
