@@ -1,21 +1,21 @@
 <template>
   <div class="share-section">
     <button
-      class="share-btn coach"
-      :disabled="generating"
-      @click="handleShare('coach')"
-    >
-      <v-icon icon="mdi-account-tie-outline" size="18" />
-      {{ generating === "coach" ? "Generating..." : "Share for Coach" }}
-    </button>
-
-    <button
       class="share-btn social"
-      :disabled="generating"
+      :disabled="!!generating"
       @click="handleShare('social')"
     >
       <v-icon icon="mdi-instagram" size="18" />
       {{ generating === "social" ? "Generating..." : "Share for Social" }}
+    </button>
+
+    <button
+      class="share-btn coach"
+      :disabled="!!generating"
+      @click="handleShare('coach')"
+    >
+      <v-icon icon="mdi-account-tie-outline" size="18" />
+      {{ generating === "coach" ? "Generating..." : "Share for Coach" }}
     </button>
   </div>
 </template>
@@ -28,38 +28,37 @@ const props = defineProps<{
     power_records: any[];
     gpsTrack?: Array<{ lat: number; lng: number }>;
   };
+  // Riferimento all'elemento della pagina da screenshottare per il report allenatore
+  pageElement?: HTMLElement | null;
 }>();
-import {
-  generateCoachImage,
-  generateSocialImage,
-} from "../../composable/imageGen";
-const generating = ref<"coach" | "social" | null>(null);
 
-async function handleShare(variant: "coach" | "social") {
+const generating = ref<"social" | "coach" | null>(null);
+import { generateSocialImage, generateCoachImage } from "~/composable/imageGen";
+async function handleShare(variant: "social" | "coach") {
   generating.value = variant;
 
   try {
     const blob =
-      variant === "coach"
-        ? await generateCoachImage(props.activityData)
-        : await generateSocialImage(props.activityData);
+      variant === "social"
+        ? await generateSocialImage(props.activityData)
+        : await generateCoachImage(
+            props.activityData,
+            props.pageElement ?? undefined,
+          );
 
     const filename =
-      variant === "coach" ? "ride-report-coach.png" : "ride-summary-social.png";
+      variant === "social"
+        ? "best-ride-social.png"
+        : "best-ride-coach-report.png";
     const file = new File([blob], filename, { type: "image/png" });
 
-    // Su mobile con supporto Web Share API: apre il menu nativo di condivisione
     if (
       navigator.share &&
       navigator.canShare &&
       navigator.canShare({ files: [file] })
     ) {
-      await navigator.share({
-        files: [file],
-        title: variant === "coach" ? "Ride Report" : "Ride Summary",
-      });
+      await navigator.share({ files: [file], title: "Best Ride" });
     } else {
-      // Fallback desktop: scarica direttamente il file
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
@@ -68,7 +67,7 @@ async function handleShare(variant: "coach" | "social") {
       URL.revokeObjectURL(url);
     }
   } catch (err) {
-    console.error("Errore nella generazione/condivisione immagine:", err);
+    console.error("Errore generazione immagine:", err);
   } finally {
     generating.value = null;
   }
@@ -81,7 +80,6 @@ async function handleShare(variant: "coach" | "social") {
   gap: 12px;
   flex-wrap: wrap;
 }
-
 .share-btn {
   display: flex;
   align-items: center;
@@ -102,12 +100,10 @@ async function handleShare(variant: "coach" | "social") {
   opacity: 0.5;
   cursor: not-allowed;
 }
-
 .share-btn.coach {
   border-color: var(--accent);
   color: var(--accent-strong);
 }
-
 @media (max-width: 480px) {
   .share-section {
     flex-direction: column;

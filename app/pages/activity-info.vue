@@ -21,6 +21,7 @@
           power_records: data.power_records,
           gpsTrack: data.gpsTrack,
         }"
+        :page-element="pageRef"
       />
       <div class="slot-general">
         <ActivityStatsPanel
@@ -67,6 +68,7 @@ import ActivityStatsPanel from "~/components/activity/ActivityStatsPanel.vue";
 import PowerCurveChart from "~/components/activity/PowerCurveChart.vue";
 import ShareActivityButton from "~/components/activity/ShareActivity.vue";
 definePageMeta({ middleware: "auth" });
+const pageRef = ref<HTMLElement | null>(null);
 
 const data = ref<any>(null);
 const loading = ref(true);
