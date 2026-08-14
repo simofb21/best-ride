@@ -33,7 +33,7 @@ const props = defineProps<{
 }>();
 
 const generating = ref<"social" | "coach" | null>(null);
-import { generateSocialImage, generateCoachImage } from "~/composable/imageGen";
+import { generateSocialImage, generateCoachImage } from "~/composables/imageGen";
 async function handleShare(variant: "social" | "coach") {
   generating.value = variant;
 

@@ -14,7 +14,27 @@ export default defineNuxtConfig({
     "@vite-pwa/nuxt",
     "nuxt-auth-utils",
     "vuetify-nuxt-module",
+    "@nuxtjs/i18n",
   ],
+  i18n: {
+    defaultLocale: "en",
+
+    locales: [
+      {
+        code: "en",
+        name: "English",
+        file: "en.json",
+      },
+      {
+        code: "it",
+        name: "Italiano",
+        file: "it.json",
+      },
+    ],
+
+    strategy: "no_prefix",
+    langDir: "locales/",
+  },
 
   imports: {
     exclude: ["useLayout"],
@@ -84,7 +104,7 @@ export default defineNuxtConfig({
                 "multipart/x-zip",
                 "application/fit",
                 "application/vnd.ant.fit",
-                "image/png", 
+                "image/png",
               ],
             },
           ],

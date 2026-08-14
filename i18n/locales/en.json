@@ -1,0 +1,15 @@
+{
+  "navbar": {
+    "tutorial": "Tutorial",
+    "playGame": "Play Game",
+    "upload": "Upload",
+    "activity": "Activity",
+    "records": "Records",
+    "custom": "Custom",
+    "profile": "Profile",
+    "privacyPolicy": "Privacy Policy",
+    "logout": "Logout",
+    "login": "Login",
+    "language": "Language"
+  }
+}

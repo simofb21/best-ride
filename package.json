@@ -13,6 +13,7 @@
     "@mdi/font": "^7.4.47",
     "@neondatabase/serverless": "^1.1.0",
     "@nuxtjs/color-mode": "^4.0.1",
+    "@nuxtjs/i18n": "^10.6.0",
     "@nuxtjs/tailwindcss": "^6.14.0",
     "@polka/url": "^1.0.0-next.29",
     "@prisma/adapter-neon": "^7.9.0",
