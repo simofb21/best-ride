@@ -38,5 +38,55 @@
     "records": "Records",
     "custom": "Custom",
     "game": "Game"
+  },
+  "site-info": {
+    "about": "Best Ride analyzes your cycling activities directly from your .fit files — no manual data entry. Upload a ride and get an instant, detailed breakdown of your performance.",
+
+    "steps": {
+      "upload": {
+        "title": "1. Upload",
+        "description": "Drop your .fit file from any bike computer or app"
+      },
+      "analyze": {
+        "title": "2. Analyze",
+        "description": "Get your full power curve, speed, cadence and heart rate breakdown"
+      },
+      "records": {
+        "title": "3. Beat your records",
+        "description": "Every ride is checked against your personal bests, automatically"
+      }
+    },
+
+    "features": {
+      "title": "Some of the Features",
+      "powerCurve": "Power Curve Analysis",
+      "personalRecords": "Personal Records",
+      "trainingLoad": "Training Load",
+      "customChallenges": "Custom Challenges"
+    },
+
+    "cta": {
+      "getStarted": "Get started — it's free",
+      "alreadyAccount": "Already have an account?",
+      "seeHowItWorks": "See how it works"
+    }
+  },
+  "dashboard": {
+    "greeting": "Welcome back, {name}",
+    "loadingStats": "Loading your stats...",
+
+    "stats": {
+      "riddenThisYear": "Ridden this year",
+      "hoursOnBike": "Hours on the bike",
+      "currentFtpRatio": "Current FTP ratio"
+    },
+
+    "shortcuts": {
+      "uploadActivity": "Upload new activity",
+      "latestRide": "Latest ride",
+      "myRecords": "My records",
+      "customRecords": "Custom records",
+      "playGame": "Play Game"
+    }
   }
 }

@@ -1,53 +1,71 @@
 <template>
   <div class="dashboard">
-    <p class="greeting">Welcome back, {{ user?.firstName }}</p>
+    <p class="greeting">
+      {{ $t("dashboard.greeting", { name: user?.firstName }) }}
+    </p>
 
-    <div v-if="loading" class="state-message">Loading your stats...</div>
+    <div v-if="loading" class="state-message">
+      {{ $t("dashboard.loadingStats") }}
+    </div>
 
     <template v-else-if="stats">
       <div class="stats-row">
         <div class="stat-card">
-          <span class="stat-value"
-            >{{ stats.yearlyDistanceKm ?? 0 }}<small>km</small></span
-          >
-          <span class="stat-label">Ridden this year</span>
+          <span class="stat-value">
+            {{ stats.yearlyDistanceKm ?? 0 }}<small>km</small>
+          </span>
+          <span class="stat-label">
+            {{ $t("dashboard.stats.riddenThisYear") }}
+          </span>
         </div>
+
         <div class="stat-card">
-          <span class="stat-value"
-            >{{ stats.yearlyHours ?? 0 }}<small>h</small></span
-          >
-          <span class="stat-label">Hours on the bike</span>
+          <span class="stat-value">
+            {{ stats.yearlyHours ?? 0 }}<small>h</small>
+          </span>
+          <span class="stat-label">
+            {{ $t("dashboard.stats.hoursOnBike") }}
+          </span>
         </div>
+
         <div class="stat-card accent" v-if="wkg">
-          <span class="stat-value"
-            >{{ wkg.toFixed(2) }}<small>W/kg</small></span
-          >
-          <span class="stat-label">Current FTP ratio</span>
+          <span class="stat-value">
+            {{ wkg.toFixed(2) }}<small>W/kg</small>
+          </span>
+          <span class="stat-label">
+            {{ $t("dashboard.stats.currentFtpRatio") }}
+          </span>
         </div>
       </div>
 
-      <p v-if="ftpMessage" class="ftp-message">{{ ftpMessage }}</p>
+      <p v-if="ftpMessage" class="ftp-message">
+        {{ ftpMessage }}
+      </p>
 
       <div class="shortcuts">
         <NuxtLink to="/upload" class="shortcut-card">
           <v-icon icon="mdi-cloud-upload-outline" size="26" />
-          <span>Upload new activity</span>
+          <span>{{ $t("dashboard.shortcuts.uploadActivity") }}</span>
         </NuxtLink>
+
         <NuxtLink to="/activity-info" class="shortcut-card">
           <v-icon icon="mdi-chart-line" size="26" />
-          <span>Latest ride</span>
+          <span>{{ $t("dashboard.shortcuts.latestRide") }}</span>
         </NuxtLink>
+
         <NuxtLink to="/records" class="shortcut-card">
           <v-icon icon="mdi-trophy-outline" size="26" />
-          <span>My records</span>
+          <span>{{ $t("dashboard.shortcuts.myRecords") }}</span>
         </NuxtLink>
+
         <NuxtLink to="/record-custom" class="shortcut-card">
           <v-icon icon="mdi-star-outline" size="26" />
-          <span>Custom records</span>
+          <span>{{ $t("dashboard.shortcuts.customRecords") }}</span>
         </NuxtLink>
-         <NuxtLink to="/game" class="shortcut-card">
+
+        <NuxtLink to="/game" class="shortcut-card">
           <v-icon icon="mdi-nintendo-game-boy" size="26" />
-          <span>Play Game</span>
+          <span>{{ $t("dashboard.shortcuts.playGame") }}</span>
         </NuxtLink>
       </div>
     </template>

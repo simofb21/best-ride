@@ -12,11 +12,7 @@
     <!-- Solo mobile: info sul progetto/autore, già presenti nel footer desktop -->
     <section class="about-mobile">
       <h2>About us</h2>
-      <p>
-        Best Ride is a project made by <strong>Simone Fusar Bassini</strong>. A
-        cyclist who takes care about his performance and wants that him and
-        other riders can achieve their goals.
-      </p>
+      <p>{{ $t("footer.description") }}</p>
 
       <div class="about-links">
         <NuxtLink to="/privacy-policy" class="footer-bottom-link">

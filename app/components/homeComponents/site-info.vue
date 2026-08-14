@@ -2,48 +2,71 @@
   <div class="site-info">
     <section class="about">
       <p>
-        Best Ride analyzes your cycling activities directly from your
-        <strong>.fit</strong> files — no manual data entry. Upload a ride and
-        get an instant, detailed breakdown of your performance.
+        {{ $t("site-info.about") }}
       </p>
     </section>
 
     <section class="steps">
-      <StepCard icon="mdi-cloud-upload-outline" title="1. Upload">
-        Drop your .fit file from any bike computer or app
+      <StepCard
+        icon="mdi-cloud-upload-outline"
+        :title="$t('site-info.steps.upload.title')"
+      >
+        {{ $t("site-info.steps.upload.description") }}
       </StepCard>
-      <StepCard icon="mdi-chart-line" title="2. Analyze">
-        Get your full power curve, speed, cadence and heart rate breakdown
+
+      <StepCard
+        icon="mdi-chart-line"
+        :title="$t('site-info.steps.analyze.title')"
+      >
+        {{ $t("site-info.steps.analyze.description") }}
       </StepCard>
-      <StepCard icon="mdi-trophy-outline" title="3. Beat your records">
-        Every ride is checked against your personal bests, automatically
+
+      <StepCard
+        icon="mdi-trophy-outline"
+        :title="$t('site-info.steps.records.title')"
+      >
+        {{ $t("site-info.steps.records.description") }}
       </StepCard>
     </section>
 
-    <p class="tagline">Some of the Features</p>
+    <p class="tagline">
+      {{ $t("site-info.features.title") }}
+    </p>
+
     <section class="features">
       <div class="feature-card">
         <v-icon icon="mdi-lightning-bolt-outline" size="24" />
-        <span>Power Curve Analysis</span>
+        <span>{{ $t("site-info.features.powerCurve") }}</span>
       </div>
+
       <div class="feature-card">
         <v-icon icon="mdi-trophy-outline" size="24" />
-        <span>Personal Records</span>
+        <span>{{ $t("site-info.features.personalRecords") }}</span>
       </div>
+
       <div class="feature-card">
         <v-icon icon="mdi-gauge" size="24" />
-        <span>Training Load </span>
+        <span>{{ $t("site-info.features.trainingLoad") }}</span>
       </div>
+
       <div class="feature-card">
         <v-icon icon="mdi-star-outline" size="24" />
-        <span>Custom Challenges</span>
+        <span>{{ $t("site-info.features.customChallenges") }}</span>
       </div>
     </section>
 
     <section class="cta">
-      <CtaButton to="/login">Get started — it's free</CtaButton>
-      <CtaButton to="/login">Already have an account?</CtaButton>
-      <CtaButton to="/tutorial" secondary>See how it works</CtaButton>
+      <CtaButton to="/login">
+        {{ $t("site-info.cta.getStarted") }}
+      </CtaButton>
+
+      <CtaButton to="/login">
+        {{ $t("site-info.cta.alreadyAccount") }}
+      </CtaButton>
+
+      <CtaButton to="/tutorial" secondary>
+        {{ $t("site-info.cta.seeHowItWorks") }}
+      </CtaButton>
     </section>
   </div>
 </template>

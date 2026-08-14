@@ -37,5 +37,56 @@
     "records": "Record",
     "custom": "Personalizzazione",
     "game": "Gioco"
+  },
+  "site-info": {
+    "about": "Best Ride analizza le tue attività ciclistiche direttamente dai tuoi file .fit — nessuna inserimento manuale di dati. Carica una pedalata e ottieni un'analisi immediata e dettagliata delle tue performance.",
+
+    "steps": {
+      "upload": {
+        "title": "1. Caricamento",
+        "description": "Carica il file .fit su BestRide da qualsiasi computer o app per bici"
+      },
+      "analyze": {
+        "title": "2. Analisi",
+        "description": "Ottieni la tua curva di potenza completa, velocità, cadenza e analisi del battito cardiaco"
+      },
+      "records": {
+        "title": "3. Battiti i tuoi record",
+        "description": "Ogni pedalata viene confrontata con i tuoi migliori risultati, automaticamente"
+      }
+    },
+
+    "features": {
+      "title": "Alcune delle Funzionalità",
+      "powerCurve": "Analisi della Curva di Potenza",
+      "personalRecords": "Record Personali",
+      "trainingLoad": "Carico di Allenamento",
+      "customChallenges": "Sfide Personalizzate"
+    },
+
+    "cta": {
+      "getStarted": "Inizia — è gratuito",
+      "alreadyAccount": "Hai già un account?",
+      "seeHowItWorks": "Scopri come funziona"
+    }
+  },
+
+  "dashboard": {
+    "greeting": "Bentornato, {name}",
+    "loadingStats": "Caricamento delle tue statistiche...",
+
+    "stats": {
+      "riddenThisYear": "Pedalato quest'anno",
+      "hoursOnBike": "ore di fatica fatte",
+      "currentFtpRatio": "W/kg attuale"
+    },
+
+    "shortcuts": {
+      "uploadActivity": "Carica Attività",
+      "latestRide": "Ultima pedalata",
+      "myRecords": "I miei record",
+      "customRecords": "Record personalizzati",
+      "playGame": "Gioca"
+    }
   }
 }
