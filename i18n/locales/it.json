@@ -113,5 +113,11 @@
       "saving": "Salvando...",
       "saveAsLatest": "Salva come ultima attività"
     }
+  },
+  "activity-records-panel": {
+    "title": "Record della attività",
+    "noRecords": "Nessun record disponibile.",
+    "allTime": "Di sempre",
+    "previous": "Precedente"
   }
 }

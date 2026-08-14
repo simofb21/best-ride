@@ -113,5 +113,11 @@
       "saving": "Saving…",
       "saveAsLatest": "Save as latest activity"
     }
+  },
+  "activity-records-panel": {
+    "title": "Activity Records",
+    "noRecords": "No record data available for this activity.",
+    "allTime": "all-time",
+    "previous": "prev"
   }
 }

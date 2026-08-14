@@ -1,11 +1,11 @@
 <template>
   <CollapsiblePanel
-    title="Activity Records"
+    :title="$t('activity-records-panel.title')"
     icon="mdi-trophy-outline"
     full-width
   >
     <div v-if="!groupedRecords.length" class="no-records">
-      No record data available for this activity.
+      {{ $t("activity-records-panel.noRecords") }}
     </div>
 
     <div v-else class="records-groups">
@@ -14,7 +14,9 @@
         :key="group.category"
         class="record-group"
       >
-        <h4 class="group-title">{{ group.label }}</h4>
+        <h4 class="group-title">
+          {{ group.label }}
+        </h4>
 
         <div class="records-grid">
           <div v-for="r in group.items" :key="r.metricKey" class="record-item">
@@ -25,20 +27,27 @@
                 size="18"
                 :color="getMedalColor(r.wouldEnterAt)!"
               />
-              <span class="record-label">{{ r.label }}</span>
+
+              <span class="record-label">
+                {{ r.label }}
+              </span>
             </div>
 
             <div class="record-bottom">
               <span class="record-value">
                 {{ isTimeUnit(r.unit) ? formatHMS(r.newValue) : r.newValue }}
-                <small v-if="!isTimeUnit(r.unit)">{{ r.unit }}</small>
+                <small v-if="!isTimeUnit(r.unit)">
+                  {{ r.unit }}
+                </small>
               </span>
 
-              <span v-if="r.wouldEnterAt" class="rank-tag"
-                >#{{ r.wouldEnterAt }} all-time</span
-              >
+              <span v-if="r.wouldEnterAt" class="rank-tag">
+                #{{ r.wouldEnterAt }}
+                {{ $t("activity-records-panel.allTime") }}
+              </span>
+
               <span v-if="r.currentBest" class="prev-best">
-                (prev:
+                ({{ $t("activity-records-panel.previous") }}:
                 {{
                   isTimeUnit(r.unit) ? formatHMS(r.currentBest) : r.currentBest
                 }}{{ !isTimeUnit(r.unit) ? r.unit : "" }})
@@ -95,11 +104,9 @@ const groupedRecords = computed(() => {
       (m) => m.category === category,
     );
 
-
     const items = metricsInCategory
       .map((m) => props.recordChecks.find((r) => r.metricKey === m.key))
       .filter((r): r is RecordCheck => !!r);
-
 
     return { category, label: CATEGORY_LABELS[category]!, items };
   }).filter((group) => group.items.length > 0);
