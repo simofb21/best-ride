@@ -88,5 +88,30 @@
       "customRecords": "Custom records",
       "playGame": "Play Game"
     }
+  },
+  "upload": {
+    "title": "Activity Analysis",
+    "eyebrow": "Upload a .fit file",
+
+    "dropzone": {
+      "dropFile": "Drop your .fit file here, or click to browse"
+    },
+
+    "analysis": {
+      "analyzing": "Analyzing…",
+      "analyzeRide": "Analyze ride"
+    },
+
+    "results": {
+      "activityAnalyzed": "Activity Analyzed!!!",
+      "recordAchievements": "Here are the record achievements from this ride:"
+    },
+
+    "confirmation": {
+      "message": "Do you want to set this as your latest activity and update your records?",
+      "discard": "Discard",
+      "saving": "Saving…",
+      "saveAsLatest": "Save as latest activity"
+    }
   }
 }

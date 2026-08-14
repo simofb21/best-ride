@@ -2,8 +2,13 @@
   <div class="page">
     <header class="page-header">
       <div>
-        <h1 class="page-title">Activity Analysis</h1>
-        <p class="eyebrow">Upload a .fit file</p>
+        <h1 class="page-title">
+          {{ $t("upload.title") }}
+        </h1>
+
+        <p class="eyebrow">
+          {{ $t("upload.eyebrow") }}
+        </p>
       </div>
     </header>
 
@@ -24,6 +29,7 @@
         class="hidden-input"
         @change="onFileChange"
       />
+
       <svg
         class="dropzone-icon"
         viewBox="0 0 24 24"
@@ -36,16 +42,21 @@
           stroke-linecap="round"
           stroke-linejoin="round"
         />
+
         <path
           d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2"
           stroke-linecap="round"
           stroke-linejoin="round"
         />
       </svg>
+
       <p v-if="!selectedFile" class="dropzone-text">
-        Drop your .fit file here, or click to browse
+        {{ $t("upload.dropzone.dropFile") }}
       </p>
-      <p v-else class="dropzone-text file-name">{{ selectedFile.name }}</p>
+
+      <p v-else class="dropzone-text file-name">
+        {{ selectedFile.name }}
+      </p>
 
       <button
         class="analyze-btn"
@@ -53,41 +64,60 @@
         @click.stop="uploadFile"
       >
         <span v-if="loading" class="spinner" />
-        {{ loading ? "Analyzing…" : "Analyze ride" }}
+
+        {{
+          loading
+            ? $t("upload.analysis.analyzing")
+            : $t("upload.analysis.analyzeRide")
+        }}
       </button>
     </div>
 
-    <p v-if="error" class="error-banner">{{ error }}</p>
+    <!-- ERROR -->
+    <p v-if="error" class="error-banner">
+      {{ error }}
+    </p>
 
-    <!-- ANTEPRIMA SOLO RECORD (Senza Mappe/Grafici) -->
+    <!-- RESULTS -->
     <section v-if="result" class="results">
-      <h2>Activity Analyzed!!!</h2>
-      <p class="subtitle">Here are the record achievements from this ride:</p>
+      <h2>
+        {{ $t("upload.results.activityAnalyzed") }}
+      </h2>
 
-      <!-- Mostra solo i record di questa attività -->
+      <p class="subtitle">
+        {{ $t("upload.results.recordAchievements") }}
+      </p>
+
+      <!-- Activity records -->
       <ActivityRecordsPanel :record-checks="result.recordChecks" />
 
-      <!-- BOX DI CONFERMA / ANNULLAMENTO -->
+      <!-- CONFIRMATION -->
       <div class="confirm-section">
         <p class="confirm-text">
-          Do you want to set this as your latest activity and update your
-          records?
+          {{ $t("upload.confirmation.message") }}
         </p>
+
         <div class="actions">
           <button
             class="cancel-btn"
             :disabled="confirming"
             @click="resetUpload"
           >
-            Discard
+            {{ $t("upload.confirmation.discard") }}
           </button>
+
           <button
             class="confirm-btn"
             :disabled="confirming"
             @click="confirmSaveActivity"
           >
             <span v-if="confirming" class="spinner" />
-            {{ confirming ? "Saving…" : "Save as latest activity" }}
+
+            {{
+              confirming
+                ? $t("upload.confirmation.saving")
+                : $t("upload.confirmation.saveAsLatest")
+            }}
           </button>
         </div>
       </div>

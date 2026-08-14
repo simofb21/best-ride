@@ -88,5 +88,30 @@
       "customRecords": "Record personalizzati",
       "playGame": "Gioca"
     }
+  },
+  "upload": {
+    "title": "Analisi dei dati",
+    "eyebrow": "Carica un file .fit",
+
+    "dropzone": {
+      "dropFile": "Trascina il file. Oppure clicca per cercarlo nel tuo computer."
+    },
+
+    "analysis": {
+      "analyzing": "Analizzando",
+      "analyzeRide": "Analizza pedalata"
+    },
+
+    "results": {
+      "activityAnalyzed": "Allenamento analizzato!!!",
+      "recordAchievements": "Ecco i record:"
+    },
+
+    "confirmation": {
+      "message": "Impostare come ultima attività per salvare i tuoi record?",
+      "discard": "Scarta",
+      "saving": "Salvando...",
+      "saveAsLatest": "Salva come ultima attività"
+    }
   }
 }
