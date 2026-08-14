@@ -11,5 +11,31 @@
     "logout": "Logout",
     "login": "Login",
     "language": "Lingua"
+  },
+  "footer": {
+    "tagline": "Registra i tuoi progressi. Inseguì i tuoi record.",
+    "description": "Best Ride è un progetto di Simone Fusar Bassini. Fatto da un ciclista, per se stesso e che vuole che lui e gli altri ciclisti raggiungano i propri obiettivi.",
+
+    "navigate": "Vai a",
+    "uploadActivity": "Carica Attività",
+    "latestRide": "Ultima Pedalata",
+    "myRecords": "I Miei Record",
+    "customRecords": "Record Personalizzati",
+    "playGame": "Gioca",
+
+    "account": "Account",
+    "profile": "Profilo",
+    "howItWorks": "Come Funziona",
+    "privacyPolicy": "Informativa sulla Privacy",
+
+    "thisYear": "Quest'anno",
+    "kmRidden": "km pedalati",
+    "hoursOnBike": "ore di fatica fatte",
+
+    "upload": "Carica attività",
+    "latest": "Ultima attività",
+    "records": "Record",
+    "custom": "Personalizzazione",
+    "game": "Gioco"
   }
 }

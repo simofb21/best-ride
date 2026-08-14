@@ -11,5 +11,32 @@
     "logout": "Logout",
     "login": "Login",
     "language": "Language"
+  },
+
+  "footer": {
+    "tagline": "Track your power. Chase your records.",
+    "description": "Best Ride is a project made by Simone Fusar Bassini. A cyclist who takes care about his performance and wants that him and other riders can achieve their goals.",
+
+    "navigate": "Navigate",
+    "uploadActivity": "Upload Activity",
+    "latestRide": "Latest Ride",
+    "myRecords": "My Records",
+    "customRecords": "Custom Records",
+    "playGame": "Play Game",
+
+    "account": "Account",
+    "profile": "Profile",
+    "howItWorks": "How it works",
+    "privacyPolicy": "Privacy Policy",
+
+    "thisYear": "This year",
+    "kmRidden": "km ridden",
+    "hoursOnBike": "hours on the bike",
+
+    "upload": "Upload",
+    "latest": "Latest",
+    "records": "Records",
+    "custom": "Custom",
+    "game": "Game"
   }
 }

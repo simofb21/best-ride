@@ -1,15 +1,16 @@
-<!-- app/components/Footer.vue -->
 <template>
   <!-- FOOTER DESKTOP -->
   <footer class="app-footer">
     <div class="footer-inner">
       <div class="footer-col brand-col">
         <p class="footer-brand">Best Ride</p>
-        <p class="footer-tagline">Track your power. Chase your records.</p>
+
         <p class="footer-tagline">
-          Best Ride is a project made by Simone Fusar Bassini. A cyclist who
-          takes care about his performance and wants that him and other riders
-          can achieve their goals.
+          {{ $t("footer.tagline") }}
+        </p>
+
+        <p class="footer-tagline">
+          {{ $t("footer.description") }}
         </p>
 
         <p v-if="loggedIn" class="footer-user">
@@ -19,49 +20,80 @@
       </div>
 
       <div class="footer-col">
-        <p class="footer-heading">Navigate</p>
-        <NuxtLink to="/upload" class="footer-link">Upload Activity</NuxtLink>
-        <NuxtLink to="/activity-info" class="footer-link">Latest Ride</NuxtLink>
-        <NuxtLink to="/records" class="footer-link">My Records</NuxtLink>
-        <NuxtLink to="/record-custom" class="footer-link"
-          >Custom Records</NuxtLink
-        >
-        <NuxtLink to="/game" class="footer-link">Play Game</NuxtLink>
+        <p class="footer-heading">
+          {{ $t("footer.navigate") }}
+        </p>
+
+        <NuxtLink to="/upload" class="footer-link">
+          {{ $t("footer.uploadActivity") }}
+        </NuxtLink>
+
+        <NuxtLink to="/activity-info" class="footer-link">
+          {{ $t("footer.latestRide") }}
+        </NuxtLink>
+
+        <NuxtLink to="/records" class="footer-link">
+          {{ $t("footer.myRecords") }}
+        </NuxtLink>
+
+        <NuxtLink to="/record-custom" class="footer-link">
+          {{ $t("footer.customRecords") }}
+        </NuxtLink>
+
+        <NuxtLink to="/game" class="footer-link">
+          {{ $t("footer.playGame") }}
+        </NuxtLink>
       </div>
 
       <div class="footer-col">
-        <p class="footer-heading">Account</p>
-        <NuxtLink to="/profile" class="footer-link">Profile</NuxtLink>
-        <NuxtLink to="/tutorial" class="footer-link">How it works</NuxtLink>
-        <NuxtLink to="/privacy-policy" class="footer-link"
-          >Privacy Policy</NuxtLink
-        >
+        <p class="footer-heading">
+          {{ $t("footer.account") }}
+        </p>
+
+        <NuxtLink to="/profile" class="footer-link">
+          {{ $t("footer.profile") }}
+        </NuxtLink>
+
+        <NuxtLink to="/tutorial" class="footer-link">
+          {{ $t("footer.howItWorks") }}
+        </NuxtLink>
+
+        <NuxtLink to="/privacy-policy" class="footer-link">
+          {{ $t("footer.privacyPolicy") }}
+        </NuxtLink>
       </div>
 
       <div class="footer-col stats-col" v-if="loggedIn && yearlyStats">
-        <p class="footer-heading">This year</p>
-        <p class="footer-stat">
-          <strong>{{ yearlyStats.yearlyDistanceKm ?? 0 }}</strong> km ridden
+        <p class="footer-heading">
+          {{ $t("footer.thisYear") }}
         </p>
+
         <p class="footer-stat">
-          <strong>{{ yearlyStats.yearlyHours ?? 0 }}</strong> hours on the bike
+          <strong>{{ yearlyStats.yearlyDistanceKm ?? 0 }}</strong>
+          {{ $t("footer.kmRidden") }}
+        </p>
+
+        <p class="footer-stat">
+          <strong>{{ yearlyStats.yearlyHours ?? 0 }}</strong>
+          {{ $t("footer.hoursOnBike") }}
         </p>
       </div>
     </div>
 
     <div class="footer-bottom">
       <span>© {{ currentYear }} Best Ride</span>
+
       <span class="dot">·</span>
 
       <NuxtLink to="/privacy-policy" class="footer-bottom-link">
         <v-icon size="18">mdi-shield-account-outline</v-icon>
-        Privacy Policy
+        {{ $t("footer.privacyPolicy") }}
       </NuxtLink>
 
       <span class="dot">·</span>
 
       <a
-        href="https://www.linkedin.com/in/simone-fusar-bassini-7407003b4"
+        href="https://www.linkedin.com/in/simone-fusar-bassini-7407003b"
         class="footer-bottom-link"
       >
         <v-icon size="18">mdi-linkedin</v-icon>
@@ -74,8 +106,6 @@
         <v-icon size="18">mdi-instagram</v-icon>
         fb.simo_
       </a>
-
-      <span class="dot">·</span>
 
       <span class="dot">·</span>
 
@@ -104,47 +134,52 @@
       :class="{ active: isActive('/upload') }"
     >
       <v-icon icon="mdi-cloud-upload-outline" size="22" />
-      <span>Upload</span>
+      <span>{{ $t("footer.upload") }}</span>
     </NuxtLink>
+
     <NuxtLink
       to="/activity-info"
       class="tab-item"
       :class="{ active: isActive('/activity-info') }"
     >
       <v-icon icon="mdi-poll" size="22" />
-      <span>Latest</span>
+      <span>{{ $t("footer.latest") }}</span>
     </NuxtLink>
+
     <NuxtLink
       to="/records"
       class="tab-item"
       :class="{ active: isActive('/records') }"
     >
       <v-icon icon="mdi-trophy-outline" size="22" />
-      <span>Records</span>
+      <span>{{ $t("footer.records") }}</span>
     </NuxtLink>
+
     <NuxtLink
       to="/record-custom"
       class="tab-item"
       :class="{ active: isActive('/record-custom') }"
     >
       <v-icon icon="mdi-bullseye-arrow" size="22" />
-      <span>Custom</span>
+      <span>{{ $t("footer.custom") }}</span>
     </NuxtLink>
+
     <NuxtLink
       to="/profile"
       class="tab-item"
       :class="{ active: isActive('/profile') }"
     >
       <v-icon icon="mdi-account-outline" size="22" />
-      <span>Profile</span>
+      <span>{{ $t("footer.profile") }}</span>
     </NuxtLink>
+
     <NuxtLink
       to="/game"
       class="tab-item"
       :class="{ active: isActive('/game') }"
     >
       <v-icon icon="mdi-nintendo-game-boy" size="22" />
-      <span>Game</span>
+      <span>{{ $t("footer.game") }}</span>
     </NuxtLink>
   </nav>
 </template>
