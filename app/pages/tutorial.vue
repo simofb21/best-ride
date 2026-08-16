@@ -1,130 +1,192 @@
 <template>
   <div class="tutorial-page">
-    <!-- Header con Titolo e Bottone Cambio Lingua -->
+    <!-- HEADER -->
     <header class="page-header">
       <div>
-        <h1 class="page-title">{{ t.title }}</h1>
-        <p class="eyebrow">{{ t.eyebrow }}</p>
-      </div>
+        <h1 class="page-title">
+          {{ $t("tutorial.title") }}
+        </h1>
 
-      <!-- Bottone Switch Lingua -->
-      <button class="lang-switch-btn" @click="toggleLanguage">
-        <span class="flag">{{ currentLang === "it" ? "🇮🇹" : "🇬🇧" }}</span>
-        <span>{{ currentLang === "it" ? "IT" : "EN" }}</span>
-      </button>
+        <p class="eyebrow">
+          {{ $t("tutorial.eyebrow") }}
+        </p>
+      </div>
     </header>
 
-    <!-- ================= DESKTOP LAYOUT ================= -->
+    <!-- DESKTOP -->
     <div class="desktop-layout">
-      <!-- Intro Card -->
+      <!-- INTRO -->
       <div class="card intro-card">
-        <h2>{{ t.introTitle }}</h2>
-        <p v-html="t.introText"></p>
+        <h2>
+          {{ $t("tutorial.intro.title") }}
+        </h2>
+
+        <p>
+          <strong>Best Ride</strong>
+          {{ $t("tutorial.intro.text") }}
+          <strong>Simone Fusar Bassini</strong>.
+        </p>
+
         <p class="highlight-text">
-          {{ t.introHighlight }}
+          {{ $t("tutorial.intro.highlight") }}
         </p>
       </div>
 
-      <!-- Steps List -->
+      <!-- STEPS -->
       <div class="card steps-card">
-        <h2>{{ t.howItWorksTitle }}</h2>
+        <h2>
+          {{ $t("tutorial.howItWorks") }}
+        </h2>
+
         <div class="steps-list">
-          <div v-for="(step, index) in t.steps" :key="index" class="step-item">
-            <div class="step-badge">{{ index + 1 }}</div>
+          <div v-for="(step, index) in steps" :key="index" class="step-item">
+            <div class="step-badge">
+              {{ index + 1 }}
+            </div>
+
             <div class="step-content">
               <h3>
-                {{ step.title }}
+                {{ $t(`tutorial.steps.${index}.title`) }}
+
                 <span v-if="step.optional" class="optional-tag">
-                  {{ t.optionalTag }}
+                  {{ $t("tutorial.optional") }}
                 </span>
               </h3>
-              <p v-html="step.description"></p>
 
-              <!-- Box Esempio FIT / Bryton -->
+              <p>
+                {{ $t(`tutorial.steps.${index}.description`) }}
+              </p>
+
+              <!-- INFO BOX -->
               <div v-if="step.infoBox" class="info-box">
-                <strong>{{ step.infoBox.title }}</strong>
-                <p v-html="step.infoBox.description"></p>
-                <small>{{ step.infoBox.note }}</small>
+                <strong>
+                  {{ $t(`tutorial.steps.${index}.infoBox.title`) }}
+                </strong>
+
+                <p>
+                  {{ $t(`tutorial.steps.${index}.infoBox.description`) }}
+                </p>
+
+                <small>
+                  {{ $t(`tutorial.steps.${index}.infoBox.note`) }}
+                </small>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Outro Card -->
+      <!-- OUTRO -->
       <div class="card outro-card">
-        <h2>{{ t.outroTitle }}</h2>
-        <p>{{ t.outroText }}</p>
+        <h2>
+          {{ $t("tutorial.outro.title") }}
+        </h2>
+
+        <p>
+          {{ $t("tutorial.outro.text") }}
+        </p>
       </div>
     </div>
 
-    <!-- ================= MOBILE LAYOUT (ACCORDION) ================= -->
+    <!-- MOBILE -->
     <div class="mobile-layout">
-      <!-- Section 1: Intro -->
+      <!-- INTRO -->
       <div class="mobile-accordion">
         <button class="accordion-header" @click="toggleSection('intro')">
-          <span>{{ t.introTitle }}</span>
+          <span>
+            {{ $t("tutorial.intro.title") }}
+          </span>
+
           <v-icon
             :icon="
               activeSection === 'intro' ? 'mdi-chevron-up' : 'mdi-chevron-down'
             "
           />
         </button>
+
         <div v-if="activeSection === 'intro'" class="accordion-content">
-          <p v-html="t.introTextMobile"></p>
+          <p>
+            <strong>Best Ride</strong>
+            {{ $t("tutorial.intro.mobileText") }}
+          </p>
         </div>
       </div>
 
-      <!-- Section 2: Primi Passi (Steps 1-3) -->
+      <!-- SETUP -->
       <div class="mobile-accordion">
         <button class="accordion-header" @click="toggleSection('setup')">
-          <span>{{ t.mobileSections.setup }}</span>
+          <span>
+            {{ $t("tutorial.mobileSections.setup") }}
+          </span>
+
           <v-icon
             :icon="
               activeSection === 'setup' ? 'mdi-chevron-up' : 'mdi-chevron-down'
             "
           />
         </button>
+
         <div
           v-if="activeSection === 'setup'"
           class="accordion-content stack-content"
         >
           <div v-for="i in [0, 1, 2]" :key="i">
             <h3>
-              {{ t.steps[i].title }}
-              <small v-if="t.steps[i].optional">({{ t.optionalTag }})</small>
+              {{ $t(`tutorial.steps.${i}.title`) }}
+
+              <small v-if="steps[i].optional">
+                ({{ $t("tutorial.optional") }})
+              </small>
             </h3>
-            <p v-html="t.steps[i].description"></p>
+
+            <p>
+              {{ $t(`tutorial.steps.${i}.description`) }}
+            </p>
           </div>
         </div>
       </div>
 
-      <!-- Section 3: Caricamento File (Step 4) -->
+      <!-- UPLOAD -->
       <div class="mobile-accordion">
         <button class="accordion-header" @click="toggleSection('upload')">
-          <span>{{ t.mobileSections.upload }}</span>
+          <span>
+            {{ $t("tutorial.mobileSections.upload") }}
+          </span>
+
           <v-icon
             :icon="
               activeSection === 'upload' ? 'mdi-chevron-up' : 'mdi-chevron-down'
             "
           />
         </button>
+
         <div
           v-if="activeSection === 'upload'"
           class="accordion-content stack-content"
         >
-          <p v-html="t.steps[3].description"></p>
-          <div v-if="t.steps[3].infoBox" class="info-box">
-            <strong>{{ t.steps[3].infoBox.title }}</strong>
-            <p v-html="t.steps[3].infoBox.description"></p>
+          <p>
+            {{ $t("tutorial.steps.3.description") }}
+          </p>
+
+          <div v-if="steps[3].infoBox" class="info-box">
+            <strong>
+              {{ $t("tutorial.steps.3.infoBox.title") }}
+            </strong>
+
+            <p>
+              {{ $t("tutorial.steps.3.infoBox.description") }}
+            </p>
           </div>
         </div>
       </div>
 
-      <!-- Section 4: Analisi e Funzionalità (Steps 5-9) -->
+      <!-- FEATURES -->
       <div class="mobile-accordion">
         <button class="accordion-header" @click="toggleSection('features')">
-          <span>{{ t.mobileSections.features }}</span>
+          <span>
+            {{ $t("tutorial.mobileSections.features") }}
+          </span>
+
           <v-icon
             :icon="
               activeSection === 'features'
@@ -133,210 +195,81 @@
             "
           />
         </button>
+
         <div
           v-if="activeSection === 'features'"
           class="accordion-content stack-content"
         >
           <div v-for="i in [4, 5, 6, 7, 8]" :key="i">
-            <h3>{{ t.steps[i].title }}</h3>
-            <p v-html="t.steps[i].description"></p>
+            <h3>
+              {{ $t(`tutorial.steps.${i}.title`) }}
+            </h3>
+
+            <p>
+              {{ $t(`tutorial.steps.${i}.description`) }}
+            </p>
           </div>
         </div>
       </div>
 
-      <!-- Outro Banner Mobile -->
+      <!-- OUTRO MOBILE -->
       <div class="card outro-card mobile-outro">
-        <h3>{{ t.outroMobile }} 🚴‍♂️</h3>
+        <h3>{{ $t("tutorial.outro.mobile") }} 🚴‍♂️</h3>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from "vue";
-
-// Definizione della lingua attiva ('it' predefinita)
-const currentLang = ref<"it" | "en">("it");
-
-// Stato della fisarmonica per Mobile
 const activeSection = ref<string | null>("intro");
 
 function toggleSection(section: string) {
   activeSection.value = activeSection.value === section ? null : section;
 }
 
-// Funzione per alternare la lingua
-function toggleLanguage() {
-  currentLang.value = currentLang.value === "it" ? "en" : "it";
-  document.title =
-    currentLang.value === "it"
-      ? "Tutorial & Guide - Best Ride"
-      : "Tutorial & Guide - Best Ride";
-}
-
-onMounted(() => {
-  document.title = "Tutorial & Guide - Best Ride";
-});
-
-// Dizionario delle traduzioni
-const translations = {
-  it: {
-    title: "Tutorial & Guida",
-    eyebrow:
-      "Scopri come sfruttare al massimo Best Ride e analizzare le tue prestazioni in bici.",
-    introTitle: "Cosa è Best Ride",
-    introText:
-      "<strong>Best Ride</strong> è un'applicazione web ideata da <strong>Simone Fusar Bassini</strong>. Lo scopo dell'applicazione è di fornirti un'analisi completa sui tuoi allenamenti in bici, incentrata principalmente sui record.",
-    introTextMobile:
-      "<strong>Best Ride</strong> è un'applicazione web ideata da <strong>Simone Fusar Bassini</strong> per offrirti un'analisi completa sui tuoi allenamenti in bici, focalizzata sui record e gratuita.",
-    introHighlight:
-      "L'obiettivo è offrire funzionalità avanzate — che su altre applicazioni concorrenti sono a pagamento — in maniera completamente gratuita.",
-    howItWorksTitle: "Come funziona",
-    optionalTag: "Opzionale",
-    outroTitle: "Pronto a partire?",
-    outroText: "Goditi l'esperienza e scopri dove puoi spingere i tuoi limiti!",
-    outroMobile: "Goditi l'esperienza!",
-    mobileSections: {
-      setup: "1. Registrazione & Profilo",
-      upload: "2. Caricamento File .FIT",
-      features: "3. Analisi, Condivisione & Record",
-    },
-    steps: [
-      {
-        title: "Registrazione",
-        description:
-          "Registrandoti ci autorizzi a trattare alcune tue informazioni personali e private. In questo modo le tue analisi saranno più approfondite, accurate e complete.",
-      },
-      {
-        title: "Compilazione Profilo",
-        description:
-          "Ti chiediamo di inserire alcuni dati fondamentali, come <strong>FTP, peso, data di nascita</strong> e altre informazioni necessarie per calcolare correttamente le metriche delle tue attività.",
-      },
-      {
-        title: "Inserimento Record Pregressi",
-        optional: true,
-        description:
-          "Dalla pagina dei record, puoi inserire manualmente tutte le tue migliori performance storiche di potenza e non solo. Se preferisci non farlo, la piattaforma inizierà a tracciare automaticamente i tuoi record a partire dalla tua prima attività caricata.",
-      },
-      {
-        title: "Caricamento Attività (.FIT)",
-        description:
-          "Questa è la parte principale dell'applicazione. Devi caricare il file in formato <code>.fit</code> fornito dal ciclocomputer o dalla sua app di supporto.",
-        infoBox: {
-          title: "Esempio per Bryton (App Active):",
-          description:
-            "Una volta scaricata l'attività nell'app, condividi il percorso salvandolo su Google Drive (o altro storage) in formato <code>.zip</code>. Estrai il file zip per ottenere il file <code>.fit</code> da caricare su Best Ride.",
-          note: "* Stiamo lavorando per rendere l'importazione automatica e immediata, ma al momento è necessario questo passaggio manuale.",
-        },
-      },
-      {
-        title: "Verifica Anteprima",
-        description:
-          "Una volta completato il caricamento, visualizzerai le informazioni essenziali della singola attività, compresi i primi record eventualmente battuti.",
-      },
-      {
-        title: "Conferma & Elaborazione",
-        description:
-          "Conferma di voler salvare l'attività come tua ultima uscita per accedere immediatamente all'analisi approfondita e completa.",
-      },
-      {
-        title: "Analisi Dettagliata",
-        description:
-          "Esplora i grafici, i tempi nei segmenti di potenza e i picchi raggiunti.",
-      },
-      {
-        title: "Condivisione Social & Coach",
-        description:
-          "Condividi facilmente le tue performance con il tuo preparatore atletico, con gli amici o crea la versione grafica pronta per i tuoi follower sui social network.",
-      },
-      {
-        title: "Record Personalizzati",
-        description:
-          "Puoi creare e gestire record specifici: ad esempio, se ogni anno o mese affronti una salita test, puoi tracciare i tuoi tempi nella sezione dedicata ai record personalizzati.",
-      },
-    ],
+/*
+ * Questi dati servono solamente per sapere quali step
+ * hanno elementi opzionali/infoBox.
+ * I testi vengono tutti presi da i18n.
+ */
+const steps = [
+  {
+    optional: false,
+    infoBox: false,
   },
-  en: {
-    title: "Tutorial & Guide",
-    eyebrow:
-      "Discover how to get the most out of Best Ride and analyze your cycling performance.",
-    introTitle: "What is Best Ride",
-    introText:
-      "<strong>Best Ride</strong> is a web application created by <strong>Simone Fusar Bassini</strong>. The purpose of the app is to provide you with a comprehensive analysis of your cycling workouts, focusing primarily on personal records.",
-    introTextMobile:
-      "<strong>Best Ride</strong> is a free web application created by <strong>Simone Fusar Bassini</strong> to offer you detailed cycling analytics centered around your personal records.",
-    introHighlight:
-      "The goal is to provide advanced features — which are paid on competing applications — completely free of charge.",
-    howItWorksTitle: "How it works",
-    optionalTag: "Optional",
-    outroTitle: "Ready to go?",
-    outroText:
-      "Enjoy the experience and discover how far you can push your limits!",
-    outroMobile: "Enjoy the experience!",
-    mobileSections: {
-      setup: "1. Registration & Profile",
-      upload: "2. Uploading .FIT Files",
-      features: "3. Analytics, Sharing & Records",
-    },
-    steps: [
-      {
-        title: "Registration",
-        description:
-          "By registering, you allow us to process essential personal information. This enables us to provide deeper, more accurate, and complete analytics.",
-      },
-      {
-        title: "Profile Setup",
-        description:
-          "We ask you to enter key data, such as <strong>FTP, weight, date of birth</strong>, and other details required to accurately compute your activity metrics.",
-      },
-      {
-        title: "Historical Records Entry",
-        optional: true,
-        description:
-          "From the records page, you can manually enter your historical best power outputs and performances. If you prefer to skip this, tracking will begin automatically from your first uploaded activity.",
-      },
-      {
-        title: "Activity Upload (.FIT)",
-        description:
-          "This is the core feature of the application. Upload the <code>.fit</code> file exported from your bike computer or its companion app.",
-        infoBox: {
-          title: "Example for Bryton (Active App):",
-          description:
-            "Once saved in the app, share the file to Google Drive (or another cloud storage) as a <code>.zip</code> archive. Extract the zip file to obtain the <code>.fit</code> file to upload on Best Ride.",
-          note: "* We are working on automatic direct syncing, but this manual step is currently required.",
-        },
-      },
-      {
-        title: "Preview & Verification",
-        description:
-          "Once uploaded, you will see key summary stats of the activity, including any initial records broken.",
-      },
-      {
-        title: "Confirm & Process",
-        description:
-          "Confirm saving the activity to immediately unlock its full, in-depth analytical report.",
-      },
-      {
-        title: "Detailed Analytics",
-        description:
-          "Explore power graphs, power segment durations, and peak outputs reached.",
-      },
-      {
-        title: "Social & Coach Sharing",
-        description:
-          "Easily share reports with your coach or friends, or generate ready-to-post graphics for your social media followers.",
-      },
-      {
-        title: "Custom Records",
-        description:
-          "Create and track custom targets: for example, if you regularly test yourself on a specific climb, track your time progression in the custom records section.",
-      },
-    ],
+  {
+    optional: false,
+    infoBox: false,
   },
-};
-
-// Computed property che restituisce le traduzioni correnti in base alla lingua scelta
-const t = computed(() => translations[currentLang.value]);
+  {
+    optional: true,
+    infoBox: false,
+  },
+  {
+    optional: false,
+    infoBox: true,
+  },
+  {
+    optional: false,
+    infoBox: false,
+  },
+  {
+    optional: false,
+    infoBox: false,
+  },
+  {
+    optional: false,
+    infoBox: false,
+  },
+  {
+    optional: false,
+    infoBox: false,
+  },
+  {
+    optional: false,
+    infoBox: false,
+  },
+];
 </script>
 
 <style scoped>
@@ -360,8 +293,6 @@ const t = computed(() => translations[currentLang.value]);
   color: var(--text);
   margin-bottom: 4px;
 }
-
-
 
 /* Bottone Cambio Lingua */
 .lang-switch-btn {

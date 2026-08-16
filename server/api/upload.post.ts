@@ -16,7 +16,25 @@ export default defineEventHandler(async (event) => {
   const fitFile = formData?.find((item) => item.name === "file");
 
   if (!fitFile) {
-    throw createError({ statusCode: 400, message: "No .fit file received" });
+    throw createError({ statusCode: 400, message: "No file received" });
+  }
+
+  // Limite dimensione: 50MB
+  const MAX_SIZE = 50 * 1024 * 1024;
+  if (fitFile.data.length > MAX_SIZE) {
+    throw createError({
+      statusCode: 400,
+      message: "File too large. Maximum size is 50MB.",
+    });
+  }
+
+  // Verifica estensione
+  const filename = fitFile.filename?.toLowerCase() ?? "";
+  if (!filename.endsWith(".fit") && !filename.endsWith(".zip")) {
+    throw createError({
+      statusCode: 400,
+      message: "Invalid file type. Only .fit and .zip files are accepted.",
+    });
   }
 
   const data = await parseFitFile(fitFile.data as any).catch((err: any) => {

@@ -5,7 +5,7 @@
     "upload": "Carica",
     "activity": "Ultima attività",
     "records": "Record",
-    "custom": "Personalizzazione",
+    "custom": "SoloTuoi",
     "profile": "Profilo",
     "privacyPolicy": "Privacy Policy",
     "logout": "Logout",
@@ -119,5 +119,184 @@
     "noRecords": "Nessun record disponibile.",
     "allTime": "Di sempre",
     "previous": "Precedente"
+  },
+
+  "tutorial": {
+    "title": "Tutorial & Guida",
+    "eyebrow": "Scopri come sfruttare al massimo Best Ride e analizzare le tue prestazioni in bici.",
+
+    "intro": {
+      "title": "Cosa è Best Ride",
+      "text": "è un'applicazione web ideata da",
+      "mobileText": "è un'applicazione web ideata da Simone Fusar Bassini per offrirti un'analisi completa sui tuoi allenamenti in bici, focalizzata sui record e gratuita.",
+      "highlight": "L'obiettivo è offrire funzionalità avanzate — che su altre applicazioni concorrenti sono a pagamento — in maniera completamente gratuita."
+    },
+
+    "howItWorks": "Come funziona",
+    "optional": "Opzionale",
+
+    "outro": {
+      "title": "Pronto a partire?",
+      "text": "Goditi l'esperienza e scopri dove puoi spingere i tuoi limiti!",
+      "mobile": "Goditi l'esperienza!"
+    },
+
+    "mobileSections": {
+      "setup": "1. Registrazione & Profilo",
+      "upload": "2. Caricamento File .FIT",
+      "features": "3. Analisi, Condivisione & Record"
+    },
+
+    "steps": [
+      {
+        "title": "Registrazione",
+        "description": "Registrandoti ci autorizzi a trattare alcune tue informazioni personali e private. In questo modo le tue analisi saranno più approfondite, accurate e complete."
+      },
+      {
+        "title": "Compilazione Profilo",
+        "description": "Ti chiediamo di inserire alcuni dati fondamentali, come FTP, peso, data di nascita e altre informazioni necessarie per calcolare correttamente le metriche delle tue attività."
+      },
+      {
+        "title": "Inserimento Record Pregressi",
+        "optional": true,
+        "description": "Dalla pagina dei record, puoi inserire manualmente tutte le tue migliori performance storiche di potenza e non solo. Se preferisci non farlo, la piattaforma inizierà a tracciare automaticamente i tuoi record a partire dalla tua prima attività caricata."
+      },
+      {
+        "title": "Caricamento Attività (.FIT)",
+        "description": "Questa è la parte principale dell'applicazione. Devi caricare il file in formato .fit fornito dal ciclocomputer o dalla sua app di supporto.",
+        "infoBox": {
+          "title": "Esempio per Bryton (App Active):",
+          "description": "Una volta scaricata l'attività nell'app, condividi il percorso salvandolo su Google Drive (o altro storage) in formato .zip. Estrai il file zip per ottenere il file .fit da caricare su Best Ride.",
+          "note": "* Stiamo lavorando per rendere l'importazione automatica e immediata, ma al momento è necessario questo passaggio manuale."
+        }
+      },
+      {
+        "title": "Verifica Anteprima",
+        "description": "Una volta completato il caricamento, visualizzerai le informazioni essenziali della singola attività, compresi i primi record eventualmente battuti."
+      },
+      {
+        "title": "Conferma & Elaborazione",
+        "description": "Conferma di voler salvare l'attività come tua ultima uscita per accedere immediatamente all'analisi approfondita e completa."
+      },
+      {
+        "title": "Analisi Dettagliata",
+        "description": "Esplora i grafici, i tempi nei segmenti di potenza e i picchi raggiunti."
+      },
+      {
+        "title": "Condivisione Social & Coach",
+        "description": "Condividi facilmente le tue performance con il tuo preparatore atletico, con gli amici o crea la versione grafica pronta per i tuoi follower sui social network."
+      },
+      {
+        "title": "Record Personalizzati",
+        "description": "Puoi creare e gestire record specifici: ad esempio, se ogni anno o mese affronti una salita test, puoi tracciare i tuoi tempi nella sezione dedicata ai record personalizzati."
+      }
+    ]
+  },
+
+  "privacyPolicy": {
+    "title": "Informativa sulla Privacy",
+    "lastUpdatedPrefix": "Ultimo aggiornamento",
+
+    "sections": {
+      "whoWeAre": {
+        "title": "1. Chi siamo",
+        "text": "Best Ride (\"noi\", \"nostro\") è un'applicazione web per il tracciamento delle prestazioni ciclistiche creata da Simone Fusar Bassini, disponibile anche come Progressive Web App (PWA) installabile. Questa Informativa sulla Privacy spiega quali dati personali raccogliamo, perché li raccogliamo e come gli utenti possono gestire le proprie informazioni."
+      },
+
+      "authentication": {
+        "title": "2. Autenticazione e dati dell'account",
+        "intro": "Best Ride utilizza Google OAuth per l'autenticazione. Non memorizziamo password.",
+        "listIntro": "Quando effettui l'accesso con Google, riceviamo e salviamo le seguenti informazioni:",
+        "items": [
+          "Nome",
+          "Indirizzo e-mail",
+          "Identificativo dell'account Google (Google ID)"
+        ]
+      },
+
+      "personalData": {
+        "title": "3. Dati personali e ciclistici raccolti",
+        "intro": "Per fornire un'analisi personalizzata delle prestazioni ciclistiche, raccogliamo:",
+        "items": [
+          "Nome e cognome",
+          "Data di nascita",
+          "Sesso",
+          "Peso",
+          "Potenza alla Soglia Funzionale (FTP)",
+          "Soglia anaerobica",
+          "Distanza totale e ore di ciclismo registrate"
+        ]
+      },
+
+      "activityData": {
+        "title": "4. Dati delle attività",
+        "intro": "Gli utenti possono caricare manualmente i file delle attività ciclistiche in formato .fit. Questi file possono contenere:",
+        "items": [
+          "Dati di potenza",
+          "Velocità",
+          "Cadenza",
+          "Frequenza cardiaca",
+          "Coordinate GPS, se disponibili nel file",
+          "Dati di altitudine",
+          "Distanza e durata"
+        ],
+        "retention": "Le attività caricate vengono elaborate per calcolare metriche di prestazione, carico di allenamento, record personali e altre statistiche. I dati elaborati vengono conservati finché l'utente non carica un nuovo file o elimina il proprio account."
+      },
+
+      "gps": {
+        "title": "5. Utilizzo dei dati GPS",
+        "text": "Se le informazioni GPS sono incluse nel file dell'attività, possono essere utilizzate per mostrare la mappa del percorso. I dati GPS non vengono usati a fini pubblicitari o di tracciamento commerciale."
+      },
+
+      "whyWeProcess": {
+        "title": "6. Perché elaboriamo i tuoi dati",
+        "intro": "Trattiamo i tuoi dati esclusivamente per fornire le funzionalità principali di Best Ride, tra cui:",
+        "items": [
+          "Analisi delle prestazioni",
+          "Calcolo della curva di potenza",
+          "Tracciamento dei record personali",
+          "Calcolo delle metriche di allenamento",
+          "Visualizzazione delle attività ciclistiche"
+        ],
+        "outro": "Non vendiamo dati personali e non li utilizziamo per scopi pubblicitari."
+      },
+
+      "legalBasis": {
+        "title": "7. Base giuridica",
+        "text": "Trattiamo i dati personali in base al tuo consenso e perché il trattamento è necessario per fornire il servizio richiesto, ai sensi dell'Articolo 6(1)(a) e 6(1)(b) del GDPR."
+      },
+
+      "dataRetention": {
+        "title": "8. Conservazione dei dati",
+        "text": "I tuoi dati personali sono conservati finché il tuo account rimane attivo. Puoi eliminare il tuo account in qualsiasi momento tramite la funzione presente nell'applicazione. L'eliminazione comporta la rimozione dei dati personali associati."
+      },
+
+      "security": {
+        "title": "9. Sicurezza dei dati",
+        "text": "Adottiamo ragionevoli misure tecniche e organizzative per proteggere i tuoi dati personali da accessi non autorizzati, alterazioni, divulgazioni o distruzioni."
+      },
+
+      "gdprRights": {
+        "title": "10. I tuoi diritti secondo il GDPR",
+        "intro": "Hai il diritto di:",
+        "items": [
+          "Accedere ai tuoi dati personali",
+          "Correggere informazioni inesatte",
+          "Richiedere la cancellazione dei tuoi dati",
+          "Ricevere i tuoi dati in un formato portabile",
+          "Revocare il tuo consenso"
+        ]
+      },
+
+      "thirdParty": {
+        "title": "11. Servizi di terze parti",
+        "text": "Best Ride utilizza Google OAuth per l'autenticazione. Google potrebbe trattare i dati personali in base alla propria informativa sulla privacy."
+      },
+
+      "contact": {
+        "title": "12. Contatti",
+        "text": "Per domande su questa Informativa o per richieste relative ai tuoi dati personali, contattaci a:"
+      }
+    }
   }
 }
