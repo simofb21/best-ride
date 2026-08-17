@@ -1,4 +1,5 @@
 import { prisma } from "../../utils/db";
+import { decodeGpsTrack } from "../../utils/gpsTrack";
 
 export default defineEventHandler(async (event) => {
   const session = await requireUserSession(event);
@@ -11,10 +12,15 @@ export default defineEventHandler(async (event) => {
   if (!lastActivity) {
     throw createError({ statusCode: 404, message: "No activity found yet" });
   }
-  // console.log(
-  //   "recordChecks nel DB:",
-  //   JSON.stringify((lastActivity.data as any)?.recordChecks),
-  // );
+  const data = lastActivity.data as Record<string, unknown>;
+  const { gpsTrackPolyline, ...activityData } = data;
 
-  return lastActivity.data; // { activity, power_records, training_load }
+  // Le righe precedenti a questa ottimizzazione contengono già gpsTrack come
+  // array: in quel caso lo manteniamo per retrocompatibilità.
+  if (typeof gpsTrackPolyline !== "string") return activityData;
+
+  return {
+    ...activityData,
+    gpsTrack: decodeGpsTrack(gpsTrackPolyline),
+  };
 });

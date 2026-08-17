@@ -10,18 +10,19 @@
     </button>
 
     <div class="panel-body" :class="{ 'is-open': isOpen }">
-      <ClientOnly>
-        <div v-if="!gpsTrack || !gpsTrack.length" class="no-data">
-          No GPS data in this activity
-        </div>
-        <div v-else ref="mapContainer" class="map-container" />
-      </ClientOnly>
+      <div v-if="mapError" class="no-data">
+        {{ mapError }}
+      </div>
+      <div v-else-if="!normalizedPoints.length" class="no-data">
+        No GPS data in this activity
+      </div>
+      <div v-else ref="mapContainer" class="map-container" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch, nextTick } from "vue";
+import { ref, computed, watch, nextTick, onBeforeUnmount } from "vue";
 import "leaflet/dist/leaflet.css";
 
 const props = defineProps<{
@@ -30,7 +31,33 @@ const props = defineProps<{
 
 const isOpen = ref(true);
 const mapContainer = ref<HTMLElement | null>(null);
+const mapError = ref("");
 let mapInstance: any = null;
+
+const normalizedPoints = computed<[number, number][]>(() => {
+  if (!Array.isArray(props.gpsTrack)) return [];
+
+  return props.gpsTrack
+    .map((point: any) => {
+      const lat = point?.lat ?? point?.position_lat ?? point?.[0];
+      const lng = point?.lng ?? point?.position_long ?? point?.[1];
+
+      if (
+        typeof lat !== "number" ||
+        typeof lng !== "number" ||
+        !Number.isFinite(lat) ||
+        !Number.isFinite(lng) ||
+        Math.abs(lat) > 90 ||
+        Math.abs(lng) > 180 ||
+        (lat === 0 && lng === 0)
+      ) {
+        return null;
+      }
+
+      return [lat, lng] as [number, number];
+    })
+    .filter((point): point is [number, number] => point !== null);
+});
 
 const toggleMap = () => {
   isOpen.value = !isOpen.value;
@@ -40,103 +67,94 @@ const toggleMap = () => {
 };
 
 const initMap = async () => {
-  if (!props.gpsTrack || !props.gpsTrack.length) return;
+  if (!normalizedPoints.value.length) return;
 
   await nextTick();
   if (!mapContainer.value) return;
 
-  const L = await import("leaflet");
+  mapError.value = "";
 
-  if (mapInstance) {
-    mapInstance.remove();
-    mapInstance = null;
-  }
+  try {
+    const leaflet = await import("leaflet");
+    const L = (leaflet as any).default ?? leaflet;
 
-  // Costante di conversione standard semicircles -> gradi
-  const SEMICIRCLES_TO_DEGREES = 180 / Math.pow(2, 31);
+    if (mapInstance) {
+      mapInstance.remove();
+      mapInstance = null;
+    }
 
-  const points: [number, number][] = props.gpsTrack
-    .map((p: any) => {
-      if (!p) return null;
+    const points = normalizedPoints.value;
 
-      let lat = p.lat ?? p.position_lat ?? p[0];
-      let lng = p.lng ?? p.position_long ?? p[1];
+    if (!points.length) {
+      mapError.value = "No valid GPS coordinates in this activity";
+      return;
+    }
 
-      if (typeof lat !== "number" || typeof lng !== "number") return null;
+    // Inizializza la mappa sulla prima coordinata
+    mapInstance = L.map(mapContainer.value).setView(points[0], 13);
 
-      // significa che sono stati divisi per errore per (180 / 2^31). Ristabiliamo i semicircles!
-      if (Math.abs(lat) < 0.1 && lat !== 0) {
-        lat = lat / SEMICIRCLES_TO_DEGREES;
-        lng = lng / SEMICIRCLES_TO_DEGREES;
-      }
-
-      // Se i valori sono grandi (Semicircles standard), convertili normalmente in gradi
-      if (Math.abs(lat) > 180) {
-        lat = lat * SEMICIRCLES_TO_DEGREES;
-        lng = lng * SEMICIRCLES_TO_DEGREES;
-      }
-
-      // Escludi punti 0,0 invalidi
-      if (Math.abs(lat) < 0.001 && Math.abs(lng) < 0.001) return null;
-
-      return [lat, lng] as [number, number];
-    })
-    .filter((p): p is [number, number] => p !== null);
-
-  if (!points.length) return;
-
-  // Inizializza la mappa sulla prima coordinata
-  mapInstance = L.map(mapContainer.value).setView(points[0], 13);
-
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    attribution: "&copy; OpenStreetMap contributors",
-    maxZoom: 19,
-  }).addTo(mapInstance);
-
-  // Se c'è più di un punto, disegna la linea
-  if (points.length > 1) {
-    const polyline = L.polyline(points, {
-      color: "#22c55e",
-      weight: 4,
-      opacity: 0.8,
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: "&copy; OpenStreetMap contributors",
+      maxZoom: 19,
     }).addTo(mapInstance);
 
-    // Inquadra tutti i punti sulla mappa con un po' di padding
-    mapInstance.fitBounds(polyline.getBounds(), { padding: [30, 30] });
+    // Se c'è più di un punto, disegna la linea
+    if (points.length > 1) {
+      const polyline = L.polyline(points, {
+        color: "#22c55e",
+        weight: 4,
+        opacity: 0.8,
+      }).addTo(mapInstance);
 
-    // Marker di Fine percorso (Rosso)
-    L.circleMarker(points[points.length - 1], {
+      // Inquadra tutti i punti sulla mappa con un po' di padding
+      mapInstance.fitBounds(polyline.getBounds(), { padding: [30, 30] });
+
+      // Marker di Fine percorso (Rosso)
+      L.circleMarker(points[points.length - 1], {
+        radius: 6,
+        color: "#ef4444",
+        fillColor: "#ef4444",
+        fillOpacity: 1,
+      }).addTo(mapInstance);
+    }
+
+    // Marker di Inizio percorso (Verde)
+    L.circleMarker(points[0], {
       radius: 6,
-      color: "#ef4444",
-      fillColor: "#ef4444",
+      color: "#22c55e",
+      fillColor: "#22c55e",
       fillOpacity: 1,
     }).addTo(mapInstance);
+
+    setTimeout(() => {
+      mapInstance?.invalidateSize();
+    }, 200);
+  } catch (error) {
+    console.error("Leaflet initialization failed:", error);
+    mapError.value = "Unable to load the route map";
   }
-
-  // Marker di Inizio percorso (Verde)
-  L.circleMarker(points[0], {
-    radius: 6,
-    color: "#22c55e",
-    fillColor: "#22c55e",
-    fillOpacity: 1,
-  }).addTo(mapInstance);
-
-  setTimeout(() => {
-    mapInstance?.invalidateSize();
-  }, 200);
 };
 
-onMounted(() => {
-  initMap();
-});
+watch(
+  mapContainer,
+  (container) => {
+    if (container) initMap();
+  },
+  { flush: "post" },
+);
 
 watch(
-  () => props.gpsTrack,
+  normalizedPoints,
   () => {
     initMap();
   },
-  { deep: true },
+  { deep: true, flush: "post" },
 );
+
+onBeforeUnmount(() => {
+  mapInstance?.remove();
+  mapInstance = null;
+});
 </script>
 
 <style scoped>

@@ -44,6 +44,8 @@
 </template>
 
 <script setup lang="ts">
+import CollapsiblePanel from "~/components/ui/CollapsiblePanel";
+
 const props = defineProps<{ powerRecords: any[] }>();
 
 const DURATION_META: Record<string, { seconds: number; label: string }> = {

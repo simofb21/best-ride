@@ -1,4 +1,8 @@
 import { prisma } from "../../utils/db";
+import {
+  encodeGpsTrack,
+  prepareGpsTrackForStorage,
+} from "../../utils/gpsTrack";
 
 export default defineEventHandler(async (event) => {
   const session = await requireUserSession(event);
@@ -19,6 +23,7 @@ export default defineEventHandler(async (event) => {
 
   const activityDate = new Date(activity.activityDate);
   const user = await prisma.user.findUnique({ where: { id: userId } });
+  const gpsTrackPolyline = encodeGpsTrack(prepareGpsTrackForStorage(gpsTrack));
 
   await prisma.lastActivity.upsert({
     where: { userId },
@@ -31,7 +36,7 @@ export default defineEventHandler(async (event) => {
         power_records,
         training_load,
         recordChecks,
-        gpsTrack,
+        gpsTrackPolyline,
         laps,
         powerZoneTime,
         heartRateZoneTime,
@@ -47,7 +52,7 @@ export default defineEventHandler(async (event) => {
         power_records,
         training_load,
         recordChecks,
-        gpsTrack,
+        gpsTrackPolyline,
         laps,
         powerZoneTime,
         heartRateZoneTime,
@@ -113,6 +118,6 @@ export default defineEventHandler(async (event) => {
       });
     }
   }
-  
+
   return { success: true };
 });

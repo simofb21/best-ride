@@ -1,6 +1,12 @@
 <template>
-  <CollapsiblePanel :title="$t('activityComponents.laps.title')" icon="mdi-flag-checkered" full-width>
-    <div v-if="!laps.length" class="no-data">{{ $t("activityComponents.laps.none") }}</div>
+  <CollapsiblePanel
+    :title="$t('activityComponents.laps.title')"
+    icon="mdi-flag-checkered"
+    full-width
+  >
+    <div v-if="!laps.length" class="no-data">
+      {{ $t("activityComponents.laps.none") }}
+    </div>
     <div v-else class="table-scroll">
       <table class="laps-table">
         <thead>
@@ -31,7 +37,7 @@
 </template>
 
 <script setup lang="ts">
-import CollapsiblePanel from "~/components/ui/CollapsiblePanel.vue";
+import CollapsiblePanel from "~/components/ui/CollapsiblePanel";
 defineProps<{
   laps: Array<{
     lapNumber: number;

@@ -61,7 +61,7 @@
 </template>
 
 <script setup lang="ts">
-import CollapsiblePanel from "~/components/ui/CollapsiblePanel.vue";
+import CollapsiblePanel from "~/components/ui/CollapsiblePanel";
 
 interface RecordCheck {
   metricKey: string;
