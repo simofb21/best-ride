@@ -2,12 +2,12 @@
 <template>
   <div class="auth-page">
     <div class="auth-card">
-      <h1>Welcome to Best Ride</h1>
-      <p class="subtitle">Sign in to track your rides and records</p>
+      <h1>{{ $t("login.title") }}</h1>
+      <p class="subtitle">{{ $t("login.subtitle") }}</p>
 
       <a href="/auth/google" class="google-btn">
         <v-icon icon="mdi-google" size="18" />
-        Continue with Google
+        {{ $t("login.google") }}
       </a>
 
       <!-- Quando aggiungerai altri provider (Apple, ecc.), basterà aggiungere qui: -->
@@ -32,9 +32,10 @@ onMounted(() => {
 // Se torniamo qui dopo un fallimento OAuth (google.get.ts fa redirect a /login?error=...),
 // mostriamo un messaggio d'errore leggibile invece di un errore criptico
 const route = useRoute();
+const { t } = useI18n();
 const errorMessage = computed(() => {
   if (route.query.error === "google_auth_failed") {
-    return "Something went wrong signing in with Google. Please try again.";
+    return t("login.error");
   }
   return "";
 });

@@ -2,7 +2,7 @@
   <main class="home-page">
     <img src="/logo.png" alt="Best Ride Logo" class="logo" />
     <h1>Best Ride</h1>
-    <p class="tagline">Track your power. Chase your records.</p>
+    <p class="tagline">{{ $t("home.tagline") }}</p>
 
     <div class="content-area">
       <Dashboard v-if="loggedIn" />
@@ -11,13 +11,13 @@
 
     <!-- Solo mobile: info sul progetto/autore, già presenti nel footer desktop -->
     <section class="about-mobile">
-      <h2>About us</h2>
+      <h2>{{ $t("home.aboutUs") }}</h2>
       <p>{{ $t("footer.description") }}</p>
 
       <div class="about-links">
         <NuxtLink to="/privacy-policy" class="footer-bottom-link">
           <v-icon size="18">mdi-shield-account-outline</v-icon>
-          Privacy Policy
+          {{ $t("navbar.privacyPolicy") }}
         </NuxtLink>
 
         <a

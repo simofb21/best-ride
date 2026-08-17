@@ -1,9 +1,9 @@
 <template>
   <div class="profile-page">
-    <h1 class="page-title">My Profile</h1>
+    <h1 class="page-title">{{ $t("profile.title") }}</h1>
 
     <p v-if="errorMessage" class="error-banner">{{ errorMessage }}</p>
-    <div v-if="loading" class="state-message">Loading...</div>
+    <div v-if="loading" class="state-message">{{ $t("common.loading") }}</div>
 
     <div v-else-if="profile" class="profile-container">
       <!-- ================= DESKTOP LAYOUT ================= -->
@@ -16,7 +16,7 @@
 
         <!-- 3. Power Profile: Testo a sinistra, Grafico a destra -->
         <div class="card power-profile-wrapper">
-          <h2>Power Profile</h2>
+          <h2>{{ $t("profile.powerProfile") }}</h2>
           <PowerProfileRadar />
         </div>
 
@@ -35,7 +35,7 @@
         <!-- Rettangolo 1: Personal Info -->
         <div class="mobile-accordion">
           <button class="accordion-header" @click="toggleSection('info')">
-            <span>Personal Info</span>
+            <span>{{ $t("profile.personalInfo") }}</span>
             <v-icon
               :icon="
                 activeSection === 'info' ? 'mdi-chevron-up' : 'mdi-chevron-down'
@@ -53,7 +53,7 @@
             class="accordion-header"
             @click="toggleSection('powerProfile')"
           >
-            <span>Power Profile</span>
+            <span>{{ $t("profile.powerProfile") }}</span>
             <v-icon
               :icon="
                 activeSection === 'powerProfile'
@@ -76,7 +76,7 @@
         <!-- Rettangolo 3: Power Zones -->
         <div class="mobile-accordion">
           <button class="accordion-header" @click="toggleSection('powerZones')">
-            <span>Power Zones</span>
+            <span>{{ $t("profile.powerZones") }}</span>
             <v-icon
               :icon="
                 activeSection === 'powerZones'
@@ -93,7 +93,7 @@
         <!-- Rettangolo 4: Heart Rate Zones -->
         <div class="mobile-accordion">
           <button class="accordion-header" @click="toggleSection('hrZones')">
-            <span>Heart Rate Zones</span>
+            <span>{{ $t("profile.heartRateZones") }}</span>
             <v-icon
               :icon="
                 activeSection === 'hrZones'

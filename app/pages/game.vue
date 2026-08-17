@@ -2,7 +2,7 @@
   <div class="cycling-game-container">
     <!-- PHASE 1: CUSTOMIZE RIDER -->
     <div v-if="gameState === 'customize'" class="screen-card">
-      <h2><i class="mdi mdi-palette"></i> Customize Rider</h2>
+      <h2><i class="mdi mdi-palette"></i> {{ $t("game.customize") }}</h2>
 
       <div class="customization-wrapper">
         <canvas
@@ -15,7 +15,7 @@
         <div class="controls-group">
           <!-- Jersey Color RGB -->
           <div class="control-item">
-            <label><i class="mdi mdi-tshirt-crew"></i> Jersey Color:</label>
+            <label><i class="mdi mdi-tshirt-crew"></i> {{ $t("game.jerseyColor") }}:</label>
             <div class="color-picker-wrapper">
               <input
                 type="color"
@@ -29,7 +29,7 @@
 
           <!-- Bike Frame Color RGB -->
           <div class="control-item">
-            <label><i class="mdi mdi-bike"></i> Bike Frame Color:</label>
+            <label><i class="mdi mdi-bike"></i> {{ $t("game.bikeColor") }}:</label>
             <div class="color-picker-wrapper">
               <input
                 type="color"
@@ -43,7 +43,7 @@
 
           <!-- Helmet Color RGB -->
           <div class="control-item">
-            <label><i class="mdi mdi-racing-helmet"></i> Helmet Color:</label>
+            <label><i class="mdi mdi-racing-helmet"></i> {{ $t("game.helmetColor") }}:</label>
             <div class="color-picker-wrapper">
               <input
                 type="color"
@@ -58,7 +58,7 @@
       </div>
 
       <button class="btn-primary" @click="startGame">
-        <i class="mdi mdi-flag-checkered"></i> START RACE
+        <i class="mdi mdi-flag-checkered"></i> {{ $t("game.start") }}
       </button>
     </div>
 
@@ -79,12 +79,12 @@
               ><strong>{{ displaySpeed.toFixed(1) }}</strong> km/h</span
             >
             <span v-if="stamina > 50" class="speed-badge boost"
-              >+30% BOOST</span
+              >{{ $t("game.boost") }}</span
             >
             <span v-else-if="stamina === 0" class="speed-badge slow"
-              >DRAINING</span
+              >{{ $t("game.draining") }}</span
             >
-            <span v-else-if="stamina < 25" class="speed-badge slow">SLOW</span>
+            <span v-else-if="stamina < 25" class="speed-badge slow">{{ $t("game.slow") }}</span>
           </div>
         </div>
 
@@ -111,7 +111,7 @@
         </div>
 
         <!-- PAUSE BUTTON -->
-        <button class="pause-btn" @click="togglePause" title="Pause Game">
+        <button class="pause-btn" @click="togglePause" :title="$t('game.pause')">
           <i class="mdi" :class="isPaused ? 'mdi-play' : 'mdi-pause'"></i>
         </button>
       </div>
@@ -125,25 +125,25 @@
 
       <!-- GESTURE CONTROLS HINT -->
       <div class="gesture-hint">
-        <i class="mdi mdi-gesture-swipe-horizontal"></i> Swipe |
-        <i class="mdi mdi-gesture-swipe-up"></i> Jump |
-        <i class="mdi mdi-keyboard-outline"></i> 'P' to Pause
+        <i class="mdi mdi-gesture-swipe-horizontal"></i> {{ $t("game.swipe") }} |
+        <i class="mdi mdi-gesture-swipe-up"></i> {{ $t("game.jump") }} |
+        <i class="mdi mdi-keyboard-outline"></i> {{ $t("game.pauseHint") }}
       </div>
 
       <!-- PAUSE OVERLAY -->
       <div v-if="isPaused && gameState === 'playing'" class="modal-overlay">
         <i class="mdi mdi-pause-circle pause-icon"></i>
-        <h2>GAME PAUSED</h2>
+        <h2>{{ $t("game.paused") }}</h2>
 
         <div class="overlay-actions">
           <button class="btn-primary" @click="togglePause">
-            <i class="mdi mdi-play"></i> Resume
+            <i class="mdi mdi-play"></i> {{ $t("game.resume") }}
           </button>
           <button class="btn-secondary" @click="startGame">
-            <i class="mdi mdi-restart"></i> Restart Race
+            <i class="mdi mdi-restart"></i> {{ $t("game.restart") }}
           </button>
           <button class="btn-secondary" @click="exitToCustomize">
-            <i class="mdi mdi-account-edit"></i> Edit Rider
+            <i class="mdi mdi-account-edit"></i> {{ $t("game.editRider") }}
           </button>
         </div>
       </div>
@@ -156,24 +156,24 @@
         ></i>
         <i v-else class="mdi mdi-battery-alert exhausted-icon"></i>
 
-        <h2>{{ gameOverReason === "crash" ? "CRASH!" : "OUT OF ENERGY!" }}</h2>
+        <h2>{{ gameOverReason === "crash" ? $t("game.crash") : $t("game.outOfEnergy") }}</h2>
         <p v-if="gameOverReason === 'exhausted'" class="subtitle">
-          Speed dropped to 0 km/h!
+          {{ $t("game.speedDropped") }}
         </p>
 
         <p>
-          Distance covered: <strong>{{ Math.floor(score) }}</strong> meters
+          {{ $t("game.distanceCovered") }}: <strong>{{ Math.floor(score) }}</strong> {{ $t("game.meters") }}
         </p>
         <p class="final-speed">
-          Top Speed: <strong>{{ maxSpeed.toFixed(1) }} km/h</strong>
+          {{ $t("game.topSpeed") }}: <strong>{{ maxSpeed.toFixed(1) }} km/h</strong>
         </p>
 
         <div class="overlay-actions">
           <button class="btn-primary" @click="startGame">
-            <i class="mdi mdi-restart"></i> Try Again
+            <i class="mdi mdi-restart"></i> {{ $t("game.tryAgain") }}
           </button>
           <button class="btn-secondary" @click="exitToCustomize">
-            <i class="mdi mdi-account-edit"></i> Edit Rider
+            <i class="mdi mdi-account-edit"></i> {{ $t("game.editRider") }}
           </button>
         </div>
       </div>

@@ -1,28 +1,26 @@
 <template>
   <div class="danger-zone">
-    <h3>Danger Zone</h3>
+    <h3>{{ $t("deleteAccount.dangerZone") }}</h3>
     <p class="warning-text">
-      Deleting your account is permanent. All your activities, records, and
-      custom records will be lost forever.
+      {{ $t("deleteAccount.warning") }}
     </p>
 
     <button class="delete-btn" @click="showConfirmDialog = true">
       <v-icon icon="mdi-account-remove-outline" size="18" />
-      Delete my account
+      {{ $t("deleteAccount.button") }}
     </button>
 
     <v-dialog v-model="showConfirmDialog" max-width="420">
       <v-card>
-        <v-card-title>Delete your account permanently?</v-card-title>
+        <v-card-title>{{ $t("deleteAccount.title") }}</v-card-title>
         <v-card-text>
           <p>
-            This will permanently delete your account, all your activity data,
-            personal records, and custom records.
-            <strong>This cannot be undone.</strong>
+            {{ $t("deleteAccount.text") }}
+            <strong>{{ $t("common.cannotUndo") }}</strong>
           </p>
 
           <label class="confirm-input-label">
-            Type <strong>DELETE</strong> to confirm
+            {{ $t("deleteAccount.typeDelete") }} <strong>DELETE</strong>
             <input
               v-model="confirmText"
               type="text"
@@ -35,13 +33,13 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer />
-          <v-btn variant="text" @click="closeDialog">Cancel</v-btn>
+          <v-btn variant="text" @click="closeDialog">{{ $t("common.cancel") }}</v-btn>
           <v-btn
             color="error"
             :disabled="confirmText !== 'DELETE' || loading"
             @click="performDelete"
           >
-            {{ loading ? "Deleting..." : "Delete permanently" }}
+            {{ loading ? $t("deleteAccount.deleting") : $t("deleteAccount.permanently") }}
           </v-btn>
         </v-card-actions>
       </v-card>

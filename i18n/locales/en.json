@@ -191,6 +191,27 @@
       }
     ]
   },
+  "common": {
+    "loading": "Loading...", "saving": "Saving...", "save": "Save", "cancel": "Cancel", "delete": "Delete", "create": "Create", "general": "General", "value": "Value", "date": "Date", "name": "Name", "type": "Type", "descriptionOptional": "Description (optional)", "cannotUndo": "This action cannot be undone.", "genericError": "Something went wrong", "saveError": "Something went wrong while saving"
+  },
+  "home": { "tagline": "Track your power. Chase your records.", "aboutUs": "About us" },
+  "login": { "title": "Welcome to Best Ride", "subtitle": "Sign in to track your rides and records", "google": "Continue with Google", "error": "Something went wrong signing in with Google. Please try again." },
+  "shareUpload": { "receiving": "Receiving file..." },
+  "profile": { "title": "My Profile", "personalInfo": "Personal Info", "powerProfile": "Power Profile", "powerZones": "Power Zones", "heartRateZones": "Heart Rate Zones" },
+  "completeProfile": {
+    "consent": { "title": "Before you continue", "intro": "Best Ride needs to process some personal data (weight, FTP, birth date and activity data) to calculate your training metrics and personal records.", "acceptPrefix": "I have read and accept the", "acceptSuffix": "and consent to the processing of my personal data as described.", "continue": "Accept and continue" },
+    "form": { "title": "Complete your profile", "intro": "These details help us calculate your training zones and power profile accurately.", "weight": "Weight (kg)", "threshold": "Anaerobic Threshold (bpm)", "birthDate": "Date of birth", "sex": "Sex", "unspecified": "Prefer not to say", "male": "Male", "female": "Female", "yearlyDistance": "Distance ridden this year so far (km)", "yearlyHours": "Hours ridden this year so far", "finish": "Finish setup" }
+  },
+  "activity": {
+    "title": "Latest Activity", "eyebrow": "View the details of your most recent activity, including stats, records and more. Upload a new activity to see it here.", "upload": "Upload an activity", "notFound": "No activity found yet. Upload one to get started.", "otherInfo": "Other Info",
+    "stats": { "avgSpeed": "Avg Speed", "distance": "Distance", "duration": "Duration", "elevationGain": "Elevation Gain", "avgHeartRate": "Avg Heart Rate", "avgPower": "Avg Power", "normalizedPower": "Normalized Power", "maxSpeed": "Max Speed", "maxCadence": "Max Cadence", "maxHeartRate": "Max Heart Rate", "avgTemperature": "Avg Temperature", "stress": "Activity Stress", "fatigue": "Fatigue/FTP", "energy": "Energy", "calories": "Calories" }
+  },
+  "records": { "title": "My Records", "eyebrow": "Fill in your records manually, or let them be set automatically when you upload an activity.", "newPerformance": "New performance — {metric}", "deleteTitle": "Delete this record?", "categories": { "power": "Power", "heartRate": "Heart Rate", "other": "Other" } },
+  "customRecords": { "title": "Custom Records", "eyebrow": "Create your own records and track up to 3 best performances for each.", "newRecord": "New custom record", "newPerformance": "New performance", "namePlaceholder": "e.g. Stelvio Climb", "customUnit": "Custom unit (max 20 characters)", "unitPlaceholder": "e.g. points, reps", "lowerIsBetter": "Lower value is better (e.g. race times)", "deletePerformance": "Delete this performance?", "deleteRecordText": "All performances for this record will be permanently deleted." },
+  "game": { "customize": "Customize Rider", "jerseyColor": "Jersey Color", "bikeColor": "Bike Frame Color", "helmetColor": "Helmet Color", "start": "START RACE", "boost": "+30% BOOST", "draining": "DRAINING", "slow": "SLOW", "pause": "Pause Game", "swipe": "Swipe", "jump": "Jump", "pauseHint": "'P' to Pause", "paused": "GAME PAUSED", "resume": "Resume", "restart": "Restart Race", "editRider": "Edit Rider", "crash": "CRASH!", "outOfEnergy": "OUT OF ENERGY!", "speedDropped": "Speed dropped to 0 km/h!", "distanceCovered": "Distance covered", "meters": "meters", "topSpeed": "Top Speed", "tryAgain": "Try Again" },
+  "activityComponents": { "laps": { "title": "Laps", "none": "No laps recorded", "time": "Time", "avgCadence": "Avg Cadence" }, "routeMap": "Route Map", "noGps": "No GPS data in this activity", "powerCurve": "Best average power by duration" },
+  "deleteAccount": { "dangerZone": "Danger Zone", "warning": "Deleting your account is permanent. All your activities, records and custom records will be lost forever.", "button": "Delete my account", "title": "Delete your account permanently?", "text": "This will permanently delete your account, all your activity data, personal records and custom records.", "typeDelete": "Type", "deleting": "Deleting...", "permanently": "Delete permanently" },
+  "profileComponents": { "yourFtp": "Your FTP is", "threshold": "Threshold", "loadingPowerProfile": "Loading power profile...", "noData": "No data yet" },
   "privacyPolicy": {
     "title": "Privacy Policy",
     "lastUpdatedPrefix": "Last updated",

@@ -193,6 +193,27 @@
     ]
   },
 
+  "common": {
+    "loading": "Caricamento...", "saving": "Salvataggio...", "save": "Salva", "cancel": "Annulla", "delete": "Elimina", "create": "Crea", "general": "Generale", "value": "Valore", "date": "Data", "name": "Nome", "type": "Tipo", "descriptionOptional": "Descrizione (facoltativa)", "cannotUndo": "Questa azione non può essere annullata.", "genericError": "Qualcosa è andato storto", "saveError": "Si è verificato un errore durante il salvataggio"
+  },
+  "home": { "tagline": "Tieni traccia della tua potenza. Insegui i tuoi record.", "aboutUs": "Chi siamo" },
+  "login": { "title": "Benvenuto su Best Ride", "subtitle": "Accedi per tenere traccia delle tue uscite e dei tuoi record", "google": "Continua con Google", "error": "Si è verificato un errore durante l'accesso con Google. Riprova." },
+  "shareUpload": { "receiving": "Ricezione del file..." },
+  "profile": { "title": "Il mio profilo", "personalInfo": "Informazioni personali", "powerProfile": "Profilo di potenza", "powerZones": "Zone di potenza", "heartRateZones": "Zone di frequenza cardiaca" },
+  "completeProfile": {
+    "consent": { "title": "Prima di continuare", "intro": "Best Ride deve elaborare alcuni dati personali (peso, FTP, data di nascita e dati delle attività) per calcolare le metriche di allenamento e i record personali.", "acceptPrefix": "Ho letto e accetto la", "acceptSuffix": "e acconsento al trattamento dei miei dati personali come descritto.", "continue": "Accetta e continua" },
+    "form": { "title": "Completa il tuo profilo", "intro": "Questi dati ci aiutano a calcolare con precisione le tue zone di allenamento e il profilo di potenza.", "weight": "Peso (kg)", "threshold": "Soglia anaerobica (bpm)", "birthDate": "Data di nascita", "sex": "Sesso", "unspecified": "Preferisco non specificarlo", "male": "Uomo", "female": "Donna", "yearlyDistance": "Distanza percorsa finora quest'anno (km)", "yearlyHours": "Ore pedalate finora quest'anno", "finish": "Completa configurazione" }
+  },
+  "activity": {
+    "title": "Ultima attività", "eyebrow": "Visualizza i dettagli della tua attività più recente, incluse statistiche, record e altro. Carica una nuova attività per vederla qui.", "upload": "Carica un'attività", "notFound": "Non è stata ancora trovata alcuna attività. Caricane una per iniziare.", "otherInfo": "Altre informazioni",
+    "stats": { "avgSpeed": "Velocità media", "distance": "Distanza", "duration": "Durata", "elevationGain": "Dislivello positivo", "avgHeartRate": "Frequenza cardiaca media", "avgPower": "Potenza media", "normalizedPower": "Potenza normalizzata", "maxSpeed": "Velocità massima", "maxCadence": "Cadenza massima", "maxHeartRate": "Frequenza cardiaca massima", "avgTemperature": "Temperatura media", "stress": "Stress dell'attività", "fatigue": "Fatica/FTP", "energy": "Energia", "calories": "Calorie" }
+  },
+  "records": { "title": "I miei record", "eyebrow": "Inserisci manualmente i tuoi record oppure lascia che vengano aggiornati automaticamente quando carichi un'attività.", "newPerformance": "Nuova prestazione — {metric}", "deleteTitle": "Eliminare questo record?", "categories": { "power": "Potenza", "heartRate": "Frequenza cardiaca", "other": "Altro" } },
+  "customRecords": { "title": "Record personalizzati", "eyebrow": "Crea i tuoi record e monitora fino alle 3 migliori prestazioni per ciascuno.", "newRecord": "Nuovo record personalizzato", "newPerformance": "Nuova prestazione", "namePlaceholder": "es. Salita dello Stelvio", "customUnit": "Unità personalizzata (massimo 20 caratteri)", "unitPlaceholder": "es. punti, ripetizioni", "lowerIsBetter": "Un valore più basso è migliore (es. tempi di gara)", "deletePerformance": "Eliminare questa prestazione?", "deleteRecordText": "Tutte le prestazioni di questo record verranno eliminate definitivamente." },
+  "game": { "customize": "Personalizza il ciclista", "jerseyColor": "Colore della maglia", "bikeColor": "Colore del telaio", "helmetColor": "Colore del casco", "start": "INIZIA LA GARA", "boost": "+30% BOOST", "draining": "IN ESAURIMENTO", "slow": "LENTO", "pause": "Metti in pausa", "swipe": "Scorri", "jump": "Salta", "pauseHint": "'P' per la pausa", "paused": "GIOCO IN PAUSA", "resume": "Riprendi", "restart": "Ricomincia la gara", "editRider": "Modifica ciclista", "crash": "CADUTA!", "outOfEnergy": "ENERGIA ESAURITA!", "speedDropped": "La velocità è scesa a 0 km/h!", "distanceCovered": "Distanza percorsa", "meters": "metri", "topSpeed": "Velocità massima", "tryAgain": "Riprova" },
+  "activityComponents": { "laps": { "title": "Giri", "none": "Nessun giro registrato", "time": "Tempo", "avgCadence": "Cadenza media" }, "routeMap": "Mappa del percorso", "noGps": "Nessun dato GPS in questa attività", "powerCurve": "Migliore potenza media per durata" },
+  "deleteAccount": { "dangerZone": "Zona pericolosa", "warning": "L'eliminazione dell'account è permanente. Tutte le attività e tutti i record verranno persi per sempre.", "button": "Elimina il mio account", "title": "Eliminare definitivamente il tuo account?", "text": "Questa operazione eliminerà definitivamente il tuo account, i dati delle attività e tutti i record.", "typeDelete": "Digita", "deleting": "Eliminazione...", "permanently": "Elimina definitivamente" },
+  "profileComponents": { "yourFtp": "La tua FTP è", "threshold": "Soglia", "loadingPowerProfile": "Caricamento del profilo di potenza...", "noData": "Nessun dato disponibile" },
   "privacyPolicy": {
     "title": "Informativa sulla Privacy",
     "lastUpdatedPrefix": "Ultimo aggiornamento",

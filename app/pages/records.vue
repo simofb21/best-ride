@@ -1,15 +1,12 @@
 <template>
   <div class="records-page">
-    <h1>My Records</h1>
-    <p class="eyebrow">
-      Fill in your records manually, or let them be set automatically when you
-      upload an activity.
-    </p>
+    <h1>{{ $t("records.title") }}</h1>
+    <p class="eyebrow">{{ $t("records.eyebrow") }}</p>
 
     <p v-if="errorMessage" class="error-banner">{{ errorMessage }}</p>
 
     <RecordCategorySection
-      title="General"
+      :title="$t('common.general')"
       :metrics="metricsByCategory.general"
       :records="records"
       @save-entry="saveEntry"
@@ -18,7 +15,7 @@
     />
 
     <RecordCategorySection
-      title="Power"
+      :title="$t('records.categories.power')"
       :subcategories="powerSubcategories"
       :records="records"
       @save-entry="saveEntry"
@@ -27,7 +24,7 @@
     />
 
     <RecordCategorySection
-      title="Heart Rate"
+      :title="$t('records.categories.heartRate')"
       :metrics="metricsByCategory.heart_rate"
       :records="records"
       @save-entry="saveEntry"
@@ -36,7 +33,7 @@
     />
 
     <RecordCategorySection
-      title="Other"
+      :title="$t('records.categories.other')"
       :metrics="metricsByCategory.other"
       :records="records"
       @save-entry="saveEntry"
@@ -52,7 +49,7 @@
         >
         <v-card-text class="dialog-form">
           <label>
-            Value ({{
+            {{ $t("common.value") }} ({{
               isTimeUnit(metricUnit(addingMetric))
                 ? "h:m:s"
                 : metricUnit(addingMetric)
@@ -64,18 +61,18 @@
             <input v-else v-model.number="newEntry.value" type="number" />
           </label>
           <label>
-            Date
+            {{ $t("common.date") }}
             <input v-model="newEntry.entryDate" type="date" />
           </label>
           <label>
-            Description (optional)
+            {{ $t("common.descriptionOptional") }}
             <input v-model="newEntry.description" type="text" />
           </label>
         </v-card-text>
         <v-card-actions>
           <v-spacer />
-          <v-btn variant="text" @click="showAddDialog = false">Cancel</v-btn>
-          <v-btn color="primary" @click="submitNewEntry">Save</v-btn>
+          <v-btn variant="text" @click="showAddDialog = false">{{ $t("common.cancel") }}</v-btn>
+          <v-btn color="primary" @click="submitNewEntry">{{ $t("common.save") }}</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -83,12 +80,12 @@
     <!-- Dialog: conferma cancellazione -->
     <v-dialog v-model="showDeleteDialog" max-width="340">
       <v-card>
-        <v-card-title>Delete this record?</v-card-title>
-        <v-card-text>This action cannot be undone.</v-card-text>
+        <v-card-title>{{ $t("records.deleteTitle") }}</v-card-title>
+        <v-card-text>{{ $t("common.cannotUndo") }}</v-card-text>
         <v-card-actions>
           <v-spacer />
-          <v-btn variant="text" @click="showDeleteDialog = false">Cancel</v-btn>
-          <v-btn color="error" @click="performDelete">Delete</v-btn>
+          <v-btn variant="text" @click="showDeleteDialog = false">{{ $t("common.cancel") }}</v-btn>
+          <v-btn color="error" @click="performDelete">{{ $t("common.delete") }}</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

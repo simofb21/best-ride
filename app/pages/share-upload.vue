@@ -1,6 +1,6 @@
 <!-- app/pages/share-upload.vue -->
 <template>
   <div>
-    <p>Receiving file...</p>
+    <p>{{ $t("shareUpload.receiving") }}</p>
   </div>
 </template>

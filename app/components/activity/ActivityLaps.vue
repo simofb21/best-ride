@@ -1,17 +1,17 @@
 <template>
-  <CollapsiblePanel title="Laps" icon="mdi-flag-checkered" full-width>
-    <div v-if="!laps.length" class="no-data">No laps recorded</div>
+  <CollapsiblePanel :title="$t('activityComponents.laps.title')" icon="mdi-flag-checkered" full-width>
+    <div v-if="!laps.length" class="no-data">{{ $t("activityComponents.laps.none") }}</div>
     <div v-else class="table-scroll">
       <table class="laps-table">
         <thead>
           <tr>
             <th>#</th>
-            <th>Time</th>
-            <th>Distance</th>
-            <th>Avg Speed</th>
-            <th>Avg Power</th>
-            <th>Avg Cadence</th>
-            <th>Avg Heart Rate</th>
+            <th>{{ $t("activityComponents.laps.time") }}</th>
+            <th>{{ $t("activity.stats.distance") }}</th>
+            <th>{{ $t("activity.stats.avgSpeed") }}</th>
+            <th>{{ $t("activity.stats.avgPower") }}</th>
+            <th>{{ $t("activityComponents.laps.avgCadence") }}</th>
+            <th>{{ $t("activity.stats.avgHeartRate") }}</th>
           </tr>
         </thead>
         <tbody>

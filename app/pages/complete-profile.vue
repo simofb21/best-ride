@@ -2,41 +2,34 @@
   <div class="complete-profile-page">
     <div class="card">
       <template v-if="!consentGiven">
-        <h1>Before you continue</h1>
-        <p class="intro">
-          Best Ride needs to process some personal data (weight, FTP, birth
-          date, activity data) to calculate your training metrics and personal
-          records.
-        </p>
+        <h1>{{ $t("completeProfile.consent.title") }}</h1>
+        <p class="intro">{{ $t("completeProfile.consent.intro") }}</p>
 
         <label class="consent-row">
           <input type="checkbox" v-model="privacyAccepted" />
           <span>
-            I have read and accept the
+            {{ $t("completeProfile.consent.acceptPrefix") }}
             <NuxtLink to="/privacy-policy" target="_blank"
-              >Privacy Policy</NuxtLink
+              >{{ $t("navbar.privacyPolicy") }}</NuxtLink
             >
-            and consent to the processing of my personal data as described.
+            {{ $t("completeProfile.consent.acceptSuffix") }}
           </span>
         </label>
 
         <p v-if="error" class="error">{{ error }}</p>
 
         <button :disabled="!privacyAccepted || loading" @click="acceptPrivacy">
-          {{ loading ? "Saving..." : "Accept and continue" }}
+          {{ loading ? $t("common.saving") : $t("completeProfile.consent.continue") }}
         </button>
       </template>
 
       <template v-else>
-        <h1>Complete your profile</h1>
-        <p class="intro">
-          These details help us calculate your training zones and power profile
-          accurately.
-        </p>
+        <h1>{{ $t("completeProfile.form.title") }}</h1>
+        <p class="intro">{{ $t("completeProfile.form.intro") }}</p>
 
         <form @submit.prevent="saveProfile">
           <label>
-            Weight (kg)
+            {{ $t("completeProfile.form.weight") }}
             <input v-model.number="profile.weightKg" type="number" step="0.1" />
           </label>
           <label>
@@ -44,23 +37,23 @@
             <input v-model.number="profile.ftp" type="number" />
           </label>
           <label>
-            Anaerobic Threshold (bpm)
+            {{ $t("completeProfile.form.threshold") }}
             <input v-model.number="profile.anaerobicThreshold" type="number" />
           </label>
           <label>
-            Date of birth
+            {{ $t("completeProfile.form.birthDate") }}
             <input v-model="profile.dateOfBirth" type="date" />
           </label>
           <label>
-            Sex
+            {{ $t("completeProfile.form.sex") }}
             <select v-model="profile.sex">
-              <option :value="null">Prefer not to say</option>
-              <option value="M">Male</option>
-              <option value="F">Female</option>
+              <option :value="null">{{ $t("completeProfile.form.unspecified") }}</option>
+              <option value="M">{{ $t("completeProfile.form.male") }}</option>
+              <option value="F">{{ $t("completeProfile.form.female") }}</option>
             </select>
           </label>
           <label>
-            Distance ridden this year so far (km)
+            {{ $t("completeProfile.form.yearlyDistance") }}
             <input
               v-model.number="profile.yearlyDistanceKm"
               type="number"
@@ -68,7 +61,7 @@
             />
           </label>
           <label>
-            Hours ridden this year so far
+            {{ $t("completeProfile.form.yearlyHours") }}
             <input
               v-model.number="profile.yearlyHours"
               type="number"
@@ -78,7 +71,7 @@
           <p v-if="error" class="error">{{ error }}</p>
 
           <button type="submit" :disabled="loading">
-            {{ loading ? "Saving..." : "Finish setup" }}
+            {{ loading ? $t("common.saving") : $t("completeProfile.form.finish") }}
           </button>
         </form>
       </template>
@@ -93,6 +86,7 @@ const consentGiven = ref(false);
 const privacyAccepted = ref(false);
 const loading = ref(false);
 const error = ref("");
+const { t } = useI18n();
 import { onMounted } from "vue";
 
 onMounted(() => {
@@ -123,7 +117,7 @@ async function acceptPrivacy() {
     await $fetch("/api/profile/accept-privacy", { method: "POST" });
     consentGiven.value = true;
   } catch (err: any) {
-    error.value = err?.data?.message || "Something went wrong";
+    error.value = err?.data?.message || t("common.genericError");
   } finally {
     loading.value = false;
   }
@@ -140,7 +134,7 @@ async function saveProfile() {
     });
     await navigateTo("/");
   } catch (err: any) {
-    error.value = err?.data?.message || "Something went wrong while saving";
+    error.value = err?.data?.message || t("common.saveError");
   } finally {
     loading.value = false;
   }

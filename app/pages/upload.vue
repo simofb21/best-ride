@@ -143,6 +143,7 @@ const isDragOver = ref(false);
 const fileInput = ref<HTMLInputElement | null>(null);
 
 const MAX_SIZE_MB = 25;
+const { t } = useI18n();
 
 function setFile(file: File | null) {
   error.value = "";
@@ -154,12 +155,12 @@ function setFile(file: File | null) {
 
   const name = file.name.toLowerCase();
   if (!name.endsWith(".fit") && !name.endsWith(".zip")) {
-    error.value = "Invalid file type. Only .fit and .zip files are accepted.";
+    error.value = t("upload.errors.invalidType");
     return;
   }
 
   if (file.size > MAX_SIZE_MB * 1024 * 1024) {
-    error.value = `File too large. Maximum allowed size is ${MAX_SIZE_MB}MB.`;
+    error.value = t("upload.errors.tooLarge", { size: MAX_SIZE_MB });
     return;
   }
 
@@ -204,7 +205,7 @@ async function uploadFile() {
     });
   } catch (err: any) {
     error.value =
-      err?.data?.message || "Something went wrong while analyzing the file";
+      err?.data?.message || t("upload.errors.analysis");
   } finally {
     loading.value = false;
   }
@@ -223,7 +224,7 @@ async function confirmSaveActivity() {
     });
     await navigateTo("/activity-info");
   } catch (err: any) {
-    error.value = err?.data?.message || "Something went wrong while saving";
+    error.value = err?.data?.message || t("common.saveError");
   } finally {
     confirming.value = false;
   }

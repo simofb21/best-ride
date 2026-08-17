@@ -1,16 +1,14 @@
 <!-- app/pages/records-custom.vue -->
 <template>
   <div class="custom-records-page">
-    <h1>Custom Records</h1>
-    <p class="eyebrow">
-      Create your own records and track up to 3 best performances for each.
-    </p>
+    <h1>{{ $t("customRecords.title") }}</h1>
+    <p class="eyebrow">{{ $t("customRecords.eyebrow") }}</p>
 
     <p v-if="errorMessage" class="error-banner">{{ errorMessage }}</p>
 
     <button class="create-btn" @click="openCreateForm">
       <v-icon icon="mdi-plus" size="16" />
-      New custom record
+      {{ $t("customRecords.newRecord") }}
     </button>
 
     <div class="custom-records-grid">
@@ -33,19 +31,19 @@
     <!-- Dialog: crea nuovo record custom -->
     <v-dialog v-model="showCreateDialog" max-width="360">
       <v-card>
-        <v-card-title>New custom record</v-card-title>
+        <v-card-title>{{ $t("customRecords.newRecord") }}</v-card-title>
         <v-card-text class="dialog-form">
           <label>
-            Name
+            {{ $t("common.name") }}
             <input
               v-model="newRecord.label"
               type="text"
-              placeholder="e.g. Stelvio Climb"
+              :placeholder="$t('customRecords.namePlaceholder')"
             />
           </label>
 
           <label>
-            Type
+            {{ $t("common.type") }}
             <select v-model="newRecord.unitType" @change="onUnitTypeChange">
               <option
                 v-for="opt in UNIT_TYPE_OPTIONS"
@@ -58,24 +56,24 @@
           </label>
 
           <label v-if="newRecord.unitType === 'other'">
-            Custom unit (max 20 characters)
+            {{ $t("customRecords.customUnit") }}
             <input
               v-model="newRecord.customUnit"
               type="text"
               maxlength="20"
-              placeholder="e.g. points, reps"
+              :placeholder="$t('customRecords.unitPlaceholder')"
             />
           </label>
 
           <label class="toggle-label">
             <input type="checkbox" v-model="newRecord.lowerIsBetter" />
-            Lower value is better (e.g. race times)
+            {{ $t("customRecords.lowerIsBetter") }}
           </label>
         </v-card-text>
         <v-card-actions>
           <v-spacer />
-          <v-btn variant="text" @click="showCreateDialog = false">Cancel</v-btn>
-          <v-btn color="primary" @click="submitNewRecord">Create</v-btn>
+          <v-btn variant="text" @click="showCreateDialog = false">{{ $t("common.cancel") }}</v-btn>
+          <v-btn color="primary" @click="submitNewRecord">{{ $t("common.create") }}</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -83,10 +81,10 @@
     <!-- Dialog: aggiungi nuova performance a un record esistente -->
     <v-dialog v-model="showAddEntryDialog" max-width="360">
       <v-card>
-        <v-card-title>New performance</v-card-title>
+        <v-card-title>{{ $t("customRecords.newPerformance") }}</v-card-title>
         <v-card-text class="dialog-form">
           <label>
-            Value
+            {{ $t("common.value") }}
             <TimeInput
               v-if="isTimeUnit(addingRecordUnit)"
               v-model="newEntry.value"
@@ -94,20 +92,20 @@
             <input v-else v-model.number="newEntry.value" type="number" />
           </label>
           <label>
-            Date
+            {{ $t("common.date") }}
             <input v-model="newEntry.date" type="date" />
           </label>
           <label>
-            Description (optional)
+            {{ $t("common.descriptionOptional") }}
             <input v-model="newEntry.description" type="text" />
           </label>
         </v-card-text>
         <v-card-actions>
           <v-spacer />
           <v-btn variant="text" @click="showAddEntryDialog = false"
-            >Cancel</v-btn
+            >{{ $t("common.cancel") }}</v-btn
           >
-          <v-btn color="primary" @click="submitNewEntry">Save</v-btn>
+          <v-btn color="primary" @click="submitNewEntry">{{ $t("common.save") }}</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -115,14 +113,14 @@
     <!-- Dialog: conferma cancellazione entry -->
     <v-dialog v-model="showDeleteEntryDialog" max-width="340">
       <v-card>
-        <v-card-title>Delete this performance?</v-card-title>
-        <v-card-text>This action cannot be undone.</v-card-text>
+        <v-card-title>{{ $t("customRecords.deletePerformance") }}</v-card-title>
+        <v-card-text>{{ $t("common.cannotUndo") }}</v-card-text>
         <v-card-actions>
           <v-spacer />
           <v-btn variant="text" @click="showDeleteEntryDialog = false"
-            >Cancel</v-btn
+            >{{ $t("common.cancel") }}</v-btn
           >
-          <v-btn color="error" @click="performDeleteEntry">Delete</v-btn>
+          <v-btn color="error" @click="performDeleteEntry">{{ $t("common.delete") }}</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -130,17 +128,16 @@
     <!-- Dialog: conferma cancellazione intero record -->
     <v-dialog v-model="showDeleteRecordDialog" max-width="340">
       <v-card>
-        <v-card-title>Delete this record?</v-card-title>
+        <v-card-title>{{ $t("records.deleteTitle") }}</v-card-title>
         <v-card-text
-          >All performances for this record will be permanently
-          deleted.</v-card-text
+          >{{ $t("customRecords.deleteRecordText") }}</v-card-text
         >
         <v-card-actions>
           <v-spacer />
           <v-btn variant="text" @click="showDeleteRecordDialog = false"
-            >Cancel</v-btn
+            >{{ $t("common.cancel") }}</v-btn
           >
-          <v-btn color="error" @click="performDeleteRecord">Delete</v-btn>
+          <v-btn color="error" @click="performDeleteRecord">{{ $t("common.delete") }}</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
