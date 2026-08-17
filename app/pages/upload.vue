@@ -127,11 +127,11 @@
 
 <script setup lang="ts">
 import ActivityRecordsPanel from "~/components/activity/ActivityRecordsPanel.vue";
-import { onMounted } from "vue";
 
 onMounted(() => {
   document.title = "Upload .fit File - Best Ride";
 });
+
 definePageMeta({ middleware: "auth" });
 
 const selectedFile = ref<File | null>(null);
@@ -141,6 +141,31 @@ const confirming = ref(false);
 const error = ref("");
 const isDragOver = ref(false);
 const fileInput = ref<HTMLInputElement | null>(null);
+
+const MAX_SIZE_MB = 25;
+
+function setFile(file: File | null) {
+  error.value = "";
+
+  if (!file) {
+    selectedFile.value = null;
+    return;
+  }
+
+  const name = file.name.toLowerCase();
+  if (!name.endsWith(".fit") && !name.endsWith(".zip")) {
+    error.value = "Invalid file type. Only .fit and .zip files are accepted.";
+    return;
+  }
+
+  if (file.size > MAX_SIZE_MB * 1024 * 1024) {
+    error.value = `File too large. Maximum allowed size is ${MAX_SIZE_MB}MB.`;
+    return;
+  }
+
+  selectedFile.value = file;
+  result.value = null;
+}
 
 function triggerFileInput() {
   fileInput.value?.click();
@@ -156,16 +181,6 @@ function onDrop(e: DragEvent) {
   setFile(e.dataTransfer?.files?.[0] ?? null);
 }
 
-function setFile(file: File | null) {
-  if (file && !file.name.toLowerCase().endsWith(".fit")) {
-    error.value = "File must have a .fit extension";
-    return;
-  }
-  selectedFile.value = file;
-  result.value = null;
-  error.value = "";
-}
-
 function resetUpload() {
   selectedFile.value = null;
   result.value = null;
@@ -175,6 +190,7 @@ function resetUpload() {
 
 async function uploadFile() {
   if (!selectedFile.value) return;
+
   loading.value = true;
   error.value = "";
 
@@ -196,6 +212,7 @@ async function uploadFile() {
 
 async function confirmSaveActivity() {
   if (!result.value) return;
+
   confirming.value = true;
   error.value = "";
 

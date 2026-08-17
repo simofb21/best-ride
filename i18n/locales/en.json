@@ -45,7 +45,7 @@
     "steps": {
       "upload": {
         "title": "1. Upload",
-        "description": "Drop your .fit file from any bike computer or app"
+        "description": "Drop your .fit file from any bike computer or app, or the zip file that contains it."
       },
       "analyze": {
         "title": "2. Analyze",
@@ -91,7 +91,7 @@
   },
   "upload": {
     "title": "Activity Analysis",
-    "eyebrow": "Upload a .fit file",
+    "eyebrow": "Upload a .fit file or the .zip file that contains the .fit file",
 
     "dropzone": {
       "dropFile": "Drop your .fit file here, or click to browse"

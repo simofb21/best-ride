@@ -91,7 +91,7 @@
   },
   "upload": {
     "title": "Analisi dei dati",
-    "eyebrow": "Carica un file .fit",
+    "eyebrow": "Carica un file .fit o un file .zip contente il file .fit",
 
     "dropzone": {
       "dropFile": "Trascina il file. Oppure clicca per cercarlo nel tuo computer."
