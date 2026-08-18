@@ -8,42 +8,48 @@ datasource db {
 }
 
 model User {
-  id                 Int       @id @default(autoincrement())
-  email              String    @unique
-  firstName          String
-  lastName           String
-  weightKg           Decimal?  @db.Decimal(5, 2)
-  ftp                Int?
-  anaerobicThreshold Int?
-  yearlyDistanceKm   Decimal?  @db.Decimal(8, 2)
-  yearlyHours        Decimal?  @db.Decimal(6, 1)
-  sex                String?   @db.VarChar(1)
-  dateOfBirth        DateTime? @db.Date
-  privacyAcceptedAt  DateTime?
-  createdAt          DateTime  @default(now())
-  updatedAt          DateTime  @updatedAt
+  id                           Int       @id @default(autoincrement())
+  email                        String    @unique
+  firstName                    String
+  lastName                     String
+  weightKg                     Decimal?  @db.Decimal(5, 2)
+  ftp                          Int?
+  anaerobicThreshold           Int?
+  yearlyDistanceKm             Decimal?  @db.Decimal(8, 2)
+  yearlyHours                  Decimal?  @db.Decimal(6, 1)
+  trainingStress               Int       @default(0)
+  trainingStressActivityCount  Int       @default(0)
+  trainingStressStartedAt      DateTime?
+  trainingStressLastActivityAt DateTime?
+  sex                          String?   @db.VarChar(1)
+  dateOfBirth                  DateTime? @db.Date
+  privacyAcceptedAt            DateTime?
+  createdAt                    DateTime  @default(now())
+  updatedAt                    DateTime  @updatedAt
 
-  accounts      Account[]
-  lastActivity  LastActivity?
-  customRecords CustomRecord[]
+  accounts            Account[]
+  lastActivity        LastActivity?
+  pendingActivity     PendingActivity?
+  processedActivities ProcessedActivity[]
+  customRecords       CustomRecord[]
 
-  recordPeakPower   RecordPeakPower[]
-  record3s          Record3s[]
-  record5s          Record5s[]
-  record10s         Record10s[]
-  record20s         Record20s[]
-  record30s         Record30s[]
-  record1min        Record1min[]
-  record2min        Record2min[]
-  record3min        Record3min[]
-  record5min        Record5min[]
-  record8min        Record8min[]
-  record10min       Record10min[]
-  record12min       Record12min[]
-  record15min       Record15min[]
-  record20min       Record20min[]
-  record30min       Record30min[]
-  record60min       Record60min[]
+  recordPeakPower RecordPeakPower[]
+  record3s        Record3s[]
+  record5s        Record5s[]
+  record10s       Record10s[]
+  record20s       Record20s[]
+  record30s       Record30s[]
+  record1min      Record1min[]
+  record2min      Record2min[]
+  record3min      Record3min[]
+  record5min      Record5min[]
+  record8min      Record8min[]
+  record10min     Record10min[]
+  record12min     Record12min[]
+  record15min     Record15min[]
+  record20min     Record20min[]
+  record30min     Record30min[]
+  record60min     Record60min[]
 
   recordDistance      RecordDistance[]
   recordElevationGain RecordElevationGain[]
@@ -58,10 +64,11 @@ model User {
 
   @@map("users")
 }
+
 model Account {
   id         Int      @id @default(autoincrement())
   userId     Int
-  provider   String   // "google", in futuro "apple", ecc.
+  provider   String // "google", in futuro "apple", ecc.
   providerId String
   createdAt  DateTime @default(now())
 
@@ -70,18 +77,50 @@ model Account {
   @@unique([provider, providerId])
   @@map("accounts")
 }
+
 model LastActivity {
-  id                     Int      @id @default(autoincrement())
-  userId                 Int      @unique
+  id                     Int       @id @default(autoincrement())
+  userId                 Int       @unique
   filename               String
-  uploadedAt             DateTime @default(now())
+  uploadedAt             DateTime  @default(now())
   ftpUsed                Int
   anaerobicThresholdUsed Int
   data                   Json
+  sourceId               String?
+  aiAnalysis             Json?
+  aiAnalysisHash         String?
+  aiAnalysisStatus       String?
+  aiAnalysisModel        String?
+  aiAnalysisGeneratedAt  DateTime?
+  aiAnalysisStartedAt    DateTime?
+  aiAnalysisAttemptCount Int       @default(0)
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("last_activity")
+}
+
+model PendingActivity {
+  userId    Int      @id
+  sourceId  String
+  filename  String
+  data      Json
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("pending_activities")
+}
+
+model ProcessedActivity {
+  userId      Int
+  sourceId    String
+  processedAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, sourceId])
+  @@map("processed_activities")
 }
 
 model CustomRecord {

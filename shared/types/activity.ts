@@ -5,6 +5,7 @@ export interface ActivitySummary {
   average_speed: number;
   max_speed: number;
   average_cadence: number;
+  max_cadence: number;
   average_heartrate: number;
   max_heartrate: number;
   average_watts: number;

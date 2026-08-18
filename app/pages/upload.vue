@@ -128,10 +128,6 @@
 <script setup lang="ts">
 import ActivityRecordsPanel from "~/components/activity/ActivityRecordsPanel.vue";
 
-onMounted(() => {
-  document.title = "Upload .fit File - Best Ride";
-});
-
 definePageMeta({ middleware: "auth" });
 
 const selectedFile = ref<File | null>(null);
@@ -144,6 +140,7 @@ const fileInput = ref<HTMLInputElement | null>(null);
 
 const MAX_SIZE_MB = 25;
 const { t } = useI18n();
+useHead(() => ({ title: `${t("upload.title")} - Best Ride` }));
 
 function setFile(file: File | null) {
   error.value = "";
@@ -183,6 +180,16 @@ function onDrop(e: DragEvent) {
 }
 
 function resetUpload() {
+  const analysisId = result.value?.analysisId;
+  if (typeof analysisId === "string") {
+    void $fetch("/api/activities/pending", {
+      method: "DELETE",
+      body: { analysisId },
+    }).catch(() => {
+      // La prossima analisi sovrascrive comunque l'unico pending dell'utente.
+    });
+  }
+
   selectedFile.value = null;
   result.value = null;
   error.value = "";
@@ -220,11 +227,14 @@ async function confirmSaveActivity() {
   try {
     await $fetch("/api/activities/confirm", {
       method: "POST",
-      body: result.value,
+      body: { analysisId: result.value.analysisId },
     });
     await navigateTo("/activity-info");
   } catch (err: any) {
-    error.value = err?.data?.message || t("common.saveError");
+    error.value =
+      err?.statusCode === 409 || err?.response?.status === 409
+        ? t("upload.errors.confirmationConflict")
+        : t("common.saveError");
   } finally {
     confirming.value = false;
   }

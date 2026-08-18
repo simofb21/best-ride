@@ -180,6 +180,10 @@ export interface ProfileData {
   yearlyHours: number | null;
   sex: string | null;
   dateOfBirth: string | null;
+  trainingStress: number;
+  trainingStressActivityCount: number;
+  trainingStressStartedAt: string | null;
+  trainingStressLastActivityAt: string | null;
 }
 
 const props = defineProps<{

@@ -1,4 +1,5 @@
 // server/utils/recordModels.ts
+import type { Prisma } from "../../generated/prisma/client";
 import { prisma } from "./db"; // stessa cartella, percorso relativo corretto
 
 export const METRIC_MODEL_MAP: Record<string, string> = {
@@ -31,7 +32,10 @@ export const METRIC_MODEL_MAP: Record<string, string> = {
   hr_1h: "recordHr1h",
 };
 
-export function getModel(metricKey: string) {
+export function getModel(
+  metricKey: string,
+  client: Prisma.TransactionClient = prisma,
+) {
   const modelName = METRIC_MODEL_MAP[metricKey];
   if (!modelName) {
     throw createError({
@@ -39,5 +43,5 @@ export function getModel(metricKey: string) {
       message: `Unknown metric: ${metricKey}`,
     });
   }
-  return (prisma as any)[modelName];
+  return (client as any)[modelName];
 }

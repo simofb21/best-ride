@@ -10,6 +10,13 @@
       <div class="desktop-layout">
         <!-- 1. Box Personal Info espanso su tutta la larghezza -->
         <PersonalInfoCard :profile="profile" @update="handleProfileSave" />
+        <TrainingStressCard
+          :training-stress="profile.trainingStress"
+          :activity-count="profile.trainingStressActivityCount"
+          :started-at="profile.trainingStressStartedAt"
+          :last-activity-at="profile.trainingStressLastActivityAt"
+          @reset="handleTrainingStressReset"
+        />
         <DeleteSection />
         <!-- 2. Box W/kg -->
         <FtpCard :ftp="profile.ftp" :weight-kg="profile.weightKg" />
@@ -46,6 +53,13 @@
             <PersonalInfoCard :profile="profile" @update="handleProfileSave" />
           </div>
         </div>
+        <TrainingStressCard
+          :training-stress="profile.trainingStress"
+          :activity-count="profile.trainingStressActivityCount"
+          :started-at="profile.trainingStressStartedAt"
+          :last-activity-at="profile.trainingStressLastActivityAt"
+          @reset="handleTrainingStressReset"
+        />
         <DeleteSection />
         <!-- Rettangolo 2: Power Profile (Include FTP Card + Radar + Testo) -->
         <div class="mobile-accordion">
@@ -124,10 +138,10 @@ import PowerProfileRadar from "~/components/profile/PowerProfileRadar.vue";
 import FtpZones from "~/components/profile/FtpZones.vue";
 import ThresholdZones from "~/components/profile/ThresholdZones.vue";
 import DeleteSection from "~/components/profile/DeleteSection.vue";
+import TrainingStressCard from "~/components/profile/TrainingStressCard.vue";
 definePageMeta({ middleware: "auth" });
-onMounted(() => {
-  document.title = "My Profile - Best Ride";
-});
+const { t } = useI18n();
+useHead(() => ({ title: `${t("profile.title")} - Best Ride` }));
 const profile = ref<ProfileData | null>(null);
 const loading = ref(true);
 const errorMessage = ref("");
@@ -152,14 +166,29 @@ onMounted(async () => {
 async function handleProfileSave(draftData: Partial<ProfileData>) {
   errorMessage.value = "";
   try {
-    profile.value = await $fetch("/api/profile", {
+    const updated = await $fetch<ProfileData>("/api/profile", {
       method: "PATCH",
       body: draftData,
     });
+    profile.value = profile.value
+      ? { ...profile.value, ...updated }
+      : updated;
   } catch (err: any) {
     errorMessage.value =
       err?.data?.message || "Something went wrong while saving";
   }
+}
+
+function handleTrainingStressReset(
+  reset: Pick<
+    ProfileData,
+    | "trainingStress"
+    | "trainingStressActivityCount"
+    | "trainingStressStartedAt"
+    | "trainingStressLastActivityAt"
+  >,
+) {
+  if (profile.value) profile.value = { ...profile.value, ...reset };
 }
 </script>
 

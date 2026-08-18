@@ -1,12 +1,30 @@
+import { createHash } from "node:crypto";
 import { prisma } from "../utils/db";
 import { computeTrainingLoad } from "../utils/trainingLoad";
 import { computeHeartRateCurve } from "../utils/heartRateCurve";
-import { extractGpsTrack } from "../utils/gpsTrack";
+import { encodeGpsTrack, extractGpsTrack } from "../utils/gpsTrack";
 import { extractLaps } from "../utils/laps";
 import {
   computePowerZoneTime,
   computeHeartRateZoneTime,
 } from "../utils/zoneTime";
+
+const DEFAULT_FTP = 250;
+const DEFAULT_ANAEROBIC_THRESHOLD = 160;
+
+function ageInYears(dateOfBirth: Date | null): number | null {
+  if (!dateOfBirth || Number.isNaN(dateOfBirth.getTime())) return null;
+
+  const today = new Date();
+  let age = today.getUTCFullYear() - dateOfBirth.getUTCFullYear();
+  const birthdayPassed =
+    today.getUTCMonth() > dateOfBirth.getUTCMonth() ||
+    (today.getUTCMonth() === dateOfBirth.getUTCMonth() &&
+      today.getUTCDate() >= dateOfBirth.getUTCDate());
+  if (!birthdayPassed) age--;
+
+  return age >= 10 && age <= 100 ? age : null;
+}
 
 export default defineEventHandler(async (event) => {
   const session = await requireUserSession(event);
@@ -79,6 +97,10 @@ export default defineEventHandler(async (event) => {
     });
   }
 
+  // Hash dei byte FIT estratti: lo stesso allenamento mantiene lo stesso ID
+  // anche se viene caricato nuovamente o racchiuso in uno ZIP diverso.
+  const sourceId = createHash("sha256").update(fitBuffer).digest("hex");
+
   // Da questo punto in poi usa fitBuffer invece di fitFile.data
   const data = await parseFitFile(fitBuffer as any).catch((err: any) => {
     console.error("FIT parsing error:", err);
@@ -100,8 +122,15 @@ export default defineEventHandler(async (event) => {
 
   // "user" va recuperato PRIMA di usarlo in qualunque calcolo successivo
   const user = await prisma.user.findUnique({ where: { id: userId } });
-  const ftp = user?.ftp ?? 250;
-  const anaerobicThreshold = user?.anaerobicThreshold ?? 160;
+  if (!user) {
+    throw createError({ statusCode: 404, message: "User not found" });
+  }
+
+  const ftpFallback = user.ftp == null;
+  const anaerobicThresholdFallback = user.anaerobicThreshold == null;
+  const ftp = user.ftp ?? DEFAULT_FTP;
+  const anaerobicThreshold =
+    user.anaerobicThreshold ?? DEFAULT_ANAEROBIC_THRESHOLD;
 
   const training_load = computeTrainingLoad({
     normalizedPower,
@@ -115,29 +144,33 @@ export default defineEventHandler(async (event) => {
     anaerobicThreshold,
   );
 
+  const shortIntervals = power_records[0]!.short_intervals;
+  const middleIntervals = power_records[1]!.middle_intervals;
+  const longIntervals = power_records[2]!.long_intervals;
+
   const candidateValues: Record<string, number> = {
-    peak_power: power_records[0].short_intervals.peak_power,
-    "3s_power": power_records[0].short_intervals["3s_power"],
-    "5s_power": power_records[0].short_intervals["5s_power"],
-    "10s_power": power_records[0].short_intervals["10s_power"],
-    "20s_power": power_records[0].short_intervals["20s_power"],
-    "30s_power": power_records[0].short_intervals["30s_power"],
-    "1min_power": power_records[0].short_intervals["1min_power"],
-    "2min_power": power_records[0].short_intervals["2min_power"],
-    "3min_power": power_records[0].short_intervals["3min_power"],
-    "5min_power": power_records[1].middle_intervals["5min_power"],
-    "8min_power": power_records[1].middle_intervals["8min_power"],
-    "10min_power": power_records[1].middle_intervals["10min_power"],
-    "12min_power": power_records[1].middle_intervals["12min_power"],
-    "15min_power": power_records[2].long_intervals["15min_power"],
-    "20min_power": power_records[2].long_intervals["20min_power"],
-    "30min_power": power_records[2].long_intervals["30min_power"],
-    "60min_power": power_records[2].long_intervals["60min_power"],
+    peak_power: shortIntervals.peak_power,
+    "3s_power": shortIntervals["3s_power"],
+    "5s_power": shortIntervals["5s_power"],
+    "10s_power": shortIntervals["10s_power"],
+    "20s_power": shortIntervals["20s_power"],
+    "30s_power": shortIntervals["30s_power"],
+    "1min_power": shortIntervals["1min_power"],
+    "2min_power": shortIntervals["2min_power"],
+    "3min_power": shortIntervals["3min_power"],
+    "5min_power": middleIntervals["5min_power"],
+    "8min_power": middleIntervals["8min_power"],
+    "10min_power": middleIntervals["10min_power"],
+    "12min_power": middleIntervals["12min_power"],
+    "15min_power": longIntervals["15min_power"],
+    "20min_power": longIntervals["20min_power"],
+    "30min_power": longIntervals["30min_power"],
+    "60min_power": longIntervals["60min_power"],
     distance: Number(activity.distance.toFixed(2)),
     elevation_gain: Math.round(activity.elevation_gain),
     duration: activity.duration,
     kilojoules: activity.kilojoules,
-    max_cadence: activity.average_cadence, // TODO: vero max_cadence quando disponibile
+    max_cadence: activity.max_cadence,
     max_speed: Number(activity.max_speed.toFixed(1)),
     max_heartrate: activity.max_heartrate,
     hr_5min: heartRateCurve.hr_5min,
@@ -197,8 +230,63 @@ export default defineEventHandler(async (event) => {
       currentBest,
     });
   }
+  const activityWithNormalizedPower = {
+    ...activity,
+    normalized_power: normalizedPower,
+  };
+  const filenameForStorage = fitFile.filename?.trim() || "activity.fit";
+  const lastActivityData = {
+    activity: activityWithNormalizedPower,
+    power_records,
+    training_load,
+    recordChecks,
+    gpsTrackPolyline: encodeGpsTrack(gpsTrack),
+    laps,
+    powerZoneTime,
+    heartRateZoneTime,
+    analysis_profile: {
+      ageYears: ageInYears(user.dateOfBirth),
+      sex: user.sex === "M" || user.sex === "F" ? user.sex : null,
+      weightKg: user.weightKg == null ? null : Number(user.weightKg),
+    },
+    calculation_context: {
+      ftpUsed: ftp,
+      anaerobicThresholdUsed: anaerobicThreshold,
+      ftpFallback,
+      anaerobicThresholdFallback,
+    },
+  };
+
+  // La conferma userà esclusivamente questo snapshot server-side. Il roundtrip
+  // JSON normalizza Date e Decimal in valori persistibili e immutabili.
+  const pendingData = JSON.parse(
+    JSON.stringify({
+      schemaVersion: 1,
+      ftpUsed: ftp,
+      anaerobicThresholdUsed: anaerobicThreshold,
+      lastActivityData,
+    }),
+  );
+
+  await prisma.pendingActivity.upsert({
+    where: { userId },
+    update: {
+      sourceId,
+      filename: filenameForStorage,
+      data: pendingData,
+      createdAt: new Date(),
+    },
+    create: {
+      userId,
+      sourceId,
+      filename: filenameForStorage,
+      data: pendingData,
+    },
+  });
+
   return {
-    activity: { ...activity, normalized_power: normalizedPower },
+    analysisId: sourceId,
+    activity: activityWithNormalizedPower,
     power_records,
     training_load,
     recordChecks,
@@ -206,6 +294,6 @@ export default defineEventHandler(async (event) => {
     laps,
     powerZoneTime,
     heartRateZoneTime,
-    filename: fitFile.filename,
+    filename: filenameForStorage,
   };
 });

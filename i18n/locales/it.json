@@ -112,6 +112,12 @@
       "discard": "Scarta",
       "saving": "Salvando...",
       "saveAsLatest": "Salva come ultima attività"
+    },
+    "errors": {
+      "invalidType": "Scegli un file .fit oppure un file .zip che ne contenga uno.",
+      "tooLarge": "Il file non può superare {size} MB.",
+      "analysis": "Non è stato possibile analizzare l'attività. Controlla il file e riprova.",
+      "confirmationConflict": "Questa analisi è già stata salvata o sostituita da un caricamento più recente. Se serve, analizza nuovamente il file."
     }
   },
   "activity-records-panel": {
@@ -228,6 +234,20 @@
     "powerZones": "Zone di potenza",
     "heartRateZones": "Zone di frequenza cardiaca"
   },
+  "trainingStress": {
+    "title": "Stress allenamento",
+    "description": "Carico totale accumulato dall'ultimo giorno di riposo o azzeramento.",
+    "loadUnits": "unità di carico",
+    "activities": "Attività nel blocco",
+    "blockStarted": "Inizio del blocco",
+    "lastActivity": "Ultima attività",
+    "notStarted": "Non iniziato",
+    "resetAction": "Azzera",
+    "resetTitle": "Iniziare un nuovo blocco di allenamento?",
+    "resetText": "Questo segna un punto di riposo e azzera lo Stress allenamento accumulato. Le attività e i record non verranno eliminati.",
+    "confirmReset": "Azzera Stress allenamento",
+    "resetError": "Impossibile azzerare lo Stress allenamento"
+  },
   "completeProfile": {
     "consent": {
       "title": "Prima di continuare",
@@ -269,10 +289,43 @@
       "maxCadence": "Cadenza massima",
       "maxHeartRate": "Frequenza cardiaca massima",
       "avgTemperature": "Temperatura media",
-      "stress": "Stress dell'attività",
+      "stress": "Stress allenamento",
       "fatigue": "Fatica/FTP",
       "energy": "Energia",
       "calories": "Calorie"
+    }
+  },
+  "aiAnalysis": {
+    "title": "Analisi AI",
+    "reportLabel": "Report personalizzato dell'allenamento",
+    "generating": "Analisi dell'allenamento in corso",
+    "generatingHint": "Gemini sta combinando questa attività con il tuo blocco di allenamento attuale. Il report verrà salvato per questa attività.",
+    "unavailable": "Analisi momentaneamente non disponibile",
+    "error": "Non è stato possibile generare il report. Controlla la configurazione del server o riprova più tardi.",
+    "retry": "Riprova",
+    "loadAssessment": "Valutazione del carico",
+    "strengths": "Segnali positivi",
+    "cautions": "Aspetti da osservare",
+    "recovery": "Recupero suggerito",
+    "recoveryHours": "{hours} h",
+    "nextSession": "Prossimo allenamento suggerito",
+    "disclaimer": "Indicazioni generate dall'AI esclusivamente sui dati disponibili dell'attività. Non sono un parere medico: adattale alle tue sensazioni.",
+    "workoutTypes": {
+      "recovery": "Recupero",
+      "endurance": "Resistenza",
+      "tempo": "Tempo",
+      "threshold": "Soglia",
+      "vo2max": "VO₂max",
+      "anaerobic": "Anaerobico",
+      "sprint": "Sprint",
+      "mixed": "Misto",
+      "unknown": "Non classificato"
+    },
+    "loadLevels": {
+      "low": "Carico basso",
+      "moderate": "Carico moderato",
+      "high": "Carico alto",
+      "very_high": "Carico molto alto"
     }
   },
   "records": {

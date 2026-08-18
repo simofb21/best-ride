@@ -112,6 +112,12 @@
       "discard": "Discard",
       "saving": "Saving…",
       "saveAsLatest": "Save as latest activity"
+    },
+    "errors": {
+      "invalidType": "Choose a .fit file or a .zip file containing one.",
+      "tooLarge": "The file must be no larger than {size} MB.",
+      "analysis": "The activity could not be analyzed. Check the file and try again.",
+      "confirmationConflict": "This analysis was already saved or replaced by a newer upload. Analyze the file again if needed."
     }
   },
   "activity-records-panel": {
@@ -198,13 +204,60 @@
   "login": { "title": "Welcome to Best Ride", "subtitle": "Sign in to track your rides and records", "google": "Continue with Google", "error": "Something went wrong signing in with Google. Please try again." },
   "shareUpload": { "receiving": "Receiving file..." },
   "profile": { "title": "My Profile", "personalInfo": "Personal Info", "powerProfile": "Power Profile", "powerZones": "Power Zones", "heartRateZones": "Heart Rate Zones" },
+  "trainingStress": {
+    "title": "Training stress",
+    "description": "Total load accumulated since your last rest day or reset.",
+    "loadUnits": "load units",
+    "activities": "Activities in this block",
+    "blockStarted": "Block started",
+    "lastActivity": "Last activity",
+    "notStarted": "Not started",
+    "resetAction": "Reset",
+    "resetTitle": "Start a new training block?",
+    "resetText": "This marks a rest point and resets your accumulated Training stress. Your activities and records will not be deleted.",
+    "confirmReset": "Reset Training stress",
+    "resetError": "Training stress could not be reset"
+  },
   "completeProfile": {
     "consent": { "title": "Before you continue", "intro": "Best Ride needs to process some personal data (weight, FTP, birth date and activity data) to calculate your training metrics and personal records.", "acceptPrefix": "I have read and accept the", "acceptSuffix": "and consent to the processing of my personal data as described.", "continue": "Accept and continue" },
     "form": { "title": "Complete your profile", "intro": "These details help us calculate your training zones and power profile accurately.", "weight": "Weight (kg)", "threshold": "Anaerobic Threshold (bpm)", "birthDate": "Date of birth", "sex": "Sex", "unspecified": "Prefer not to say", "male": "Male", "female": "Female", "yearlyDistance": "Distance ridden this year so far (km)", "yearlyHours": "Hours ridden this year so far", "finish": "Finish setup" }
   },
   "activity": {
     "title": "Latest Activity", "eyebrow": "View the details of your most recent activity, including stats, records and more. Upload a new activity to see it here.", "upload": "Upload an activity", "notFound": "No activity found yet. Upload one to get started.", "otherInfo": "Other Info",
-    "stats": { "avgSpeed": "Avg Speed", "distance": "Distance", "duration": "Duration", "elevationGain": "Elevation Gain", "avgHeartRate": "Avg Heart Rate", "avgPower": "Avg Power", "normalizedPower": "Normalized Power", "maxSpeed": "Max Speed", "maxCadence": "Max Cadence", "maxHeartRate": "Max Heart Rate", "avgTemperature": "Avg Temperature", "stress": "Activity Stress", "fatigue": "Fatigue/FTP", "energy": "Energy", "calories": "Calories" }
+    "stats": { "avgSpeed": "Avg Speed", "distance": "Distance", "duration": "Duration", "elevationGain": "Elevation Gain", "avgHeartRate": "Avg Heart Rate", "avgPower": "Avg Power", "normalizedPower": "Normalized Power", "maxSpeed": "Max Speed", "maxCadence": "Max Cadence", "maxHeartRate": "Max Heart Rate", "avgTemperature": "Avg Temperature", "stress": "Training stress", "fatigue": "Fatigue/FTP", "energy": "Energy", "calories": "Calories" }
+  },
+  "aiAnalysis": {
+    "title": "AI analysis",
+    "reportLabel": "Personalized training report",
+    "generating": "Analyzing your training",
+    "generatingHint": "Gemini is combining this activity with your current training block. The report will be saved for this activity.",
+    "unavailable": "Analysis currently unavailable",
+    "error": "The report could not be generated. Check the server configuration or try again later.",
+    "retry": "Try again",
+    "loadAssessment": "Load assessment",
+    "strengths": "Positive signals",
+    "cautions": "Points to watch",
+    "recovery": "Suggested recovery",
+    "recoveryHours": "{hours} h",
+    "nextSession": "Suggested next session",
+    "disclaimer": "AI-generated guidance based only on the available activity data. It is not medical advice; adjust it to how you feel.",
+    "workoutTypes": {
+      "recovery": "Recovery",
+      "endurance": "Endurance",
+      "tempo": "Tempo",
+      "threshold": "Threshold",
+      "vo2max": "VO₂max",
+      "anaerobic": "Anaerobic",
+      "sprint": "Sprint",
+      "mixed": "Mixed",
+      "unknown": "Unclassified"
+    },
+    "loadLevels": {
+      "low": "Low load",
+      "moderate": "Moderate load",
+      "high": "High load",
+      "very_high": "Very high load"
+    }
   },
   "records": { "title": "My Records", "eyebrow": "Fill in your records manually, or let them be set automatically when you upload an activity.", "newPerformance": "New performance — {metric}", "deleteTitle": "Delete this record?", "categories": { "power": "Power", "heartRate": "Heart Rate", "other": "Other" } },
   "customRecords": { "title": "Custom Records", "eyebrow": "Create your own records and track up to 3 best performances for each.", "newRecord": "New custom record", "newPerformance": "New performance", "namePlaceholder": "e.g. Stelvio Climb", "customUnit": "Custom unit (max 20 characters)", "unitPlaceholder": "e.g. points, reps", "lowerIsBetter": "Lower value is better (e.g. race times)", "deletePerformance": "Delete this performance?", "deleteRecordText": "All performances for this record will be permanently deleted." },

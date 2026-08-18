@@ -1,18 +1,17 @@
 <template>
   <div class="activity-info-page">
-    <h1>Latest Activity</h1>
-    <p class="eyebrow">
-      View the details of your most recent activity, including stats, records,
-      and more. Upload a new activity to see it here.
-    </p>
+    <h1>{{ $t("activity.title") }}</h1>
+    <p class="eyebrow">{{ $t("activity.eyebrow") }}</p>
 
-    <div v-if="loading" class="state-message">Loading...</div>
+    <div v-if="loading" class="state-message">{{ $t("common.loading") }}</div>
     <div v-else-if="loadError" class="empty-state">
       <p>{{ loadError }}</p>
-      <NuxtLink to="/upload" class="cta-btn">Upload an activity</NuxtLink>
+      <NuxtLink to="/upload" class="cta-btn">
+        {{ $t("activity.upload") }}
+      </NuxtLink>
     </div>
 
-    <div v-else-if="data" class="activity-layout">
+    <div v-else-if="data" ref="pageRef" class="activity-layout">
       <ShareActivityButton
         v-if="data"
         :activity-data="{
@@ -25,16 +24,22 @@
       />
       <div class="slot-general">
         <ActivityStatsPanel
-          title="General"
+          :title="$t('common.general')"
           icon="mdi-speedometer"
           :stats="generalStats"
         />
       </div>
       <div class="slot-other">
         <ActivityStatsPanel
-          title="Other Info"
+          :title="$t('activity.otherInfo')"
           icon="mdi-format-list-bulleted"
           :stats="otherStats"
+        />
+      </div>
+      <div class="slot-ai">
+        <AiTrainingAnalysis
+          :initial-analysis="data.aiAnalysis"
+          :initial-status="data.aiAnalysisStatus"
         />
       </div>
       <div class="slot-records">
@@ -67,7 +72,10 @@
 import ActivityStatsPanel from "~/components/activity/ActivityStatsPanel.vue";
 import PowerCurveChart from "~/components/activity/PowerCurveChart.vue";
 import ShareActivityButton from "~/components/activity/ShareActivity.vue";
+import AiTrainingAnalysis from "~/components/activity/AiTrainingAnalysis.vue";
 definePageMeta({ middleware: "auth" });
+const { t } = useI18n();
+useHead(() => ({ title: `${t("activity.title")} - Best Ride` }));
 const pageRef = ref<HTMLElement | null>(null);
 
 const data = ref<any>(null);
@@ -75,13 +83,10 @@ const loading = ref(true);
 const loadError = ref("");
 
 onMounted(async () => {
-  document.title = "Latest Activity - Best Ride";
-
   try {
     data.value = await $fetch("/api/activities/last");
-  } catch (err: any) {
-    loadError.value =
-      err?.data?.message || "No activity found yet. Upload one to get started.";
+  } catch {
+    loadError.value = t("activity.notFound");
   } finally {
     loading.value = false;
   }
@@ -91,37 +96,37 @@ const generalStats = computed(() => {
   if (!data.value) return [];
   const a = data.value.activity;
   return [
-    { label: "Avg Speed", value: a.average_speed, unit: "km/h" },
-    { label: "Distance", value: a.distance, unit: "km" },
-    { label: "Duration", value: formatDuration(a.duration || 0) },
-    { label: "Elevation Gain", value: a.elevation_gain, unit: "m" },
-    { label: "Avg Heart Rate", value: a.average_heartrate, unit: "bpm" },
-    { label: "Avg Power", value: a.average_watts, unit: "W" },
-    { label: "Normalized Power", value: a.normalized_power, unit: "W" },
+    { label: t("activity.stats.avgSpeed"), value: a.average_speed, unit: "km/h" },
+    { label: t("activity.stats.distance"), value: a.distance, unit: "km" },
+    { label: t("activity.stats.duration"), value: formatDuration(a.duration || 0) },
+    { label: t("activity.stats.elevationGain"), value: a.elevation_gain, unit: "m" },
+    { label: t("activity.stats.avgHeartRate"), value: a.average_heartrate, unit: "bpm" },
+    { label: t("activity.stats.avgPower"), value: a.average_watts, unit: "W" },
+    { label: t("activity.stats.normalizedPower"), value: a.normalized_power, unit: "W" },
   ];
 });
 
 const otherStats = computed(() => {
   if (!data.value) return [];
   const a = data.value.activity;
-  const t = data.value.training_load;
+  const trainingLoad = data.value.training_load;
   return [
-    { label: "Max Speed", value: a.max_speed, unit: "km/h" },
+    { label: t("activity.stats.maxSpeed"), value: a.max_speed, unit: "km/h" },
     {
-      label: "Max Cadence",
+      label: t("activity.stats.maxCadence"),
       value: a.max_cadence ?? a.average_cadence,
       unit: "rpm",
     },
-    { label: "Max Heart Rate", value: a.max_heartrate, unit: "bpm" },
+    { label: t("activity.stats.maxHeartRate"), value: a.max_heartrate, unit: "bpm" },
     {
-      label: "Avg Temperature",
+      label: t("activity.stats.avgTemperature"),
       value: a.average_temperature ?? "—",
       unit: a.average_temperature ? "°C" : "",
     },
-    { label: "Stress of the Activity", value: t?.tss ?? "—" },
-    { label: "Fatigue/FTP", value: t?.intensity_factor ?? "—" },
-    { label: "Energy", value: a.kilojoules, unit: "kJ" },
-    { label: "Calories", value: a.kcalories, unit: "kcal" },
+    { label: t("activity.stats.stress"), value: trainingLoad?.tss ?? "—" },
+    { label: t("activity.stats.fatigue"), value: trainingLoad?.intensity_factor ?? "—" },
+    { label: t("activity.stats.energy"), value: a.kilojoules, unit: "kJ" },
+    { label: t("activity.stats.calories"), value: a.kcalories, unit: "kcal" },
   ];
 });
 
@@ -175,6 +180,7 @@ function formatDuration(totalSeconds: number): string {
   grid-template-columns: 1fr 1fr;
   grid-template-areas:
     "general other"
+    "ai ai"
     "records records"
     "curve curve"
     "map zones"
@@ -187,6 +193,9 @@ function formatDuration(totalSeconds: number): string {
 }
 .slot-other {
   grid-area: other;
+}
+.slot-ai {
+  grid-area: ai;
 }
 .slot-records {
   grid-area: records;
@@ -211,6 +220,7 @@ function formatDuration(totalSeconds: number): string {
     grid-template-areas:
       "general"
       "other"
+      "ai"
       "records"
       "curve"
       "map"
@@ -220,6 +230,7 @@ function formatDuration(totalSeconds: number): string {
 }
 .slot-general,
 .slot-other,
+.slot-ai,
 .slot-records,
 .slot-curve,
 .slot-map,

@@ -4,7 +4,7 @@ function average(values: number[]): number {
   }
   let somma = 0;
   for (let i = 0; i < values.length; i++) {
-    somma = somma + values[i];
+    somma = somma + values[i]!;
   }
   return somma / values.length;
 }
@@ -13,10 +13,10 @@ function maximum(values: number[]): number {
   if (values.length === 0) {
     return 0;
   }
-  let massimo = values[0];
+  let massimo = values[0]!;
   for (let i = 1; i < values.length; i++) {
-    if (values[i] > massimo) {
-      massimo = values[i];
+    if (values[i]! > massimo) {
+      massimo = values[i]!;
     }
   }
   return massimo;
@@ -26,7 +26,7 @@ function extractNumericField(records: any[], field: string): number[] {
   // Estrae i valori numerici di un campo specifico da un array di record
   let result: number[] = [];
   for (let i = 0; i < records.length; i++) {
-    let valore = records[i][field];
+    let valore = records[i]?.[field];
     if (typeof valore === "number") {
       result.push(valore);
     }
@@ -39,7 +39,7 @@ function computeElevationGainFromRecords(records: any[]): number {
   // sommando solo le variazioni POSITIVE di altitudine tra un punto e il successivo
   let altitudes: number[] = [];
   for (let i = 0; i < records.length; i++) {
-    let valore = records[i].altitude;
+    let valore = records[i]?.altitude;
     if (typeof valore === "number") {
       altitudes.push(valore);
     }
@@ -51,7 +51,7 @@ function computeElevationGainFromRecords(records: any[]): number {
 
   let gain = 0;
   for (let i = 1; i < altitudes.length; i++) {
-    let diff = altitudes[i] - altitudes[i - 1];
+    let diff = altitudes[i]! - altitudes[i - 1]!;
     if (diff > 0) {
       gain = gain + diff;
     }
@@ -97,6 +97,12 @@ export function buildActivitySummary(records: any[], session: any) {
 
   if (session && session.avg_cadence != null) {
     average_cadence = session.avg_cadence;
+  }
+
+  let max_cadence = Math.round(maximum(cadenceValues));
+
+  if (session && session.max_cadence != null) {
+    max_cadence = session.max_cadence;
   }
 
   let average_heartrate = Math.round(average(hrValues)); //calcola avg heartrate
@@ -149,6 +155,7 @@ export function buildActivitySummary(records: any[], session: any) {
     average_speed: average_speed,
     max_speed: max_speed,
     average_cadence: average_cadence,
+    max_cadence: max_cadence,
     average_heartrate: average_heartrate,
     max_heartrate: max_heartrate,
     average_watts: average_watts,
