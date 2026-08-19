@@ -153,10 +153,11 @@ const chartData = computed(() => {
 }
 
 .curve-labels {
-  display: flex;
+  display: flex;  
   gap: 4px;
   min-width: 700px;
-  width: max-content; /* forza la larghezza reale del contenuto, non 100% del genitore */
+  width: 100%;
+  justify-content: space-between;
 }
 .curve-label {
   display: flex;
