@@ -4,7 +4,7 @@
     icon="mdi-robot-outline"
     full-width
   >
-    <div class="analysis-content">
+    <div class="analysis-content" :aria-busy="isWaiting">
       <div v-if="isWaiting" class="analysis-state" role="status">
         <v-progress-circular
           color="primary"
@@ -105,6 +105,23 @@
           {{ $t("aiAnalysis.disclaimer") }}
         </p>
       </article>
+
+      <div v-else class="analysis-state request-state">
+        <v-icon icon="mdi-creation-outline" size="30" />
+        <div>
+          <strong>{{ $t("aiAnalysis.requestTitle") }}</strong>
+          <p>{{ $t("aiAnalysis.requestHint") }}</p>
+          <button
+            class="request-button"
+            type="button"
+            :disabled="isWaiting"
+            @click="requestAnalysis"
+          >
+            <v-icon icon="mdi-robot-outline" size="17" />
+            {{ $t("aiAnalysis.generate") }}
+          </button>
+        </div>
+      </div>
     </div>
   </CollapsiblePanel>
 </template>
@@ -140,16 +157,18 @@ interface TrainingAnalysisReport {
 }
 
 interface AnalysisResponse {
-  status: "ready" | "generating";
+  status: "not_requested" | "ready" | "generating" | "failed";
   analysis?: TrainingAnalysisReport;
 }
 
 const props = withDefaults(
   defineProps<{
+    activityId?: number | null;
     initialAnalysis?: unknown;
     initialStatus?: string | null;
   }>(),
   {
+    activityId: null,
     initialAnalysis: null,
     initialStatus: null,
   },
@@ -167,12 +186,18 @@ const requestState = ref<"idle" | "loading" | "generating" | "error">(
       ? "generating"
       : props.initialStatus === "failed"
         ? "error"
-        : "loading",
+        : "idle",
 );
 const pollCount = ref(0);
 let pollTimer: ReturnType<typeof setTimeout> | null = null;
+let requestInFlight = false;
+let isUnmounted = false;
 let completionNotified = false;
 let cautionsNotified = false;
+// The server considers a generation stale after 60 seconds. Keep observing a
+// little longer so the UI does not report an error before that boundary.
+const MAX_STATUS_POLLS = 27;
+const STATUS_POLL_INTERVAL_MS = 2_500;
 
 const localizedReport = computed(() => {
   if (!report.value) return null;
@@ -186,12 +211,13 @@ const isWaiting = computed(
 );
 
 onMounted(() => {
-  if (!report.value && props.initialStatus !== "failed") {
-    void requestAnalysis();
+  if (!report.value && props.initialStatus === "generating") {
+    scheduleStatusPoll(0);
   }
 });
 
 onBeforeUnmount(() => {
+  isUnmounted = true;
   if (pollTimer) clearTimeout(pollTimer);
 });
 
@@ -244,63 +270,127 @@ function normalizeReport(value: unknown): TrainingAnalysisReport | null {
 }
 
 async function requestAnalysis() {
+  if (requestInFlight || isWaiting.value) return;
+
   if (pollTimer) {
     clearTimeout(pollTimer);
     pollTimer = null;
   }
 
-  requestState.value = pollCount.value > 0 ? "generating" : "loading";
+  requestInFlight = true;
+  pollCount.value = 0;
+  requestState.value = "loading";
+  appToast.dismiss("activity-ai-analysis-failed");
 
   try {
     const response = await $fetch<AnalysisResponse>(
       "/api/activities/ai-analysis",
-      { method: "POST" },
+      {
+        method: "POST",
+        body:
+          props.activityId == null ? {} : { activityId: props.activityId },
+      },
     );
-    const analysis = normalizeReport(response.analysis);
-
-    if (response.status === "ready" && analysis) {
-      report.value = analysis;
-      requestState.value = "idle";
-      pollCount.value = 0;
-      if (!completionNotified) {
-        appToast.success(t("notifications.aiAnalysisReady"), {
-          toastId: "activity-ai-analysis-ready",
-        });
-        completionNotified = true;
-      }
-
-      const localizedAnalysis = locale.value
-        .toLowerCase()
-        .startsWith("it")
-        ? analysis.it
-        : analysis.en;
-      if (localizedAnalysis.cautions.length && !cautionsNotified) {
-        appToast.warning(t("notifications.aiCautions"), {
-          toastId: "activity-ai-analysis-cautions",
-        });
-        cautionsNotified = true;
-      }
-      return;
-    }
-
-    if (response.status === "generating" && pollCount.value < 24) {
-      requestState.value = "generating";
-      pollCount.value += 1;
-      pollTimer = setTimeout(() => void requestAnalysis(), 2500);
-      return;
-    }
-
-    throw new Error("AI report was not available in time");
+    handleAnalysisResponse(response);
   } catch {
-    requestState.value = "error";
-    appToast.error(null, t("notifications.aiAnalysisFailed"), {
-      toastId: "activity-ai-analysis-failed",
-    });
+    showAnalysisError();
+  } finally {
+    requestInFlight = false;
   }
 }
 
+async function pollAnalysisStatus() {
+  if (requestInFlight) return;
+  requestInFlight = true;
+
+  try {
+    const response = await $fetch<AnalysisResponse>(
+      "/api/activities/ai-analysis",
+      {
+        query:
+          props.activityId == null
+            ? undefined
+            : { activityId: props.activityId },
+      },
+    );
+    handleAnalysisResponse(response);
+  } catch {
+    showAnalysisError();
+  } finally {
+    requestInFlight = false;
+  }
+}
+
+function handleAnalysisResponse(response: AnalysisResponse) {
+  if (isUnmounted) return;
+  const analysis = normalizeReport(response.analysis);
+
+  if (response.status === "ready" && analysis) {
+    report.value = analysis;
+    requestState.value = "idle";
+    pollCount.value = 0;
+    if (!completionNotified) {
+      appToast.success(t("notifications.aiAnalysisReady"), {
+        toastId: "activity-ai-analysis-ready",
+      });
+      completionNotified = true;
+    }
+
+    const localizedAnalysis = locale.value.toLowerCase().startsWith("it")
+      ? analysis.it
+      : analysis.en;
+    if (localizedAnalysis.cautions.length && !cautionsNotified) {
+      appToast.warning(t("notifications.aiCautions"), {
+        toastId: "activity-ai-analysis-cautions",
+      });
+      cautionsNotified = true;
+    }
+    return;
+  }
+
+  if (response.status === "generating") {
+    requestState.value = "generating";
+    scheduleStatusPoll();
+    return;
+  }
+
+  if (response.status === "not_requested") {
+    requestState.value = "idle";
+    pollCount.value = 0;
+    return;
+  }
+
+  showAnalysisError();
+}
+
+function scheduleStatusPoll(delay = STATUS_POLL_INTERVAL_MS) {
+  if (isUnmounted) return;
+  if (pollTimer) clearTimeout(pollTimer);
+  if (pollCount.value >= MAX_STATUS_POLLS) {
+    showAnalysisError();
+    return;
+  }
+
+  pollCount.value += 1;
+  pollTimer = setTimeout(() => {
+    pollTimer = null;
+    void pollAnalysisStatus();
+  }, delay);
+}
+
+function showAnalysisError() {
+  if (pollTimer) {
+    clearTimeout(pollTimer);
+    pollTimer = null;
+  }
+  if (isUnmounted) return;
+  requestState.value = "error";
+  appToast.error(null, t("notifications.aiAnalysisFailed"), {
+    toastId: "activity-ai-analysis-failed",
+  });
+}
+
 function retry() {
-  pollCount.value = 0;
   void requestAnalysis();
 }
 </script>
@@ -337,7 +427,8 @@ function retry() {
   color: #ef4444;
 }
 
-.retry-button {
+.retry-button,
+.request-button {
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -349,6 +440,21 @@ function retry() {
   background: var(--surface);
   font-weight: 700;
   cursor: pointer;
+}
+
+.request-state > .v-icon {
+  color: var(--accent-strong);
+}
+
+.request-button {
+  color: #fff;
+  border-color: var(--accent);
+  background: var(--accent);
+}
+
+.request-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
 }
 
 .report-header,

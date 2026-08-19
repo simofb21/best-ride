@@ -295,9 +295,12 @@
   },
   "aiAnalysis": {
     "title": "AI analysis",
+    "requestTitle": "Would you like a personalized analysis?",
+    "requestHint": "We will generate it only when you request it, so no credits are used when you do not need it.",
+    "generate": "Generate AI analysis",
     "reportLabel": "Personalized training report",
     "generating": "Analyzing your training",
-    "generatingHint": "Gemini is combining this activity with your current training block. The report will be saved for this activity.",
+    "generatingHint": "Gemini is combining this activity with your current training block.",
     "unavailable": "Analysis currently unavailable",
     "error": "The report could not be generated. Check the server configuration or try again later.",
     "retry": "Try again",

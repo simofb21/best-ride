@@ -364,9 +364,12 @@
   },
   "aiAnalysis": {
     "title": "Analisi AI",
+    "requestTitle": "Vuoi un'analisi personalizzata?",
+    "requestHint": "La genereremo soltanto quando la richiedi, così non verranno utilizzati crediti se non ti serve.",
+    "generate": "Genera analisi AI",
     "reportLabel": "Report personalizzato dell'allenamento",
     "generating": "Analisi dell'allenamento in corso",
-    "generatingHint": "Gemini sta combinando questa attività con il tuo blocco di allenamento attuale. Il report verrà salvato per questa attività.",
+    "generatingHint": "Gemini sta combinando questa attività con il tuo blocco di allenamento attuale.",
     "unavailable": "Analisi momentaneamente non disponibile",
     "error": "Non è stato possibile generare il report. Controlla la configurazione del server o riprova più tardi.",
     "retry": "Riprova",

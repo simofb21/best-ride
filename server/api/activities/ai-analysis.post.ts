@@ -1,14 +1,22 @@
 import { prisma } from "../../utils/db";
+import { z } from "zod";
 import {
   buildTrainingAnalysisInput,
   generateTrainingAnalysis,
   hashTrainingAnalysisInput,
   trainingAnalysisReportSchema,
 } from "../../utils/trainingAnalysis";
+import {
+  AI_ANALYSIS_FAILED_RETRY_COOLDOWN_MS,
+  AI_ANALYSIS_GENERATION_TIMEOUT_MS,
+  AI_ANALYSIS_MAX_GENERATION_ATTEMPTS,
+} from "../../utils/aiAnalysisPolicy";
 
-const GENERATION_TIMEOUT_MS = 60 * 1000;
-const FAILED_RETRY_COOLDOWN_MS = 5 * 60 * 1000;
-const MAX_GENERATION_ATTEMPTS = 3;
+const requestSchema = z
+  .object({
+    activityId: z.number().int().positive().nullable().optional(),
+  })
+  .strict();
 
 function throwRetryLimit(
   event: Parameters<typeof setResponseHeader>[0],
@@ -30,6 +38,13 @@ export default defineEventHandler(async (event) => {
   const session = await requireUserSession(event);
   const userId = session.user.id;
   setResponseHeader(event, "Cache-Control", "no-store");
+  const parsedBody = requestSchema.safeParse((await readBody(event)) ?? {});
+  if (!parsedBody.success) {
+    throw createError({
+      statusCode: 400,
+      statusMessage: "Invalid AI analysis request",
+    });
+  }
 
   const [lastActivity, user] = await Promise.all([
     prisma.lastActivity.findUnique({ where: { userId } }),
@@ -56,6 +71,16 @@ export default defineEventHandler(async (event) => {
     });
   }
 
+  if (
+    parsedBody.data.activityId != null &&
+    lastActivity.activityId !== parsedBody.data.activityId
+  ) {
+    throw createError({
+      statusCode: 409,
+      statusMessage: "The displayed activity is no longer the latest activity",
+    });
+  }
+
   const cached = trainingAnalysisReportSchema.safeParse(
     lastActivity.aiAnalysis,
   );
@@ -70,8 +95,10 @@ export default defineEventHandler(async (event) => {
   }
 
   const now = Date.now();
-  const staleBefore = new Date(now - GENERATION_TIMEOUT_MS);
-  const retryBefore = new Date(now - FAILED_RETRY_COOLDOWN_MS);
+  const staleBefore = new Date(now - AI_ANALYSIS_GENERATION_TIMEOUT_MS);
+  const retryBefore = new Date(
+    now - AI_ANALYSIS_FAILED_RETRY_COOLDOWN_MS,
+  );
   const attemptCount = lastActivity.aiAnalysisAttemptCount;
   const lastAttemptAt = lastActivity.aiAnalysisStartedAt;
   const generationIsStale =
@@ -79,7 +106,7 @@ export default defineEventHandler(async (event) => {
     (!lastAttemptAt || lastAttemptAt < staleBefore);
 
   if (
-    attemptCount >= MAX_GENERATION_ATTEMPTS &&
+    attemptCount >= AI_ANALYSIS_MAX_GENERATION_ATTEMPTS &&
     (lastActivity.aiAnalysisStatus !== "generating" || generationIsStale)
   ) {
     throwRetryLimit(event);
@@ -91,7 +118,10 @@ export default defineEventHandler(async (event) => {
     lastAttemptAt >= retryBefore
   ) {
     const retryInSeconds = Math.ceil(
-      (lastAttemptAt.getTime() + FAILED_RETRY_COOLDOWN_MS - now) / 1000,
+      (lastAttemptAt.getTime() +
+        AI_ANALYSIS_FAILED_RETRY_COOLDOWN_MS -
+        now) /
+        1000,
     );
     throwRetryLimit(event, retryInSeconds);
   }
@@ -101,7 +131,9 @@ export default defineEventHandler(async (event) => {
       id: lastActivity.id,
       sourceId: lastActivity.sourceId,
       uploadedAt: lastActivity.uploadedAt,
-      aiAnalysisAttemptCount: { lt: MAX_GENERATION_ATTEMPTS },
+      aiAnalysisAttemptCount: {
+        lt: AI_ANALYSIS_MAX_GENERATION_ATTEMPTS,
+      },
       OR: [
         { aiAnalysisStatus: null },
         { aiAnalysisStatus: "ready" },

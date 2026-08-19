@@ -38,6 +38,7 @@
       </div>
       <div class="slot-ai">
         <AiTrainingAnalysis
+          :activity-id="data.activityId"
           :initial-analysis="data.aiAnalysis"
           :initial-status="data.aiAnalysisStatus"
         />

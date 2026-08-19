@@ -16,6 +16,7 @@ export default defineEventHandler(async (event) => {
   const data = lastActivity.data as Record<string, unknown>;
   const { gpsTrackPolyline, ...activityData } = data;
   const analysisData = {
+    activityId: lastActivity.activityId,
     aiAnalysis: lastActivity.aiAnalysis,
     aiAnalysisStatus: lastActivity.aiAnalysisStatus,
     aiAnalysisModel: lastActivity.aiAnalysisModel,
