@@ -4,8 +4,12 @@
  * Changing the meaning, units, or ordering of a persisted tuple requires a
  * new version. Existing rows must always be decoded with the version they
  * were written with.
+ *
+ * V2 stores `durationSeconds` as moving time (or active timer time when the
+ * device does not provide moving time). V1 rows used elapsed time, including
+ * pauses, and retain that meaning when decoded.
  */
-export const ACTIVITY_ARCHIVE_SCHEMA_VERSION = 1 as const;
+export const ACTIVITY_ARCHIVE_SCHEMA_VERSION = 2 as const;
 
 /**
  * Version 1 power-curve order. Values are integer watts; `0` means that the

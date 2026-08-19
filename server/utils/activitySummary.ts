@@ -1,3 +1,5 @@
+import { resolveActivityDurationSeconds } from "./activityDuration";
+
 function average(values: number[]): number {
   if (values.length === 0) {
     return 0;
@@ -94,9 +96,7 @@ export function buildActivitySummary(records: any[], session: any) {
   let distance = 0;
   if (session && session.total_distance)
     distance = Number(session.total_distance.toFixed(2));
-  let duration = records.length;
-  if (session && session.total_elapsed_time)
-    duration = Math.round(session.total_elapsed_time);
+  const duration = resolveActivityDurationSeconds(records, session);
 
   let elevation_gain = 0;
   if (session && session.total_ascent != null) {

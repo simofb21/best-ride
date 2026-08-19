@@ -20,8 +20,11 @@ logs
 
 # Local env files
 .env
-.env.*
+.env.* 
 !.env.example
 
 todo.md
 generated/prisma
+
+tests/activityDuration.tests.ts
+ 
