@@ -1,6 +1,10 @@
 <template>
   <div class="activity-info-page">
-    <h1>{{ $t("activity.title") }}</h1>
+    <h1 class="page-title">
+      {{
+        data?.activity?.title || data?.activity?.name || $t("activity.title")
+      }}
+    </h1>
     <p class="eyebrow">{{ $t("activity.eyebrow") }}</p>
 
     <div v-if="loading" class="state-message">{{ $t("common.loading") }}</div>
@@ -12,7 +16,7 @@
     </div>
 
     <div v-else-if="data" ref="pageRef" class="activity-layout">
-      <ShareActivityButton
+      <ShareActivity
         v-if="data"
         :activity-data="{
           activity: data.activity,
@@ -52,7 +56,7 @@
           :power-records="data.power_records"
         />
       </div>
-      <div class="slot-map">
+      <div class="slot-map" data-export-ignore>
         <ActivityMap v-if="data.gpsTrack" :gps-track="data.gpsTrack" />
       </div>
       <div class="slot-zones">
@@ -70,9 +74,9 @@
 </template>
 
 <script setup lang="ts">
+import ShareActivity from "~/components/activity/ShareActivity.vue";
 import ActivityStatsPanel from "~/components/activity/ActivityStatsPanel.vue";
 import PowerCurveChart from "~/components/activity/PowerCurveChart.vue";
-import ShareActivityButton from "~/components/activity/ShareActivity.vue";
 import AiTrainingAnalysis from "~/components/activity/AiTrainingAnalysis.vue";
 definePageMeta({ middleware: "auth" });
 const { t } = useI18n();
@@ -110,13 +114,32 @@ const generalStats = computed(() => {
   if (!data.value) return [];
   const a = data.value.activity;
   return [
-    { label: t("activity.stats.avgSpeed"), value: a.average_speed, unit: "km/h" },
+    {
+      label: t("activity.stats.avgSpeed"),
+      value: a.average_speed,
+      unit: "km/h",
+    },
     { label: t("activity.stats.distance"), value: a.distance, unit: "km" },
-    { label: t("activity.stats.duration"), value: formatDuration(a.duration || 0) },
-    { label: t("activity.stats.elevationGain"), value: a.elevation_gain, unit: "m" },
-    { label: t("activity.stats.avgHeartRate"), value: a.average_heartrate, unit: "bpm" },
+    {
+      label: t("activity.stats.duration"),
+      value: formatDuration(a.duration || 0),
+    },
+    {
+      label: t("activity.stats.elevationGain"),
+      value: a.elevation_gain,
+      unit: "m",
+    },
+    {
+      label: t("activity.stats.avgHeartRate"),
+      value: a.average_heartrate,
+      unit: "bpm",
+    },
     { label: t("activity.stats.avgPower"), value: a.average_watts, unit: "W" },
-    { label: t("activity.stats.normalizedPower"), value: a.normalized_power, unit: "W" },
+    {
+      label: t("activity.stats.normalizedPower"),
+      value: a.normalized_power,
+      unit: "W",
+    },
   ];
 });
 
@@ -131,14 +154,21 @@ const otherStats = computed(() => {
       value: a.max_cadence ?? a.average_cadence,
       unit: "rpm",
     },
-    { label: t("activity.stats.maxHeartRate"), value: a.max_heartrate, unit: "bpm" },
+    {
+      label: t("activity.stats.maxHeartRate"),
+      value: a.max_heartrate,
+      unit: "bpm",
+    },
     {
       label: t("activity.stats.avgTemperature"),
       value: a.average_temperature ?? "—",
       unit: a.average_temperature ? "°C" : "",
     },
     { label: t("activity.stats.stress"), value: trainingLoad?.tss ?? "—" },
-    { label: t("activity.stats.fatigue"), value: trainingLoad?.intensity_factor ?? "—" },
+    {
+      label: t("activity.stats.fatigue"),
+      value: trainingLoad?.intensity_factor ?? "—",
+    },
     { label: t("activity.stats.energy"), value: a.kilojoules, unit: "kJ" },
     { label: t("activity.stats.calories"), value: a.kcalories, unit: "kcal" },
   ];

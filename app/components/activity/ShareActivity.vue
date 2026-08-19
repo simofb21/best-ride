@@ -1,127 +1,91 @@
 <template>
-  <div class="share-section">
-    <button
-      class="share-btn social"
-      :disabled="!!generating"
-      @click="handleShare('social')"
-    >
-      <v-icon icon="mdi-instagram" size="18" />
-      {{ generating === "social" ? "Generating..." : "Share for Social" }}
-    </button>
+  <div class="share-activity-container" data-export-ignore>
+    <div class="share-buttons flex gap-2">
+      <!-- Bottone Social Instagram Story -->
+      <button
+        @click="handleSocialShare"
+        :disabled="loading"
+        class="btn btn-primary"
+      >
+        <span>📸 Share for Social</span>
+      </button>
 
-    <button
-      class="share-btn coach"
-      :disabled="!!generating"
-      @click="handleShare('coach')"
-    >
-      <v-icon icon="mdi-account-tie-outline" size="18" />
-      {{ generating === "coach" ? "Generating..." : "Share for Coach" }}
-    </button>
+      <!-- Bottone / Dropdown Coach Share -->
+      <div class="dropdown dropdown-end">
+        <button :disabled="loading" class="btn btn-secondary dropdown-toggle">
+          <span>📋 Share for Coach</span>
+        </button>
+        <ul class="dropdown-menu">
+          <li>
+            <a @click="handleCoachShare('png')">🖼️ Scarica Immagine (.png)</a>
+          </li>
+          <li>
+            <a @click="handleCoachShare('pdf')">📄 Scarica Report (.pdf)</a>
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { isCancelledAction } from "~/composables/useAppToast";
-import { generateSocialImage, generateCoachImage } from "~/composables/imageGen";
+import { ref } from "vue";
+import { useI18n } from "vue-i18n";
+import {
+  generateSocialImage,
+  generateCoachImage,
+  generateCoachPdf,
+} from "~/composables/imageGen";
 
 const props = defineProps<{
   activityData: {
     activity: any;
     training_load?: any;
-    power_records: any[];
-    gpsTrack?: Array<{ lat: number; lng: number }>;
+    power_records?: any;
+    gpsTrack?: Array<[number, number]> | Array<{ lat: number; lng: number }>;
   };
-  // Riferimento all'elemento della pagina da screenshottare per il report allenatore
   pageElement?: HTMLElement | null;
 }>();
 
-const generating = ref<"social" | "coach" | null>(null);
-const { t } = useI18n();
-const appToast = useAppToast();
+const { locale } = useI18n();
+const loading = ref(false);
 
-async function handleShare(variant: "social" | "coach") {
-  generating.value = variant;
-
+const handleSocialShare = async () => {
   try {
-    const blob =
-      variant === "social"
-        ? await generateSocialImage(props.activityData)
-        : await generateCoachImage(
-            props.activityData,
-            props.pageElement ?? undefined,
-          );
+    loading.value = true;
+    await generateSocialImage(
+      props.activityData.activity,
+      props.activityData.gpsTrack,
+      locale.value,
+    );
+  } catch (err) {
+    console.error("Errore generazione Social Image:", err);
+  } finally {
+    loading.value = false;
+  }
+};
 
-    const filename =
-      variant === "social"
-        ? "best-ride-social.png"
-        : "best-ride-coach-report.png";
-    const file = new File([blob], filename, { type: "image/png" });
-
-    if (
-      navigator.share &&
-      navigator.canShare &&
-      navigator.canShare({ files: [file] })
-    ) {
-      await navigator.share({ files: [file], title: "Best Ride" });
-      appToast.success(t("notifications.activityShared"), {
-        toastId: `activity-${variant}-shared`,
-      });
+const handleCoachShare = async (format: "png" | "pdf") => {
+  try {
+    loading.value = true;
+    if (format === "png") {
+      await generateCoachImage();
     } else {
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = filename;
-      link.click();
-      setTimeout(() => URL.revokeObjectURL(url), 0);
-      appToast.success(t("notifications.activityDownloaded"), {
-        toastId: `activity-${variant}-downloaded`,
-      });
+      await generateCoachPdf(
+        props.activityData.activity?.name || "activity-report",
+      );
     }
   } catch (err) {
-    if (isCancelledAction(err)) return;
-    console.error("Errore generazione immagine:", err);
-    appToast.error(null, t("notifications.shareFailed"), {
-      toastId: `activity-${variant}-share-failed`,
-    });
+    console.error("Errore generazione Coach Report:", err);
   } finally {
-    generating.value = null;
+    loading.value = false;
   }
-}
+};
 </script>
 
 <style scoped>
-.share-section {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-.share-btn {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 18px;
-  border-radius: 10px;
-  font-weight: 600;
-  font-size: 13px;
-  cursor: pointer;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  color: var(--text);
-}
-.share-btn:hover:not(:disabled) {
-  border-color: var(--accent);
-}
-.share-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-.share-btn.coach {
-  border-color: var(--accent);
-  color: var(--accent-strong);
-}
-@media (max-width: 480px) {
-  .share-section {
-    flex-direction: column;
-  }
+.share-activity-container {
+  grid-column: 1 / -1;
+  margin-bottom: 1rem;
 }
 </style>

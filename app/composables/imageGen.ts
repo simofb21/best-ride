@@ -1,384 +1,401 @@
-function formatDuration(totalSeconds: number): string {
-  const h = Math.floor(totalSeconds / 3600);
-  const m = Math.floor((totalSeconds % 3600) / 60);
-  const s = totalSeconds % 60;
-  return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+import html2canvas from "html2canvas";
+
+function formatDuration(seconds: number): string {
+  if (!seconds) return "00:00";
+  const h = Math.floor(seconds / 3600);
+  const m = Math.floor((seconds % 3600) / 60);
+  const s = Math.floor(seconds % 60);
+  return h > 0
+    ? `${h}h ${m.toString().padStart(2, "0")}m`
+    : `${m}m ${s.toString().padStart(2, "0")}s`;
 }
 
-function canvasToBlob(canvas: HTMLCanvasElement): Promise<Blob> {
-  return new Promise((resolve, reject) => {
-    canvas.toBlob((blob) => {
-      if (blob) resolve(blob);
-      else reject(new Error("Canvas export failed"));
-    }, "image/png");
-  });
+function hexToRgba(hex: string, alpha: number): string {
+  let c = hex.replace("#", "").trim();
+  if (c.length === 3)
+    c = c
+      .split("")
+      .map((x) => x + x)
+      .join("");
+  if (c.length === 8) c = c.substring(0, 6);
+  const num = parseInt(c, 16);
+  if (isNaN(num)) return `rgba(13, 19, 15, ${alpha})`;
+  const r = (num >> 16) & 255;
+  const g = (num >> 8) & 255;
+  const b = num & 255;
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
-// ─── GPS track ──────────────────────────────────────────────
-
-function drawGpsTrack(
+/**
+ * Disegna la mappa GPS con effetto Neon ad Altissimo Contrasto
+ */
+function drawGpsPolyline(
   ctx: CanvasRenderingContext2D,
-  gpsTrack: Array<{ lat: number; lng: number }>,
-  x: number,
-  y: number,
+  gpsTrack: any[],
   width: number,
   height: number,
+  neonColor: string,
 ) {
-  // Sfondo mappa
-  ctx.fillStyle = "#f0fdf4";
+  if (!gpsTrack || gpsTrack.length < 2) return;
+
+  const points: [number, number][] = gpsTrack.map((pt) =>
+    Array.isArray(pt) ? [pt[0], pt[1]] : [pt.lat, pt.lng],
+  );
+
+  let minLat = Infinity,
+    maxLat = -Infinity;
+  let minLng = Infinity,
+    maxLng = -Infinity;
+
+  points.forEach(([lat, lng]) => {
+    if (lat < minLat) minLat = lat;
+    if (lat > maxLat) maxLat = lat;
+    if (lng < minLng) minLng = lng;
+    if (lng > maxLng) maxLng = lng;
+  });
+
+  const padding = 100;
+  const drawWidth = width - padding * 2;
+  const drawHeight = height - padding * 2;
+
+  const deltaLng = maxLng - minLng || 0.0001;
+  const deltaLat = maxLat - minLat || 0.0001;
+
+  const scale = Math.min(drawWidth / deltaLng, drawHeight / deltaLat);
+  const offsetX = (width - deltaLng * scale) / 2;
+  const offsetY = (height - deltaLat * scale) / 2;
+
+  ctx.save();
+
+  // 1. Alone/Glow esterno molto marcato
+  ctx.shadowColor = neonColor;
+  ctx.shadowBlur = 45;
+  ctx.strokeStyle = neonColor;
+  ctx.lineWidth = 14;
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+
   ctx.beginPath();
-  ctx.roundRect(x, y, width, height, 16);
-  ctx.fill();
-  ctx.strokeStyle = "#bbf7d0";
-  ctx.lineWidth = 1;
+  points.forEach(([lat, lng], idx) => {
+    const x = offsetX + (lng - minLng) * scale;
+    const y = height - (offsetY + (lat - minLat) * scale);
+
+    if (idx === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  });
   ctx.stroke();
 
-  if (!gpsTrack || gpsTrack.length < 2) {
-    ctx.fillStyle = "#6b7280";
-    ctx.font = "24px -apple-system, sans-serif";
-    ctx.textAlign = "center";
-    ctx.fillText("No GPS data", x + width / 2, y + height / 2);
-    ctx.textAlign = "left";
-    return;
-  }
-
-  const lats = gpsTrack.map((p) => p.lat);
-  const lngs = gpsTrack.map((p) => p.lng);
-  const minLat = Math.min(...lats);
-  const maxLat = Math.max(...lats);
-  const minLng = Math.min(...lngs);
-  const maxLng = Math.max(...lngs);
-
-  const pad = 32;
-  const mapW = width - pad * 2;
-  const mapH = height - pad * 2;
-  const latRange = maxLat - minLat || 0.001;
-  const lngRange = maxLng - minLng || 0.001;
-  const aspectGeo = lngRange / latRange;
-  const aspectMap = mapW / mapH;
-
-  let scaleX: number, scaleY: number;
-  let offsetX = 0,
-    offsetY = 0;
-
-  if (aspectGeo > aspectMap) {
-    scaleX = mapW / lngRange;
-    scaleY = scaleX;
-    offsetY = (mapH - latRange * scaleY) / 2;
-  } else {
-    scaleY = mapH / latRange;
-    scaleX = scaleY;
-    offsetX = (mapW - lngRange * scaleX) / 2;
-  }
-
-  function toCanvas(lat: number, lng: number): [number, number] {
-    return [
-      x + pad + offsetX + (lng - minLng) * scaleX,
-      y + pad + offsetY + (maxLat - lat) * scaleY,
-    ];
-  }
-
-  const step = Math.max(1, Math.floor(gpsTrack.length / 500));
-  const sampled = gpsTrack.filter((_, i) => i % step === 0);
-
-  // Traccia con ombra
-  ctx.save();
-  ctx.shadowColor = "rgba(22, 163, 74, 0.4)";
-  ctx.shadowBlur = 8;
-  ctx.beginPath();
-  ctx.strokeStyle = "#16a34a";
+  // 2. Anima interna brillante (effetto tubo neon)
+  ctx.shadowBlur = 5;
+  ctx.strokeStyle = "#ffffff";
   ctx.lineWidth = 4;
-  ctx.lineJoin = "round";
-  ctx.lineCap = "round";
-  sampled.forEach((p, i) => {
-    const [cx, cy] = toCanvas(p.lat, p.lng);
-    if (i === 0) ctx.moveTo(cx, cy);
-    else ctx.lineTo(cx, cy);
-  });
+  ctx.stroke();
+
+  ctx.restore();
+}
+
+export async function generateSocialImage(
+  activity: any,
+  gpsTrack: any[] | undefined,
+  currentLocale: string = "it",
+) {
+  const canvas = document.createElement("canvas");
+  canvas.width = 1080;
+  canvas.height = 1920;
+  const ctx = canvas.getContext("2d");
+  if (!ctx || !activity) return;
+
+  // Legge le variabili CSS del tema
+  const style = getComputedStyle(document.documentElement);
+  const getVar = (name: string, fallback: string) =>
+    style.getPropertyValue(name).trim() || fallback;
+
+  const bgColor = getVar("--bg", "#000000");
+  const surfaceColor = getVar("--surface", "#0d130f");
+  const borderColor = getVar("--border", "#22302a");
+  const textColor = getVar("--text", "#ffffff");
+  const textMutedColor = getVar("--text-muted", "#8fa196");
+  const accentColor = getVar("--accent", "#22c55e");
+
+  // Colore Neon ultra acceso per la traccia GPS (Cyan / Verde brillante)
+  const neonMapColor = "#00f0ff";
+
+  // Card semi-trasparenti per far risaltare la traccia
+  const cardBg = hexToRgba(surfaceColor, 0.65);
+  const cardBorder = hexToRgba(borderColor, 0.75);
+
+  const isIt = currentLocale.startsWith("it");
+  const labels = {
+    distance: isIt ? "DISTANZA" : "DISTANCE",
+    time: isIt ? "TEMPO" : "TIME",
+    avgSpeed: isIt ? "VELOCITÀ MEDIA" : "AVG SPEED",
+    avgPower: isIt ? "POTENZA MEDIA" : "AVG POWER",
+    fallbackTitle: isIt ? "Attività Ciclismo" : "Cycling Activity",
+  };
+
+  // Sfondo scuro
+  ctx.fillStyle = bgColor;
+  ctx.fillRect(0, 0, 1080, 1920);
+
+  // Disegno della traccia GPS in primissimo piano
+  if (gpsTrack && gpsTrack.length > 0) {
+    drawGpsPolyline(ctx, gpsTrack, 1080, 1920, neonMapColor);
+  }
+
+  // Gradiente di sfondo minimalista per mantenere il contrasto
+  const overlay = ctx.createLinearGradient(0, 0, 0, 1920);
+  overlay.addColorStop(0, hexToRgba(bgColor, 0.7));
+  overlay.addColorStop(0.5, hexToRgba(bgColor, 0.15));
+  overlay.addColorStop(1, hexToRgba(bgColor, 0.75));
+  ctx.fillStyle = overlay;
+  ctx.fillRect(0, 0, 1080, 1920);
+
+  // HEADER & TITOLO PERSONALIZZATO DALL'UTENTE
+  ctx.textAlign = "center";
+
+  ctx.fillStyle = accentColor;
+  ctx.font = "bold 44pt Inter, sans-serif";
+  ctx.fillText("BEST RIDE", 540, 150);
+
+  // Recupera il titolo reale impostato dall'utente
+  const userTitle =
+    activity.title ||
+    activity.name ||
+    activity.custom_name ||
+    activity.activity_name ||
+    labels.fallbackTitle;
+
+  ctx.fillStyle = textColor;
+  ctx.font = "bold 48pt Inter, sans-serif";
+  const displayTitle =
+    userTitle.length > 24 ? userTitle.substring(0, 22) + "..." : userTitle;
+  ctx.fillText(displayTitle, 540, 240);
+
+  // Separatore
+  ctx.strokeStyle = cardBorder;
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(180, 290);
+  ctx.lineTo(900, 290);
+  ctx.stroke();
+
+  // CARD DISTANZA
+  const distMeters = activity.distance || 0;
+  const distanceKm = (
+    distMeters > 100 ? distMeters / 1000 : distMeters
+  ).toFixed(2);
+
+  drawCard(ctx, 120, 340, 840, 360, cardBg, accentColor);
+
+  ctx.fillStyle = textMutedColor;
+  ctx.font = "600 30pt Inter, sans-serif";
+  ctx.fillText(labels.distance, 540, 415);
+
+  ctx.fillStyle = textColor;
+  ctx.font = "bold 115pt Inter, sans-serif";
+  ctx.fillText(distanceKm, 540, 580);
+
+  ctx.fillStyle = accentColor;
+  ctx.font = "bold 40pt Inter, sans-serif";
+  ctx.fillText("KM", 540, 650);
+
+  // STATISTICHE SECONDARIE
+  const movingTime =
+    activity.moving_time || activity.duration || activity.elapsed_time || 0;
+  const timeStr = formatDuration(movingTime);
+
+  let rawSpeed = activity.average_speed || 0;
+  if (rawSpeed > 0 && rawSpeed < 20) rawSpeed = rawSpeed * 3.6;
+  const speedStr = rawSpeed.toFixed(1);
+
+  const avgWatts = activity.average_watts;
+  const hasPower = Boolean(avgWatts && avgWatts > 0);
+
+  if (hasPower) {
+    drawStatCard(
+      ctx,
+      120,
+      740,
+      840,
+      210,
+      labels.time,
+      timeStr,
+      cardBg,
+      cardBorder,
+      textMutedColor,
+      textColor,
+    );
+    drawStatCard(
+      ctx,
+      120,
+      990,
+      840,
+      210,
+      labels.avgSpeed,
+      `${speedStr} km/h`,
+      cardBg,
+      cardBorder,
+      textMutedColor,
+      textColor,
+    );
+    drawStatCard(
+      ctx,
+      120,
+      1240,
+      840,
+      210,
+      labels.avgPower,
+      `${Math.round(avgWatts)} W`,
+      cardBg,
+      cardBorder,
+      textMutedColor,
+      textColor,
+    );
+  } else {
+    drawStatCard(
+      ctx,
+      120,
+      780,
+      840,
+      260,
+      labels.time,
+      timeStr,
+      cardBg,
+      cardBorder,
+      textMutedColor,
+      textColor,
+    );
+    drawStatCard(
+      ctx,
+      120,
+      1080,
+      840,
+      260,
+      labels.avgSpeed,
+      `${speedStr} km/h`,
+      cardBg,
+      cardBorder,
+      textMutedColor,
+      textColor,
+    );
+  }
+
+  // FOOTER
+  ctx.fillStyle = textMutedColor;
+  ctx.font = "500 28pt Inter, sans-serif";
+  ctx.fillText("best-ride.vercel.app", 540, 1800);
+
+  downloadCanvas(canvas, `${userTitle}-social.png`);
+}
+
+function drawCard(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  w: number,
+  h: number,
+  bg: string,
+  border: string,
+) {
+  ctx.save();
+  ctx.fillStyle = bg;
+  ctx.strokeStyle = border;
+  ctx.lineWidth = 3;
+
+  ctx.beginPath();
+  const r = 24;
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+  ctx.lineTo(x + w, y + h - r);
+  ctx.quadraticCurveTo(x + w, y, x + w - r, y + h);
+  ctx.lineTo(x + r, y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+  ctx.lineTo(x, y + r);
+  ctx.quadraticCurveTo(x, y, x + r, y);
+  ctx.closePath();
+
+  ctx.fill();
   ctx.stroke();
   ctx.restore();
-
-  // Punto start
-  const [sx, sy] = toCanvas(gpsTrack[0]!.lat, gpsTrack[0]!.lng);
-  ctx.beginPath();
-  ctx.arc(sx, sy, 8, 0, Math.PI * 2);
-  ctx.fillStyle = "#22c55e";
-  ctx.fill();
-  ctx.strokeStyle = "#fff";
-  ctx.lineWidth = 2.5;
-  ctx.stroke();
-
-  // Punto end
-  const last = gpsTrack[gpsTrack.length - 1]!;
-  const [ex, ey] = toCanvas(last.lat, last.lng);
-  ctx.beginPath();
-  ctx.arc(ex, ey, 8, 0, Math.PI * 2);
-  ctx.fillStyle = "#15803d";
-  ctx.fill();
-  ctx.strokeStyle = "#fff";
-  ctx.lineWidth = 2.5;
-  ctx.stroke();
 }
 
-// ─── SOCIAL IMAGE (1080x1920 — Storie Instagram) ────────────
-// Layout compatto, nessuno spazio bianco: la mappa occupa tutto
-// lo spazio rimanente dopo le statistiche, espandendosi per riempire.
+function drawStatCard(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  w: number,
+  h: number,
+  label: string,
+  value: string,
+  bg: string,
+  border: string,
+  labelColor: string,
+  valueColor: string,
+) {
+  drawCard(ctx, x, y, w, h, bg, border);
 
-export async function generateSocialImage(data: ActivityData): Promise<Blob> {
-  const W = 1080;
-  const H = 1920;
-  const PAD = 56;
-
-  const canvas = document.createElement("canvas");
-  canvas.width = W;
-  canvas.height = H;
-  const ctx = canvas.getContext("2d")!;
-
-  // Sfondo bianco
-  ctx.fillStyle = "#ffffff";
-  ctx.fillRect(0, 0, W, H);
-
-  // Header verde pieno
-  const headerH = 140;
-  ctx.fillStyle = "#22c55e";
-  ctx.fillRect(0, 0, W, headerH);
-
-  // Logo e data nell'header
-  ctx.fillStyle = "#ffffff";
-  ctx.font = "bold 44px -apple-system, sans-serif";
   ctx.textAlign = "center";
-  ctx.fillText("BEST RIDE", W / 2, 72);
-  ctx.font = "24px -apple-system, sans-serif";
-  ctx.fillText(
-    new Date().toLocaleDateString("it-IT", {
-      day: "2-digit",
-      month: "long",
-      year: "numeric",
-    }),
-    W / 2,
-    116,
-  );
-  ctx.textAlign = "left";
+  ctx.fillStyle = labelColor;
+  ctx.font = "600 26pt Inter, sans-serif";
+  ctx.fillText(label, x + w / 2, y + 60);
 
-  const a = data.activity;
-
-  // ── 6 stat cards in griglia 2x3 ──
-  const statsY = headerH + 40;
-  const cardW = (W - PAD * 2 - 20) / 2;
-  const cardH = 130;
-
-  const stats = [
-    { label: "Distanza", value: a.distance.toFixed(1), unit: "km" },
-    { label: "Durata", value: formatDuration(a.duration), unit: "" },
-    {
-      label: "Velocità Media",
-      value: a.average_speed.toFixed(1),
-      unit: "km/h",
-    },
-    { label: "Potenza Media", value: String(a.average_watts), unit: "W" },
-    {
-      label: "Dislivello",
-      value: String(Math.round(a.elevation_gain)),
-      unit: "m",
-    },
-    { label: "Potenza NP", value: String(a.normalized_power), unit: "W" },
-  ];
-
-  stats.forEach((stat, i) => {
-    const col = i % 2;
-    const row = Math.floor(i / 2);
-    const cx = PAD + col * (cardW + 20);
-    const cy = statsY + row * (cardH + 16);
-
-    // Card background
-    ctx.fillStyle = "#f0fdf4";
-    ctx.beginPath();
-    ctx.roundRect(cx, cy, cardW, cardH, 14);
-    ctx.fill();
-    ctx.strokeStyle = "#bbf7d0";
-    ctx.lineWidth = 1.5;
-    ctx.stroke();
-
-    // Label
-    ctx.fillStyle = "#6b7280";
-    ctx.font = "22px -apple-system, sans-serif";
-    ctx.textAlign = "center";
-    ctx.fillText(stat.label, cx + cardW / 2, cy + 36);
-
-    // Value
-    ctx.fillStyle = "#15803d";
-    ctx.font = "bold 40px -apple-system, sans-serif";
-    ctx.fillText(stat.value, cx + cardW / 2, cy + 86);
-
-    // Unit
-    ctx.fillStyle = "#9ca3af";
-    ctx.font = "22px -apple-system, sans-serif";
-    ctx.fillText(stat.unit, cx + cardW / 2, cy + 116);
-
-    ctx.textAlign = "left";
-  });
-
-  // ── Mappa GPS — occupa tutto lo spazio rimanente ──
-  const mapY = statsY + 3 * (cardH + 16) + 24;
-  const footerH = 90;
-  const mapH = H - mapY - footerH - 24;
-
-  drawGpsTrack(ctx, data.gpsTrack || [], PAD, mapY, W - PAD * 2, mapH);
-
-  // Footer verde
-  ctx.fillStyle = "#22c55e";
-  ctx.fillRect(0, H - footerH, W, footerH);
-  ctx.fillStyle = "#ffffff";
-  ctx.font = "bold 28px -apple-system, sans-serif";
-  ctx.textAlign = "center";
-  ctx.fillText("best-ride.vercel.app", W / 2, H - footerH / 2 + 10);
-  ctx.textAlign = "left";
-
-  return canvasToBlob(canvas);
+  ctx.fillStyle = valueColor;
+  ctx.font = "bold 52pt Inter, sans-serif";
+  ctx.fillText(value, x + w / 2, y + h - 45);
 }
 
-// ─── COACH IMAGE — screenshot reale di activity-info ────────
-
-export async function generateCoachImage(
-  data: ActivityData,
-  sourceElement?: HTMLElement,
-): Promise<Blob> {
-  // Se viene passato l'elemento del DOM, usa html2canvas per catturarlo
-  if (sourceElement) {
-    const html2canvas = (await import("html2canvas")).default;
-
-    const capturedCanvas = await html2canvas(sourceElement, {
-      scale: 2, // alta risoluzione
-      useCORS: true,
-      backgroundColor: "#ffffff",
-      logging: false,
-      width: sourceElement.scrollWidth,
-      height: sourceElement.scrollHeight,
-      windowWidth: sourceElement.scrollWidth,
-      windowHeight: sourceElement.scrollHeight,
-    });
-
-    return canvasToBlob(capturedCanvas);
-  }
-
-  // Fallback: genera un'immagine testuale con tutti i dati
-  const W = 1080;
-  const PAD = 56;
-  const a = data.activity;
-  const t = data.training_load;
-
-  const allStats = [
-    { section: "DATI GENERALI" },
-    { label: "Distanza", value: `${a.distance.toFixed(2)} km` },
-    { label: "Durata", value: formatDuration(a.duration) },
-    { label: "Dislivello", value: `${Math.round(a.elevation_gain)} m` },
-    { label: "Velocità Media", value: `${a.average_speed.toFixed(1)} km/h` },
-    { label: "Velocità Massima", value: `${a.max_speed.toFixed(1)} km/h` },
-    { section: "POTENZA" },
-    { label: "Potenza Media", value: `${a.average_watts} W` },
-    { label: "Potenza Massima", value: `${a.max_watts} W` },
-    { label: "Potenza Normalizzata", value: `${a.normalized_power} W` },
-    { label: "Energia", value: `${a.kilojoules} kJ` },
-    { label: "Calorie", value: `${a.kcalories} kcal` },
-    {
-      label: "Fattore Intensità",
-      value: t ? t.intensity_factor.toFixed(2) : "—",
-    },
-    { label: "Stress Allenamento", value: t ? String(Math.round(t.tss)) : "—" },
-    { section: "FREQUENZA CARDIACA" },
-    { label: "FC Media", value: `${a.average_heartrate} bpm` },
-    { label: "FC Massima", value: `${a.max_heartrate} bpm` },
-    { section: "ALTRO" },
-    { label: "Cadenza Media", value: `${a.average_cadence} rpm` },
-    {
-      label: "Temperatura Media",
-      value:
-        a.average_temperature != null ? `${a.average_temperature} °C` : "—",
-    },
-  ];
-
-  // Calcola altezza necessaria
-  let totalH = 160; // header
-  allStats.forEach((item) => {
-    if ("section" in item) totalH += 60;
-    else totalH += 48;
+export async function generateCoachImage() {
+  const pageElement =
+    document.querySelector(".activity-info-page") || document.body;
+  const canvas = await html2canvas(pageElement as HTMLElement, {
+    scale: 2,
+    useCORS: true,
+    logging: false,
+    ignoreElements: (el) => el.hasAttribute("data-export-ignore"),
   });
-  totalH += 200; // mappa GPS
-  totalH += 100; // footer
-  totalH = Math.max(totalH, 1920);
+  downloadCanvas(canvas, "coach-report.png");
+}
 
-  const canvas = document.createElement("canvas");
-  canvas.width = W;
-  canvas.height = totalH;
-  const ctx = canvas.getContext("2d")!;
+export async function generateCoachPdf(filename: string = "coach-report") {
+  const { jsPDF } = await import("jspdf");
+  const pageElement = (document.querySelector(".activity-info-page") ||
+    document.body) as HTMLElement;
 
-  // Sfondo
-  ctx.fillStyle = "#ffffff";
-  ctx.fillRect(0, 0, W, totalH);
-
-  // Header
-  ctx.fillStyle = "#22c55e";
-  ctx.fillRect(0, 0, W, 120);
-  ctx.fillStyle = "#ffffff";
-  ctx.font = "bold 44px -apple-system, sans-serif";
-  ctx.textAlign = "center";
-  ctx.fillText("BEST RIDE — Ride Report", W / 2, 76);
-  ctx.textAlign = "left";
-
-  let curY = 160;
-
-  const colW = (W - PAD * 2) / 2;
-
-  allStats.forEach((item) => {
-    if ("section" in item) {
-      // Intestazione sezione
-      ctx.fillStyle = "#22c55e";
-      ctx.fillRect(PAD, curY, 6, 28);
-      ctx.fillStyle = "#15803d";
-      ctx.font = "bold 24px -apple-system, sans-serif";
-      ctx.fillText(item.section, PAD + 18, curY + 22);
-      curY += 52;
-    } else {
-      // Riga stat
-      ctx.fillStyle = "#6b7280";
-      ctx.font = "20px -apple-system, sans-serif";
-      ctx.fillText(item.label!, PAD, curY);
-
-      ctx.fillStyle = "#111827";
-      ctx.font = "bold 20px -apple-system, sans-serif";
-      ctx.fillText(item.value!, PAD + colW, curY);
-
-      // Separatore leggero
-      ctx.strokeStyle = "#f3f4f6";
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.moveTo(PAD, curY + 8);
-      ctx.lineTo(W - PAD, curY + 8);
-      ctx.stroke();
-
-      curY += 44;
-    }
+  const canvas = await html2canvas(pageElement, {
+    scale: 2,
+    useCORS: true,
+    logging: false,
+    ignoreElements: (el) => el.hasAttribute("data-export-ignore"),
   });
 
-  // Mappa GPS se disponibile
-  if (data.gpsTrack && data.gpsTrack.length > 2) {
-    curY += 16;
-    ctx.fillStyle = "#15803d";
-    ctx.font = "bold 24px -apple-system, sans-serif";
-    ctx.fillText("PERCORSO", PAD, curY);
-    curY += 16;
-    drawGpsTrack(ctx, data.gpsTrack, PAD, curY, W - PAD * 2, 300);
-    curY += 316;
+  const imgData = canvas.toDataURL("image/jpeg", 0.95);
+  const pdf = new jsPDF("p", "mm", "a4");
+  const pdfWidth = pdf.internal.pageSize.getWidth();
+  const pdfHeight = pdf.internal.pageSize.getHeight();
+
+  const imgWidth = pdfWidth;
+  const imgHeight = (canvas.height * pdfWidth) / canvas.width;
+
+  let heightLeft = imgHeight;
+  let position = 0;
+
+  pdf.addImage(imgData, "JPEG", 0, position, imgWidth, imgHeight);
+  heightLeft -= pdfHeight;
+
+  while (heightLeft > 0) {
+    position = heightLeft - imgHeight;
+    pdf.addPage();
+    pdf.addImage(imgData, "JPEG", 0, position, imgWidth, imgHeight);
+    heightLeft -= pdfHeight;
   }
 
-  // Footer
-  ctx.fillStyle = "#22c55e";
-  ctx.fillRect(0, totalH - 80, W, 80);
-  ctx.fillStyle = "#ffffff";
-  ctx.font = "bold 26px -apple-system, sans-serif";
-  ctx.textAlign = "center";
-  ctx.fillText("BEST RIDE — best-ride.vercel.app", W / 2, totalH - 28);
-  ctx.textAlign = "left";
+  pdf.save(`${filename}.pdf`);
+}
 
-  return canvasToBlob(canvas);
+function downloadCanvas(canvas: HTMLCanvasElement, fileName: string) {
+  const link = document.createElement("a");
+  link.download = fileName;
+  link.href = canvas.toDataURL("image/png");
+  link.click();
 }
