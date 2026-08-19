@@ -96,10 +96,22 @@
 definePageMeta({ middleware: "auth" });
 import RecordCategorySection from "~/components/records/RecordCategorySection.vue";
 import { RECORD_METRICS } from "@/../shared/utils/recordMetric";
-import { ref, computed, watch } from "vue";
+import { ref, computed, onMounted } from "vue";
+
+const { t } = useI18n();
+const appToast = useAppToast();
 const records = ref<Record<string, any[]>>({});
 const errorMessage = ref("");
-import { onMounted } from "vue";
+
+function reportError(error: unknown, fallbackKey: string, toastId: string) {
+  const fallback = t(fallbackKey);
+  errorMessage.value = fallback;
+  appToast.error(error, fallback, { toastId });
+}
+
+function warnRequiredFields(toastId: string) {
+  appToast.warning(t("notifications.requiredFields"), { toastId });
+}
 
 onMounted(() => {
   document.title = "My Records - Best Ride";
@@ -164,9 +176,13 @@ async function fetchRecords() {
     }
 
     records.value = normalized;
-  } catch (err: any) {
-    errorMessage.value = "Impossible to load records.";
-    console.error("Errore nel recupero dei record:", err);
+    errorMessage.value = "";
+  } catch (err: unknown) {
+    reportError(
+      err,
+      "notifications.loadRecordsFailed",
+      "records-load-failed",
+    );
   }
 }
 onMounted(fetchRecords);
@@ -177,6 +193,11 @@ async function saveEntry(
   rank: number,
   entry: { value: number; date: string; description: string | null },
 ) {
+  if (!metricKey || rank < 1 || !entry.date || !Number.isFinite(entry.value)) {
+    warnRequiredFields("record-update-required");
+    return;
+  }
+
   errorMessage.value = "";
   try {
     await $fetch("/api/records", {
@@ -189,10 +210,12 @@ async function saveEntry(
         description: entry.description,
       },
     });
+    appToast.success(t("notifications.recordUpdated"), {
+      toastId: "record-updated",
+    });
     await fetchRecords();
-  } catch (err: any) {
-    errorMessage.value =
-      err?.data?.message || "Something went wrong while saving";
+  } catch (err: unknown) {
+    reportError(err, "notifications.genericError", "record-update-failed");
   }
 }
 
@@ -212,7 +235,14 @@ function openAddForm(metricKey: string) {
 }
 
 async function submitNewEntry() {
-  if (!addingMetric.value || !newEntry.value.entryDate) return;
+  if (
+    !addingMetric.value ||
+    !newEntry.value.entryDate ||
+    !Number.isFinite(newEntry.value.value)
+  ) {
+    warnRequiredFields("record-create-required");
+    return;
+  }
 
   errorMessage.value = "";
   try {
@@ -226,10 +256,12 @@ async function submitNewEntry() {
       },
     });
     showAddDialog.value = false;
+    appToast.success(t("notifications.recordCreated"), {
+      toastId: "record-created",
+    });
     await fetchRecords();
-  } catch (err: any) {
-    errorMessage.value =
-      err?.data?.message || "Something went wrong while saving";
+  } catch (err: unknown) {
+    reportError(err, "notifications.genericError", "record-create-failed");
   }
 }
 
@@ -243,7 +275,10 @@ function confirmDelete(metricKey: string, rank: number) {
 }
 
 async function performDelete() {
-  if (!pendingDelete.value) return;
+  if (!pendingDelete.value) {
+    reportError(null, "notifications.genericError", "record-delete-missing");
+    return;
+  }
 
   errorMessage.value = "";
   try {
@@ -253,10 +288,12 @@ async function performDelete() {
     );
     showDeleteDialog.value = false;
     pendingDelete.value = null;
+    appToast.success(t("notifications.recordDeleted"), {
+      toastId: "record-deleted",
+    });
     await fetchRecords();
-  } catch (err: any) {
-    errorMessage.value =
-      err?.data?.message || "Something went wrong while deleting";
+  } catch (err: unknown) {
+    reportError(err, "notifications.genericError", "record-delete-failed");
     showDeleteDialog.value = false;
   }
 }

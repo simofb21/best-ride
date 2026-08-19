@@ -235,15 +235,32 @@
 <script setup lang="ts">
 const { loggedIn, user, clear } = useUserSession();
 const { currentLanguage, languages, changeLanguage } = useLanguage();
+const { t } = useI18n();
+const appToast = useAppToast();
 const colorMode = useColorMode();
 const drawer = ref(false);
+const loggingOut = ref(false);
 function toggleTheme() {
   colorMode.preference = colorMode.value === "dark" ? "light" : "dark";
 }
 async function handleLogout() {
-  await clear();
-  drawer.value = false;
-  navigateTo("/login");
+  if (loggingOut.value) return;
+  loggingOut.value = true;
+
+  try {
+    await clear();
+    drawer.value = false;
+    appToast.success(t("notifications.logoutSuccess"), {
+      toastId: "logout-success",
+    });
+    await navigateTo("/login");
+  } catch (error) {
+    appToast.error(error, t("notifications.logoutFailed"), {
+      toastId: "logout-failed",
+    });
+  } finally {
+    loggingOut.value = false;
+  }
 }
 </script>
 <style scoped>

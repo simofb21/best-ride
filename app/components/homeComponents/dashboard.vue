@@ -74,6 +74,8 @@
 
 <script setup lang="ts">
 const { user } = useUserSession();
+const { t } = useI18n();
+const appToast = useAppToast();
 
 interface ProfileStats {
   weightKg: number | null;
@@ -88,6 +90,10 @@ const loading = ref(true);
 onMounted(async () => {
   try {
     stats.value = await $fetch("/api/profile");
+  } catch (error) {
+    appToast.error(error, t("notifications.loadDashboardFailed"), {
+      toastId: "dashboard-load-failed",
+    });
   } finally {
     loading.value = false;
   }

@@ -75,6 +75,7 @@ import ShareActivityButton from "~/components/activity/ShareActivity.vue";
 import AiTrainingAnalysis from "~/components/activity/AiTrainingAnalysis.vue";
 definePageMeta({ middleware: "auth" });
 const { t } = useI18n();
+const appToast = useAppToast();
 useHead(() => ({ title: `${t("activity.title")} - Best Ride` }));
 const pageRef = ref<HTMLElement | null>(null);
 
@@ -85,8 +86,20 @@ const loadError = ref("");
 onMounted(async () => {
   try {
     data.value = await $fetch("/api/activities/last");
-  } catch {
-    loadError.value = t("activity.notFound");
+  } catch (error: any) {
+    const status =
+      error?.statusCode ??
+      error?.status ??
+      error?.response?.status ??
+      error?.response?.statusCode;
+    if (status === 404) {
+      loadError.value = t("activity.notFound");
+    } else {
+      loadError.value = t("notifications.loadActivityFailed");
+      appToast.error(error, loadError.value, {
+        toastId: "activity-load-failed",
+      });
+    }
   } finally {
     loading.value = false;
   }

@@ -60,7 +60,7 @@
 
       <button
         class="analyze-btn"
-        :disabled="!selectedFile || loading"
+        :disabled="loading"
         @click.stop="uploadFile"
       >
         <span v-if="loading" class="spinner" />
@@ -198,7 +198,7 @@
 
           <button
             class="confirm-btn"
-            :disabled="confirming || !canConfirm"
+            :disabled="confirming"
             @click="confirmSaveActivity"
           >
             <span v-if="confirming" class="spinner" />
@@ -230,10 +230,12 @@ const fileInput = ref<HTMLInputElement | null>(null);
 const activityName = ref("");
 const perceivedExertion = ref<number | null>(null);
 const trainingNotes = ref("");
+const trainingNotesRecommendationShown = ref(false);
 
 const MAX_SIZE_MB = 25;
 const RPE_OPTIONS = Array.from({ length: 10 }, (_, index) => index + 1);
 const { t, locale } = useI18n();
+const appToast = useAppToast();
 useHead(() => ({ title: `${t("upload.title")} - Best Ride` }));
 
 const canConfirm = computed(
@@ -248,6 +250,7 @@ function resetActivityFeedback() {
   activityName.value = "";
   perceivedExertion.value = null;
   trainingNotes.value = "";
+  trainingNotesRecommendationShown.value = false;
 }
 
 function defaultActivityName(activityDate: unknown): string {
@@ -275,11 +278,17 @@ function setFile(file: File | null) {
   const name = file.name.toLowerCase();
   if (!name.endsWith(".fit") && !name.endsWith(".zip")) {
     error.value = t("upload.errors.invalidType");
+    appToast.error(error.value, error.value, {
+      toastId: "upload-invalid-file-type",
+    });
     return;
   }
 
   if (file.size > MAX_SIZE_MB * 1024 * 1024) {
     error.value = t("upload.errors.tooLarge", { size: MAX_SIZE_MB });
+    appToast.error(error.value, error.value, {
+      toastId: "upload-file-too-large",
+    });
     return;
   }
 
@@ -303,6 +312,7 @@ function onDrop(e: DragEvent) {
 }
 
 function resetUpload() {
+  const hadUpload = selectedFile.value != null || result.value != null;
   const analysisId = result.value?.analysisId;
   if (typeof analysisId === "string") {
     void $fetch("/api/activities/pending", {
@@ -318,10 +328,20 @@ function resetUpload() {
   resetActivityFeedback();
   error.value = "";
   if (fileInput.value) fileInput.value.value = "";
+  if (hadUpload) {
+    appToast.info(t("notifications.uploadDiscarded"), {
+      toastId: "upload-discarded",
+    });
+  }
 }
 
 async function uploadFile() {
-  if (!selectedFile.value) return;
+  if (!selectedFile.value) {
+    appToast.warning(t("notifications.selectActivityFile"), {
+      toastId: "upload-file-required",
+    });
+    return;
+  }
 
   loading.value = true;
   error.value = "";
@@ -340,22 +360,51 @@ async function uploadFile() {
     perceivedExertion.value = null;
     trainingNotes.value = "";
     result.value = uploadResult;
+    appToast.success(t("notifications.activityAnalyzed"), {
+      toastId: "upload-activity-analyzed",
+    });
   } catch (err: any) {
-    error.value =
-      err?.data?.message || t("upload.errors.analysis");
+    const fallback = t("upload.errors.analysis");
+    error.value = fallback;
+    appToast.error(err, fallback, {
+      toastId: "upload-analysis-failed",
+    });
   } finally {
     loading.value = false;
   }
 }
 
 async function confirmSaveActivity() {
-  if (!result.value || !canConfirm.value) return;
+  if (!result.value || !canConfirm.value) {
+    appToast.warning(t("notifications.requiredFields"), {
+      toastId: "upload-feedback-required",
+    });
+    return;
+  }
+
+  if (
+    !trainingNotes.value.trim() &&
+    !trainingNotesRecommendationShown.value
+  ) {
+    appToast.warning(t("notifications.trainingNotesRecommended"), {
+      toastId: "upload-training-notes-recommended",
+    });
+    trainingNotesRecommendationShown.value = true;
+  }
 
   confirming.value = true;
   error.value = "";
 
+  let response: {
+    activityId?: string | number;
+    duplicate?: boolean;
+  };
+
   try {
-    const response = await $fetch<{ activityId?: string | number }>(
+    response = await $fetch<{
+      activityId?: string | number;
+      duplicate?: boolean;
+    }>(
       "/api/activities/confirm",
       {
         method: "POST",
@@ -367,19 +416,50 @@ async function confirmSaveActivity() {
         },
       },
     );
+    if (response.duplicate) {
+      appToast.warning(t("notifications.activityAlreadySaved"), {
+        toastId: "upload-activity-already-saved",
+      });
+    } else {
+      appToast.success(t("notifications.activitySaved"), {
+        toastId: "upload-activity-saved",
+      });
+    }
+  } catch (err: any) {
+    const isConflict =
+      err?.statusCode === 409 ||
+      err?.status === 409 ||
+      err?.response?.status === 409;
+    error.value = isConflict
+      ? t("upload.errors.confirmationConflict")
+      : t("common.saveError");
+    if (isConflict) {
+      appToast.warning(t("notifications.activityAlreadySaved"), {
+        toastId: "upload-activity-save-conflict",
+      });
+    } else {
+      appToast.error(err, error.value, {
+        toastId: "upload-activity-save-failed",
+      });
+    }
+    confirming.value = false;
+    return;
+  }
+
+  try {
     await navigateTo(
-      response?.activityId != null
+      response.activityId != null
         ? {
             path: "/activity-info",
             query: { activity: String(response.activityId) },
           }
         : "/activity-info",
     );
-  } catch (err: any) {
-    error.value =
-      err?.statusCode === 409 || err?.response?.status === 409
-        ? t("upload.errors.confirmationConflict")
-        : t("common.saveError");
+  } catch (navigationError) {
+    error.value = t("notifications.navigationFailed");
+    appToast.error(navigationError, error.value, {
+      toastId: "upload-activity-navigation-failed",
+    });
   } finally {
     confirming.value = false;
   }

@@ -21,6 +21,9 @@
 </template>
 
 <script setup lang="ts">
+import { isCancelledAction } from "~/composables/useAppToast";
+import { generateSocialImage, generateCoachImage } from "~/composables/imageGen";
+
 const props = defineProps<{
   activityData: {
     activity: any;
@@ -33,7 +36,9 @@ const props = defineProps<{
 }>();
 
 const generating = ref<"social" | "coach" | null>(null);
-import { generateSocialImage, generateCoachImage } from "~/composables/imageGen";
+const { t } = useI18n();
+const appToast = useAppToast();
+
 async function handleShare(variant: "social" | "coach") {
   generating.value = variant;
 
@@ -58,16 +63,26 @@ async function handleShare(variant: "social" | "coach") {
       navigator.canShare({ files: [file] })
     ) {
       await navigator.share({ files: [file], title: "Best Ride" });
+      appToast.success(t("notifications.activityShared"), {
+        toastId: `activity-${variant}-shared`,
+      });
     } else {
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
       link.download = filename;
       link.click();
-      URL.revokeObjectURL(url);
+      setTimeout(() => URL.revokeObjectURL(url), 0);
+      appToast.success(t("notifications.activityDownloaded"), {
+        toastId: `activity-${variant}-downloaded`,
+      });
     }
   } catch (err) {
+    if (isCancelledAction(err)) return;
     console.error("Errore generazione immagine:", err);
+    appToast.error(null, t("notifications.shareFailed"), {
+      toastId: `activity-${variant}-share-failed`,
+    });
   } finally {
     generating.value = null;
   }

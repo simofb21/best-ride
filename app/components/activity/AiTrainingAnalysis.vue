@@ -155,7 +155,8 @@ const props = withDefaults(
   },
 );
 
-const { locale } = useI18n();
+const { locale, t } = useI18n();
+const appToast = useAppToast();
 const report = ref<TrainingAnalysisReport | null>(
   normalizeReport(props.initialAnalysis),
 );
@@ -170,6 +171,8 @@ const requestState = ref<"idle" | "loading" | "generating" | "error">(
 );
 const pollCount = ref(0);
 let pollTimer: ReturnType<typeof setTimeout> | null = null;
+let completionNotified = false;
+let cautionsNotified = false;
 
 const localizedReport = computed(() => {
   if (!report.value) return null;
@@ -259,6 +262,24 @@ async function requestAnalysis() {
       report.value = analysis;
       requestState.value = "idle";
       pollCount.value = 0;
+      if (!completionNotified) {
+        appToast.success(t("notifications.aiAnalysisReady"), {
+          toastId: "activity-ai-analysis-ready",
+        });
+        completionNotified = true;
+      }
+
+      const localizedAnalysis = locale.value
+        .toLowerCase()
+        .startsWith("it")
+        ? analysis.it
+        : analysis.en;
+      if (localizedAnalysis.cautions.length && !cautionsNotified) {
+        appToast.warning(t("notifications.aiCautions"), {
+          toastId: "activity-ai-analysis-cautions",
+        });
+        cautionsNotified = true;
+      }
       return;
     }
 
@@ -272,6 +293,9 @@ async function requestAnalysis() {
     throw new Error("AI report was not available in time");
   } catch {
     requestState.value = "error";
+    appToast.error(null, t("notifications.aiAnalysisFailed"), {
+      toastId: "activity-ai-analysis-failed",
+    });
   }
 }
 

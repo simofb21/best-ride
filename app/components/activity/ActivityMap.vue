@@ -13,6 +13,9 @@
       <div v-if="mapError" class="no-data">
         {{ mapError }}
       </div>
+      <div v-else-if="allGpsInvalid" class="no-data">
+        {{ t("notifications.invalidGpsData") }}
+      </div>
       <div v-else-if="!normalizedPoints.length" class="no-data">
         No GPS data in this activity
       </div>
@@ -32,6 +35,8 @@ const props = defineProps<{
 const isOpen = ref(true);
 const mapContainer = ref<HTMLElement | null>(null);
 const mapError = ref("");
+const { t } = useI18n();
+const appToast = useAppToast();
 let mapInstance: any = null;
 
 const normalizedPoints = computed<[number, number][]>(() => {
@@ -58,6 +63,31 @@ const normalizedPoints = computed<[number, number][]>(() => {
     })
     .filter((point): point is [number, number] => point !== null);
 });
+
+const allGpsInvalid = computed(
+  () =>
+    Array.isArray(props.gpsTrack) &&
+    props.gpsTrack.length > 0 &&
+    normalizedPoints.value.length === 0,
+);
+let invalidGpsNotified = false;
+
+function notifyInvalidGps() {
+  if (invalidGpsNotified) return;
+  appToast.warning(t("notifications.invalidGpsData"), {
+    toastId: "activity-map-invalid-gps",
+  });
+  invalidGpsNotified = true;
+}
+
+watch(
+  allGpsInvalid,
+  (invalid) => {
+    if (invalid) notifyInvalidGps();
+    else invalidGpsNotified = false;
+  },
+  { immediate: true },
+);
 
 const toggleMap = () => {
   isOpen.value = !isOpen.value;
@@ -86,7 +116,8 @@ const initMap = async () => {
     const points = normalizedPoints.value;
 
     if (!points.length) {
-      mapError.value = "No valid GPS coordinates in this activity";
+      mapError.value = t("notifications.invalidGpsData");
+      notifyInvalidGps();
       return;
     }
 
@@ -131,7 +162,10 @@ const initMap = async () => {
     }, 200);
   } catch (error) {
     console.error("Leaflet initialization failed:", error);
-    mapError.value = "Unable to load the route map";
+    mapError.value = t("notifications.mapFailed");
+    appToast.error(null, mapError.value, {
+      toastId: "activity-map-load-failed",
+    });
   }
 };
 

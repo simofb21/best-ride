@@ -5,7 +5,7 @@
       {{ $t("deleteAccount.warning") }}
     </p>
 
-    <button class="delete-btn" @click="showConfirmDialog = true">
+    <button class="delete-btn" @click="openDeleteDialog">
       <v-icon icon="mdi-account-remove-outline" size="18" />
       {{ $t("deleteAccount.button") }}
     </button>
@@ -54,6 +54,15 @@ const loading = ref(false);
 const error = ref("");
 
 const { clear } = useUserSession();
+const { t } = useI18n();
+const appToast = useAppToast();
+
+function openDeleteDialog() {
+  showConfirmDialog.value = true;
+  appToast.warning(t("notifications.accountDeleteWarning"), {
+    toastId: "account-delete-warning",
+  });
+}
 
 function closeDialog() {
   showConfirmDialog.value = false;
@@ -69,11 +78,15 @@ async function performDelete() {
 
   try {
     await $fetch("/api/profile/delete-account", { method: "DELETE" });
+    appToast.success(t("notifications.accountDeleted"), {
+      toastId: "account-deleted",
+    });
     await clear(); // pulisce anche lo stato di sessione lato client
     await navigateTo("/");
   } catch (err: any) {
-    error.value =
-      err?.data?.message || "Something went wrong while deleting your account";
+    const fallback = t("notifications.genericError");
+    error.value = fallback;
+    appToast.error(err, fallback, { toastId: "account-delete-failed" });
     loading.value = false;
   }
 }

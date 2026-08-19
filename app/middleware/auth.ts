@@ -17,7 +17,8 @@ export default defineNuxtRouteMiddleware(async (to) => {
     }
   } catch (err) {
     console.error("Errore nel controllo consenso privacy:", err);
-    // In caso di errore imprevisto, non blocchiamo la navigazione:
-    // meglio lasciar passare che rompere l'intera app
+    // Non apriamo pagine protette senza aver verificato il consenso. La pagina
+    // di completamento gestisce il retry e mostra l'errore anche con un toast.
+    return navigateTo("/complete-profile");
   }
 });

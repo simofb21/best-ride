@@ -1,6 +1,11 @@
 // nuxt.config.ts
 export default defineNuxtConfig({
-  css: ["@mdi/font/css/materialdesignicons.min.css", "@/assets/css/theme.css"],
+  css: [
+    "vue3-toastify/dist/index.css",
+    "@mdi/font/css/materialdesignicons.min.css",
+    "@/assets/css/theme.css",
+    "@/assets/css/toasts.css",
+  ],
 
   compatibilityDate: "2025-07-15",
 

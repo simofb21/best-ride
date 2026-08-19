@@ -148,6 +148,9 @@
 import RecordCard from "~/components/records/RecordCard.vue";
 import { onMounted } from "vue";
 
+const { t } = useI18n();
+const appToast = useAppToast();
+
 onMounted(() => {
   document.title = "Custom Records - Best Ride";
 });
@@ -169,21 +172,57 @@ interface CustomRecordItem {
 
 const customRecords = ref<CustomRecordItem[]>([]);
 const errorMessage = ref("");
+
+function reportError(error: unknown, fallbackKey: string, toastId: string) {
+  const fallback = t(fallbackKey);
+  errorMessage.value = fallback;
+  appToast.error(error, fallback, { toastId });
+}
+
+function warnRequiredFields(toastId: string) {
+  const message = t("notifications.requiredFields");
+  errorMessage.value = message;
+  appToast.warning(message, { toastId });
+}
+
 async function renameRecord(recordId: number, newLabel: string) {
+  const label = newLabel.trim();
+  if (!recordId || !label) {
+    warnRequiredFields("custom-record-rename-required");
+    return;
+  }
+
   errorMessage.value = "";
   try {
     await $fetch(`/api/custom-records/${recordId}/rename`, {
       method: "PATCH",
-      body: { label: newLabel },
+      body: { label },
+    });
+    appToast.success(t("notifications.customRecordRenamed"), {
+      toastId: "custom-record-renamed",
     });
     await fetchCustomRecords();
-  } catch (err: any) {
-    errorMessage.value =
-      err?.data?.message || "Something went wrong while renaming";
+  } catch (err: unknown) {
+    reportError(
+      err,
+      "notifications.genericError",
+      "custom-record-rename-failed",
+    );
   }
 }
 async function fetchCustomRecords() {
-  customRecords.value = await $fetch("/api/custom-records");
+  try {
+    customRecords.value = await $fetch<CustomRecordItem[]>(
+      "/api/custom-records",
+    );
+    errorMessage.value = "";
+  } catch (err: unknown) {
+    reportError(
+      err,
+      "notifications.loadCustomRecordsFailed",
+      "custom-records-load-failed",
+    );
+  }
 }
 onMounted(fetchCustomRecords);
 
@@ -214,13 +253,18 @@ function openCreateForm() {
 }
 
 async function submitNewRecord() {
-  if (!newRecord.value.label.trim()) return;
+  if (!newRecord.value.label.trim()) {
+    warnRequiredFields("custom-record-create-required");
+    return;
+  }
 
   if (
     newRecord.value.unitType === "other" &&
     !newRecord.value.customUnit.trim()
   ) {
-    errorMessage.value = "Please specify the custom unit";
+    const message = t("notifications.customUnitRequired");
+    errorMessage.value = message;
+    appToast.warning(message, { toastId: "custom-unit-required" });
     return;
   }
 
@@ -235,9 +279,16 @@ async function submitNewRecord() {
       },
     });
     showCreateDialog.value = false;
+    appToast.success(t("notifications.customRecordCreated"), {
+      toastId: "custom-record-created",
+    });
     await fetchCustomRecords();
-  } catch (err: any) {
-    errorMessage.value = err?.data?.message || "Something went wrong";
+  } catch (err: unknown) {
+    reportError(
+      err,
+      "notifications.genericError",
+      "custom-record-create-failed",
+    );
   }
 }
 
@@ -247,6 +298,11 @@ async function saveEntry(
   rank: number,
   entry: CustomRecordEntry,
 ) {
+  if (!recordId || rank < 1 || !entry.date || !Number.isFinite(entry.value)) {
+    warnRequiredFields("custom-entry-update-required");
+    return;
+  }
+
   errorMessage.value = "";
   try {
     await $fetch(`/api/custom-records/${recordId}`, {
@@ -258,10 +314,16 @@ async function saveEntry(
         description: entry.description,
       },
     });
+    appToast.success(t("notifications.recordUpdated"), {
+      toastId: "custom-entry-updated",
+    });
     await fetchCustomRecords();
-  } catch (err: any) {
-    errorMessage.value =
-      err?.data?.message || "Something went wrong while saving";
+  } catch (err: unknown) {
+    reportError(
+      err,
+      "notifications.genericError",
+      "custom-entry-update-failed",
+    );
   }
 }
 
@@ -283,7 +345,14 @@ function openAddEntryForm(recordId: number, unit: string) {
 }
 
 async function submitNewEntry() {
-  if (!addingRecordId.value || !newEntry.value.date) return;
+  if (
+    !addingRecordId.value ||
+    !newEntry.value.date ||
+    !Number.isFinite(newEntry.value.value)
+  ) {
+    warnRequiredFields("custom-entry-create-required");
+    return;
+  }
 
   errorMessage.value = "";
   try {
@@ -296,10 +365,16 @@ async function submitNewEntry() {
       },
     });
     showAddEntryDialog.value = false;
+    appToast.success(t("notifications.recordCreated"), {
+      toastId: "custom-entry-created",
+    });
     await fetchCustomRecords();
-  } catch (err: any) {
-    errorMessage.value =
-      err?.data?.message || "Something went wrong while saving";
+  } catch (err: unknown) {
+    reportError(
+      err,
+      "notifications.genericError",
+      "custom-entry-create-failed",
+    );
   }
 }
 
@@ -313,7 +388,14 @@ function confirmDeleteEntry(recordId: number, rank: number) {
 }
 
 async function performDeleteEntry() {
-  if (!pendingDeleteEntry.value) return;
+  if (!pendingDeleteEntry.value) {
+    reportError(
+      null,
+      "notifications.genericError",
+      "custom-entry-delete-missing",
+    );
+    return;
+  }
 
   errorMessage.value = "";
   try {
@@ -323,10 +405,16 @@ async function performDeleteEntry() {
     );
     showDeleteEntryDialog.value = false;
     pendingDeleteEntry.value = null;
+    appToast.success(t("notifications.recordDeleted"), {
+      toastId: "custom-entry-deleted",
+    });
     await fetchCustomRecords();
-  } catch (err: any) {
-    errorMessage.value =
-      err?.data?.message || "Something went wrong while deleting";
+  } catch (err: unknown) {
+    reportError(
+      err,
+      "notifications.genericError",
+      "custom-entry-delete-failed",
+    );
     showDeleteEntryDialog.value = false;
   }
 }
@@ -341,7 +429,14 @@ function confirmDeleteRecord(recordId: number) {
 }
 
 async function performDeleteRecord() {
-  if (!pendingDeleteRecordId.value) return;
+  if (!pendingDeleteRecordId.value) {
+    reportError(
+      null,
+      "notifications.genericError",
+      "custom-record-delete-missing",
+    );
+    return;
+  }
 
   errorMessage.value = "";
   try {
@@ -350,10 +445,16 @@ async function performDeleteRecord() {
     });
     showDeleteRecordDialog.value = false;
     pendingDeleteRecordId.value = null;
+    appToast.success(t("notifications.customRecordDeleted"), {
+      toastId: "custom-record-deleted",
+    });
     await fetchCustomRecords();
-  } catch (err: any) {
-    errorMessage.value =
-      err?.data?.message || "Something went wrong while deleting";
+  } catch (err: unknown) {
+    reportError(
+      err,
+      "notifications.genericError",
+      "custom-record-delete-failed",
+    );
     showDeleteRecordDialog.value = false;
   }
 }

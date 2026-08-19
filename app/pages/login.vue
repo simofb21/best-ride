@@ -26,18 +26,25 @@
 <script setup lang="ts">
 import { onMounted } from "vue";
 
-onMounted(() => {
-  document.title = "Login - Best Ride";
-});
 // Se torniamo qui dopo un fallimento OAuth (google.get.ts fa redirect a /login?error=...),
 // mostriamo un messaggio d'errore leggibile invece di un errore criptico
 const route = useRoute();
 const { t } = useI18n();
+const appToast = useAppToast();
 const errorMessage = computed(() => {
   if (route.query.error === "google_auth_failed") {
     return t("login.error");
   }
   return "";
+});
+
+onMounted(() => {
+  document.title = "Login - Best Ride";
+  if (errorMessage.value) {
+    appToast.error(errorMessage.value, errorMessage.value, {
+      toastId: "oauth-login-failed",
+    });
+  }
 });
 </script>
 

@@ -1,5 +1,6 @@
 export const useLanguage = () => {
-  const { locale, setLocale } = useI18n();
+  const { locale, setLocale, t } = useI18n();
+  const appToast = useAppToast();
 
   const languages = [
     {
@@ -22,7 +23,13 @@ export const useLanguage = () => {
   });
 
   const changeLanguage = async (code: "en" | "it") => {
-    await setLocale(code);
+    try {
+      await setLocale(code);
+    } catch (error) {
+      appToast.error(error, t("notifications.languageChangeFailed"), {
+        toastId: "language-change-failed",
+      });
+    }
   };
 
   return {

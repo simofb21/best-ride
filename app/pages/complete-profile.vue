@@ -87,6 +87,7 @@ const privacyAccepted = ref(false);
 const loading = ref(false);
 const error = ref("");
 const { t } = useI18n();
+const appToast = useAppToast();
 import { onMounted } from "vue";
 
 onMounted(() => {
@@ -103,8 +104,14 @@ const profile = ref({
 });
 
 onMounted(async () => {
-  const status = await $fetch("/api/profile/consent-status");
-  consentGiven.value = status.hasAccepted;
+  try {
+    const status = await $fetch("/api/profile/consent-status");
+    consentGiven.value = status.hasAccepted;
+  } catch (err: any) {
+    const fallback = t("notifications.consentStatusFailed");
+    error.value = fallback;
+    appToast.error(err, fallback, { toastId: "consent-status-failed" });
+  }
 });
 
 async function acceptPrivacy() {
@@ -116,8 +123,13 @@ async function acceptPrivacy() {
   try {
     await $fetch("/api/profile/accept-privacy", { method: "POST" });
     consentGiven.value = true;
+    appToast.success(t("notifications.privacyAccepted"), {
+      toastId: "privacy-accepted",
+    });
   } catch (err: any) {
-    error.value = err?.data?.message || t("common.genericError");
+    const fallback = t("notifications.genericError");
+    error.value = fallback;
+    appToast.error(err, fallback, { toastId: "privacy-accept-failed" });
   } finally {
     loading.value = false;
   }
@@ -132,9 +144,14 @@ async function saveProfile() {
       method: "PATCH",
       body: profile.value,
     });
+    appToast.success(t("notifications.profileCompleted"), {
+      toastId: "profile-completed",
+    });
     await navigateTo("/");
   } catch (err: any) {
-    error.value = err?.data?.message || t("common.saveError");
+    const fallback = t("notifications.genericError");
+    error.value = fallback;
+    appToast.error(err, fallback, { toastId: "profile-completion-failed" });
   } finally {
     loading.value = false;
   }

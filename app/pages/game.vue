@@ -213,6 +213,9 @@
 <script setup>
 import { ref, reactive, computed, onMounted, onUnmounted, nextTick } from "vue";
 
+const { t } = useI18n();
+const appToast = useAppToast();
+
 // --- GAME STATE & CONFIGURATION ---
 const gameState = ref("customize"); // 'customize' | 'playing' | 'gameover'
 const isPaused = ref(false);
@@ -1444,13 +1447,31 @@ function endGame(reason = "crash") {
 
   if (Math.floor(score.value) > highScore.value) {
     highScore.value = Math.floor(score.value);
-    localStorage.setItem("cycling_game_highscore", highScore.value);
+    try {
+      localStorage.setItem("cycling_game_highscore", String(highScore.value));
+      appToast.success(t("notifications.highScoreSaved"), {
+        toastId: "game-high-score-saved",
+      });
+    } catch (error) {
+      appToast.error(error, t("notifications.highScoreSaveFailed"), {
+        toastId: "game-high-score-save-failed",
+      });
+    }
   }
 }
 
 onMounted(() => {
-  const savedRecord = localStorage.getItem("cycling_game_highscore");
-  if (savedRecord) highScore.value = parseInt(savedRecord, 10);
+  try {
+    const savedRecord = localStorage.getItem("cycling_game_highscore");
+    if (savedRecord) {
+      const parsedRecord = Number.parseInt(savedRecord, 10);
+      if (Number.isFinite(parsedRecord) && parsedRecord >= 0) {
+        highScore.value = parsedRecord;
+      }
+    }
+  } catch {
+    // Storage can be unavailable in privacy modes; playing still works.
+  }
 
   drawPreview();
   window.addEventListener("keydown", handleKeyDown);

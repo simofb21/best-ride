@@ -141,6 +141,7 @@ import DeleteSection from "~/components/profile/DeleteSection.vue";
 import TrainingStressCard from "~/components/profile/TrainingStressCard.vue";
 definePageMeta({ middleware: "auth" });
 const { t } = useI18n();
+const appToast = useAppToast();
 useHead(() => ({ title: `${t("profile.title")} - Best Ride` }));
 const profile = ref<ProfileData | null>(null);
 const loading = ref(true);
@@ -157,7 +158,9 @@ onMounted(async () => {
   try {
     profile.value = await $fetch("/api/profile");
   } catch (err: any) {
-    errorMessage.value = err?.data?.message || "Error loading profile data";
+    const fallback = t("notifications.loadProfileFailed");
+    errorMessage.value = fallback;
+    appToast.error(err, fallback, { toastId: "profile-load-failed" });
   } finally {
     loading.value = false;
   }
@@ -173,9 +176,13 @@ async function handleProfileSave(draftData: Partial<ProfileData>) {
     profile.value = profile.value
       ? { ...profile.value, ...updated }
       : updated;
+    appToast.success(t("notifications.profileSaved"), {
+      toastId: "profile-saved",
+    });
   } catch (err: any) {
-    errorMessage.value =
-      err?.data?.message || "Something went wrong while saving";
+    const fallback = t("notifications.genericError");
+    errorMessage.value = fallback;
+    appToast.error(err, fallback, { toastId: "profile-save-failed" });
   }
 }
 

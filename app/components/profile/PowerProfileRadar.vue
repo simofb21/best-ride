@@ -84,12 +84,16 @@ interface PowerProfileData {
 const data = ref<PowerProfileData | null>(null);
 const loading = ref(true);
 const error = ref("");
+const { t } = useI18n();
+const appToast = useAppToast();
 
 onMounted(async () => {
   try {
     data.value = await $fetch("/api/power-profile");
   } catch (err: any) {
-    error.value = err?.data?.message || "Could not load power profile";
+    const fallback = t("notifications.loadPowerProfileFailed");
+    error.value = fallback;
+    appToast.error(err, fallback, { toastId: "power-profile-load-failed" });
   } finally {
     loading.value = false;
   }

@@ -95,6 +95,7 @@ const emit = defineEmits<{
 }>();
 
 const { locale, t } = useI18n();
+const appToast = useAppToast();
 const headingId = useId();
 const dialogOpen = ref(false);
 const resetting = ref(false);
@@ -125,9 +126,15 @@ async function resetTrainingStress() {
       trainingStressLastActivityAt: null;
     }>("/api/profile/training-stress/reset", { method: "POST" });
     emit("reset", result);
+    appToast.success(t("notifications.trainingStressReset"), {
+      toastId: "training-stress-reset",
+    });
     dialogOpen.value = false;
-  } catch {
+  } catch (error) {
     resetFailed.value = true;
+    appToast.error(error, t("trainingStress.resetError"), {
+      toastId: "training-stress-reset-failed",
+    });
   } finally {
     resetting.value = false;
   }
