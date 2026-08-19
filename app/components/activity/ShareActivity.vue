@@ -1,29 +1,81 @@
 <template>
   <div class="share-activity-container" data-export-ignore>
-    <div class="share-buttons flex gap-2">
+    <div class="d-flex align-center gap-3 wrap">
       <!-- Bottone Social Instagram Story -->
-      <button
-        @click="handleSocialShare"
+      <v-btn
+        color="primary"
+        variant="flat"
+        rounded="lg"
+        size="large"
+        :loading="loading"
         :disabled="loading"
-        class="btn btn-primary"
+        class="text-none font-weight-bold"
+        @click="handleSocialShare"
       >
-        <span>📸 Share for Social</span>
-      </button>
+        <template #prepend>
+          <v-icon icon="mdi-instagram" size="20" />
+        </template>
+        Share for Social
+      </v-btn>
 
-      <!-- Bottone / Dropdown Coach Share -->
-      <div class="dropdown dropdown-end">
-        <button :disabled="loading" class="btn btn-secondary dropdown-toggle">
-          <span>📋 Share for Coach</span>
-        </button>
-        <ul class="dropdown-menu">
-          <li>
-            <a @click="handleCoachShare('png')">🖼️ Scarica Immagine (.png)</a>
-          </li>
-          <li>
-            <a @click="handleCoachShare('pdf')">📄 Scarica Report (.pdf)</a>
-          </li>
-        </ul>
-      </div>
+      <!-- Dropdown Coach Share -->
+      <v-menu location="bottom end" transition="scale-transition">
+        <template #activator="{ props: menuProps }">
+          <v-btn
+            v-bind="menuProps"
+            color="surface-variant"
+            variant="tonal"
+            rounded="lg"
+            size="large"
+            :loading="loading"
+            :disabled="loading"
+            class="text-none font-weight-bold"
+          >
+            <template #prepend>
+              <v-icon icon="mdi-share-variant-outline" size="20" />
+            </template>
+            Share for Coach
+            <template #append>
+              <v-icon icon="mdi-chevron-down" size="18" />
+            </template>
+          </v-btn>
+        </template>
+
+        <v-list
+          density="compact"
+          rounded="lg"
+          elevation="4"
+          class="py-1 min-w-200"
+        >
+          <v-list-item
+            value="png"
+            class="py-2"
+            @click="handleCoachShare('png')"
+          >
+            <template #prepend>
+              <v-icon icon="mdi-file-image-outline" size="20" class="me-2" />
+            </template>
+            <v-list-item-title class="font-weight-medium">
+              Scarica Immagine (.png)
+            </v-list-item-title>
+          </v-list-item>
+
+          <v-divider class="my-1" />
+
+          <v-list-item
+            value="pdf"
+            class="py-2"
+            @click="handleCoachShare('pdf')"
+          >
+            <template #prepend>
+              <v-icon icon="mdi-file-pdf-box" size="20" class="me-2" />
+            </template>
+            <v-list-item-title class="font-weight-medium">
+              Scarica Report (.pdf)
+            </v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </div>
   </div>
 </template>
@@ -71,9 +123,11 @@ const handleCoachShare = async (format: "png" | "pdf") => {
     if (format === "png") {
       await generateCoachImage();
     } else {
-      await generateCoachPdf(
-        props.activityData.activity?.name || "activity-report",
-      );
+      const reportName =
+        props.activityData.activity?.title ||
+        props.activityData.activity?.name ||
+        "activity-report";
+      await generateCoachPdf(reportName);
     }
   } catch (err) {
     console.error("Errore generazione Coach Report:", err);
@@ -86,6 +140,14 @@ const handleCoachShare = async (format: "png" | "pdf") => {
 <style scoped>
 .share-activity-container {
   grid-column: 1 / -1;
-  margin-bottom: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.gap-3 {
+  gap: 12px;
+}
+
+.min-w-200 {
+  min-width: 200px;
 }
 </style>
