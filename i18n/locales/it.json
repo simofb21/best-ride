@@ -107,11 +107,31 @@
       "recordAchievements": "Ecco i record:"
     },
 
+    "feedback": {
+      "title": "Raccontaci questo allenamento",
+      "intro": "Queste informazioni aiutano Best Ride a costruire un profilo atleta più preciso.",
+      "requiredNote": "* Campi obbligatori",
+      "nameLabel": "Nome attività *",
+      "namePlaceholder": "Es. Lungo collinare",
+      "nameHint": "Puoi modificarlo ora o più avanti dallo storico.",
+      "defaultName": "Allenamento del {date}",
+      "defaultNameFallback": "Nuovo allenamento",
+      "rpeLabel": "Fatica percepita (RPE) *",
+      "rpeHint": "Quanto è stato impegnativo l'allenamento nel complesso?",
+      "rpeOption": "{score} su 10",
+      "rpeLow": "1 · Molto facile",
+      "rpeHigh": "10 · Massimale",
+      "notesLabel": "Nota sull'allenamento (facoltativa)",
+      "notesHint": "Fortemente consigliata: descrivi sensazioni, gambe, respiro, qualità degli intervalli o eventuali fastidi. Renderà l'analisi AI molto più utile.",
+      "notesPlaceholder": "Es. Gambe pesanti all'inizio, poi buone sensazioni; ultimo intervallo molto duro...",
+      "characterCount": "{count}/800"
+    },
+
     "confirmation": {
-      "message": "Impostare come ultima attività per salvare i tuoi record?",
+      "message": "Salvare questa attività e aggiornare i tuoi record?",
       "discard": "Scarta",
       "saving": "Salvando...",
-      "saveAsLatest": "Salva come ultima attività"
+      "saveAsLatest": "Salva attività"
     },
     "errors": {
       "invalidType": "Scegli un file .fit oppure un file .zip che ne contenga uno.",

@@ -34,6 +34,30 @@ function extractNumericField(records: any[], field: string): number[] {
   return result;
 }
 
+function validDate(value: unknown): Date | null {
+  if (value == null || value === "") return null;
+  const date = new Date(value as string | number | Date);
+  return Number.isNaN(date.getTime()) ? null : date;
+}
+
+function extractActivityDate(records: any[], session: any): Date | null {
+  const sessionStart = validDate(session?.start_time);
+  if (sessionStart) return sessionStart;
+
+  let earliestRecordDate: Date | null = null;
+  for (const record of records) {
+    const recordDate = validDate(record?.timestamp);
+    if (
+      recordDate &&
+      (!earliestRecordDate || recordDate.getTime() < earliestRecordDate.getTime())
+    ) {
+      earliestRecordDate = recordDate;
+    }
+  }
+
+  return earliestRecordDate;
+}
+
 function computeElevationGainFromRecords(records: any[]): number {
   // Fallback: se la sessione non riporta total_ascent, lo calcoliamo
   // sommando solo le variazioni POSITIVE di altitudine tra un punto e il successivo
@@ -163,6 +187,8 @@ export function buildActivitySummary(records: any[], session: any) {
     kilojoules: kilojoules,
     kcalories: kcalories,
     average_temperature: average_temperature,
-    activityDate: session?.start_time ?? records[0]?.timestamp ?? new Date(),
+    // La data deve provenire dal FIT: usare l'ora del server renderebbe
+    // inaffidabili ordinamento storico e trend longitudinali.
+    activityDate: extractActivityDate(records, session),
   };
 }

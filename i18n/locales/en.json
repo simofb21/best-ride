@@ -107,11 +107,31 @@
       "recordAchievements": "Here are the record achievements from this ride:"
     },
 
+    "feedback": {
+      "title": "Tell us about this workout",
+      "intro": "This information helps Best Ride build a more accurate athlete profile.",
+      "requiredNote": "* Required fields",
+      "nameLabel": "Activity name *",
+      "namePlaceholder": "e.g. Hilly endurance ride",
+      "nameHint": "You can change it now or later from your activity history.",
+      "defaultName": "Ride on {date}",
+      "defaultNameFallback": "New ride",
+      "rpeLabel": "Perceived exertion (RPE) *",
+      "rpeHint": "How demanding was the workout overall?",
+      "rpeOption": "{score} out of 10",
+      "rpeLow": "1 · Very easy",
+      "rpeHigh": "10 · Maximum effort",
+      "notesLabel": "Training notes (optional)",
+      "notesHint": "Strongly recommended: describe how you felt, your legs, breathing, interval quality, or any discomfort. It will make the AI analysis much more useful.",
+      "notesPlaceholder": "e.g. Heavy legs at first, then felt good; the final interval was very hard...",
+      "characterCount": "{count}/800"
+    },
+
     "confirmation": {
-      "message": "Do you want to set this as your latest activity and update your records?",
+      "message": "Save this activity and update your records?",
       "discard": "Discard",
       "saving": "Saving…",
-      "saveAsLatest": "Save as latest activity"
+      "saveAsLatest": "Save activity"
     },
     "errors": {
       "invalidType": "Choose a .fit file or a .zip file containing one.",

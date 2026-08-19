@@ -114,6 +114,12 @@ export default defineEventHandler(async (event) => {
   const session_ = data.sessions?.[0];
 
   const activity = buildActivitySummary(records, session_);
+  if (!activity.activityDate) {
+    throw createError({
+      statusCode: 400,
+      message: "The .fit file does not contain a valid activity date.",
+    });
+  }
   const normalizedPower = computeNormalizedPower(records);
   const power_records = computePowerCurve(records);
   const heartRateCurve = computeHeartRateCurve(records);

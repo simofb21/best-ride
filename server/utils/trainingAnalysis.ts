@@ -145,7 +145,9 @@ function isoDate(value: unknown): string | undefined {
   return Number.isNaN(date.getTime()) ? undefined : date.toISOString();
 }
 
-function ageInYears(value: TrainingAnalysisUser["dateOfBirth"]): number | undefined {
+function ageInYears(
+  value: TrainingAnalysisUser["dateOfBirth"],
+): number | undefined {
   if (!value) return undefined;
   const birth = new Date(value);
   if (Number.isNaN(birth.getTime())) return undefined;
@@ -313,8 +315,7 @@ export function buildTrainingAnalysisInput(
     age_y: analysisProfile
       ? positiveNumber(analysisProfile.ageYears, 0)
       : ageInYears(user.dateOfBirth),
-    sex:
-      profileSex === "M" || profileSex === "F" ? profileSex : undefined,
+    sex: profileSex === "M" || profileSex === "F" ? profileSex : undefined,
     weight_kg: analysisProfile
       ? positiveNumber(analysisProfile.weightKg, 1)
       : positiveNumber(user.weightKg, 1),

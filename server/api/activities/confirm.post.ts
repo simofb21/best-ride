@@ -12,8 +12,11 @@ const confirmationSchema = z
       .string()
       .regex(/^[0-9a-f]{64}$/i)
       .transform((value) => value.toLowerCase()),
+    name: z.string().trim().min(1).max(120),
+    perceivedExertion: z.number().int().min(1).max(10),
+    trainingNotes: z.string().trim().max(800).optional().nullable(),
   })
-  .passthrough();
+  .strict();
 
 interface PendingPayload {
   ftpUsed: number;
@@ -121,13 +124,15 @@ export default defineEventHandler(async (event) => {
   if (!parsedBody.success) {
     throw createError({
       statusCode: 400,
-      message: "Invalid or missing analysisId",
+      message: "Invalid activity confirmation",
       data: parsedBody.error.flatten(),
     });
   }
 
-  // Nessun altro dato inviato dal browser viene letto o considerato affidabile.
   const analysisId = parsedBody.data.analysisId;
+  const activityName = parsedBody.data.name;
+  const perceivedExertion = parsedBody.data.perceivedExertion;
+  const trainingNotes = parsedBody.data.trainingNotes || null;
 
   for (let attempt = 1; attempt <= MAX_TRANSACTION_ATTEMPTS; attempt++) {
     try {
@@ -138,10 +143,36 @@ export default defineEventHandler(async (event) => {
             throw createError({ statusCode: 404, message: "User not found" });
           }
 
-          const previousActivity = await tx.lastActivity.findUnique({
-            where: { userId },
-            select: { sourceId: true },
-          });
+          const [previousActivity, existingArchivedActivity] =
+            await Promise.all([
+              tx.lastActivity.findUnique({
+                where: { userId },
+                select: { sourceId: true, activityId: true, data: true },
+              }),
+              tx.activity.findUnique({
+                where: {
+                  userId_sourceId: { userId, sourceId: analysisId },
+                },
+                select: { id: true },
+              }),
+            ]);
+
+          if (existingArchivedActivity) {
+            await tx.pendingActivity.deleteMany({
+              where: { userId, sourceId: analysisId },
+            });
+            return {
+              kind: "duplicate-saved" as const,
+              activityId: existingArchivedActivity.id,
+              isLatest:
+                previousActivity?.activityId === existingArchivedActivity.id,
+              trainingStress: user.trainingStress,
+              trainingStressActivityCount: user.trainingStressActivityCount,
+              trainingStressStartedAt: user.trainingStressStartedAt,
+              trainingStressLastActivityAt:
+                user.trainingStressLastActivityAt,
+            };
+          }
 
           // Il retry immediato resta valido anche se il pending è già stato
           // consumato dalla prima conferma completata.
@@ -151,6 +182,8 @@ export default defineEventHandler(async (event) => {
             });
             return {
               kind: "duplicate-latest" as const,
+              activityId: previousActivity.activityId,
+              isLatest: true,
               trainingStress: user.trainingStress,
               trainingStressActivityCount: user.trainingStressActivityCount,
               trainingStressStartedAt: user.trainingStressStartedAt,
@@ -188,6 +221,15 @@ export default defineEventHandler(async (event) => {
           const activity = pendingPayload.lastActivityData.activity;
           const trainingLoad = pendingPayload.lastActivityData.training_load;
           const activityDate = parseActivityDate(activity.activityDate);
+          const latestArchivedActivity = await tx.activity.findFirst({
+            where: { userId },
+            orderBy: [{ activityDate: "desc" }, { id: "desc" }],
+            select: { id: true, activityDate: true },
+          });
+          const becomesLatest =
+            !latestArchivedActivity ||
+            activityDate.getTime() >=
+              latestArchivedActivity.activityDate.getTime();
           const activityDistance = requireNonNegativeNumber(
             activity.distance,
             "activity distance",
@@ -197,6 +239,8 @@ export default defineEventHandler(async (event) => {
             "activity duration",
           );
           const activityHours = Number((activityDuration / 3600).toFixed(2));
+          const belongsToCurrentYear =
+            activityDate.getUTCFullYear() === new Date().getUTCFullYear();
           const activityTrainingStress = sanitizeActivityTrainingStress(
             trainingLoad.tss,
           );
@@ -224,14 +268,16 @@ export default defineEventHandler(async (event) => {
           const updatedUser = await tx.user.update({
             where: { id: userId },
             data: {
-              yearlyDistanceKm:
-                user.yearlyDistanceKm == null
+              yearlyDistanceKm: belongsToCurrentYear
+                ? user.yearlyDistanceKm == null
                   ? activityDistance
-                  : { increment: activityDistance },
-              yearlyHours:
-                user.yearlyHours == null
+                  : { increment: activityDistance }
+                : undefined,
+              yearlyHours: belongsToCurrentYear
+                ? user.yearlyHours == null
                   ? activityHours
-                  : { increment: activityHours },
+                  : { increment: activityHours }
+                : undefined,
               trainingStress: user.trainingStress + activityTrainingStress,
               trainingStressActivityCount:
                 user.trainingStressActivityCount + 1,
