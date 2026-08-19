@@ -11,6 +11,8 @@ import {
 
 const DEFAULT_FTP = 250;
 const DEFAULT_ANAEROBIC_THRESHOLD = 160;
+const FIT_EPOCH_MS = Date.UTC(1989, 11, 31);
+const MAX_FUTURE_CLOCK_SKEW_MS = 24 * 60 * 60 * 1000;
 
 function ageInYears(dateOfBirth: Date | null): number | null {
   if (!dateOfBirth || Number.isNaN(dateOfBirth.getTime())) return null;
@@ -114,7 +116,12 @@ export default defineEventHandler(async (event) => {
   const session_ = data.sessions?.[0];
 
   const activity = buildActivitySummary(records, session_);
-  if (!activity.activityDate) {
+  if (
+    !activity.activityDate ||
+    activity.activityDate.getTime() < FIT_EPOCH_MS ||
+    activity.activityDate.getTime() >
+      Date.now() + MAX_FUTURE_CLOCK_SKEW_MS
+  ) {
     throw createError({
       statusCode: 400,
       message: "The .fit file does not contain a valid activity date.",

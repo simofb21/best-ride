@@ -21,6 +21,7 @@ model User {
   trainingStressActivityCount  Int       @default(0)
   trainingStressStartedAt      DateTime?
   trainingStressLastActivityAt DateTime?
+  trainingStressResetAt        DateTime?
   sex                          String?   @db.VarChar(1)
   dateOfBirth                  DateTime? @db.Date
   privacyAcceptedAt            DateTime?
@@ -28,6 +29,7 @@ model User {
   updatedAt                    DateTime  @updatedAt
 
   accounts            Account[]
+  activities          Activity[]
   lastActivity        LastActivity?
   pendingActivity     PendingActivity?
   processedActivities ProcessedActivity[]
@@ -87,6 +89,7 @@ model LastActivity {
   anaerobicThresholdUsed Int
   data                   Json
   sourceId               String?
+  activityId             Int?      @unique
   aiAnalysis             Json?
   aiAnalysisHash         String?
   aiAnalysisStatus       String?
@@ -95,9 +98,74 @@ model LastActivity {
   aiAnalysisStartedAt    DateTime?
   aiAnalysisAttemptCount Int       @default(0)
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  activity Activity? @relation("LastActivityHistory", fields: [activityId], references: [id], onDelete: SetNull)
 
   @@map("last_activity")
+}
+
+model Activity {
+  id           Int      @id @default(autoincrement())
+  userId       Int
+  sourceId     String   @db.VarChar(64)
+  name         String   @db.VarChar(120)
+  filename     String   @db.VarChar(255)
+  activityDate DateTime
+  uploadedAt   DateTime @default(now())
+
+  // Athlete feedback. Legacy backfill intentionally leaves RPE null; new
+  // writes are validated as 1..10 by the API and by a database CHECK.
+  perceivedExertion Int?    @db.SmallInt
+  notes             String? @db.VarChar(800)
+
+  durationSeconds           Int
+  distanceMeters            Int
+  elevationGainMeters       Int
+  avgSpeedDeciKmh           Int?
+  maxSpeedDeciKmh           Int?
+  avgPowerWatts             Int?
+  maxPowerWatts             Int?
+  normalizedPowerWatts      Int?
+  avgCadenceRpm             Int?
+  maxCadenceRpm             Int?
+  avgHeartRateBpm           Int?
+  maxHeartRateBpm           Int?
+  kilojoules                Int?
+  caloriesKcal              Int?
+  avgTemperatureDeciCelsius Int?
+  trainingStress            Int?
+  intensityFactorMilli      Int?
+  ftpUsed                   Int
+  anaerobicThresholdUsed    Int
+  weightDeciKg              Int? @db.SmallInt
+
+  // Version 1 array/tuple layouts are documented in the accompanying
+  // migration. Keeping them positional avoids repeated JSON keys per ride.
+  powerCurveWatts      Int[]
+  powerZoneSeconds     Int[]
+  heartRateZoneSeconds Int[]
+  laps                 Json?
+  recordAchievements   Json?
+  trendFeatures        Json?
+  sensorMask           Int   @default(0) @db.SmallInt
+  calculationFlags     Int   @default(0) @db.SmallInt
+  archiveSchemaVersion Int   @default(1) @db.SmallInt
+
+  aiAnalysis             Json?
+  aiAnalysisHash         String?
+  aiAnalysisStatus       String?
+  aiAnalysisModel        String?
+  aiAnalysisGeneratedAt  DateTime?
+  aiAnalysisStartedAt    DateTime?
+  aiAnalysisAttemptCount Int       @default(0)
+
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lastActivity LastActivity? @relation("LastActivityHistory")
+
+  @@unique([userId, sourceId])
+  @@index([userId, activityDate(sort: Desc)])
+  @@index([userId, name])
+  @@map("activities")
 }
 
 model PendingActivity {

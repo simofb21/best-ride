@@ -1,10 +1,16 @@
 import { z } from "zod";
 import { Prisma } from "../../../generated/prisma/client";
 import { prisma } from "../../utils/db";
+import {
+  ActivityArchiveValidationError,
+  buildArchivedActivityData,
+} from "../../utils/activityArchive";
 
 const MAX_POSTGRES_INTEGER = 2_147_483_647;
 const MAX_TRANSACTION_ATTEMPTS = 3;
 const PENDING_ACTIVITY_TTL_MS = 24 * 60 * 60 * 1000;
+const FIT_EPOCH_MS = Date.UTC(1989, 11, 31);
+const MAX_FUTURE_CLOCK_SKEW_MS = 24 * 60 * 60 * 1000;
 
 const confirmationSchema = z
   .object({
@@ -55,7 +61,14 @@ function requireNonNegativeInteger(value: unknown, field: string): number {
 function parseActivityDate(value: unknown): Date {
   if (value == null || value === "") invalidPendingData("activity date");
   const date = new Date(value as string | number | Date);
-  if (Number.isNaN(date.getTime())) invalidPendingData("activity date");
+  const timestamp = date.getTime();
+  if (
+    Number.isNaN(timestamp) ||
+    timestamp < FIT_EPOCH_MS ||
+    timestamp > Date.now() + MAX_FUTURE_CLOCK_SKEW_MS
+  ) {
+    invalidPendingData("activity date");
+  }
   return date;
 }
 
@@ -166,24 +179,7 @@ export default defineEventHandler(async (event) => {
               activityId: existingArchivedActivity.id,
               isLatest:
                 previousActivity?.activityId === existingArchivedActivity.id,
-              trainingStress: user.trainingStress,
-              trainingStressActivityCount: user.trainingStressActivityCount,
-              trainingStressStartedAt: user.trainingStressStartedAt,
-              trainingStressLastActivityAt:
-                user.trainingStressLastActivityAt,
-            };
-          }
-
-          // Il retry immediato resta valido anche se il pending è già stato
-          // consumato dalla prima conferma completata.
-          if (previousActivity?.sourceId === analysisId) {
-            await tx.pendingActivity.deleteMany({
-              where: { userId, sourceId: analysisId },
-            });
-            return {
-              kind: "duplicate-latest" as const,
-              activityId: previousActivity.activityId,
-              isLatest: true,
+              legacyReimport: false,
               trainingStress: user.trainingStress,
               trainingStressActivityCount: user.trainingStressActivityCount,
               trainingStressStartedAt: user.trainingStressStartedAt,
@@ -210,12 +206,12 @@ export default defineEventHandler(async (event) => {
             where: { userId_sourceId: { userId, sourceId: analysisId } },
             select: { sourceId: true },
           });
-          if (alreadyProcessed) {
-            // Il 409 viene emesso solo dopo il commit, altrimenti questa
-            // cancellazione verrebbe annullata insieme alla transazione.
-            await tx.pendingActivity.delete({ where: { userId } });
-            return { kind: "duplicate-older" as const };
-          }
+          // Prima dello storico conservavamo soltanto l'hash. Ricaricare uno
+          // di quei FIT ricostruisce la riga compatta senza contare di nuovo
+          // totali, carico o record.
+          const isLegacyReimport =
+            alreadyProcessed != null ||
+            previousActivity?.sourceId === analysisId;
 
           const pendingPayload = parsePendingPayload(pending.data);
           const activity = pendingPayload.lastActivityData.activity;
@@ -244,53 +240,82 @@ export default defineEventHandler(async (event) => {
           const activityTrainingStress = sanitizeActivityTrainingStress(
             trainingLoad.tss,
           );
+          const isAfterLastTrainingStressReset =
+            !user.trainingStressResetAt ||
+            activityDate.getTime() >= user.trainingStressResetAt.getTime();
+          const belongsToCurrentTrainingBlock = user.trainingStressResetAt
+            ? isAfterLastTrainingStressReset
+            : user.trainingStressStartedAt
+              ? activityDate.getTime() >=
+                user.trainingStressStartedAt.getTime()
+              : becomesLatest;
+          const shouldCountInTrainingBlock =
+            !isLegacyReimport && belongsToCurrentTrainingBlock;
+          const trainingStressIncrement = shouldCountInTrainingBlock
+            ? activityTrainingStress
+            : 0;
+          const activityCountIncrement = shouldCountInTrainingBlock ? 1 : 0;
 
           if (
             user.trainingStress >
-              MAX_POSTGRES_INTEGER - activityTrainingStress ||
-            user.trainingStressActivityCount >= MAX_POSTGRES_INTEGER
+              MAX_POSTGRES_INTEGER - trainingStressIncrement ||
+            user.trainingStressActivityCount >
+              MAX_POSTGRES_INTEGER - activityCountIncrement
           ) {
             invalidPendingData("training block exceeds supported range");
           }
 
-          const isFirstActivity = user.trainingStressActivityCount === 0;
-          const trainingStressStartedAt = isFirstActivity
-            ? activityDate
-            : minimumDate(user.trainingStressStartedAt, activityDate);
-          const trainingStressLastActivityAt = isFirstActivity
-            ? activityDate
-            : maximumDate(user.trainingStressLastActivityAt, activityDate);
+          const isFirstActivityInBlock =
+            user.trainingStressActivityCount === 0 ||
+            !user.trainingStressStartedAt;
+          const trainingStressStartedAt = shouldCountInTrainingBlock
+            ? isFirstActivityInBlock
+              ? activityDate
+              : minimumDate(user.trainingStressStartedAt, activityDate)
+            : user.trainingStressStartedAt;
+          const trainingStressLastActivityAt = shouldCountInTrainingBlock
+            ? isFirstActivityInBlock
+              ? activityDate
+              : maximumDate(user.trainingStressLastActivityAt, activityDate)
+            : user.trainingStressLastActivityAt;
 
-          await tx.processedActivity.create({
-            data: { userId, sourceId: analysisId },
-          });
+          let updatedUser = {
+            trainingStress: user.trainingStress,
+            trainingStressActivityCount: user.trainingStressActivityCount,
+            trainingStressStartedAt: user.trainingStressStartedAt,
+            trainingStressLastActivityAt:
+              user.trainingStressLastActivityAt,
+          };
 
-          const updatedUser = await tx.user.update({
-            where: { id: userId },
-            data: {
-              yearlyDistanceKm: belongsToCurrentYear
-                ? user.yearlyDistanceKm == null
-                  ? activityDistance
-                  : { increment: activityDistance }
-                : undefined,
-              yearlyHours: belongsToCurrentYear
-                ? user.yearlyHours == null
-                  ? activityHours
-                  : { increment: activityHours }
-                : undefined,
-              trainingStress: user.trainingStress + activityTrainingStress,
-              trainingStressActivityCount:
-                user.trainingStressActivityCount + 1,
-              trainingStressStartedAt,
-              trainingStressLastActivityAt,
-            },
-            select: {
-              trainingStress: true,
-              trainingStressActivityCount: true,
-              trainingStressStartedAt: true,
-              trainingStressLastActivityAt: true,
-            },
-          });
+          if (!isLegacyReimport) {
+            updatedUser = await tx.user.update({
+              where: { id: userId },
+              data: {
+                yearlyDistanceKm: belongsToCurrentYear
+                  ? user.yearlyDistanceKm == null
+                    ? activityDistance
+                    : { increment: activityDistance }
+                  : undefined,
+                yearlyHours: belongsToCurrentYear
+                  ? user.yearlyHours == null
+                    ? activityHours
+                    : { increment: activityHours }
+                  : undefined,
+                trainingStress:
+                  user.trainingStress + trainingStressIncrement,
+                trainingStressActivityCount:
+                  user.trainingStressActivityCount + activityCountIncrement,
+                trainingStressStartedAt,
+                trainingStressLastActivityAt,
+              },
+              select: {
+                trainingStress: true,
+                trainingStressActivityCount: true,
+                trainingStressStartedAt: true,
+                trainingStressLastActivityAt: true,
+              },
+            });
+          }
 
           const rawRecordChecks = Array.isArray(
             pendingPayload.lastActivityData.recordChecks,
@@ -303,6 +328,10 @@ export default defineEventHandler(async (event) => {
 
           for (const rawCheck of confirmedRecordChecks) {
             if (!isObject(rawCheck)) continue;
+            if (isLegacyReimport) {
+              rawCheck.wouldEnterAt = null;
+              continue;
+            }
 
             const metricKey =
               typeof rawCheck.metricKey === "string"
@@ -367,61 +396,147 @@ export default defineEventHandler(async (event) => {
             }
           }
 
+          const trainingStressBlock = {
+            stress: updatedUser.trainingStress,
+            activityCount: updatedUser.trainingStressActivityCount,
+            startedAt:
+              updatedUser.trainingStressStartedAt?.toISOString() ?? null,
+            lastActivityAt:
+              updatedUser.trainingStressLastActivityAt?.toISOString() ?? null,
+          };
+
+          let archivedData: ReturnType<typeof buildArchivedActivityData>;
+          try {
+            archivedData = buildArchivedActivityData({
+              sourceId: analysisId,
+              filename: pending.filename,
+              name: activityName,
+              perceivedExertion,
+              notes: trainingNotes,
+              ftpUsed: pendingPayload.ftpUsed,
+              anaerobicThresholdUsed:
+                pendingPayload.anaerobicThresholdUsed,
+              activityData: {
+                ...pendingPayload.lastActivityData,
+                recordChecks: confirmedRecordChecks,
+              },
+            });
+          } catch (error) {
+            if (error instanceof ActivityArchiveValidationError) {
+              invalidPendingData(error.message);
+            }
+            throw error;
+          }
+
+          const archivedActivity = await tx.activity.create({
+            data: { userId, ...archivedData },
+          });
+          if (isLegacyReimport) {
+            await tx.processedActivity.deleteMany({
+              where: {
+                userId,
+                sourceId: analysisId,
+              },
+            });
+          }
           const storedData = {
             ...pendingPayload.lastActivityData,
             recordChecks: confirmedRecordChecks,
-            training_stress_block: {
-              stress: updatedUser.trainingStress,
-              activityCount: updatedUser.trainingStressActivityCount,
-              startedAt:
-                updatedUser.trainingStressStartedAt?.toISOString() ?? null,
-              lastActivityAt:
-                updatedUser.trainingStressLastActivityAt?.toISOString() ??
-                null,
+            activity_meta: {
+              activityId: archivedActivity.id,
+              name: archivedData.name,
+              perceivedExertion: archivedData.perceivedExertion,
+              trainingNotes: archivedData.notes,
             },
+            training_stress_block: trainingStressBlock,
           };
           const now = new Date();
 
-          await tx.lastActivity.upsert({
-            where: { userId },
-            update: {
-              sourceId: analysisId,
-              filename: pending.filename,
-              uploadedAt: now,
-              ftpUsed: pendingPayload.ftpUsed,
-              anaerobicThresholdUsed:
-                pendingPayload.anaerobicThresholdUsed,
-              data: storedData,
-              aiAnalysis: Prisma.DbNull,
-              aiAnalysisHash: null,
-              aiAnalysisStatus: null,
-              aiAnalysisModel: null,
-              aiAnalysisGeneratedAt: null,
-              aiAnalysisStartedAt: null,
-              aiAnalysisAttemptCount: 0,
-            },
-            create: {
-              userId,
-              sourceId: analysisId,
-              filename: pending.filename,
-              uploadedAt: now,
-              ftpUsed: pendingPayload.ftpUsed,
-              anaerobicThresholdUsed:
-                pendingPayload.anaerobicThresholdUsed,
-              data: storedData,
-              aiAnalysis: Prisma.DbNull,
-              aiAnalysisHash: null,
-              aiAnalysisStatus: null,
-              aiAnalysisModel: null,
-              aiAnalysisGeneratedAt: null,
-              aiAnalysisStartedAt: null,
-              aiAnalysisAttemptCount: 0,
-            },
-          });
+          if (becomesLatest) {
+            await tx.lastActivity.upsert({
+              where: { userId },
+              update: {
+                activityId: archivedActivity.id,
+                sourceId: analysisId,
+                filename: archivedData.filename,
+                uploadedAt: now,
+                ftpUsed: pendingPayload.ftpUsed,
+                anaerobicThresholdUsed:
+                  pendingPayload.anaerobicThresholdUsed,
+                data: storedData,
+                aiAnalysis: Prisma.DbNull,
+                aiAnalysisHash: null,
+                aiAnalysisStatus: null,
+                aiAnalysisModel: null,
+                aiAnalysisGeneratedAt: null,
+                aiAnalysisStartedAt: null,
+                aiAnalysisAttemptCount: 0,
+              },
+              create: {
+                userId,
+                activityId: archivedActivity.id,
+                sourceId: analysisId,
+                filename: archivedData.filename,
+                uploadedAt: now,
+                ftpUsed: pendingPayload.ftpUsed,
+                anaerobicThresholdUsed:
+                  pendingPayload.anaerobicThresholdUsed,
+                data: storedData,
+                aiAnalysis: Prisma.DbNull,
+                aiAnalysisHash: null,
+                aiAnalysisStatus: null,
+                aiAnalysisModel: null,
+                aiAnalysisGeneratedAt: null,
+                aiAnalysisStartedAt: null,
+                aiAnalysisAttemptCount: 0,
+              },
+            });
+          } else if (previousActivity) {
+            const previousData = isObject(previousActivity.data)
+              ? previousActivity.data
+              : {};
+            await tx.lastActivity.update({
+              where: { userId },
+              data: {
+                data: {
+                  ...previousData,
+                  training_stress_block: trainingStressBlock,
+                },
+                aiAnalysis: Prisma.DbNull,
+                aiAnalysisHash: null,
+                aiAnalysisStatus: null,
+                aiAnalysisModel: null,
+                aiAnalysisGeneratedAt: null,
+                aiAnalysisStartedAt: null,
+                aiAnalysisAttemptCount: 0,
+              },
+            });
+
+            if (previousActivity.activityId) {
+              await tx.activity.update({
+                where: { id: previousActivity.activityId },
+                data: {
+                  aiAnalysis: Prisma.DbNull,
+                  aiAnalysisHash: null,
+                  aiAnalysisStatus: null,
+                  aiAnalysisModel: null,
+                  aiAnalysisGeneratedAt: null,
+                  aiAnalysisStartedAt: null,
+                  aiAnalysisAttemptCount: 0,
+                },
+              });
+            }
+          }
 
           await tx.pendingActivity.delete({ where: { userId } });
 
-          return { kind: "saved" as const, ...updatedUser };
+          return {
+            kind: "saved" as const,
+            activityId: archivedActivity.id,
+            isLatest: becomesLatest,
+            legacyReimport: isLegacyReimport,
+            ...updatedUser,
+          };
         },
         {
           isolationLevel: Prisma.TransactionIsolationLevel.Serializable,
@@ -437,17 +552,13 @@ export default defineEventHandler(async (event) => {
             "This activity analysis has expired or was replaced by a newer upload",
         });
       }
-      if (result.kind === "duplicate-older") {
-        throw createError({
-          statusCode: 409,
-          statusMessage: "This activity has already been saved",
-        });
-      }
-
       return {
         success: true,
         analysisId,
-        duplicate: result.kind === "duplicate-latest",
+        activityId: result.activityId,
+        isLatest: result.isLatest,
+        duplicate: result.kind === "duplicate-saved",
+        restoredLegacyActivity: result.legacyReimport,
         trainingStress: result.trainingStress,
         trainingStressActivityCount: result.trainingStressActivityCount,
         trainingStressStartedAt: result.trainingStressStartedAt,
