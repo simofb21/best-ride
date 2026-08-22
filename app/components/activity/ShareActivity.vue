@@ -141,6 +141,7 @@ const handleCoachShare = async (format: "png" | "pdf") => {
 .share-activity-container {
   grid-column: 1 / -1;
   margin-bottom: 1.25rem;
+  width: 100%;
 }
 
 .gap-3 {
@@ -149,5 +150,26 @@ const handleCoachShare = async (format: "png" | "pdf") => {
 
 .min-w-200 {
   min-width: 200px;
+}
+
+/* Modifiche Layout Mobile (< 600px) */
+@media (max-width: 600px) {
+  .share-activity-container .d-flex {
+    flex-direction: column;
+    align-items: stretch !important;
+    width: 100%;
+  }
+
+  /* I bottoni occupano tutta la larghezza */
+  .share-activity-container :deep(.v-btn) {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Previene che il menu dropdown superi i bordi dello schermo */
+  .min-w-200 {
+    min-width: auto !important;
+    max-width: calc(100vw - 32px);
+  }
 }
 </style>
