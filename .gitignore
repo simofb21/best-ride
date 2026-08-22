@@ -25,6 +25,6 @@ logs
 
 todo.md
 generated/prisma
-
+prisma/migrations/*
 tests/activityDuration.tests.ts
  

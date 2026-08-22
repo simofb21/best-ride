@@ -21,7 +21,7 @@
         </NuxtLink>
 
         <a
-          href="https://www.linkedin.com/in/simone-fusar-bassini-7407003b4"
+          href="www.linkedin.com/in/simone-fusar-bassini-7407003b4"
           class="footer-bottom-link"
         >
           <v-icon size="18">mdi-linkedin</v-icon>
