@@ -1,0 +1,5088 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#173d2b" />
+    <title>Asta Fantacalcio</title>
+    <link rel="manifest" href="manifest.webmanifest" />
+    <style>
+      :root {
+        --ink: #142019;
+        --muted: #68746d;
+        --paper: #f4f7f2;
+        --card: #fff;
+        --line: #dde5de;
+        --brand: #173d2b;
+        --lime: #d8f27d;
+        --danger: #b42318;
+        --top: #173d2b;
+        --semi: #36745a;
+        --third: #e9bd56;
+        --fourth: #d9e0dc;
+        --bet: #b9a4ed;
+        --avoid: #ef9a91;
+        --shadow: 0 8px 24px rgba(18, 47, 33, 0.08);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        background: var(--paper);
+      }
+      body {
+        margin: 0;
+        color: var(--ink);
+        background: var(--paper);
+        font-family:
+          Inter,
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      button,
+      input,
+      select,
+      textarea {
+        font: inherit;
+      }
+      button {
+        cursor: pointer;
+      }
+      .app {
+        max-width: 1180px;
+        margin: auto;
+        min-height: 100dvh;
+        padding-bottom: 86px;
+      }
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        background: rgba(244, 247, 242, 0.92);
+        backdrop-filter: blur(14px);
+        padding: 16px 16px 8px;
+        border-bottom: 1px solid rgba(221, 229, 222, 0.8);
+      }
+      .brandline {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        align-items: center;
+      }
+      .brand h1 {
+        font-size: 20px;
+        margin: 0;
+        letter-spacing: -0.5px;
+      }
+      .brand h1 small {
+        font-size: 8px;
+        letter-spacing: 0.08em;
+        background: var(--lime);
+        color: #294008;
+        border-radius: 999px;
+        padding: 4px 6px;
+        vertical-align: middle;
+        margin-left: 5px;
+      }
+      .brand p {
+        font-size: 12px;
+        color: var(--muted);
+        margin: 2px 0 0;
+      }
+      .pill {
+        border: 1px solid var(--line);
+        background: #fff;
+        border-radius: 999px;
+        padding: 8px 11px;
+        font-weight: 800;
+        font-size: 12px;
+        white-space: nowrap;
+      }
+      .rolebar {
+        display: flex;
+        gap: 7px;
+        overflow: auto;
+        padding: 12px 0 2px;
+        scrollbar-width: none;
+      }
+      .rolebar::-webkit-scrollbar {
+        display: none;
+      }
+      .role-btn {
+        border: 0;
+        background: #e7ede8;
+        color: #496056;
+        padding: 9px 14px;
+        border-radius: 999px;
+        font-weight: 800;
+        white-space: nowrap;
+      }
+      .role-btn.active {
+        background: var(--brand);
+        color: #fff;
+      }
+      main {
+        padding: 14px 14px 30px;
+      }
+      .toolbar {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        margin-bottom: 12px;
+      }
+      .search {
+        position: relative;
+        flex: 1;
+      }
+      .search input {
+        width: 100%;
+        border: 1px solid var(--line);
+        background: #fff;
+        border-radius: 14px;
+        padding: 12px 13px 12px 38px;
+        outline: none;
+      }
+      .search:before {
+        content: "⌕";
+        position: absolute;
+        left: 13px;
+        top: 7px;
+        font-size: 24px;
+        color: var(--muted);
+      }
+      .icon-btn {
+        border: 1px solid var(--line);
+        background: #fff;
+        border-radius: 14px;
+        padding: 11px 13px;
+        font-weight: 800;
+      }
+      .icon-btn.on {
+        background: var(--lime);
+        border-color: #bad85e;
+      }
+      .panel {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+      }
+      .panel-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 13px;
+        border-bottom: 1px solid var(--line);
+      }
+      .panel-title h2 {
+        font-size: 14px;
+        margin: 0;
+      }
+      .panel-title span {
+        font-size: 11px;
+        color: var(--muted);
+      }
+      .tiers {
+        padding: 8px;
+      }
+      .tier {
+        margin-bottom: 8px;
+      }
+      .tier:last-child {
+        margin-bottom: 0;
+      }
+      .tier-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 5px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-size: 10px;
+        font-weight: 900;
+        color: var(--muted);
+      }
+      .tier-label:after {
+        content: "";
+        height: 1px;
+        background: var(--line);
+        flex: 1;
+      }
+      .players {
+        display: grid;
+        gap: 7px;
+      }
+      .player {
+        width: 100%;
+        text-align: left;
+        border: 1px solid var(--line);
+        border-left: 6px solid var(--fourth);
+        background: #fff;
+        border-radius: 12px;
+        padding: 10px;
+        transition: 0.15s;
+      }
+      .player-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 8px;
+      }
+      .player[data-tier="top"] {
+        border-left-color: #155b3a;
+        background: #f2faf5;
+      }
+      .player[data-tier="semitop"] {
+        border-left-color: #2f8b72;
+        background: #f2faf8;
+      }
+      .player[data-tier="terza"] {
+        border-left-color: #d29a1d;
+        background: #fffaf0;
+      }
+      .player[data-tier="quarta"] {
+        border-left-color: #89958e;
+        background: #f7f9f7;
+      }
+      .player[data-tier="secondi"] {
+        border-left-color: #54719d;
+        background: #f4f7fb;
+      }
+      .player[data-tier="scommessa"] {
+        border-left-color: #8064c5;
+        background: #f8f5ff;
+      }
+      .player[data-tier="evitare"] {
+        border-left-color: #c4473d;
+        background: #fff5f4;
+      }
+      .player.sold {
+        opacity: 0.6;
+        background: #eef1ee;
+      }
+      .player-name {
+        font-weight: 900;
+        font-size: 14px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        text-transform: uppercase;
+      }
+      .player-meta {
+        color: var(--muted);
+        font-size: 11px;
+        margin-top: 2px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        text-transform: none;
+      }
+      .price {
+        min-width: 48px;
+        text-align: center;
+        align-self: center;
+        background: #edf2ee;
+        border-radius: 10px;
+        padding: 7px 6px;
+        font-weight: 900;
+        font-size: 13px;
+      }
+      .price small {
+        display: block;
+        color: var(--muted);
+        font-size: 8px;
+        font-weight: 700;
+      }
+      .badges {
+        display: flex;
+        gap: 4px;
+        flex-wrap: wrap;
+        margin-top: 6px;
+      }
+      .badge {
+        font-size: 9px;
+        padding: 4px 6px;
+        border-radius: 999px;
+        background: #eff3ef;
+        color: #4f6157;
+        font-weight: 800;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .player-actions {
+        display: flex;
+        gap: 6px;
+        margin-top: 8px;
+      }
+      .player-actions button {
+        flex: 1;
+        border: 1px solid var(--line);
+        background: #f1f4f1;
+        color: var(--ink);
+        border-radius: 10px;
+        padding: 8px 6px;
+        font-weight: 850;
+        font-size: 11.5px;
+      }
+      .player-actions button:active {
+        transform: scale(0.97);
+      }
+      .player-actions .p-buy {
+        background: var(--brand);
+        color: #fff;
+        border-color: var(--brand);
+      }
+      .player-actions .p-sold {
+        background: #e2e8e3;
+        color: #496056;
+      }
+      .status-good {
+        background: #bce8c8;
+        color: #14532d;
+      }
+      .status-ok {
+        background: #dcf3c0;
+        color: #365314;
+      }
+      .status-warn {
+        background: #ffecad;
+        color: #704f00;
+      }
+      .status-bad {
+        background: #ffd0cc;
+        color: #8b1e17;
+      }
+      .status-neutral {
+        background: #edf1ee;
+        color: #607067;
+      }
+      .badge.carmy {
+        background: #173d2b;
+        color: #fff;
+      }
+      .badge.carmy-esca {
+        background: #d36b13;
+        color: #fff;
+      }
+      .badge.franco {
+        background: #2459a6;
+        color: #fff;
+      }
+      .tier[data-tier="top"] .tier-label {
+        color: #155b3a;
+      }
+      .tier[data-tier="semitop"] .tier-label {
+        color: #2f8b72;
+      }
+      .tier[data-tier="terza"] .tier-label {
+        color: #9a6900;
+      }
+      .tier[data-tier="quarta"] .tier-label {
+        color: #68746d;
+      }
+      .tier[data-tier="scommessa"] .tier-label {
+        color: #6743bc;
+      }
+      .teams-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+      .team-card {
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: 13px;
+        box-shadow: var(--shadow);
+        text-align: left;
+        width: 100%;
+        cursor: pointer;
+      }
+      .team-card:active {
+        transform: scale(0.985);
+      }
+      .team-card.mine {
+        border: 2px solid var(--brand);
+      }
+      .team-name {
+        display: flex;
+        justify-content: space-between;
+        gap: 5px;
+        font-size: 13px;
+        font-weight: 850;
+      }
+      .money {
+        font-size: 26px;
+        font-weight: 950;
+        letter-spacing: -1px;
+        margin: 8px 0;
+      }
+      .money small {
+        font-size: 11px;
+        color: var(--muted);
+        font-weight: 700;
+        letter-spacing: 0;
+      }
+      .progress {
+        height: 6px;
+        background: #e9eeea;
+        border-radius: 99px;
+        overflow: hidden;
+      }
+      .progress i {
+        display: block;
+        height: 100%;
+        background: var(--brand);
+      }
+      .team-foot {
+        display: flex;
+        justify-content: space-between;
+        color: var(--muted);
+        font-size: 10px;
+        margin-top: 7px;
+      }
+      .roster-chips {
+        display: flex;
+        gap: 4px;
+        margin-top: 10px;
+        flex-wrap: wrap;
+      }
+      .roster-chips span {
+        font-size: 9px;
+        background: #edf2ee;
+        border-radius: 6px;
+        padding: 4px 5px;
+      }
+      .empty {
+        text-align: center;
+        color: var(--muted);
+        padding: 36px 20px;
+      }
+      .section-title {
+        font-size: 18px;
+        margin: 4px 0 12px;
+      }
+      .history {
+        display: grid;
+        gap: 7px;
+      }
+      .history-row {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 10px;
+        background: #fff;
+        border: 1px solid var(--line);
+        padding: 11px;
+        border-radius: 12px;
+      }
+      .history-row b {
+        font-size: 13px;
+      }
+      .history-row small {
+        display: block;
+        color: var(--muted);
+        margin-top: 3px;
+      }
+      .history-price {
+        font-weight: 900;
+      }
+      .undo {
+        border: 0;
+        background: #ffe2df;
+        color: var(--danger);
+        border-radius: 9px;
+        padding: 6px 8px;
+        font-size: 11px;
+        font-weight: 800;
+        margin-top: 5px;
+      }
+      .editor-grid {
+        display: grid;
+        gap: 12px;
+      }
+      .edit-card {
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: 14px;
+      }
+      .edit-card h3 {
+        font-size: 14px;
+        margin: 0 0 11px;
+      }
+      .field {
+        display: grid;
+        gap: 5px;
+        margin-bottom: 9px;
+      }
+      .field label {
+        font-size: 10px;
+        font-weight: 850;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      .field input,
+      .field select,
+      .field textarea {
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 11px;
+        padding: 10px;
+        background: #fff;
+        outline: none;
+      }
+      .field textarea {
+        min-height: 75px;
+        resize: vertical;
+      }
+      .row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+      .team-input {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 7px;
+        margin-bottom: 6px;
+      }
+      .team-input input {
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 9px;
+      }
+      .mine-btn {
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: #fff;
+        padding: 8px;
+      }
+      .mine-btn.active {
+        background: var(--lime);
+        border-color: #b9d35e;
+      }
+      .primary,
+      .secondary,
+      .danger {
+        border: 0;
+        border-radius: 12px;
+        padding: 11px 14px;
+        font-weight: 850;
+      }
+      .primary {
+        background: var(--brand);
+        color: #fff;
+      }
+      .secondary {
+        background: #edf2ee;
+        color: var(--ink);
+      }
+      .danger {
+        background: #ffe2df;
+        color: var(--danger);
+      }
+      .actions {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .full {
+        width: 100%;
+      }
+      .team-picker {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 7px;
+        margin: 8px 0 14px;
+      }
+      .team-radio {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+      }
+      .team-pick {
+        display: block;
+        text-align: center;
+        cursor: pointer;
+        border: 1px solid var(--line);
+        background: #f5f7f5;
+        border-radius: 11px;
+        padding: 9px 4px;
+        font-size: 11px;
+        font-weight: 900;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .team-pick small {
+        display: block;
+        font-size: 8px;
+        color: var(--muted);
+        margin-top: 2px;
+      }
+      .team-radio:checked + .team-pick {
+        background: var(--lime);
+        border-color: #829e2d;
+        color: #213400;
+        box-shadow:
+          inset 0 0 0 2px #fff,
+          0 0 0 2px #829e2d;
+      }
+      .team-radio:focus-visible + .team-pick {
+        outline: 3px solid #9bb7ff;
+      }
+      .quick-prices {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 6px;
+        margin: -2px 0 10px;
+      }
+      .quick-prices button {
+        border: 1px solid var(--line);
+        background: #f1f4f1;
+        border-radius: 9px;
+        padding: 7px 4px;
+        font-size: 10px;
+        font-weight: 850;
+      }
+      .buy-player-info {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        background: #f4f7f4;
+        border-radius: 12px;
+        padding: 10px 11px;
+        margin-bottom: 12px;
+      }
+      .buy-player-info b {
+        text-transform: capitalize;
+      }
+      .buy-player-info small {
+        color: var(--muted);
+      }
+      nav {
+        position: fixed;
+        z-index: 30;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(14px);
+        border-top: 1px solid var(--line);
+        padding: 7px max(10px, env(safe-area-inset-right))
+          calc(7px + env(safe-area-inset-bottom))
+          max(10px, env(safe-area-inset-left));
+        display: flex;
+        justify-content: center;
+        gap: 4px;
+      }
+      .nav-btn {
+        flex: 1;
+        max-width: 180px;
+        border: 0;
+        background: transparent;
+        border-radius: 12px;
+        padding: 8px 6px;
+        color: var(--muted);
+        font-size: 10px;
+        font-weight: 850;
+      }
+      .nav-btn b {
+        display: block;
+        font-size: 18px;
+        line-height: 1.05;
+        margin-bottom: 2px;
+      }
+      .nav-btn.active {
+        background: #e8efe9;
+        color: var(--brand);
+      }
+      dialog {
+        border: 0;
+        border-radius: 22px;
+        padding: 0;
+        width: min(92vw, 460px);
+        max-height: 90dvh;
+        box-shadow: 0 25px 70px rgba(0, 0, 0, 0.3);
+      }
+      dialog::backdrop {
+        background: rgba(12, 25, 18, 0.55);
+        backdrop-filter: blur(3px);
+      }
+      .modal {
+        padding: 18px;
+      }
+      .modal-head {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        align-items: flex-start;
+        margin-bottom: 14px;
+      }
+      .modal h2 {
+        margin: 0;
+        font-size: 21px;
+        letter-spacing: -0.5px;
+      }
+      .modal .subtitle {
+        color: var(--muted);
+        font-size: 12px;
+        margin-top: 3px;
+      }
+      .close {
+        border: 0;
+        background: #edf2ee;
+        border-radius: 50%;
+        width: 34px;
+        height: 34px;
+        font-size: 17px;
+      }
+      .detail-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 7px;
+        margin: 12px 0;
+      }
+      .detail {
+        background: #f4f7f4;
+        border-radius: 11px;
+        padding: 9px;
+      }
+      .detail small {
+        display: block;
+        color: var(--muted);
+        font-size: 9px;
+        text-transform: uppercase;
+        font-weight: 850;
+      }
+      .detail b {
+        display: block;
+        font-size: 12px;
+        margin-top: 3px;
+      }
+      .note {
+        background: #f6f7ef;
+        border: 1px solid #e9ead7;
+        border-radius: 12px;
+        padding: 11px;
+        font-size: 12px;
+        line-height: 1.45;
+        margin: 10px 0;
+      }
+      .toast {
+        position: fixed;
+        z-index: 99;
+        left: 50%;
+        bottom: 88px;
+        transform: translate(-50%, 25px);
+        opacity: 0;
+        background: #15261c;
+        color: #fff;
+        border-radius: 999px;
+        padding: 10px 15px;
+        font-size: 12px;
+        font-weight: 800;
+        transition: 0.2s;
+        pointer-events: none;
+      }
+      .toast.show {
+        transform: translate(-50%, 0);
+        opacity: 1;
+      }
+      @media (min-width: 760px) {
+        header {
+          padding-inline: 24px;
+        }
+        main {
+          padding: 20px 24px;
+        }
+        .players {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .teams-grid {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+        .editor-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+      @media (max-width: 380px) {
+        .panel-title {
+          padding: 10px 8px;
+        }
+        .panel-title span {
+          display: none;
+        }
+        .tiers {
+          padding: 5px;
+        }
+        .player {
+          padding: 8px 7px;
+          gap: 4px;
+        }
+        .player-name {
+          font-size: 12px;
+        }
+        .player-meta {
+          font-size: 9px;
+        }
+        .price {
+          min-width: 39px;
+          padding: 6px 3px;
+          font-size: 11px;
+        }
+        .badges {
+          gap: 3px;
+        }
+        .badge {
+          font-size: 7.5px;
+          padding: 3px 4px;
+        }
+        .teams-grid {
+          gap: 7px;
+        }
+        .team-card {
+          padding: 10px;
+        }
+        .money {
+          font-size: 22px;
+        }
+        .team-picker {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <header>
+        <div class="brandline">
+          <div class="brand">
+            <h1>Fanta Asta <small>DEFINITIVA 02/09</small></h1>
+            <p id="headline">Liste e fasce</p>
+          </div>
+          <div class="pill" id="myBudget">700 cr</div>
+        </div>
+        <div class="rolebar" id="rolebar"></div>
+      </header>
+      <main id="main"></main>
+    </div>
+    <nav id="nav"></nav>
+    <dialog id="playerDialog"></dialog>
+    <dialog id="purchaseDialog"></dialog>
+    <div class="toast" id="toast"></div>
+    <script>
+      const INITIAL = {
+        version: 4,
+        players: [
+          {
+            id: "p-svilar-0",
+            role: "P",
+            tier: "top",
+            name: "SVILAR",
+            club: "Roma",
+            credits: 77,
+            originalCredits: 55,
+            info: "",
+            injuries: "",
+            starter: "",
+            recommended: "",
+            franco: "",
+            backup: "Gollini",
+            pairing: "Bologna, Monza, Venezia, Genoa",
+          },
+          {
+            id: "p-vicario-1",
+            role: "P",
+            tier: "top",
+            name: "VICARIO",
+            club: "Juve",
+            credits: 63,
+            originalCredits: 45,
+            info: "",
+            injuries: "",
+            starter: "",
+            recommended: "",
+            franco: "",
+            backup: "Grabara per forza",
+            pairing: "Bologna, Cagliari, Torino, Lazio",
+          },
+          {
+            id: "p-butez-2",
+            role: "P",
+            tier: "top",
+            name: "BUTEZ",
+            club: "Como",
+            credits: 60.2,
+            originalCredits: 43,
+            info: "",
+            injuries: "",
+            starter: "",
+            recommended: "",
+            franco: "",
+            backup: "Sanchez",
+            pairing: "Bologna, Udinese, Sassuolo, Torino",
+          },
+          {
+            id: "p-carnesecchi-3",
+            role: "P",
+            tier: "top",
+            name: "CARNESECCHI",
+            club: "Atalanta",
+            credits: 50.4,
+            originalCredits: 36,
+            info: "",
+            injuries: "",
+            starter: "",
+            recommended: "",
+            franco: "",
+            backup: "Sportiello",
+            pairing: "Sassuolo, Monza, Bologna, Udinese, Parma",
+          },
+          {
+            id: "p-maignan-4",
+            role: "P",
+            tier: "top",
+            name: "MAIGNAN",
+            club: "Milan",
+            credits: 65.8,
+            originalCredits: 47,
+            info: "",
+            injuries: "",
+            starter: "",
+            recommended: "",
+            franco: "",
+            backup: "Terraciano",
+            pairing: "Lecce, Parma, Fiorentina, Sassuolo, Torino, Cagliari",
+          },
+          {
+            id: "p-martinez-5",
+            role: "P",
+            tier: "top",
+            name: "MARTINEZ",
+            club: "Inter",
+            credits: 61.6,
+            originalCredits: 44,
+            info: "",
+            injuries: "",
+            starter: "",
+            recommended: "",
+            franco: "",
+            backup: "Provedel per forza",
+            pairing: "Bologna, Cagliari, Monza, Torino, Sassuolo, Frosinone",
+          },
+          {
+            id: "p-meret-6",
+            role: "P",
+            tier: "top",
+            name: "MERET",
+            club: "Napoli",
+            credits: 58.8,
+            originalCredits: 42,
+            info: "",
+            injuries: "",
+            starter: "",
+            recommended: "",
+            franco: "",
+            backup: "Milinkovic per forza",
+            pairing: "Lecce, Torino, Parma, Frosinone, Fiorentina",
+          },
+          {
+            id: "p-mandas-7",
+            role: "P",
+            tier: "semitop",
+            name: "MANDAS",
+            club: "Lazio",
+            credits: 30.8,
+            originalCredits: 22,
+            info: "",
+            injuries: "",
+            starter: "",
+            recommended: "",
+            franco: "",
+            backup: "Motta",
+            pairing: "Lecce, Frosinone, Cagliari. Abbinamento sottovalutato",
+          },
+          {
+            id: "p-de-gea-8",
+            role: "P",
+            tier: "semitop",
+            name: "DE GEA",
+            club: "Fiorentina",
+            credits: 33.6,
+            originalCredits: 24,
+            info: "",
+            injuries: "",
+            starter: "",
+            recommended: "",
+            franco: "",
+            backup: "Christensen",
+            pairing: "In abbinamento",
+          },
+          {
+            id: "p-skorupski-9",
+            role: "P",
+            tier: "semitop",
+            name: "SKORUPSKI",
+            club: "Bologna",
+            credits: 22.4,
+            originalCredits: 16,
+            info: "",
+            injuries: "",
+            starter: "",
+            recommended: "",
+            franco: "",
+            backup: "Pessina",
+            pairing: "",
+          },
+          {
+            id: "p-falcone-10",
+            role: "P",
+            tier: "terza",
+            name: "FALCONE",
+            club: "Lecce",
+            credits: 18.2,
+            originalCredits: 13,
+            info: "",
+            injuries: "",
+            starter: "",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "p-okoye-11",
+            role: "P",
+            tier: "terza",
+            name: "OKOYE",
+            club: "Udinese",
+            credits: 15.4,
+            originalCredits: 11,
+            info: "",
+            injuries: "",
+            starter: "",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "p-caprile-12",
+            role: "P",
+            tier: "terza",
+            name: "CAPRILE",
+            club: "Cagliari",
+            credits: 14,
+            originalCredits: 10,
+            info: "",
+            injuries: "",
+            starter: "",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "p-bijlow-13",
+            role: "P",
+            tier: "terza",
+            name: "BIJLOW",
+            club: "Genoa",
+            credits: 12.6,
+            originalCredits: 9,
+            info: "",
+            injuries: "",
+            starter: "",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "p-perri-14",
+            role: "P",
+            tier: "quarta",
+            name: "PERRI",
+            club: "Torino",
+            credits: 9.8,
+            originalCredits: 7,
+            info: "",
+            injuries: "",
+            starter: "",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "p-muric-15",
+            role: "P",
+            tier: "quarta",
+            name: "MURIC",
+            club: "Sassuolo",
+            credits: 7,
+            originalCredits: 5,
+            info: "",
+            injuries: "",
+            starter: "",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "p-corvi-16",
+            role: "P",
+            tier: "quarta",
+            name: "CORVI",
+            club: "Parma",
+            credits: 5.6,
+            originalCredits: 4,
+            info: "",
+            injuries: "",
+            starter: "",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "p-palmisani-17",
+            role: "P",
+            tier: "quarta",
+            name: "PALMISANI",
+            club: "Frosinone",
+            credits: 5.6,
+            originalCredits: 4,
+            info: "",
+            injuries: "",
+            starter: "",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "p-stankovic-f-18",
+            role: "P",
+            tier: "quarta",
+            name: "STANKOVIC F",
+            club: "Venezia",
+            credits: 4.2,
+            originalCredits: 3,
+            info: "",
+            injuries: "",
+            starter: "",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "p-tornqvist-19",
+            role: "P",
+            tier: "quarta",
+            name: "TORNQVIST",
+            club: "Monza",
+            credits: 4.2,
+            originalCredits: 3,
+            info: "",
+            injuries: "",
+            starter: "",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-dimarco-0",
+            role: "D",
+            tier: "top",
+            name: "DIMARCO",
+            club: "Inter",
+            credits: 106.4,
+            originalCredits: 76,
+            info: "è il migliore in assoluto",
+            injuries: "no infortuni",
+            starter: "titolare fisso",
+            recommended: "si",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-wesley-1",
+            role: "D",
+            tier: "top",
+            name: "WESLEY",
+            club: "Roma",
+            credits: 53.2,
+            originalCredits: 38,
+            info: "rischio cartellini + molina",
+            injuries: "pochi infortuni",
+            starter: "titolare fisso",
+            recommended: "si",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-bremer-2",
+            role: "D",
+            tier: "top",
+            name: "BREMER",
+            club: "Juve",
+            credits: 49,
+            originalCredits: 35,
+            info: "si fa male spesso ma porta anche bonus",
+            injuries: "tanti infortuni",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-mancini-3",
+            role: "D",
+            tier: "top",
+            name: "MANCINI",
+            club: "Roma",
+            credits: 40.6,
+            originalCredits: 29,
+            info: "porta bonus e mv alta , nome da modificatore",
+            injuries: "no infortuni",
+            starter: "titolare fisso",
+            recommended: "si",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-rrahmani-4",
+            role: "D",
+            tier: "top",
+            name: "RRAHMANI",
+            club: "Napoli",
+            credits: 39.2,
+            originalCredits: 28,
+            info: "",
+            injuries: "pochi infortuni",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-solet-5",
+            role: "D",
+            tier: "top",
+            name: "SOLET",
+            club: "Udinese",
+            credits: 37.8,
+            originalCredits: 27,
+            info: "titolare e rigorista",
+            injuries: "no infortuni",
+            starter: "titolare fisso",
+            recommended: "si",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-akanji-6",
+            role: "D",
+            tier: "top",
+            name: "AKANJI",
+            club: "Inter",
+            credits: 36.4,
+            originalCredits: 26,
+            info: "",
+            injuries: "no infortuni",
+            starter: "titolare fisso",
+            recommended: "si",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-bastoni-7",
+            role: "D",
+            tier: "top",
+            name: "BASTONI",
+            club: "Inter",
+            credits: 35,
+            originalCredits: 25,
+            info: "potrebbe essere sottovalutato, esca potenziale",
+            injuries: "pochi infortuni",
+            starter: "titolare fisso",
+            recommended: "si",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-molina-8",
+            role: "D",
+            tier: "top",
+            name: "MOLINA",
+            club: "Roma",
+            credits: 42,
+            originalCredits: 30,
+            info: "potenziale 6.7 di fm è un top però c'è anche wesley da altra parte",
+            injuries: "medio infortuni",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-kalulu-9",
+            role: "D",
+            tier: "semitop",
+            name: "KALULU",
+            club: "Juve",
+            credits: 30.8,
+            originalCredits: 22,
+            info: "non integrissimo",
+            injuries: "medio infortuni",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-di-lorenzo-10",
+            role: "D",
+            tier: "semitop",
+            name: "DI LORENZO",
+            club: "Napoli",
+            credits: 30.8,
+            originalCredits: 22,
+            info: "occhio infortuni non mi stra piace ma magari saldo",
+            injuries: "tanti infortuni",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-bissek-11",
+            role: "D",
+            tier: "semitop",
+            name: "BISSEK",
+            club: "Inter",
+            credits: 29.4,
+            originalCredits: 21,
+            info: "ha concorrenza ma comunque giocherà spesso",
+            injuries: "no infortuni",
+            starter: "non fisso",
+            recommended: "",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-pavlovic-12",
+            role: "D",
+            tier: "semitop",
+            name: "PAVLOVIC",
+            club: "Milan",
+            credits: 28,
+            originalCredits: 20,
+            info: "buono ma eventualmente meglio de winter che costa meno",
+            injuries: "no infortuni",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-chalobah-13",
+            role: "D",
+            tier: "semitop",
+            name: "CHALOBAH",
+            club: "Como",
+            credits: 28,
+            originalCredits: 20,
+            info: "da modificatore",
+            injuries: "no infortuni",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-spence-14",
+            role: "D",
+            tier: "semitop",
+            name: "SPENCE",
+            club: "Inter",
+            credits: 26.6,
+            originalCredits: 19,
+            info: "non si sa se è il titolare fisso o se si alterna con diouf. quindi non spenderci troppo. buono nella fase difensiva . diouf porta magari piu bonus",
+            injuries: "medio infortuni",
+            starter: "non fisso",
+            recommended: "",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-ndicka-15",
+            role: "D",
+            tier: "semitop",
+            name: "NDICKA",
+            club: "Roma",
+            credits: 25.2,
+            originalCredits: 18,
+            info: "buono",
+            injuries: "no infortuni",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-ramon-16",
+            role: "D",
+            tier: "semitop",
+            name: "RAMON",
+            club: "Como",
+            credits: 25.2,
+            originalCredits: 18,
+            info: "buonino",
+            injuries: "pochi infortuni",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-ostigard-17",
+            role: "D",
+            tier: "semitop",
+            name: "OSTIGARD",
+            club: "Genoa",
+            credits: 23.8,
+            originalCredits: 17,
+            info: "modificatore",
+            injuries: "medio infortuni",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-spinazzola-18",
+            role: "D",
+            tier: "semitop",
+            name: "SPINAZZOLA",
+            club: "Napoli",
+            credits: 22.4,
+            originalCredits: 16,
+            info: "non mi stra piave",
+            injuries: "tanti infortuni",
+            starter: "titolare fisso",
+            recommended: "ESCA",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-zappacosta-19",
+            role: "D",
+            tier: "semitop",
+            name: "ZAPPACOSTA",
+            club: "Atalanta",
+            credits: 21,
+            originalCredits: 15,
+            info: "se va sottovalutato si potrebbe prendere",
+            injuries: "pochi infortuni",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-gila-20",
+            role: "D",
+            tier: "semitop",
+            name: "GILA",
+            club: "Milan",
+            credits: 19.6,
+            originalCredits: 14,
+            info: "ESCA",
+            injuries: "pochi infortuni",
+            starter: "titolare fisso",
+            recommended: "ESCA",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-scalvini-21",
+            role: "D",
+            tier: "semitop",
+            name: "SCALVINI",
+            club: "Atalanta",
+            credits: 21,
+            originalCredits: 15,
+            info: "buono ma occhio infortuni",
+            injuries: "tanti infortuni",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-valeri-22",
+            role: "D",
+            tier: "semitop",
+            name: "VALERI",
+            club: "Parma",
+            credits: 19.6,
+            originalCredits: 14,
+            info: "titolare+ porta anche bonus NOME DA PRENDERE",
+            injuries: "no infortuni",
+            starter: "titolare fisso",
+            recommended: "si",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-vasquez-23",
+            role: "D",
+            tier: "terza",
+            name: "VASQUEZ",
+            club: "Genoa",
+            credits: 15.4,
+            originalCredits: 11,
+            info: "da modificatore",
+            injuries: "no infortuni",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-hermoso-24",
+            role: "D",
+            tier: "terza",
+            name: "HERMOSO",
+            club: "Roma",
+            credits: 14,
+            originalCredits: 10,
+            info: "andrà a poco mod subentrante cartellini",
+            injuries: "pochi infortuni",
+            starter: "non fisso",
+            recommended: "",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-vojvoda-25",
+            role: "D",
+            tier: "terza",
+            name: "VOJVODA",
+            club: "Udinese",
+            credits: 15.4,
+            originalCredits: 11,
+            info: "rischi infortuni ma è un bel giocatore offensivo, forse non gioca sempre assist+mod",
+            injuries: "pochi infortuni",
+            starter: "titolare fisso",
+            recommended: "si",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-celik-26",
+            role: "D",
+            tier: "terza",
+            name: "CELIK",
+            club: "Juve",
+            credits: 14,
+            originalCredits: 10,
+            info: "subentrante da mod BUONO",
+            injuries: "no infortuni",
+            starter: "non fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-couto-27",
+            role: "D",
+            tier: "terza",
+            name: "COUTO",
+            club: "Como",
+            credits: 15.4,
+            originalCredits: 11,
+            info: "bonus",
+            injuries: "no infortuni",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-miranda-28",
+            role: "D",
+            tier: "terza",
+            name: "MIRANDA",
+            club: "Bologna",
+            credits: 15.4,
+            originalCredits: 11,
+            info: "assist",
+            injuries: "pochi infortuni",
+            starter: "si alterna anche",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-jimenez-29",
+            role: "D",
+            tier: "terza",
+            name: "JIMENEZ",
+            club: "Fiorentina",
+            credits: 11.2,
+            originalCredits: 8,
+            info: "troppi cartellini non mi convince più ma a 1 lo si prende",
+            injuries: "no infortuni",
+            starter: "si alterna anche",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-valle-30",
+            role: "D",
+            tier: "terza",
+            name: "VALLE",
+            club: "Como",
+            credits: 11.2,
+            originalCredits: 8,
+            info: "potrebbe essere il titolare",
+            injuries: "pochi infortuni",
+            starter: "si alterna anche",
+            recommended: "",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-bartesaghi-31",
+            role: "D",
+            tier: "terza",
+            name: "BARTESAGHI",
+            club: "Milan",
+            credits: 11.2,
+            originalCredits: 8,
+            info: "non straconvince piu però qualche credito da spendere",
+            injuries: "no infortuni",
+            starter: "non fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-bernasconi-32",
+            role: "D",
+            tier: "terza",
+            name: "BERNASCONI",
+            club: "Atalanta",
+            credits: 11.2,
+            originalCredits: 8,
+            info: "gioca alto quindi bene +assist",
+            injuries: "pochi infortuni",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-doekhi-33",
+            role: "D",
+            tier: "terza",
+            name: "DOEKHI",
+            club: "Lazio",
+            credits: 9.8,
+            originalCredits: 7,
+            info: "scommessina",
+            injuries: "medio infortuni",
+            starter: "si alterna anche",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-dragusin-34",
+            role: "D",
+            tier: "terza",
+            name: "DRAGUSIN",
+            club: "Fiorentina",
+            credits: 9.8,
+            originalCredits: 7,
+            info: "evita",
+            injuries: "tanti infortuni",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-kelly-35",
+            role: "D",
+            tier: "terza",
+            name: "KELLY",
+            club: "Juve",
+            credits: 9.8,
+            originalCredits: 7,
+            info: "evita",
+            injuries: "no infortuni",
+            starter: "si alterna anche",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-kamara-36",
+            role: "D",
+            tier: "terza",
+            name: "KAMARA",
+            club: "Udinese",
+            credits: 7,
+            originalCredits: 5,
+            info: "EVITA",
+            injuries: "medio infortuni",
+            starter: "non fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-mangas-37",
+            role: "D",
+            tier: "terza",
+            name: "MANGAS",
+            club: "Monza",
+            credits: 7,
+            originalCredits: 5,
+            info: "bonus , da prendere a 1",
+            injuries: "medio infortuni",
+            starter: "titolare fisso",
+            recommended: "si",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-hainaut-38",
+            role: "D",
+            tier: "terza",
+            name: "HAINAUT",
+            club: "Venezia",
+            credits: 8.4,
+            originalCredits: 6,
+            info: "buono esterni venezia a 1 prendere meglio di haps",
+            injuries: "no infortuni",
+            starter: "non fisso",
+            recommended: "si",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-haps-39",
+            role: "D",
+            tier: "quarta",
+            name: "HAPS",
+            club: "Venezia",
+            credits: 7,
+            originalCredits: 5,
+            info: "alterna con correia quindi non top",
+            injuries: "pochi infortuni",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-cacciamani-40",
+            role: "D",
+            tier: "quarta",
+            name: "CACCIAMANI",
+            club: "Torino",
+            credits: 7,
+            originalCredits: 5,
+            info: "gioca alto ma prendere a 1",
+            injuries: "titolare fisso",
+            starter: "no",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-valdepenas-41",
+            role: "D",
+            tier: "quarta",
+            name: "VALDEPENAS",
+            club: "Fiorentina",
+            credits: 7,
+            originalCredits: 5,
+            info: "",
+            injuries: "pochi infortuni",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-theate-42",
+            role: "D",
+            tier: "quarta",
+            name: "THEATE",
+            club: "Bologna",
+            credits: 5.6,
+            originalCredits: 4,
+            info: "copertura",
+            injuries: "no infortuni",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-ismaiji-43",
+            role: "D",
+            tier: "quarta",
+            name: "ISMAIJI",
+            club: "Torino",
+            credits: 5.6,
+            originalCredits: 4,
+            info: "troppi infortuni",
+            injuries: "tanti infortuni",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-mina-44",
+            role: "D",
+            tier: "quarta",
+            name: "MINA",
+            club: "Cagliari",
+            credits: 5.6,
+            originalCredits: 4,
+            info: "cartellinaro rissoso ma rigorista",
+            injuries: "pochi infortuni",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-marcandalli-45",
+            role: "D",
+            tier: "quarta",
+            name: "MARCANDALLI",
+            club: "Genoa",
+            credits: 5.6,
+            originalCredits: 4,
+            info: "",
+            injuries: "no infortuni",
+            starter: "titolare fisso",
+            recommended: "si",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-de-winter-46",
+            role: "D",
+            tier: "quarta",
+            name: "DE WINTER",
+            club: "Milan",
+            credits: 5.6,
+            originalCredits: 4,
+            info: "",
+            injuries: "medio infortuni",
+            starter: "non fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-kabasele-47",
+            role: "D",
+            tier: "quarta",
+            name: "KABASELE",
+            club: "Udinese",
+            credits: 5.6,
+            originalCredits: 4,
+            info: "gol",
+            injuries: "no infortuni",
+            starter: "titolare fisso",
+            recommended: "si",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-provstgard-48",
+            role: "D",
+            tier: "quarta",
+            name: "PROVSTGARD",
+            club: "Lazio",
+            credits: 5.6,
+            originalCredits: 4,
+            info: "",
+            injuries: "no infortuni",
+            starter: "non fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-delprato-49",
+            role: "D",
+            tier: "quarta",
+            name: "DELPRATO",
+            club: "Parma",
+            credits: 4.2,
+            originalCredits: 3,
+            info: "mod",
+            injuries: "no infortuni",
+            starter: "titolare fisso",
+            recommended: "si",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-tiago-gabriel-50",
+            role: "D",
+            tier: "quarta",
+            name: "TIAGO GABRIEL",
+            club: "Lecce",
+            credits: 4.2,
+            originalCredits: 3,
+            info: "mod",
+            injuries: "no infortuni",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-obert-51",
+            role: "D",
+            tier: "quarta",
+            name: "OBERT",
+            club: "Cagliari",
+            credits: 4.2,
+            originalCredits: 3,
+            info: "cartellini, camy consiglia",
+            injuries: "no infortuni",
+            starter: "titolare fisso",
+            recommended: "si",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-diego-carlos-52",
+            role: "D",
+            tier: "quarta",
+            name: "DIEGO CARLOS",
+            club: "Parma",
+            credits: 2.8,
+            originalCredits: 2,
+            info: "neoacquisto",
+            injuries: "medio infortuni",
+            starter: "non fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-coco-53",
+            role: "D",
+            tier: "quarta",
+            name: "COCO",
+            club: "Torino",
+            credits: 2.8,
+            originalCredits: 2,
+            info: "",
+            injuries: "no infortuni",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-zortea-54",
+            role: "D",
+            tier: "quarta",
+            name: "ZORTEA",
+            club: "Bologna",
+            credits: 4.2,
+            originalCredits: 3,
+            info: "mod",
+            injuries: "medio infortuni",
+            starter: "non fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-birindelli-55",
+            role: "D",
+            tier: "quarta",
+            name: "BIRINDELLI",
+            club: "Monza",
+            credits: 4.2,
+            originalCredits: 3,
+            info: "consigliato carmy , gioca avanti ma è al monza, ottimo sesto/setimo",
+            injuries: "medio infortuni",
+            starter: "titolare fisso",
+            recommended: "si",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-drameh-56",
+            role: "D",
+            tier: "quarta",
+            name: "DRAMEH",
+            club: "Genoa",
+            credits: 2.8,
+            originalCredits: 2,
+            info: "neoacquisot scommessa+",
+            injuries: "no infortuni",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-bracaglia-57",
+            role: "D",
+            tier: "quarta",
+            name: "BRACAGLIA",
+            club: "Frosinone",
+            credits: 1.4,
+            originalCredits: 1,
+            info: "bonus alla prima",
+            injuries: "no infortuni",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-idzes-58",
+            role: "D",
+            tier: "quarta",
+            name: "IDZES",
+            club: "Sassuolo",
+            credits: 1.4,
+            originalCredits: 1,
+            info: "",
+            injuries: "no infortuni",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-gallo-59",
+            role: "D",
+            tier: "quarta",
+            name: "GALLO",
+            club: "Lecce",
+            credits: 1.4,
+            originalCredits: 1,
+            info: "",
+            injuries: "medio infortuni",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-lulli-60",
+            role: "D",
+            tier: "scommessa",
+            name: "LULLI",
+            club: "Roma",
+            credits: 14,
+            originalCredits: 10,
+            info: "scommessa roma piace a gasp",
+            injuries: "no infortuni",
+            starter: "non fisso",
+            recommended: "",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-stones-61",
+            role: "D",
+            tier: "scommessa",
+            name: "STONES",
+            club: "Inter",
+            credits: 9.8,
+            originalCredits: 7,
+            info: "rischio infortuni+ concorrenza",
+            injuries: "medio infortuni",
+            starter: "non fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-kempf-62",
+            role: "D",
+            tier: "scommessa",
+            name: "KEMPF",
+            club: "Como",
+            credits: 8.4,
+            originalCredits: 6,
+            info: "giocherà nelle partite + difficili",
+            injuries: "pochi infortuni",
+            starter: "si alterna anche",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-lucum-63",
+            role: "D",
+            tier: "scommessa",
+            name: "LUCUM'",
+            club: "Juve",
+            credits: 8.4,
+            originalCredits: 6,
+            info: "non titolare e occhio infortuni",
+            injuries: "medio infortuni",
+            starter: "non fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-carlos-augusto-64",
+            role: "D",
+            tier: "scommessa",
+            name: "CARLOS AUGUSTO",
+            club: "Inter",
+            credits: 8.4,
+            originalCredits: 6,
+            info: "concorrenza",
+            injuries: "pochi infortuni",
+            starter: "non fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-zalewski-65",
+            role: "D",
+            tier: "scommessa",
+            name: "ZALEWSKI",
+            club: "Atalanta",
+            credits: 7,
+            originalCredits: 5,
+            info: "riserva ma gioca",
+            injuries: "pochi infortuni",
+            starter: "non fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-cambiaso-66",
+            role: "D",
+            tier: "scommessa",
+            name: "CAMBIASO",
+            club: "Juve",
+            credits: 7,
+            originalCredits: 5,
+            info: "sottovalutato: ha portato malus ma anche buone performance",
+            injuries: "no infortuni",
+            starter: "titolare fisso",
+            recommended: "si",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-gabbia-67",
+            role: "D",
+            tier: "scommessa",
+            name: "GABBIA",
+            club: "Milan",
+            credits: 7,
+            originalCredits: 5,
+            info: "non spenderci troppo ma non mael",
+            injuries: "pochi infortuni",
+            starter: "titolare fisso",
+            recommended: "si",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-nuno-tavares-68",
+            role: "D",
+            tier: "scommessa",
+            name: "NUNO TAVARES",
+            club: "Lazio",
+            credits: 4.2,
+            originalCredits: 3,
+            info: "",
+            injuries: "medio infortuni",
+            starter: "non fisso",
+            recommended: "",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-kaiaki-69",
+            role: "D",
+            tier: "scommessa",
+            name: "KAIAKI",
+            club: "Como",
+            credits: 1.4,
+            originalCredits: 1,
+            info: "",
+            injuries: "no infortuni",
+            starter: "non fisso",
+            recommended: "",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-kristensen-70",
+            role: "D",
+            tier: "scommessa",
+            name: "KRISTENSEN",
+            club: "Atalanta",
+            credits: 2.8,
+            originalCredits: 2,
+            info: "incostante+cartellini = NO",
+            injuries: "medio infortuni",
+            starter: "non fisso",
+            recommended: "",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-obrador-71",
+            role: "D",
+            tier: "scommessa",
+            name: "OBRADOR",
+            club: "Sassuolo",
+            credits: 1.4,
+            originalCredits: 1,
+            info: "non si sa è titolare o si alterna 1 credito si spenderebbe",
+            injuries: "tanti infortuni",
+            starter: "non fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-pavard-72",
+            role: "D",
+            tier: "scommessa",
+            name: "PAVARD",
+            club: "Inter",
+            credits: 1.4,
+            originalCredits: 1,
+            info: "non è titolare",
+            injuries: "medio infortuni",
+            starter: "risere",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "D-marin-73",
+            role: "D",
+            tier: "scommessa",
+            name: "MARIN",
+            club: "Napoli",
+            credits: 1.4,
+            originalCredits: 1,
+            info: "è titolare ma non garanzie",
+            injuries: "",
+            starter: "",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-nico-paz-0",
+            role: "C",
+            tier: "top",
+            name: "NICO PAZ",
+            club: "Como",
+            credits: 114.8,
+            originalCredits: 82,
+            info: "è il migliore di tutti , prezzo fino a 80 crediti circa, non spenderei di pià perché como ha competizioni",
+            injuries: "no",
+            starter: "titolare fisso",
+            recommended: "si",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-chala-1",
+            role: "C",
+            tier: "top",
+            name: "CHALA",
+            club: "Inter",
+            credits: 106.4,
+            originalCredits: 76,
+            info: "Rigorista inter affidabile titolare ma occhio infortuni ma sta facendo tanto tanto",
+            injuries: "tanti infortuni",
+            starter: "titolare fisso",
+            recommended: "si",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-pulisic-2",
+            role: "C",
+            tier: "top",
+            name: "PULISIC",
+            club: "Milan",
+            credits: 79.8,
+            originalCredits: 57,
+            info: "spendere intorno ai 50",
+            injuries: "tanti infortuni",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-mctominay-3",
+            role: "C",
+            tier: "top",
+            name: "MCTOMINAY",
+            club: "Napoli",
+            credits: 70,
+            originalCredits: 50,
+            info: "affidabile ma rotto fino a sesta quindi andrà a meno",
+            injuries: "no",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-baturina-4",
+            role: "C",
+            tier: "top",
+            name: "BATURINA",
+            club: "Como",
+            credits: 67.2,
+            originalCredits: 48,
+            info: "molto buono , piuttosto che prendere nico paz meglio lui",
+            injuries: "no",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-orsolini-5",
+            role: "C",
+            tier: "top",
+            name: "ORSOLINI",
+            club: "Bologna",
+            credits: 63,
+            originalCredits: 45,
+            info: "potrebe andare a meno vista scorsa stagione SCOMMESSA INFORTUNIO",
+            injuries: "medio infortuni",
+            starter: "titolare fisso",
+            recommended: "si",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-mora-rodrigo-6",
+            role: "C",
+            tier: "semitop",
+            name: "MORA RODRIGO",
+            club: "Roma",
+            credits: 54.6,
+            originalCredits: 39,
+            info: "può fare molto bene e gioca alto",
+            injuries: "no",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-zaccagni-7",
+            role: "C",
+            tier: "semitop",
+            name: "ZACCAGNI",
+            club: "Lazio",
+            credits: 50.4,
+            originalCredits: 36,
+            info: "si infortunia spesso, ma lazio potrebbe andare in saldo",
+            injuries: "tanti infortuni",
+            starter: "titolare fisso",
+            recommended: "si",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-rabiot-8",
+            role: "C",
+            tier: "semitop",
+            name: "RABIOT",
+            club: "Milan",
+            credits: 49,
+            originalCredits: 35,
+            info: "non sarà troppo offensivo",
+            injuries: "pochi infortuni",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-conceicao-9",
+            role: "C",
+            tier: "semitop",
+            name: "CONCEICAO",
+            club: "Juve",
+            credits: 47.6,
+            originalCredits: 34,
+            info: "infortuni alto+ spreca tanto",
+            injuries: "tanti infortuni",
+            starter: "si alterna anche",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-barella-10",
+            role: "C",
+            tier: "semitop",
+            name: "BARELLA",
+            club: "Inter",
+            credits: 46.2,
+            originalCredits: 33,
+            info: "affidabile pochi bonus andrà a poco ma lo prenderei",
+            injuries: "no",
+            starter: "titolare fisso",
+            recommended: "i",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-atta-11",
+            role: "C",
+            tier: "semitop",
+            name: "ATTA",
+            club: "Fiorentina",
+            credits: 44.8,
+            originalCredits: 32,
+            info: "io lo prenderei nonostante crisi fiorentina perché verrà pagato poco",
+            injuries: "pochi infortuni",
+            starter: "titolare fisso",
+            recommended: "si",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-zielinski-12",
+            role: "C",
+            tier: "semitop",
+            name: "ZIELINSKI",
+            club: "Inter",
+            credits: 43.4,
+            originalCredits: 31,
+            info: "arrivo jones = va a meno del valore reale",
+            injuries: "medio infortuni",
+            starter: "non fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-de-bruyne-13",
+            role: "C",
+            tier: "semitop",
+            name: "DE BRUYNE",
+            club: "Napoli",
+            credits: 43.4,
+            originalCredits: 31,
+            info: "rischio infortuni",
+            injuries: "tanti infortuni",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-frattesi-14",
+            role: "C",
+            tier: "semitop",
+            name: "FRATTESI",
+            club: "Lazio",
+            credits: 42,
+            originalCredits: 30,
+            info: "gol al debutto = hype = ESCA o affarone tanto in hype",
+            injuries: "pochi infortuni",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-da-cunha-15",
+            role: "C",
+            tier: "semitop",
+            name: "DA CUNHA",
+            club: "Como",
+            credits: 40.6,
+            originalCredits: 29,
+            info: "rigorista e tanta roba ma sta calando",
+            injuries: "no",
+            starter: "titolare fisso",
+            recommended: "si",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-mckennie-16",
+            role: "C",
+            tier: "semitop",
+            name: "MCKENNIE",
+            club: "Juve",
+            credits: 40.6,
+            originalCredits: 29,
+            info: "non farà molti bonus quindi a poco è un buon colpo perché mv buona",
+            injuries: "pochi infortuni",
+            starter: "titolare fisso",
+            recommended: "ESCA",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-alajbegovic-17",
+            role: "C",
+            tier: "semitop",
+            name: "ALAJBEGOVIC",
+            club: "Juve",
+            credits: 39.2,
+            originalCredits: 28,
+            info: "sold out",
+            injuries: "no",
+            starter: "non fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-mastrantuono-18",
+            role: "C",
+            tier: "semitop",
+            name: "MASTRANTUONO",
+            club: "Fiorentina",
+            credits: 39.2,
+            originalCredits: 28,
+            info: "verrà pagato poco quindi esca/prender",
+            injuries: "no",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-vlasic-19",
+            role: "C",
+            tier: "semitop",
+            name: "VLASIC",
+            club: "Torino",
+            credits: 37.8,
+            originalCredits: 27,
+            info: "terzo slot, rigorista torino",
+            injuries: "pochi infortuni",
+            starter: "titolare fisso",
+            recommended: "si",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-ekkelencamp-20",
+            role: "C",
+            tier: "semitop",
+            name: "EKKELENCAMP",
+            club: "Udinese",
+            credits: 37.8,
+            originalCredits: 27,
+            info: "porterà bonus tanta roba",
+            injuries: "no",
+            starter: "titolare fisso",
+            recommended: "sottovalutato",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-gudmunson-21",
+            role: "C",
+            tier: "semitop",
+            name: "GUDMUNSON",
+            club: "Fiorentina",
+            credits: 36.4,
+            originalCredits: 26,
+            info: "non troppo titolare",
+            injuries: "pochi infortuni",
+            starter: "si alterna anche",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-rowe-22",
+            role: "C",
+            tier: "semitop",
+            name: "ROWE",
+            club: "Atalanta",
+            credits: 36.4,
+            originalCredits: 26,
+            info: "si alternerà con raspadori ma lui è listato a cc",
+            injuries: "no",
+            starter: "non fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-zaniolo-23",
+            role: "C",
+            tier: "semitop",
+            name: "ZANIOLO",
+            club: "Udinese",
+            credits: 35,
+            originalCredits: 25,
+            info: "INFORTUNIO FINO A SESTA GIORNATA troppi quest'anno",
+            injuries: "tanti infortuni",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-diouf-24",
+            role: "C",
+            tier: "semitop",
+            name: "DIOUF",
+            club: "Inter",
+            credits: 35,
+            originalCredits: 25,
+            info: "probabilmente farà partite facili e porterà bonus",
+            injuries: "pochi infortuni",
+            starter: "si alterna anche",
+            recommended: "CRACQUE prendere",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-goncalves-25",
+            role: "C",
+            tier: "semitop",
+            name: "GONCALVES",
+            club: "Fiorentina",
+            credits: 35,
+            originalCredits: 25,
+            info: "poco integro, ma porta bonus",
+            injuries: "tanti infortuni",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-nico-gonzalez-26",
+            role: "C",
+            tier: "semitop",
+            name: "NICO GONZALEZ",
+            club: "Juve",
+            credits: 35,
+            originalCredits: 25,
+            info: "è una meteora",
+            injuries: "non integrissimo",
+            starter: "non titolare fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-alisson-santos-27",
+            role: "C",
+            tier: "semitop",
+            name: "ALISSON SANTOS",
+            club: "Napoli",
+            credits: 35,
+            originalCredits: 25,
+            info: "si alternerà però va a poco + infortuni",
+            injuries: "no",
+            starter: "titolare fisso",
+            recommended: "si",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-bernardeschi-28",
+            role: "C",
+            tier: "terza",
+            name: "BERNARDESCHI",
+            club: "Bologna",
+            credits: 26.6,
+            originalCredits: 19,
+            info: "non si sa titolarità ma con infortunio orso gioca",
+            injuries: "pochi infortuni",
+            starter: "si alterna anche",
+            recommended: "si",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-calo-29",
+            role: "C",
+            tier: "terza",
+            name: "CALÒ",
+            club: "Frosinone",
+            credits: 25.2,
+            originalCredits: 18,
+            info: "rigorista titolare consigliato sarà in hype usa eventualmente come esca",
+            injuries: "no",
+            starter: "titolare fisso",
+            recommended: "si",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-manu-kone-30",
+            role: "C",
+            tier: "terza",
+            name: "MANU KONE",
+            club: "Roma",
+            credits: 23.8,
+            originalCredits: 17,
+            info: "infortuni + no bonus ma voto solido",
+            injuries: "pochi infortuni",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-taylor-31",
+            role: "C",
+            tier: "terza",
+            name: "TAYLOR",
+            club: "Lazio",
+            credits: 21,
+            originalCredits: 15,
+            info: "ttiolare",
+            injuries: "no",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-ederson-ds-atalanta-32",
+            role: "C",
+            tier: "terza",
+            name: "EDERSON DS ATALANTA",
+            club: "Atalanta",
+            credits: 21,
+            originalCredits: 15,
+            info: "",
+            injuries: "pochi infortuni",
+            starter: "titolare fisso",
+            recommended: "tappabuchi",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-samardzic-33",
+            role: "C",
+            tier: "terza",
+            name: "SAMARDZIC",
+            club: "Atalanta",
+            credits: 21,
+            originalCredits: 15,
+            info: "non si sa titolarità sarà in hype ma è un bel nome",
+            injuries: "no",
+            starter: "si alterna anche",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-mbangoula-34",
+            role: "C",
+            tier: "terza",
+            name: "MBANGOULA",
+            club: "Bologna",
+            credits: 21,
+            originalCredits: 15,
+            info: "scommessa a 1 credito",
+            injuries: "pochi infortuni",
+            starter: "si alterna anche",
+            recommended: "si",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-saelemakers-35",
+            role: "C",
+            tier: "terza",
+            name: "SAELEMAKERS",
+            club: "Milan",
+            credits: 19.6,
+            originalCredits: 14,
+            info: "",
+            injuries: "pochi infortuni",
+            starter: "si alterna anche",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-kessi-36",
+            role: "C",
+            tier: "terza",
+            name: "KESSI",
+            club: "Atalanta",
+            credits: 14,
+            originalCredits: 10,
+            info: "non è il kessi prime ma 1 credito va speso",
+            injuries: "no",
+            starter: "si alterna anche",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-modric-37",
+            role: "C",
+            tier: "terza",
+            name: "MODRIC",
+            club: "Milan",
+            credits: 16.8,
+            originalCredits: 12,
+            info: "infortuni",
+            injuries: "pochi infortuni",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-baldanzi-38",
+            role: "C",
+            tier: "terza",
+            name: "BALDANZI",
+            club: "Genoa",
+            credits: 15.4,
+            originalCredits: 11,
+            info: "spesso rotto MA TANTA ROBA , da prendere a 1 ma anche di piu",
+            injuries: "tanti infortuni",
+            starter: "si alterna anche",
+            recommended: "si",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-bernabe-39",
+            role: "C",
+            tier: "terza",
+            name: "BERNABE",
+            club: "Parma",
+            credits: 14,
+            originalCredits: 10,
+            info: "ogni tanto rotto ma va apoco",
+            injuries: "medio infortuni",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-fazzini-40",
+            role: "C",
+            tier: "quarta",
+            name: "FAZZINI",
+            club: "Cagliari",
+            credits: 9.8,
+            originalCredits: 7,
+            info: "spesso rotto",
+            injuries: "tanti infortuni",
+            starter: "titolare fisso",
+            recommended: "colpo a 1",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-casadei-41",
+            role: "C",
+            tier: "quarta",
+            name: "CASADEI",
+            club: "Torino",
+            credits: 11.2,
+            originalCredits: 8,
+            info: "non titolarissimo",
+            injuries: "no",
+            starter: "si alterna anche",
+            recommended: "",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-gaetano-42",
+            role: "C",
+            tier: "quarta",
+            name: "GAETANO",
+            club: "Atalanta",
+            credits: 7,
+            originalCredits: 5,
+            info: "non titolare",
+            injuries: "pochi infortuni",
+            starter: "si alterna anche",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-maldini-43",
+            role: "C",
+            tier: "quarta",
+            name: "MALDINI",
+            club: "Cagliari",
+            credits: 14,
+            originalCredits: 10,
+            info: "è att",
+            injuries: "pochi infortuni",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-milla-44",
+            role: "C",
+            tier: "quata",
+            name: "MILLA",
+            club: "Como",
+            credits: 7,
+            originalCredits: 5,
+            info: "scommessina che piace a fabregas",
+            injuries: "no",
+            starter: "non fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-sarr-p-45",
+            role: "C",
+            tier: "quarta",
+            name: "SARR P",
+            club: "Juve",
+            credits: 5.6,
+            originalCredits: 4,
+            info: "scommessa",
+            injuries: "no",
+            starter: "non fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-busio-46",
+            role: "C",
+            tier: "quarta",
+            name: "BUSIO",
+            club: "Venezia",
+            credits: 2.8,
+            originalCredits: 2,
+            info: "",
+            injuries: "pochi infortuni",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-schmid-47",
+            role: "C",
+            tier: "quarta",
+            name: "SCHMID",
+            club: "Frosinone",
+            credits: 1.4,
+            originalCredits: 1,
+            info: "nome da 1 credito che piace al karmi",
+            injuries: "no",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-romano-48",
+            role: "C",
+            tier: "quarta",
+            name: "ROMANO",
+            club: "Cagliari",
+            credits: 1.4,
+            originalCredits: 1,
+            info: "scommessina che da bonus ma magari è rialzato",
+            injuries: "no",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-perrone-como-49",
+            role: "C",
+            tier: "quarta",
+            name: "PERRONE COMO",
+            club: "Como",
+            credits: 1.4,
+            originalCredits: 1,
+            info: "buono mas non porta troppi bonus",
+            injuries: "no",
+            starter: "non fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-colpani-50",
+            role: "C",
+            tier: "quarta",
+            name: "COLPANI",
+            club: "Monza",
+            credits: 1.4,
+            originalCredits: 1,
+            info: "monza squadra non troppo offensiva quarta fascia che copre a 1 lo prendo",
+            injuries: "medio infortuni",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-mandragora-51",
+            role: "C",
+            tier: "quarta",
+            name: "MANDRAGORA",
+            club: "Torino",
+            credits: 1.4,
+            originalCredits: 1,
+            info: "non titolarissimo e si infortuni piccoli",
+            injuries: "medio infortuni",
+            starter: "non fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-basic-52",
+            role: "C",
+            tier: "quarta",
+            name: "BASIC",
+            club: "Venezia",
+            credits: 1.4,
+            originalCredits: 1,
+            info: "ottima copertura",
+            injuries: "pochi infortuni",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-cristante-53",
+            role: "C",
+            tier: "quarta",
+            name: "CRISTANTE",
+            club: "Roma",
+            credits: 1.4,
+            originalCredits: 1,
+            info: "titolarissimo che porta sempre il voto",
+            injuries: "no",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-locatelli-54",
+            role: "C",
+            tier: "quarta",
+            name: "LOCATELLI",
+            club: "Juve",
+            credits: 1.4,
+            originalCredits: 1,
+            info: "come cristante",
+            injuries: "no",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-fagioli-55",
+            role: "C",
+            tier: "quarta",
+            name: "FAGIOLI",
+            club: "Fiorentina",
+            credits: 1.4,
+            originalCredits: 1,
+            info: "cartellino",
+            injuries: "medio infortuni",
+            starter: "non fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-curtis-jones-56",
+            role: "C",
+            tier: "scommessa",
+            name: "CURTIS JONES",
+            club: "Inter",
+            credits: 25.2,
+            originalCredits: 18,
+            info: "concorrenza",
+            injuries: "medio infortuni",
+            starter: "non fisso",
+            recommended: "",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-chucuwueze-57",
+            role: "C",
+            tier: "scommessa",
+            name: "CHUCUWUEZE",
+            club: "Milan",
+            credits: 22.4,
+            originalCredits: 16,
+            info: "bho",
+            injuries: "medio infortuni",
+            starter: "non fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-moreira-58",
+            role: "C",
+            tier: "scommessa",
+            name: "MOREIRA",
+            club: "Milan",
+            credits: 35,
+            originalCredits: 25,
+            info: "assistman ma non è un top",
+            injuries: "rischio",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-rodriguez-jerson-como-59",
+            role: "C",
+            tier: "scommessa",
+            name: "RODRIGUEZ JERSON COMO",
+            club: "Como",
+            credits: 33.6,
+            originalCredits: 24,
+            info: "alta concorrenza",
+            injuries: "no",
+            starter: "non fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-vergara-60",
+            role: "C",
+            tier: "scommessa",
+            name: "VERGARA",
+            club: "",
+            credits: 29.4,
+            originalCredits: 21,
+            info: "rischio infortuni ma gioca e porta bonus",
+            injuries: "tanti infortuni",
+            starter: "non fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-zambo-anguissa-61",
+            role: "C",
+            tier: "scommessa",
+            name: "ZAMBO ANGUISSA",
+            club: "Napoli",
+            credits: 9.8,
+            originalCredits: 7,
+            info: "infortuni",
+            injuries: "tanti infortuni",
+            starter: "si alterna anche",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-politano-62",
+            role: "C",
+            tier: "scommessa",
+            name: "POLITANO",
+            club: "Napoli",
+            credits: 9.8,
+            originalCredits: 7,
+            info: "gioca avanzato",
+            injuries: "medio infortuni",
+            starter: "non fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-liberali-63",
+            role: "C",
+            tier: "scommessa",
+            name: "LIBERALI",
+            club: "Como",
+            credits: 8.4,
+            originalCredits: 6,
+            info: "giocherà perché como va champions",
+            injuries: "no infortuni",
+            starter: "non fisso",
+            recommended: "",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-thorsvedt-64",
+            role: "C",
+            tier: "scommessa",
+            name: "THORSVEDT",
+            club: "Sassuolo",
+            credits: 5.6,
+            originalCredits: 4,
+            info: "spesso rotto",
+            injuries: "tanti infortuni",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-stankovic-65",
+            role: "C",
+            tier: "scommessa",
+            name: "STANKOVIC",
+            club: "Inter",
+            credits: 1.4,
+            originalCredits: 1,
+            info: "c'è curtis",
+            injuries: "no",
+            starter: "riserve",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "C-pisilli-66",
+            role: "C",
+            tier: "scommessa",
+            name: "PISILLI",
+            club: "Roma",
+            credits: 1.4,
+            originalCredits: 1,
+            info: "",
+            injuries: "",
+            starter: "riserva",
+            recommended: "",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "A-malen-0",
+            role: "A",
+            tier: "top",
+            name: "MALEN",
+            club: "Roma",
+            credits: 252,
+            originalCredits: 180,
+            info: "rigorista+ meno infortuni",
+            injuries: "no",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "A-lautaro-1",
+            role: "A",
+            tier: "top",
+            name: "LAUTARO",
+            club: "Inter",
+            credits: 210,
+            originalCredits: 150,
+            info: "squadra migliore ma infortuni, vale poco meno di malen",
+            injuries: "pochi",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "A-ramos-2",
+            role: "A",
+            tier: "top",
+            name: "RAMOS",
+            club: "Milan",
+            credits: 161,
+            originalCredits: 115,
+            info: "buoni segnali la squadra c'è potrebbe andare a meno",
+            injuries: "medio/alto",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "A-thuram-3",
+            role: "A",
+            tier: "top",
+            name: "THURAM",
+            club: "Inter",
+            credits: 154,
+            originalCredits: 110,
+            info: "Ha qualche acciacco, un po' sotto Lautaro + alternanza",
+            injuries: "pochi",
+            starter: "si alterna anche",
+            recommended: "",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "A-kolo-muani-4",
+            role: "A",
+            tier: "top",
+            name: "KOLO MUANI",
+            club: "Juve",
+            credits: 154,
+            originalCredits: 110,
+            info: "Juve più offensiva questì'anno e kolo muani è un nome noto",
+            injuries: "no",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "ai",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "A-hojlund-5",
+            role: "A",
+            tier: "top",
+            name: "HOJLUND",
+            club: "Napoli",
+            credits: 133,
+            originalCredits: 95,
+            info: "fare spendere altri su di lui oppure prenderlo a poco",
+            injuries: "no",
+            starter: "titolare fisso",
+            recommended: "ESCA",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "A-douvikas-6",
+            role: "A",
+            tier: "semitop",
+            name: "DOUVIKAS",
+            club: "Como",
+            credits: 98,
+            originalCredits: 70,
+            info: "prenderlo a poco",
+            injuries: "no",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "A-simeone-7",
+            role: "A",
+            tier: "semitop",
+            name: "SIMEONE",
+            club: "Torino",
+            credits: 84,
+            originalCredits: 60,
+            info: "va a poco ma fa bene anche con le big, aspettata doppia cifra cala hype dopo prime due ma prendere",
+            injuries: "pochi",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "A-dybala-8",
+            role: "A",
+            tier: "semitop",
+            name: "DYBALA",
+            club: "Roma",
+            credits: 81.2,
+            originalCredits: 58,
+            info: "si infortuna molto ma se va soldout convince anche perché roma è tanta roba no con berardi",
+            injuries: "tanti infortuni",
+            starter: "titolare fisso",
+            recommended: "ESCA in base al prezzo",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "A-davis-9",
+            role: "A",
+            tier: "semitop",
+            name: "DAVIS",
+            club: "Udinese",
+            credits: 79.8,
+            originalCredits: 57,
+            info: "si può infortunare+ rigorista+ doppia cifra probabile : serve copertura",
+            injuries: "medio infortuni",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "A-scamacca-10",
+            role: "A",
+            tier: "semitop",
+            name: "SCAMACCA",
+            club: "Atalanta",
+            credits: 77,
+            originalCredits: 55,
+            info: "è fragile + si alternerà",
+            injuries: "tanti infortuni",
+            starter: "non fisso",
+            recommended: "ESCA",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "A-lauriente-11",
+            role: "A",
+            tier: "terza",
+            name: "LAURIENTE",
+            club: "Sassuolo",
+            credits: 67.2,
+            originalCredits: 48,
+            info: "integro, va anche a poco",
+            injuries: "no",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "siu",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "A-pinamonti-12",
+            role: "A",
+            tier: "terza",
+            name: "PINAMONTI",
+            club: "Lazio",
+            credits: 60.2,
+            originalCredits: 43,
+            info: "SCOMMESSINA",
+            injuries: "no",
+            starter: "titolare fisso",
+            recommended: "ma discontinuo",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "A-beto-13",
+            role: "A",
+            tier: "terza",
+            name: "BETO",
+            club: "Fiorentina",
+            credits: 58.8,
+            originalCredits: 42,
+            info: "Si alterna con Pellegrino ma va scontato",
+            injuries: "no",
+            starter: "non fisso",
+            recommended: "",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "A-berardi-14",
+            role: "A",
+            tier: "terza",
+            name: "BERARDI",
+            club: "Sassuolo",
+            credits: 54.6,
+            originalCredits: 39,
+            info: "fragile + rigorista però+ ALTO INFORTUNIO",
+            injuries: "tanti infortuni",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "A-assane-diao-15",
+            role: "A",
+            tier: "terza",
+            name: "ASSANE DIAO",
+            club: "Como",
+            credits: 50.4,
+            originalCredits: 36,
+            info: "poco integro",
+            injuries: "tanti infortuni",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "A-raspadori-16",
+            role: "A",
+            tier: "terza",
+            name: "RASPADORI",
+            club: "Atalanta",
+            credits: 47.6,
+            originalCredits: 34,
+            info: "avrà ballottaggio perché è arrivato rowe",
+            injuries: "pochi infortuni",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "A-de-ketelare-17",
+            role: "A",
+            tier: "terza",
+            name: "DE KETELARE",
+            club: "Atalanta",
+            credits: 44.8,
+            originalCredits: 32,
+            info: "rischio infortuni",
+            injuries: "tanti infortuni",
+            starter: "titolare fisso",
+            recommended: "si",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "A-bowie-18",
+            role: "A",
+            tier: "terza",
+            name: "BOWIE",
+            club: "Sassuolo",
+            credits: 42,
+            originalCredits: 30,
+            info: "quarto slot dovrebbe essere titolare",
+            injuries: "pochi infortuni",
+            starter: "non fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "A-colombo-19",
+            role: "A",
+            tier: "terza",
+            name: "COLOMBO",
+            club: "Genoa",
+            credits: 39.2,
+            originalCredits: 28,
+            info: "non è costante",
+            injuries: "no",
+            starter: "titolare fisso",
+            recommended: "sj",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "A-adams-20",
+            role: "A",
+            tier: "terza",
+            name: "ADAMS",
+            club: "Venezia",
+            credits: 37.8,
+            originalCredits: 27,
+            info: "è titolare del venezia che può portarlo a segnare + rigorista",
+            injuries: "tanti infortuni",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "A-yeboah-21",
+            role: "A",
+            tier: "quarta",
+            name: "YEBOAH",
+            club: "Venezia",
+            credits: 23.8,
+            originalCredits: 17,
+            info: "GIOCATORE SCOMMESSA : JOLLY VENEZIA PUò PORTARE qualche bonus + copre essendo titolare",
+            injuries: "no",
+            starter: "titolare fisso",
+            recommended: "si",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "A-piccoli-22",
+            role: "A",
+            tier: "quarta",
+            name: "PICCOLI",
+            club: "Bologna",
+            credits: 22.4,
+            originalCredits: 16,
+            info: "probabilmente è il titolare lui e non dovbyk",
+            injuries: "no",
+            starter: "non fisso",
+            recommended: "",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "A-ghedjemis-23",
+            role: "A",
+            tier: "quarta",
+            name: "GHEDJEMIS",
+            club: "Frosinone",
+            credits: 19.6,
+            originalCredits: 14,
+            info: "Esterno destro frosinone che segna",
+            injuries: "no",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "A-varela-24",
+            role: "A",
+            tier: "quarta",
+            name: "VARELA",
+            club: "Monza",
+            credits: 15.4,
+            originalCredits: 11,
+            info: "quarto slot di lusso",
+            injuries: "no",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "A-raimondo-25",
+            role: "A",
+            tier: "quarta",
+            name: "RAIMONDO",
+            club: "Frosinone",
+            credits: 14,
+            originalCredits: 10,
+            info: "11 gol in B , ma non è rigorista : bisogna indovinare la giornata per lui copertura buona",
+            injuries: "pochi infortuni",
+            starter: "si alterna anche",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "A-kvernadze-26",
+            role: "A",
+            tier: "quarta",
+            name: "KVERNADZE",
+            club: "Frosinone",
+            credits: 9.8,
+            originalCredits: 7,
+            info: "scommessiNA",
+            injuries: "no",
+            starter: "si alterna anche",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "A-romero-d-27",
+            role: "A",
+            tier: "quarta",
+            name: "ROMERO D",
+            club: "Parma",
+            credits: 11.2,
+            originalCredits: 8,
+            info: "si gioca posto con elphege, magari prendere uno de 2 come scommessa",
+            injuries: "medio infortuni",
+            starter: "si alterna anche",
+            recommended: "",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "A-toure-28",
+            role: "A",
+            tier: "quarta",
+            name: "TOURE",
+            club: "Parma",
+            credits: 9.8,
+            originalCredits: 7,
+            info: "rischio infortuni ma pellegrino non c'è e potrebbe essere buono",
+            injuries: "medio infortuni",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "A-nzola-29",
+            role: "A",
+            tier: "quarta",
+            name: "NZOLA",
+            club: "Cagliari",
+            credits: 8.4,
+            originalCredits: 6,
+            info: "neoacquisto si contende posto",
+            injuries: "medio infortuni",
+            starter: "non fisso",
+            recommended: "",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "A-adams-che-30",
+            role: "A",
+            tier: "quarta",
+            name: "ADAMS CHE",
+            club: "Torino",
+            credits: 7,
+            originalCredits: 5,
+            info: "Se non ci sono alternative evita",
+            injuries: "no infortuni",
+            starter: "risrve",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "A-geubbels-31",
+            role: "A",
+            tier: "quarta",
+            name: "GEUBBELS",
+            club: "Lecce",
+            credits: 5.6,
+            originalCredits: 4,
+            info: "Potrebe essere rigorista, buono sesto slot , alternato a colombo",
+            injuries: "pochi infortuni",
+            starter: "si alterna anche",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "A-vitinha-32",
+            role: "A",
+            tier: "quarta",
+            name: "VITINHA",
+            club: "Genoa",
+            credits: 1.4,
+            originalCredits: 1,
+            info: "gicoatore mediocre",
+            injuries: "tanti infortuni",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "A-pio-esposito-33",
+            role: "A",
+            tier: "scommessa",
+            name: "PIO ESPOSITO",
+            club: "Inter",
+            credits: 86.8,
+            originalCredits: 62,
+            info: "Se si infortunano thuram o lauti c'è lui, non spenderci troppo però",
+            injuries: "no",
+            starter: "non fisso",
+            recommended: "molto bene",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "A-kristovic-34",
+            role: "A",
+            tier: "scommessa",
+            name: "KRISTOVIC",
+            club: "Atalanta",
+            credits: 77,
+            originalCredits: 55,
+            info: "attaccante di sarri ma non è titolare in partenza(scamacca)",
+            injuries: "no",
+            starter: "non fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "A-woltemade-35",
+            role: "A",
+            tier: "scommessa",
+            name: "WOLTEMADE",
+            club: "Juve",
+            credits: 84,
+            originalCredits: 60,
+            info: "Probabile attaccante titolare della Juve",
+            injuries: "pochi infortuni",
+            starter: "?",
+            recommended: "",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "A-kean-36",
+            role: "A",
+            tier: "scommessa",
+            name: "KEAN",
+            club: "Como",
+            credits: 0,
+            originalCredits: null,
+            info: "capire cosa fare ora con attacco como",
+            injuries: "pochi infortuni",
+            starter: "vtitolare fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "A-yildiz-37",
+            role: "A",
+            tier: "scommessa",
+            name: "YILDIZ",
+            club: "Juve",
+            credits: 42,
+            originalCredits: 30,
+            info: "è rotto",
+            injuries: "attualmente infortunato",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "A-pellegrino-38",
+            role: "A",
+            tier: "scommessa",
+            name: "PELLEGRINO",
+            club: "Fiorentina",
+            credits: 42,
+            originalCredits: 30,
+            info: "potrebbe andare a poco ma è arrivato beto",
+            injuries: "no",
+            starter: "non fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "A-dovbyk-39",
+            role: "A",
+            tier: "scommessa",
+            name: "DOVBYK",
+            club: "Bologna",
+            credits: 56,
+            originalCredits: 40,
+            info: "arriva da infortuni ma segna tanto",
+            injuries: "tanti infortuni",
+            starter: "non fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "A-castro-40",
+            role: "A",
+            tier: "scommessa",
+            name: "CASTRO",
+            club: "Roma",
+            credits: 32.2,
+            originalCredits: 23,
+            info: "Risreva di Malen ma giocherà e porterà bonus",
+            injuries: "no",
+            starter: "non fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "A-soule-41",
+            role: "A",
+            tier: "scommessa",
+            name: "SOULE",
+            club: "Roma",
+            credits: 21,
+            originalCredits: 15,
+            info: "vice dybala",
+            injuries: "medio infortuni",
+            starter: "non fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "A-boga-42",
+            role: "A",
+            tier: "scommessa",
+            name: "BOGA",
+            club: "Juve",
+            credits: 18.2,
+            originalCredits: 13,
+            info: "gioca ora se yldiz infortunato forse",
+            injuries: "tanti infortuni",
+            starter: "risrve",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "A-esposito-seba-43",
+            role: "A",
+            tier: "scommessa",
+            name: "ESPOSITO SEBA",
+            club: "Sassuolo",
+            credits: 14,
+            originalCredits: 10,
+            info: "ballottaggio con bowie",
+            injuries: "pochi infortuni",
+            starter: "non fisso",
+            recommended: "",
+            franco: "si",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "A-bonny-44",
+            role: "A",
+            tier: "scommessa",
+            name: "BONNY",
+            club: "Inter",
+            credits: 12.6,
+            originalCredits: 9,
+            info: "Come PIO Ma lui giocherà ancora meno di PIO",
+            injuries: "pochi infortuni",
+            starter: "risrve",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "A-neres-45",
+            role: "A",
+            tier: "scommessa",
+            name: "NERES",
+            club: "Napoli",
+            credits: 8.4,
+            originalCredits: 6,
+            info: "vice politano",
+            injuries: "tanti infortuni",
+            starter: "non fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "A-gnonto-46",
+            role: "A",
+            tier: "scommessa",
+            name: "GNONTO",
+            club: "Fiorentina",
+            credits: 5.6,
+            originalCredits: 4,
+            info: "non si sa",
+            injuries: "medio infortuni",
+            starter: "non fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "A-mendy-47",
+            role: "A",
+            tier: "scommessa",
+            name: "MENDY",
+            club: "Cagliari",
+            credits: 1.4,
+            originalCredits: 1,
+            info: "scommessina",
+            injuries: "no",
+            starter: "non fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+          {
+            id: "A-kevin-carlos-48",
+            role: "A",
+            tier: "scommessa",
+            name: "KEVIN CARLOS",
+            club: "Cagliari",
+            credits: 1.4,
+            originalCredits: 1,
+            info: "Dovrebe essere attaccante titolare cagliari",
+            injuries: "pochi infortuni",
+            starter: "titolare fisso",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          },
+        ],
+        pairings: [],
+        teams: [
+          { id: "team-1", name: "Mottiz", mine: false },
+          { id: "team-2", name: "Valiaz", mine: false },
+          { id: "team-3", name: "Mia", mine: true },
+          { id: "team-4", name: "Mussa", mine: false },
+          { id: "team-5", name: "Paro", mine: false },
+          { id: "team-6", name: "Rosa", mine: false },
+        ],
+        settings: { budget: 700, slots: { P: 3, D: 8, C: 8, A: 6 } },
+      };
+      const STORE_KEY = "fanta-asta-state-v4";
+      const ROLES = { P: "Porta", D: "Difesa", C: "Centrocampo", A: "Attacco" };
+      const TIER_ORDER = [
+        "top",
+        "semitop",
+        "terza",
+        "quarta",
+        "secondi",
+        "scommessa",
+        "evitare",
+        "altro",
+      ];
+      const TIER_LABEL = {
+        top: "Top",
+        semitop: "Semitop",
+        terza: "Terza fascia",
+        quarta: "Quarta fascia",
+        secondi: "Secondi",
+        scommessa: "Scommesse",
+        evitare: "Da evitare",
+        altro: "Altro",
+      };
+      let state = loadState();
+      let ui = {
+        view: "lists",
+        role: "P",
+        search: "",
+        onlyAvailable: true,
+        buyTeam: null,
+      };
+
+      function loadState() {
+        try {
+          const saved = JSON.parse(localStorage.getItem(STORE_KEY));
+          if (saved?.data?.version === INITIAL.version) {
+            const incomingIds = new Set(INITIAL.players.map((p) => p.id));
+            const savedById = new Map(
+              (saved.data.players || []).map((p) => [p.id, p]),
+            );
+            const updated = INITIAL.players.map((p) =>
+              savedById.get(p.id)?.custom
+                ? { ...p, ...savedById.get(p.id) }
+                : p,
+            );
+            const custom = (saved.data.players || []).filter(
+              (p) => !incomingIds.has(p.id),
+            );
+            saved.data.players = [...updated, ...custom];
+            saved.data.pairings = saved.data.pairings?.length
+              ? saved.data.pairings
+              : INITIAL.pairings;
+            return saved;
+          }
+        } catch (e) {}
+        return { data: structuredClone(INITIAL), purchases: {}, history: [] };
+      }
+      function save() {
+        localStorage.setItem(STORE_KEY, JSON.stringify(state));
+        updateBudget();
+      }
+      const esc = (s) =>
+        String(s ?? "").replace(
+          /[&<>'"]/g,
+          (c) =>
+            ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              "'": "&#39;",
+              '"': "&quot;",
+            })[c],
+        );
+      const money = (n) => Number(n || 0).toLocaleString("it-IT");
+      const normalizeClubName = (s) => {
+        const c = String(s || "")
+          .trim()
+          .toLowerCase()
+          .replace(/(^|[\s'-])\p{L}/gu, (x) => x.toUpperCase());
+        return (
+          {
+            Bolo: "Bologna",
+            Fiore: "Fiorentina",
+            Forosinnone: "Frosinone",
+            Udi: "Udinese",
+            Udines: "Udinese",
+          }[c] || c
+        );
+      };
+      function toast(msg) {
+        const el = document.getElementById("toast");
+        el.textContent = msg;
+        el.classList.add("show");
+        clearTimeout(toast.t);
+        toast.t = setTimeout(() => el.classList.remove("show"), 1800);
+      }
+      function teamSpend(id) {
+        return Object.values(state.purchases)
+          .filter((p) => p.teamId === id)
+          .reduce((s, p) => s + Number(p.price), 0);
+      }
+      function teamCount(id, role) {
+        return Object.entries(state.purchases).filter(
+          ([pid, p]) =>
+            p.teamId === id &&
+            (!role ||
+              state.data.players.find((x) => x.id === pid)?.role === role),
+        ).length;
+      }
+      function myTeam() {
+        return state.data.teams.find((t) => t.mine) || state.data.teams[0];
+      }
+      function updateBudget() {
+        const team = myTeam();
+        document.getElementById("myBudget").textContent =
+          `${money(state.data.settings.budget - teamSpend(team.id))} cr`;
+      }
+
+      function renderShell() {
+        document.getElementById("rolebar").innerHTML = Object.entries(ROLES)
+          .map(
+            ([id, name]) =>
+              `<button class="role-btn ${ui.role === id ? "active" : ""}" data-role="${id}">${name}</button>`,
+          )
+          .join("");
+        document.getElementById("rolebar").hidden = ui.view !== "lists";
+        document.getElementById("nav").innerHTML = [
+          ["lists", "▦", "Fasce"],
+          ["teams", "◉", "Squadre"],
+          ["history", "↶", "Cronologia"],
+          ["editor", "✎", "Editor"],
+        ]
+          .map(
+            ([id, icon, label]) =>
+              `<button class="nav-btn ${ui.view === id ? "active" : ""}" data-view="${id}"><b>${icon}</b>${label}</button>`,
+          )
+          .join("");
+        document.getElementById("headline").textContent =
+          ui.view === "lists"
+            ? ROLES[ui.role]
+            : {
+                teams: "Budget delle 8 squadre",
+                history: "Acquisti registrati",
+                editor: "Configura e modifica",
+              }[ui.view];
+        updateBudget();
+      }
+      function render() {
+        renderShell();
+        if (ui.view === "lists") renderLists();
+        if (ui.view === "teams") renderTeams();
+        if (ui.view === "history") renderHistory();
+        if (ui.view === "editor") renderEditor();
+      }
+      function filteredPlayers() {
+        const q = ui.search.trim().toLowerCase();
+        return state.data.players.filter(
+          (p) =>
+            p.role === ui.role &&
+            (!ui.onlyAvailable || !state.purchases[p.id]) &&
+            (!q ||
+              [p.name, p.club, p.tier, p.info, p.pairing]
+                .join(" ")
+                .toLowerCase()
+                .includes(q)),
+        );
+      }
+      function statusTone(value, type) {
+        const v = String(value || "")
+          .toLowerCase()
+          .trim();
+        if (!v) return "status-neutral";
+        if (type === "starter") {
+          if (/titolare fisso|titolare sempre|titolarissimo/.test(v))
+            return "status-good";
+          if (/si alterna|alterna|rotazione/.test(v)) return "status-warn";
+          if (/non fisso|non titolar|riserv|riser|risrv/.test(v))
+            return "status-bad";
+          return "status-ok";
+        }
+        if (/^(no|no infortuni)|integro/.test(v)) return "status-good";
+        if (/pochi|basso/.test(v)) return "status-ok";
+        if (/medio|rischio/.test(v)) return "status-warn";
+        if (/tanti|alto|rotto|infortunio fino|fragile/.test(v))
+          return "status-bad";
+        return "status-neutral";
+      }
+      function carmyLabel(value) {
+        const v = String(value || "").trim();
+        if (!v) return "";
+        return /esca/i.test(v) ? "ESCA" : "SÌ";
+      }
+      function hasFranco(value) {
+        return !!String(value || "").trim();
+      }
+      function playerCard(p) {
+        const purchase = state.purchases[p.id];
+        const meta = [
+          p.club,
+          p.role === "P" && p.backup && `Secondo: ${p.backup}`,
+        ]
+          .filter(Boolean)
+          .join(" · ");
+        const carmy = carmyLabel(p.recommended);
+        const badges = [
+          p.role !== "P" &&
+            p.starter &&
+            `<span class="badge ${statusTone(p.starter, "starter")}" title="Titolarità">TIT. ${esc(p.starter)}</span>`,
+          p.role !== "P" &&
+            p.injuries &&
+            `<span class="badge ${statusTone(p.injuries, "injuries")}" title="Integrità">INT. ${esc(p.injuries)}</span>`,
+          hasFranco(p.franco) && '<span class="badge franco">✓ FRANCO</span>',
+          carmy &&
+            `<span class="badge ${carmy === "ESCA" ? "carmy-esca" : "carmy"}">CARMY: ${carmy}</span>`,
+        ]
+          .filter(Boolean)
+          .join("");
+        const soldTeam = purchase
+          ? state.data.teams.find((t) => t.id === purchase.teamId)
+          : null;
+        return `<div class="player ${purchase ? "sold" : ""}" data-tier="${esc(p.tier)}"><div class="player-top"><div><div class="player-name">${esc(p.name)}</div><div class="player-meta">${esc(meta || "Squadra non indicata")}</div></div><div class="price">${purchase ? money(purchase.price) : p.credits == null ? "—" : money(p.credits)}<small>${purchase ? "VENDUTO" : "SU 700"}</small></div></div><div class="badges">${badges}</div><div class="player-actions"><button type="button" class="p-info" data-info="${esc(p.id)}">ℹ️ Info</button>${purchase ? `<button type="button" class="p-sold" data-info="${esc(p.id)}">${soldTeam ? esc(soldTeam.name) : "Venduto"}</button>` : `<button type="button" class="p-buy" data-buy="${esc(p.id)}">Acquista</button>`}</div></div>`;
+      }
+      function tiersHtml() {
+        const players = filteredPlayers();
+        return (
+          TIER_ORDER.map((t) => {
+            const group = players.filter(
+              (p) => (TIER_ORDER.includes(p.tier) ? p.tier : "altro") === t,
+            );
+            return group.length
+              ? `<section class="tier" data-tier="${t}"><div class="tier-label">${TIER_LABEL[t]} · ${group.length}</div><div class="players">${group.map(playerCard).join("")}</div></section>`
+              : "";
+          }).join("") || '<div class="empty">Nessun giocatore trovato</div>'
+        );
+      }
+      function renderLists() {
+        document.getElementById("main").innerHTML =
+          `<div class="toolbar"><div class="search"><input id="search" value="${esc(ui.search)}" placeholder="Cerca nome, squadra, nota…"></div><button class="icon-btn ${ui.onlyAvailable ? "on" : ""}" id="available">${ui.onlyAvailable ? "Disponibili" : "Tutti"}</button></div><div class="panel"><div class="panel-title"><h2>${ROLES[ui.role]}</h2><span>${filteredPlayers().length} giocatori · tocca per acquistare</span></div><div class="tiers">${tiersHtml()}</div></div>`;
+        document.getElementById("search").addEventListener("input", (e) => {
+          ui.search = e.target.value;
+          renderLists();
+        });
+        document.getElementById("available").onclick = () => {
+          ui.onlyAvailable = !ui.onlyAvailable;
+          renderLists();
+        };
+      }
+      function renderTeams() {
+        const budget = state.data.settings.budget;
+        document.getElementById("main").innerHTML =
+          `<h2 class="section-title">Budget squadre</h2><div class="teams-grid">${state.data.teams
+            .map((t) => {
+              const spent = teamSpend(t.id),
+                left = budget - spent,
+                total = Object.values(state.data.settings.slots).reduce(
+                  (a, b) => a + b,
+                  0,
+                ),
+                owned = teamCount(t.id),
+                slotsLeft = Math.max(0, total - owned),
+                maxBid = Math.max(0, left - Math.max(0, slotsLeft - 1));
+              return `<article class="team-card ${t.mine ? "mine" : ""}" data-team="${esc(t.id)}"><div class="team-name"><span>${esc(t.name)}</span>${t.mine ? "<span>★ Mia</span>" : ""}</div><div class="money">${money(left)} <small>crediti</small></div><div class="progress"><i style="width:${Math.max(0, (left / budget) * 100)}%"></i></div><div class="team-foot"><span>Spesi ${money(spent)}</span><span>Max offerta ${money(maxBid)}</span></div><div class="roster-chips">${Object.keys(
+                ROLES,
+              )
+                .map(
+                  (r) =>
+                    `<span>${r} ${teamCount(t.id, r)}/${state.data.settings.slots[r]}</span>`,
+                )
+                .join("")}</div></article>`;
+            })
+            .join("")}</div>`;
+      }
+      function renderHistory() {
+        const rows = state.history.slice().reverse();
+        document.getElementById("main").innerHTML =
+          `<h2 class="section-title">Cronologia</h2><div class="history">${
+            rows.length
+              ? rows
+                  .map((h) => {
+                    const p = state.data.players.find(
+                        (x) => x.id === h.playerId,
+                      ),
+                      t = state.data.teams.find((x) => x.id === h.teamId);
+                    return `<div class="history-row"><div><b>${esc(p?.name || "Giocatore")}</b><small>${esc(t?.name || "Squadra")} · ${new Date(h.at).toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" })}</small></div><div class="history-price">${h.price} cr<br><button class="undo" data-undo="${esc(h.playerId)}">Annulla</button></div></div>`;
+                  })
+                  .join("")
+              : '<div class="empty">Nessun acquisto registrato</div>'
+          }</div>`;
+      }
+      function mdCells(line) {
+        return line
+          .trim()
+          .replace(/^\||\|$/g, "")
+          .split("|")
+          .map((v) =>
+            v
+              .replace(/<br\s*\/?>/gi, " ")
+              .replace(/\s+/g, " ")
+              .trim(),
+          );
+      }
+      function normalizeTierImport(value) {
+        const v = String(value || "").toLowerCase();
+        if (v.includes("non prendere")) return "evitare";
+        if (v.includes("scommess")) return "scommessa";
+        if (v.includes("semit")) return "semitop";
+        if (v.includes("top")) return "top";
+        if (v.includes("terza")) return "terza";
+        if (/quart|quarat|wuart/.test(v)) return "quarta";
+        if (v.includes("second")) return "secondi";
+        return v.trim() || "altro";
+      }
+      function importMarkdownPlayers(text, role) {
+        let rows = text
+          .split(/\r?\n/)
+          .filter((l) => l.trim().startsWith("|"))
+          .map(mdCells)
+          .filter((r) => !r.every((c) => /^:?-{3,}:?$/.test(c) || !c));
+        if (!rows.length) throw Error("Tabella non trovata");
+        const first = rows[0].map((v) => v.toLowerCase());
+        const hasHeader =
+          first.some((v) =>
+            /fascia|giocatore|nome|squadra|crediti|prezzo|titolar|infort/.test(
+              v,
+            ),
+          ) && !/^(top|semitop|terza|quarta|scommess)/.test(first[0]);
+        let map = {};
+        if (hasHeader) {
+          const find = (rx, start = 0) =>
+            first.findIndex((v, i) => i >= start && rx.test(v));
+          map.tier = find(/fascia|^info$/);
+          map.name = find(/nome|giocatore/);
+          map.club = find(/squadra/);
+          map.credits = find(/credit|prezzo/);
+          map.credits700 = find(/su\s*700/);
+          map.info = find(/informazioni/, 1);
+          if (map.info < 0) map.info = find(/^info$/, 1);
+          map.injuries = find(/infort|integr/);
+          map.starter = find(/titolar/);
+          map.recommended = find(/consigli/);
+          map.franco = find(/franco/);
+          map.backup = find(/secondo/);
+          map.pairing = find(/abbinamento/);
+          rows = rows.slice(1);
+        } else {
+          map =
+            role === "D"
+              ? {
+                  tier: 0,
+                  name: 1,
+                  club: 2,
+                  credits: 3,
+                  credits700: 4,
+                  info: 5,
+                  injuries: 6,
+                  starter: 7,
+                  recommended: 8,
+                  franco: 9,
+                }
+              : role === "C"
+                ? {
+                    tier: 0,
+                    name: 1,
+                    credits: 2,
+                    credits700: 3,
+                    club: 4,
+                    info: 5,
+                    starter: 6,
+                    injuries: 7,
+                    recommended: 8,
+                    franco: 9,
+                  }
+                : role === "A"
+                  ? {
+                      tier: 0,
+                      name: 1,
+                      credits: 2,
+                      credits700: 3,
+                      club: 4,
+                      info: 5,
+                      injuries: 6,
+                      starter: 7,
+                      recommended: 8,
+                      franco: 9,
+                    }
+                  : {
+                      tier: 0,
+                      name: 1,
+                      club: 2,
+                      credits: 3,
+                      credits700: 4,
+                      backup: 5,
+                      pairing: 6,
+                    };
+        }
+        const val = (row, key) =>
+          map[key] >= 0 ? String(row[map[key]] || "").trim() : "";
+        const slug = (s) =>
+          s
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .replace(/[^a-z0-9]+/g, "-")
+            .replace(/(^-|-$)/g, "");
+        const num = (v) => {
+          const m = String(v || "")
+            .replace(",", ".")
+            .match(/\d+(?:\.\d+)?/);
+          return m ? Number(m[0]) : null;
+        };
+        return rows
+          .map((row, i) => {
+            const name = val(row, "name");
+            if (!name) return null;
+            const originalCredits = num(val(row, "credits")),
+              target = num(val(row, "credits700"));
+            return {
+              id:
+                role === "P"
+                  ? `p-${slug(name)}-${i}`
+                  : `${role}-${slug(name)}-${i}`,
+              role,
+              tier: normalizeTierImport(val(row, "tier")),
+              name: name.toUpperCase(),
+              club: normalizeClubName(val(row, "club")),
+              credits: target ?? originalCredits,
+              originalCredits,
+              info: val(row, "info"),
+              injuries: val(row, "injuries"),
+              starter: val(row, "starter"),
+              recommended: val(row, "recommended"),
+              franco: val(row, "franco"),
+              backup: val(row, "backup"),
+              pairing: val(row, "pairing"),
+              custom: true,
+            };
+          })
+          .filter(Boolean);
+      }
+      function renderEditor() {
+        document.getElementById("main").innerHTML =
+          `<h2 class="section-title">Editor</h2><div class="editor-grid"><section class="edit-card"><h3>Squadre e budget</h3><div class="field"><label>Budget iniziale</label><input id="budgetInput" type="number" min="1" value="${state.data.settings.budget}"></div><div id="teamInputs">${state.data.teams.map((t, i) => `<div class="team-input"><input data-team-name="${i}" value="${esc(t.name)}"><button class="mine-btn ${t.mine ? "active" : ""}" data-mine="${i}">★</button></div>`).join("")}</div><div class="row">${Object.entries(
+            ROLES,
+          )
+            .map(
+              ([r, n]) =>
+                `<div class="field"><label>Slot ${n}</label><input data-slot="${r}" type="number" min="0" value="${state.data.settings.slots[r]}"></div>`,
+            )
+            .join(
+              "",
+            )}</div><button class="primary full" id="saveSettings">Salva configurazione</button></section><section class="edit-card"><h3>Importa fasce Markdown</h3><p style="font-size:12px;color:var(--muted);line-height:1.5">Scegli il ruolo e carica la tabella <code>.md</code> aggiornata. Il ruolo scelto verrà sostituito; non serve ricreare l’HTML.</p><div class="field"><label>Ruolo da aggiornare</label><select id="mdRole">${Object.entries(
+            ROLES,
+          )
+            .map(([r, n]) => `<option value="${r}">${n}</option>`)
+            .join(
+              "",
+            )}</select></div><label class="primary full" style="display:block;text-align:center">Scegli file .md<input id="mdImport" type="file" accept=".md,text/markdown,text/plain" hidden></label></section><section class="edit-card"><h3>Aggiungi giocatore</h3><div class="row"><div class="field"><label>Ruolo</label><select id="newRole">${Object.entries(
+            ROLES,
+          )
+            .map(([r, n]) => `<option value="${r}">${n}</option>`)
+            .join(
+              "",
+            )}</select></div><div class="field"><label>Fascia</label><select id="newTier">${TIER_ORDER.map((t) => `<option value="${t}">${TIER_LABEL[t]}</option>`).join("")}</select></div></div><div class="field"><label>Nome</label><input id="newName" placeholder="Nome giocatore"></div><div class="row"><div class="field"><label>Squadra</label><input id="newClub"></div><div class="field"><label>Crediti target</label><input id="newCredits" type="number" min="0"></div></div><div class="field"><label>Note</label><textarea id="newInfo"></textarea></div><button class="primary full" id="addPlayer">Aggiungi alla lista</button></section><section class="edit-card"><h3>Dati e sicurezza</h3><p style="font-size:12px;color:var(--muted);line-height:1.5">Il backup contiene configurazione, modifiche e acquisti. Conservalo prima dell’asta.</p><div class="actions"><button class="secondary" id="exportData">Esporta backup</button><label class="secondary" style="display:inline-block">Importa backup<input id="importData" type="file" accept="application/json" hidden></label><button class="danger" id="resetAuction">Azzera asta</button></div></section><section class="edit-card"><h3>Modifica rapida</h3><p style="font-size:12px;color:var(--muted);line-height:1.5">Tocca un giocatore per aprire l’acquisto rapido; dal pannello puoi anche modificarne tutti i dettagli.</p><button class="secondary" id="showAll">Mostra tutti i giocatori</button></section></div>`;
+      }
+      function detailHtml(p) {
+        const carmy = carmyLabel(p.recommended);
+        return `<div class="detail-grid"><div class="detail"><small>Crediti su 700</small><b>${p.credits == null ? "—" : money(p.credits)}</b></div><div class="detail"><small>Crediti su 500</small><b>${p.originalCredits == null ? "—" : money(p.originalCredits)}</b></div>${p.starter ? `<div class="detail"><small>Titolarità</small><b>${esc(p.starter)}</b></div>` : ""}${p.injuries ? `<div class="detail"><small>Integrità</small><b>${esc(p.injuries)}</b></div>` : ""}${p.backup ? `<div class="detail"><small>Secondo</small><b>${esc(p.backup)}</b></div>` : ""}${hasFranco(p.franco) ? '<div class="detail"><small>Franco</small><b>SÌ</b></div>' : ""}${carmy ? `<div class="detail"><small>Carmy</small><b>${carmy}</b></div>` : ""}</div>${p.info ? `<div class="note"><b>Info</b><br>${esc(p.info)}</div>` : ""}${p.pairing ? `<div class="note"><b>Miglior abbinamento</b><br>${esc(p.pairing)}</div>` : ""}`;
+      }
+      function showPlayer(id) {
+        const p = state.data.players.find((x) => x.id === id),
+          purchase = state.purchases[id];
+        if (!p) return;
+        const d = document.getElementById("playerDialog");
+        d.innerHTML = `<div class="modal"><div class="modal-head"><div><h2>${esc(p.name)}</h2><div class="subtitle">${esc(ROLES[p.role])} · ${esc(p.club || "Squadra non indicata")} · ${(TIER_LABEL[p.tier] || p.tier).toUpperCase()}</div></div><button class="close" data-close>×</button></div>${detailHtml(p)}<div class="actions">${purchase ? `<button class="danger" data-undo="${esc(p.id)}">Annulla acquisto</button>` : `<button class="primary" data-buy="${esc(p.id)}">Vai all'acquisto</button>`}<button class="secondary" data-edit="${esc(p.id)}">Modifica</button></div></div>`;
+        d.showModal();
+      }
+      function showPurchase(id) {
+        document.querySelectorAll("dialog[open]").forEach((x) => x.close());
+        const p = state.data.players.find((x) => x.id === id),
+          d = document.getElementById("purchaseDialog");
+        ui.buyTeam = state.data.teams.some((t) => t.id === ui.buyTeam)
+          ? ui.buyTeam
+          : myTeam().id;
+        const carmy = carmyLabel(p.recommended);
+        const playerBadges = [
+          p.role !== "P" &&
+            p.starter &&
+            `<span class="badge ${statusTone(p.starter, "starter")}">TIT. ${esc(p.starter)}</span>`,
+          p.role !== "P" &&
+            p.injuries &&
+            `<span class="badge ${statusTone(p.injuries, "injuries")}">INT. ${esc(p.injuries)}</span>`,
+          hasFranco(p.franco) && '<span class="badge franco">✓ FRANCO</span>',
+          carmy &&
+            `<span class="badge ${carmy === "ESCA" ? "carmy-esca" : "carmy"}">CARMY: ${carmy}</span>`,
+        ]
+          .filter(Boolean)
+          .join("");
+        d.innerHTML = `<form class="modal" id="buyForm"><div class="modal-head"><div><h2>Acquisto rapido</h2><div class="subtitle">Scegli squadra e prezzo</div></div><button type="button" class="close" data-close>×</button></div><div class="buy-player-info"><div><b>${esc(p.name)}</b><br><small>${esc(p.club)} · ${(TIER_LABEL[p.tier] || p.tier).toUpperCase()}</small><div class="badges">${playerBadges}</div></div><div class="price">${p.credits == null ? "—" : money(p.credits)}<small>SU 700</small></div></div><div class="team-picker">${state.data.teams.map((t, i) => `<input class="team-radio" type="radio" name="buyTeam" id="buy-team-${i}" value="${t.id}" ${t.id === ui.buyTeam ? "checked" : ""} required><label class="team-pick" for="buy-team-${i}">${esc(t.name)}<small>${state.data.settings.budget - teamSpend(t.id)} cr</small></label>`).join("")}</div><div class="field"><label>Prezzo pagato</label><input id="buyPrice" type="number" min="1" step="0.1" inputmode="decimal" placeholder="Crediti" autofocus required></div><div class="quick-prices"><button type="button" data-price="1">1</button><button type="button" data-price="5">5</button><button type="button" data-price="10">10</button><button type="button" data-price="${p.credits || 1}">Target ${p.credits == null ? "—" : money(p.credits)}</button></div><div class="actions"><button class="primary" style="flex:1">Conferma</button><button type="button" class="secondary" data-edit="${esc(p.id)}">Modifica</button></div>${detailHtml(p)}</form>`;
+        d.dataset.player = id;
+        d.showModal();
+        setTimeout(() => document.getElementById("buyPrice").focus(), 80);
+      }
+      function showEdit(id) {
+        const p = state.data.players.find((x) => x.id === id),
+          d = document.getElementById("playerDialog");
+        d.innerHTML = `<form class="modal" id="editForm"><div class="modal-head"><div><h2>Modifica giocatore</h2><div class="subtitle">Le modifiche vengono salvate offline</div></div><button type="button" class="close" data-close>×</button></div><div class="row"><div class="field"><label>Nome</label><input id="editName" value="${esc(p.name)}" required></div><div class="field"><label>Squadra</label><input id="editClub" value="${esc(p.club)}"></div></div><div class="row"><div class="field"><label>Fascia</label><select id="editTier">${TIER_ORDER.map((t) => `<option value="${t}" ${p.tier === t ? "selected" : ""}>${TIER_LABEL[t]}</option>`).join("")}</select></div><div class="field"><label>Crediti su 700</label><input id="editCredits" type="number" step="0.1" value="${p.credits ?? ""}"></div></div><div class="row"><div class="field"><label>Crediti su 500</label><input id="editOriginalCredits" type="number" step="0.1" value="${p.originalCredits ?? ""}"></div><div class="field"><label>Franco</label><input id="editFranco" value="${esc(p.franco)}" placeholder="si oppure vuoto"></div></div><div class="row"><div class="field"><label>Titolarità</label><input id="editStarter" value="${esc(p.starter)}" placeholder="titolare fisso"></div><div class="field"><label>Integrità / infortuni</label><input id="editInjuries" value="${esc(p.injuries)}" placeholder="no / pochi / medio / tanti"></div></div><div class="field"><label>Consigliato da Carmy</label><input id="editRecommended" value="${esc(p.recommended)}" placeholder="si, esca oppure vuoto"></div><div class="field"><label>Secondo portiere</label><input id="editBackup" value="${esc(p.backup)}"></div><div class="field"><label>Info</label><textarea id="editInfo">${esc(p.info)}</textarea></div><div class="field"><label>Miglior abbinamento</label><textarea id="editPairing">${esc(p.pairing)}</textarea></div><div class="actions"><button class="primary">Salva</button><button type="button" class="danger" data-delete="${esc(p.id)}">Elimina</button></div></form>`;
+        d.dataset.player = id;
+      }
+      function undo(id) {
+        delete state.purchases[id];
+        state.history = state.history.filter((h) => h.playerId !== id);
+        save();
+        document.querySelectorAll("dialog[open]").forEach((d) => d.close());
+        render();
+        toast("Acquisto annullato");
+      }
+      function showTeamRoster(teamId) {
+        const team = state.data.teams.find((t) => t.id === teamId);
+        if (!team) return;
+        const budget = state.data.settings.budget,
+          spent = teamSpend(teamId),
+          left = budget - spent;
+        const owned = Object.entries(state.purchases)
+          .filter(([id, pu]) => pu.teamId === teamId)
+          .map(([id, pu]) => {
+            const p = state.data.players.find((x) => x.id === id);
+            return p ? { ...p, price: pu.price } : null;
+          })
+          .filter(Boolean);
+        const body = Object.keys(ROLES)
+          .map((r) => {
+            const group = owned
+              .filter((p) => p.role === r)
+              .sort((a, b) => b.price - a.price);
+            if (!group.length) return "";
+            return `<div class="tier-label">${ROLES[r]} · ${group.length}/${state.data.settings.slots[r]}</div><div class="history">${group.map((p) => `<div class="history-row"><div><b>${esc(p.name)}</b><small>${esc(p.club || "")} · ${(TIER_LABEL[p.tier] || p.tier).toUpperCase()}</small></div><div class="history-price">${money(p.price)} cr</div></div>`).join("")}</div>`;
+          })
+          .join("");
+        const d = document.getElementById("playerDialog");
+        d.innerHTML = `<div class="modal"><div class="modal-head"><div><h2>${esc(team.name)}${team.mine ? " ★" : ""}</h2><div class="subtitle">${money(left)} cr rimasti su ${money(budget)} · ${owned.length} giocatori presi</div></div><button class="close" data-close>×</button></div>${body || '<div class="empty">Nessun giocatore ancora acquistato</div>'}</div>`;
+        d.showModal();
+      }
+
+      document.addEventListener("click", (e) => {
+        const role = e.target.closest("[data-role]");
+        if (role) {
+          ui.role = role.dataset.role;
+          ui.search = "";
+          render();
+          return;
+        }
+        const view = e.target.closest("[data-view]");
+        if (view) {
+          ui.view = view.dataset.view;
+          render();
+          return;
+        }
+        const info = e.target.closest("[data-info]");
+        if (info) {
+          showPlayer(info.dataset.info);
+          return;
+        }
+        const teamCard = e.target.closest("[data-team]");
+        if (teamCard) {
+          showTeamRoster(teamCard.dataset.team);
+          return;
+        }
+        const close = e.target.closest("[data-close]");
+        if (close) {
+          close.closest("dialog").close();
+          return;
+        }
+        const buy = e.target.closest("[data-buy]");
+        if (buy) {
+          showPurchase(buy.dataset.buy);
+          return;
+        }
+        const price = e.target.closest("[data-price]");
+        if (price) {
+          document.getElementById("buyPrice").value = price.dataset.price;
+          document.getElementById("buyPrice").focus();
+          return;
+        }
+        const edit = e.target.closest("[data-edit]");
+        if (edit) {
+          document.querySelectorAll("dialog[open]").forEach((d) => d.close());
+          showEdit(edit.dataset.edit);
+          return;
+        }
+        const undoBtn = e.target.closest("[data-undo]");
+        if (undoBtn) {
+          undo(undoBtn.dataset.undo);
+          return;
+        }
+        const mine = e.target.closest("[data-mine]");
+        if (mine) {
+          state.data.teams.forEach(
+            (t, i) => (t.mine = i === Number(mine.dataset.mine)),
+          );
+          renderEditor();
+          return;
+        }
+        const del = e.target.closest("[data-delete]");
+        if (del && confirm("Eliminare questo giocatore?")) {
+          state.data.players = state.data.players.filter(
+            (p) => p.id !== del.dataset.delete,
+          );
+          delete state.purchases[del.dataset.delete];
+          save();
+          document.getElementById("playerDialog").close();
+          render();
+          toast("Giocatore eliminato");
+          return;
+        }
+      });
+      document.addEventListener("submit", (e) => {
+        if (e.target.id === "buyForm") {
+          e.preventDefault();
+          const dialog = document.getElementById("purchaseDialog"),
+            id = dialog.dataset.player,
+            teamId = new FormData(e.target).get("buyTeam"),
+            price = Number(document.getElementById("buyPrice").value),
+            team = state.data.teams.find((t) => t.id === teamId);
+          if (!team) {
+            toast("Scegli una squadra");
+            return;
+          }
+          if (
+            price < 1 ||
+            price > state.data.settings.budget - teamSpend(teamId)
+          ) {
+            toast("Prezzo non valido");
+            return;
+          }
+          ui.buyTeam = teamId;
+          const item = {
+            playerId: id,
+            teamId,
+            price,
+            at: new Date().toISOString(),
+          };
+          state.purchases[id] = item;
+          state.history.push(item);
+          save();
+          dialog.close();
+          render();
+          toast(`${team.name}: ${price} crediti`);
+        }
+        if (e.target.id === "editForm") {
+          e.preventDefault();
+          const id = document.getElementById("playerDialog").dataset.player,
+            p = state.data.players.find((x) => x.id === id);
+          Object.assign(p, {
+            name: document
+              .getElementById("editName")
+              .value.trim()
+              .toUpperCase(),
+            club: normalizeClubName(document.getElementById("editClub").value),
+            tier: document.getElementById("editTier").value,
+            credits:
+              Number(document.getElementById("editCredits").value) || null,
+            originalCredits:
+              Number(document.getElementById("editOriginalCredits").value) ||
+              null,
+            franco: document.getElementById("editFranco").value.trim(),
+            starter: document.getElementById("editStarter").value.trim(),
+            injuries: document.getElementById("editInjuries").value.trim(),
+            recommended: document
+              .getElementById("editRecommended")
+              .value.trim(),
+            backup: document.getElementById("editBackup").value.trim(),
+            info: document.getElementById("editInfo").value.trim(),
+            pairing: document.getElementById("editPairing").value.trim(),
+            custom: true,
+          });
+          save();
+          document.getElementById("playerDialog").close();
+          render();
+          toast("Giocatore aggiornato");
+        }
+      });
+      document.addEventListener("click", (e) => {
+        if (e.target.id === "saveSettings") {
+          state.data.settings.budget =
+            Number(document.getElementById("budgetInput").value) || 700;
+          document
+            .querySelectorAll("[data-team-name]")
+            .forEach(
+              (el) =>
+                (state.data.teams[Number(el.dataset.teamName)].name =
+                  el.value.trim() ||
+                  `Squadra ${Number(el.dataset.teamName) + 1}`),
+            );
+          document
+            .querySelectorAll("[data-slot]")
+            .forEach(
+              (el) =>
+                (state.data.settings.slots[el.dataset.slot] =
+                  Number(el.value) || 0),
+            );
+          save();
+          render();
+          toast("Configurazione salvata");
+        }
+        if (e.target.id === "addPlayer") {
+          const name = document.getElementById("newName").value.trim();
+          if (!name) {
+            toast("Inserisci il nome");
+            return;
+          }
+          state.data.players.push({
+            id: `custom-${Date.now()}`,
+            custom: true,
+            role: document.getElementById("newRole").value,
+            tier: document.getElementById("newTier").value,
+            name: name.toUpperCase(),
+            club: normalizeClubName(document.getElementById("newClub").value),
+            credits:
+              Number(document.getElementById("newCredits").value) || null,
+            originalCredits: null,
+            info: document.getElementById("newInfo").value.trim(),
+            injuries: "",
+            starter: "",
+            recommended: "",
+            franco: "",
+            backup: "",
+            pairing: "",
+          });
+          save();
+          renderEditor();
+          toast("Giocatore aggiunto");
+        }
+        if (e.target.id === "exportData") {
+          const blob = new Blob([JSON.stringify(state, null, 2)], {
+              type: "application/json",
+            }),
+            a = document.createElement("a");
+          a.href = URL.createObjectURL(blob);
+          a.download = `fanta-asta-backup-${new Date().toISOString().slice(0, 10)}.json`;
+          a.click();
+          URL.revokeObjectURL(a.href);
+        }
+        if (
+          e.target.id === "resetAuction" &&
+          confirm("Azzerare tutti gli acquisti? Le liste resteranno intatte.")
+        ) {
+          state.purchases = {};
+          state.history = [];
+          save();
+          render();
+          toast("Asta azzerata");
+        }
+        if (e.target.id === "showAll") {
+          ui.view = "lists";
+          ui.onlyAvailable = false;
+          render();
+        }
+      });
+      document.addEventListener("change", (e) => {
+        if (e.target.id === "importData") {
+          const file = e.target.files[0];
+          if (!file) return;
+          const reader = new FileReader();
+          reader.onload = () => {
+            try {
+              const next = JSON.parse(reader.result);
+              if (!next.data?.players || !next.data?.teams) throw Error();
+              state = next;
+              save();
+              render();
+              toast("Backup importato");
+            } catch (err) {
+              toast("Backup non valido");
+            }
+          };
+          reader.readAsText(file);
+        }
+        if (e.target.id === "mdImport") {
+          const file = e.target.files[0],
+            role = document.getElementById("mdRole").value;
+          if (!file) return;
+          const reader = new FileReader();
+          reader.onload = () => {
+            try {
+              const players = importMarkdownPlayers(reader.result, role);
+              if (!players.length) throw Error("Nessun giocatore");
+              if (
+                !confirm(
+                  `Sostituire ${ROLES[role]} con ${players.length} giocatori importati? Gli acquisti del ruolo verranno azzerati.`,
+                )
+              )
+                return;
+              const oldIds = new Set(
+                state.data.players
+                  .filter((p) => p.role === role)
+                  .map((p) => p.id),
+              );
+              state.data.players = [
+                ...state.data.players.filter((p) => p.role !== role),
+                ...players,
+              ];
+              Object.keys(state.purchases).forEach((id) => {
+                if (oldIds.has(id)) delete state.purchases[id];
+              });
+              state.history = state.history.filter(
+                (h) => !oldIds.has(h.playerId),
+              );
+              save();
+              renderEditor();
+              toast(`${ROLES[role]} aggiornato: ${players.length} giocatori`);
+            } catch (err) {
+              toast(`Importazione fallita: ${err.message}`);
+            }
+          };
+          reader.readAsText(file);
+        }
+      });
+      document.querySelectorAll("dialog").forEach((d) =>
+        d.addEventListener("click", (e) => {
+          if (e.target === d) d.close();
+        }),
+      );
+      if ("serviceWorker" in navigator && location.protocol.startsWith("http"))
+        navigator.serviceWorker.register("./sw.js").catch(() => {});
+      render();
+    </script>
+  </body>
+</html>
