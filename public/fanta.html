@@ -521,6 +521,54 @@
         font-size: 14px;
         margin: 0 0 11px;
       }
+      .export-intro {
+        background: linear-gradient(135deg, #173d2b, #2f7654);
+        color: #fff;
+        border-radius: 18px;
+        padding: 18px;
+        margin-bottom: 12px;
+        box-shadow: var(--shadow);
+      }
+      .export-intro h3 {
+        margin: 0 0 6px;
+        font-size: 17px;
+      }
+      .export-intro p {
+        margin: 0 0 14px;
+        color: rgba(255, 255, 255, 0.78);
+        font-size: 12px;
+        line-height: 1.5;
+      }
+      .export-intro .primary {
+        background: var(--lime);
+        color: #213400;
+      }
+      .export-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+      .export-card {
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: 13px;
+      }
+      .export-card.mine {
+        border: 2px solid var(--brand);
+      }
+      .export-card h3 {
+        margin: 0;
+        font-size: 14px;
+      }
+      .export-card p {
+        margin: 6px 0 10px;
+        color: var(--muted);
+        font-size: 10px;
+      }
+      .export-card .secondary {
+        width: 100%;
+      }
       .field {
         display: grid;
         gap: 5px;
@@ -816,6 +864,9 @@
         }
         .editor-grid {
           grid-template-columns: 1fr 1fr;
+        }
+        .export-grid {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
         }
       }
       @media (max-width: 380px) {
@@ -4388,6 +4439,7 @@
           ["lists", "▦", "Fasce"],
           ["teams", "◉", "Squadre"],
           ["history", "↶", "Cronologia"],
+          ["export", "⇩", "Esporta"],
           ["editor", "✎", "Editor"],
         ]
           .map(
@@ -4401,6 +4453,7 @@
             : {
                 teams: "Budget delle 8 squadre",
                 history: "Acquisti registrati",
+                export: "Esporta rose in JSON",
                 editor: "Configura e modifica",
               }[ui.view];
         updateBudget();
@@ -4410,6 +4463,7 @@
         if (ui.view === "lists") renderLists();
         if (ui.view === "teams") renderTeams();
         if (ui.view === "history") renderHistory();
+        if (ui.view === "export") renderExport();
         if (ui.view === "editor") renderEditor();
       }
       function filteredPlayers() {
@@ -4546,6 +4600,103 @@
                   .join("")
               : '<div class="empty">Nessun acquisto registrato</div>'
           }</div>`;
+      }
+      function teamRosterExport(team) {
+        const budget = Number(state.data.settings.budget || 0);
+        const players = Object.entries(state.purchases)
+          .filter(([, purchase]) => purchase.teamId === team.id)
+          .map(([playerId, purchase]) => {
+            const player = state.data.players.find((p) => p.id === playerId);
+            if (!player) return null;
+            return {
+              id: player.id,
+              name: player.name,
+              role: player.role,
+              roleName: ROLES[player.role] || player.role,
+              club: player.club || "",
+              tier: player.tier,
+              tierName: TIER_LABEL[player.tier] || player.tier,
+              price: Number(purchase.price),
+              acquiredAt: purchase.at || null,
+            };
+          })
+          .filter(Boolean)
+          .sort(
+            (a, b) =>
+              Object.keys(ROLES).indexOf(a.role) -
+                Object.keys(ROLES).indexOf(b.role) ||
+              b.price - a.price ||
+              a.name.localeCompare(b.name, "it"),
+          );
+        const spent = players.reduce(
+          (total, player) => total + player.price,
+          0,
+        );
+        return {
+          id: team.id,
+          name: team.name,
+          mine: Boolean(team.mine),
+          budget: {
+            initial: budget,
+            spent,
+            remaining: budget - spent,
+          },
+          slots: { ...state.data.settings.slots },
+          playersByRole: Object.fromEntries(
+            Object.keys(ROLES).map((role) => [
+              role,
+              players.filter((player) => player.role === role).length,
+            ]),
+          ),
+          totalPlayers: players.length,
+          players,
+        };
+      }
+      function rostersExport(teamId) {
+        const teams = state.data.teams.filter(
+          (team) => !teamId || team.id === teamId,
+        );
+        return {
+          schema: "fanta-asta-rosters-v1",
+          exportedAt: new Date().toISOString(),
+          appVersion: state.data.version,
+          teams: teams.map(teamRosterExport),
+        };
+      }
+      function safeFileName(value) {
+        return (
+          String(value || "squadra")
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, "-")
+            .replace(/(^-|-$)/g, "") || "squadra"
+        );
+      }
+      function downloadJson(data, fileName) {
+        const blob = new Blob([JSON.stringify(data, null, 2)], {
+            type: "application/json;charset=utf-8",
+          }),
+          url = URL.createObjectURL(blob),
+          link = document.createElement("a");
+        link.href = url;
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 0);
+      }
+      function renderExport() {
+        const totalPlayers = Object.keys(state.purchases).length;
+        document.getElementById("main").innerHTML =
+          `<h2 class="section-title">Esporta rose</h2><section class="export-intro"><h3>Tutte le rose in un solo file</h3><p>Scarica un JSON ordinato con squadre, giocatori acquistati, ruoli, prezzi e budget. Al momento risultano ${totalPlayers} acquisti registrati.</p><button class="primary full" id="exportAllRosters">Esporta tutte le rose</button></section><div class="export-grid">${state.data.teams
+            .map((team) => {
+              const count = teamCount(team.id),
+                spent = teamSpend(team.id),
+                remaining = state.data.settings.budget - spent;
+              return `<section class="export-card ${team.mine ? "mine" : ""}"><h3>${esc(team.name)}${team.mine ? " ★" : ""}</h3><p>${count} giocatori · ${money(spent)} cr spesi · ${money(remaining)} rimasti</p><button class="secondary" data-export-team="${esc(team.id)}">Esporta JSON</button></section>`;
+            })
+            .join("")}</div>`;
       }
       function mdCells(line) {
         return line
@@ -4991,14 +5142,29 @@
           toast("Giocatore aggiunto");
         }
         if (e.target.id === "exportData") {
-          const blob = new Blob([JSON.stringify(state, null, 2)], {
-              type: "application/json",
-            }),
-            a = document.createElement("a");
-          a.href = URL.createObjectURL(blob);
-          a.download = `fanta-asta-backup-${new Date().toISOString().slice(0, 10)}.json`;
-          a.click();
-          URL.revokeObjectURL(a.href);
+          downloadJson(
+            state,
+            `fanta-asta-backup-${new Date().toISOString().slice(0, 10)}.json`,
+          );
+        }
+        if (e.target.id === "exportAllRosters") {
+          downloadJson(
+            rostersExport(),
+            `fanta-asta-rose-${new Date().toISOString().slice(0, 10)}.json`,
+          );
+          toast("Rose esportate");
+        }
+        const exportTeam = e.target.closest("[data-export-team]");
+        if (exportTeam) {
+          const team = state.data.teams.find(
+            (item) => item.id === exportTeam.dataset.exportTeam,
+          );
+          if (!team) return;
+          downloadJson(
+            rostersExport(team.id),
+            `rosa-${safeFileName(team.name)}-${new Date().toISOString().slice(0, 10)}.json`,
+          );
+          toast(`Rosa ${team.name} esportata`);
         }
         if (
           e.target.id === "resetAuction" &&
