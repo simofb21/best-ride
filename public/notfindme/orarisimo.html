@@ -1,0 +1,593 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-sc    ale=1,viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#111827" />
+    <title>UNI Planner</title>
+    <style>
+      :root {
+        --bg: #f3f5f9;
+        --card: #fff;
+        --ink: #182033;
+        --muted: #687386;
+        --line: #e5e9f0;
+        --blue: #315efb;
+        --blue2: #edf2ff;
+        --green: #147a49;
+        --greenbg: #edf9f2;
+        --orange: #a85413;
+        --orangebg: #fff5e9;
+        --red: #b42332;
+      }
+      * {
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family:
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+      }
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 5;
+        background: #111827;
+        color: #fff;
+        padding: calc(14px + env(safe-area-inset-top)) 16px 14px;
+        box-shadow: 0 3px 14px #0002;
+      }
+      .header-in {
+        max-width: 680px;
+        margin: auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      h1 {
+        font-size: 19px;
+        margin: 0;
+      }
+      .sub {
+        font-size: 12px;
+        color: #b8c1d1;
+        margin-top: 2px;
+      }
+      main {
+        max-width: 680px;
+        margin: auto;
+        padding: 14px 12px calc(90px + env(safe-area-inset-bottom));
+      }
+      .day {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        margin-bottom: 15px;
+        overflow: hidden;
+        box-shadow: 0 5px 20px #19213a0b;
+      }
+      .day-head {
+        padding: 17px 16px;
+        background: linear-gradient(135deg, #182033, #283653);
+        color: #fff;
+      }
+      .day-head h2 {
+        margin: 0;
+        font-size: 21px;
+      }
+      .section {
+        padding: 15px 14px;
+        border-top: 1px solid var(--line);
+      }
+      .section:first-of-type {
+        border-top: 0;
+      }
+      .sec-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 11px;
+      }
+      .sec-title {
+        font-size: 16px;
+        font-weight: 800;
+      }
+      .sec-note {
+        font-size: 11px;
+        color: var(--muted);
+        margin-top: 2px;
+      }
+      button {
+        font: inherit;
+        border: 0;
+        cursor: pointer;
+        min-height: 42px;
+        border-radius: 12px;
+        font-weight: 750;
+      }
+      .add {
+        padding: 8px 11px;
+        background: var(--blue2);
+        color: #294bc8;
+        font-size: 13px;
+      }
+      .item {
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 12px;
+        margin-bottom: 9px;
+        background: #fff;
+      }
+      .lesson {
+        border-left: 4px solid var(--blue);
+      }
+      .trip.go {
+        background: var(--greenbg);
+        border-color: #d7eee0;
+      }
+      .trip.back {
+        background: var(--orangebg);
+        border-color: #f3dfc9;
+      }
+      .item-top {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        align-items: flex-start;
+      }
+      .item strong {
+        font-size: 15px;
+      }
+      .time {
+        font-weight: 800;
+        white-space: nowrap;
+        font-size: 14px;
+      }
+      .meta {
+        font-size: 13px;
+        color: var(--muted);
+        margin-top: 4px;
+        line-height: 1.4;
+      }
+      .controls {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        margin-top: 10px;
+      }
+      .controls button {
+        min-height: 34px;
+        padding: 6px 9px;
+        font-size: 12px;
+        background: #edf0f5;
+        color: #3b4659;
+      }
+      .controls .del {
+        background: #ffecee;
+        color: var(--red);
+      }
+      .rank {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        background: #fff;
+        font-size: 12px;
+        font-weight: 900;
+        margin-right: 7px;
+        box-shadow: 0 1px 4px #0001;
+      }
+      .empty {
+        padding: 11px;
+        border: 1px dashed #ccd3df;
+        border-radius: 12px;
+        color: #8791a2;
+        text-align: center;
+        font-size: 13px;
+      }
+      dialog {
+        border: 0;
+        padding: 0;
+        border-radius: 20px;
+        width: min(520px, calc(100% - 20px));
+        max-height: 90vh;
+        box-shadow: 0 24px 80px #0005;
+      }
+      dialog::backdrop {
+        background: #111827a8;
+      }
+      form {
+        padding: 20px;
+        overflow: auto;
+        max-height: 90vh;
+      }
+      form h3 {
+        margin: 0 0 14px;
+        font-size: 20px;
+      }
+      label {
+        display: block;
+        font-size: 12px;
+        font-weight: 800;
+        margin: 12px 0 5px;
+      }
+      input,
+      textarea,
+      select {
+        width: 100%;
+        font: inherit;
+        font-size: 16px;
+        border: 1px solid #cfd6e2;
+        border-radius: 12px;
+        padding: 11px;
+        background: #fff;
+        color: var(--ink);
+      }
+      textarea {
+        resize: vertical;
+      }
+      .row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 9px;
+      }
+      .form-actions {
+        display: flex;
+        gap: 8px;
+        margin-top: 18px;
+        position: sticky;
+        bottom: -20px;
+        background: #fff;
+        padding: 10px 0 0;
+      }
+      .form-actions button {
+        flex: 1;
+      }
+      .save {
+        background: var(--blue);
+        color: #fff;
+      }
+      .cancel {
+        background: #edf0f5;
+        color: #354054;
+      }
+      .segment-wrap {
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 11px;
+        margin-top: 10px;
+        background: #f8f9fb;
+      }
+      .segment-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 13px;
+        font-weight: 800;
+      }
+      .segment-remove {
+        min-height: 30px;
+        padding: 4px 8px;
+        background: #ffecee;
+        color: var(--red);
+        font-size: 12px;
+      }
+      .fab {
+        position: fixed;
+        right: 16px;
+        bottom: calc(16px + env(safe-area-inset-bottom));
+        z-index: 4;
+        background: #111827;
+        color: #fff;
+        padding: 0 17px;
+        box-shadow: 0 8px 25px #0004;
+      }
+      @media (min-width: 700px) {
+        main {
+          padding-left: 0;
+          padding-right: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="header-in">
+        <div>
+          <h1>🎓 UNI Planner</h1>
+          <div class="sub">Lezioni e viaggi · Lunedì–Venerdì</div>
+        </div>
+        <button class="add" onclick="resetAll()">Reset</button>
+      </div>
+    </header>
+    <main id="app"></main>
+
+    <dialog id="lessonDlg">
+      <form id="lessonForm">
+        <h3 id="lessonFormTitle">Aggiungi lezione</h3>
+        <input type="hidden" id="lessonId" /><input
+          type="hidden"
+          id="lessonDay"
+        />
+        <label>Materia</label
+        ><input id="subject" required placeholder="Es. Programmazione" />
+        <div class="row">
+          <div>
+            <label>Dalle</label><input id="start" type="time" required />
+          </div>
+          <div><label>Alle</label><input id="end" type="time" required /></div>
+        </div>
+        <label>Aula / sede</label
+        ><input id="place" placeholder="Es. Aula 3.1" /> <label>Note</label
+        ><textarea
+          id="lessonNotes"
+          rows="2"
+          placeholder="Professore, laboratorio..."
+        ></textarea>
+        <div class="form-actions">
+          <button type="button" class="cancel" onclick="lessonDlg.close()">
+            Annulla</button
+          ><button class="save">Salva</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="tripDlg">
+      <form id="tripForm">
+        <h3 id="tripFormTitle">Aggiungi opzione</h3>
+        <input type="hidden" id="tripId" /><input
+          type="hidden"
+          id="tripDay"
+        /><input type="hidden" id="tripType" /> <label>Nome dell'opzione</label
+        ><input id="tripName" required placeholder="Es. Treno delle 07:42" />
+        <div class="row">
+          <div><label>Partenza</label><input id="tripStart" type="time" /></div>
+          <div><label>Arrivo</label><input id="tripEnd" type="time" /></div>
+        </div>
+        <label>Note generali</label
+        ><textarea
+          id="tripNotes"
+          rows="2"
+          placeholder="Es. Più comoda, meno cambi..."
+        ></textarea>
+        <label>Tratte / mezzi</label>
+        <div id="segments"></div>
+        <button
+          type="button"
+          class="add"
+          style="width: 100%; margin-top: 8px"
+          onclick="addSegment()"
+        >
+          + Aggiungi mezzo / cambio
+        </button>
+        <div class="form-actions">
+          <button type="button" class="cancel" onclick="tripDlg.close()">
+            Annulla</button
+          ><button class="save">Salva opzione</button>
+        </div>
+      </form>
+    </dialog>
+
+    <script>
+      const days = ["Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì"];
+      let lessons = JSON.parse(
+        localStorage.getItem("uni_mobile_lessons") || "[]",
+      );
+      let trips = JSON.parse(localStorage.getItem("uni_mobile_trips") || "[]");
+      const $ = (x) => document.getElementById(x);
+      const esc = (s = "") =>
+        String(s).replace(
+          /[&<>"']/g,
+          (c) =>
+            ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#39;",
+            })[c],
+        );
+      const uid = () =>
+        crypto.randomUUID
+          ? crypto.randomUUID()
+          : Date.now() + "_" + Math.random();
+      function persist() {
+        localStorage.setItem("uni_mobile_lessons", JSON.stringify(lessons));
+        localStorage.setItem("uni_mobile_trips", JSON.stringify(trips));
+        render();
+      }
+      function lessonHTML(x) {
+        return `<div class="item lesson"><div class="item-top"><strong>${esc(x.subject)}</strong><span class="time">${esc(x.start)}–${esc(x.end)}</span></div>${x.place ? `<div class="meta">📍 ${esc(x.place)}</div>` : ""}${x.notes ? `<div class="meta">📝 ${esc(x.notes)}</div>` : ""}<div class="controls"><button onclick="editLesson('${x.id}')">Modifica</button><button class="del" onclick="delLesson('${x.id}')">Elimina</button></div></div>`;
+      }
+      function tripHTML(x, index, list, type) {
+        const seg = (x.segments || [])
+          .map(
+            (s) =>
+              `<div class="meta">• ${esc(s.mode)}${s.line ? " " + esc(s.line) : ""}${s.from || s.to ? ` · ${esc(s.from)}${s.from && s.to ? " → " : ""}${esc(s.to)}` : ""}${s.time ? ` · ${esc(s.time)}` : ""}</div>`,
+          )
+          .join("");
+        return `<div class="item trip ${type}"><div class="item-top"><strong><span class="rank">${index + 1}</span>${esc(x.name)}</strong><span class="time">${esc(x.start || "")}${x.start && x.end ? " → " : ""}${esc(x.end || "")}</span></div>${seg}${x.notes ? `<div class="meta">📝 ${esc(x.notes)}</div>` : ""}<div class="controls"><button onclick="moveTrip('${x.id}',-1)" ${index === 0 ? "disabled" : ""}>↑ Più su</button><button onclick="moveTrip('${x.id}',1)" ${index === list.length - 1 ? "disabled" : ""}>↓ Più giù</button><button onclick="editTrip('${x.id}')">Modifica</button><button class="del" onclick="delTrip('${x.id}')">Elimina</button></div></div>`;
+      }
+      function render() {
+        $("app").innerHTML = days
+          .map((day) => {
+            const ls = lessons
+              .filter((x) => x.day === day)
+              .sort((a, b) => a.start.localeCompare(b.start));
+            const go = trips
+              .filter((x) => x.day === day && x.type === "go")
+              .sort((a, b) => a.order - b.order);
+            const back = trips
+              .filter((x) => x.day === day && x.type === "back")
+              .sort((a, b) => a.order - b.order);
+            return `<article class="day"><div class="day-head"><h2>${day}</h2></div>
+  <section class="section"><div class="sec-head"><div><div class="sec-title">📚 Lezioni</div><div class="sec-note">Tutti gli orari della giornata</div></div><button class="add" onclick="openLesson('${day}')">+ Lezione</button></div>${ls.length ? ls.map(lessonHTML).join("") : `<div class="empty">Nessuna lezione inserita</div>`}</section>
+  <section class="section"><div class="sec-head"><div><div class="sec-title">🚌 Come arrivare</div><div class="sec-note">Ordina le alternative dalla più comoda</div></div><button class="add" onclick="openTrip('${day}','go')">+ Opzione</button></div>${go.length ? go.map((x, i) => tripHTML(x, i, go, "go")).join("") : `<div class="empty">Nessuna opzione di andata</div>`}</section>
+  <section class="section"><div class="sec-head"><div><div class="sec-title">🏠 Come tornare</div><div class="sec-note">Ordina le alternative dalla più comoda</div></div><button class="add" onclick="openTrip('${day}','back')">+ Opzione</button></div>${back.length ? back.map((x, i) => tripHTML(x, i, back, "back")).join("") : `<div class="empty">Nessuna opzione di ritorno</div>`}</section>
+  </article>`;
+          })
+          .join("");
+      }
+      function openLesson(day) {
+        $("lessonForm").reset();
+        $("lessonId").value = "";
+        $("lessonDay").value = day;
+        $("lessonFormTitle").textContent = day + " · nuova lezione";
+        $("lessonDlg").showModal();
+      }
+      function editLesson(id) {
+        let x = lessons.find((v) => v.id === id);
+        $("lessonId").value = x.id;
+        $("lessonDay").value = x.day;
+        $("subject").value = x.subject;
+        $("start").value = x.start;
+        $("end").value = x.end;
+        $("place").value = x.place || "";
+        $("lessonNotes").value = x.notes || "";
+        $("lessonFormTitle").textContent = x.day + " · modifica lezione";
+        $("lessonDlg").showModal();
+      }
+      $("lessonForm").onsubmit = (e) => {
+        e.preventDefault();
+        let id = $("lessonId").value || uid(),
+          x = {
+            id,
+            day: $("lessonDay").value,
+            subject: $("subject").value,
+            start: $("start").value,
+            end: $("end").value,
+            place: $("place").value,
+            notes: $("lessonNotes").value,
+          },
+          i = lessons.findIndex((v) => v.id === id);
+        i < 0 ? lessons.push(x) : (lessons[i] = x);
+        $("lessonDlg").close();
+        persist();
+      };
+      function delLesson(id) {
+        if (confirm("Eliminare questa lezione?")) {
+          lessons = lessons.filter((x) => x.id !== id);
+          persist();
+        }
+      }
+      function segmentTemplate(s = {}) {
+        return `<div class="segment-wrap"><div class="segment-head"><span>Tratta</span><button type="button" class="segment-remove" onclick="this.closest('.segment-wrap').remove()">Rimuovi</button></div><label>Mezzo</label><input class="s-mode" placeholder="Treno, Metro, Bus..." value="${esc(s.mode || "")}"><div class="row"><div><label>Linea / numero</label><input class="s-line" placeholder="S5, M2, 81..." value="${esc(s.line || "")}"></div><div><label>Orario</label><input class="s-time" placeholder="07:42–08:15" value="${esc(s.time || "")}"></div></div><div class="row"><div><label>Da</label><input class="s-from" placeholder="Partenza" value="${esc(s.from || "")}"></div><div><label>A</label><input class="s-to" placeholder="Arrivo" value="${esc(s.to || "")}"></div></div></div>`;
+      }
+      function addSegment(s = {}) {
+        $("segments").insertAdjacentHTML("beforeend", segmentTemplate(s));
+      }
+      function openTrip(day, type) {
+        $("tripForm").reset();
+        $("segments").innerHTML = "";
+        $("tripId").value = "";
+        $("tripDay").value = day;
+        $("tripType").value = type;
+        $("tripFormTitle").textContent =
+          day + " · " + (type === "go" ? "come arrivare" : "come tornare");
+        addSegment();
+        $("tripDlg").showModal();
+      }
+      function editTrip(id) {
+        let x = trips.find((v) => v.id === id);
+        $("tripId").value = x.id;
+        $("tripDay").value = x.day;
+        $("tripType").value = x.type;
+        $("tripName").value = x.name;
+        $("tripStart").value = x.start || "";
+        $("tripEnd").value = x.end || "";
+        $("tripNotes").value = x.notes || "";
+        $("segments").innerHTML = "";
+        (x.segments || []).forEach(addSegment);
+        if (!(x.segments || []).length) addSegment();
+        $("tripFormTitle").textContent = x.day + " · modifica opzione";
+        $("tripDlg").showModal();
+      }
+      $("tripForm").onsubmit = (e) => {
+        e.preventDefault();
+        let seg = [...document.querySelectorAll(".segment-wrap")].map((el) => ({
+          mode: el.querySelector(".s-mode").value,
+          line: el.querySelector(".s-line").value,
+          time: el.querySelector(".s-time").value,
+          from: el.querySelector(".s-from").value,
+          to: el.querySelector(".s-to").value,
+        }));
+        let id = $("tripId").value || uid(),
+          old = trips.find((v) => v.id === id),
+          same = trips.filter(
+            (v) =>
+              v.day === $("tripDay").value && v.type === $("tripType").value,
+          ),
+          x = {
+            id,
+            day: $("tripDay").value,
+            type: $("tripType").value,
+            name: $("tripName").value,
+            start: $("tripStart").value,
+            end: $("tripEnd").value,
+            notes: $("tripNotes").value,
+            segments: seg,
+            order: old ? old.order : same.length,
+          };
+        let i = trips.findIndex((v) => v.id === id);
+        i < 0 ? trips.push(x) : (trips[i] = x);
+        $("tripDlg").close();
+        persist();
+      };
+      function delTrip(id) {
+        if (confirm("Eliminare questa opzione?")) {
+          trips = trips.filter((x) => x.id !== id);
+          normalize();
+          persist();
+        }
+      }
+      function moveTrip(id, dir) {
+        let x = trips.find((v) => v.id === id),
+          list = trips
+            .filter((v) => v.day === x.day && v.type === x.type)
+            .sort((a, b) => a.order - b.order),
+          i = list.findIndex((v) => v.id === id),
+          j = i + dir;
+        if (j < 0 || j >= list.length) return;
+        let t = list[i].order;
+        list[i].order = list[j].order;
+        list[j].order = t;
+        persist();
+      }
+      function normalize() {
+        days.forEach((d) =>
+          ["go", "back"].forEach((t) =>
+            trips
+              .filter((x) => x.day === d && x.type === t)
+              .sort((a, b) => a.order - b.order)
+              .forEach((x, i) => (x.order = i)),
+          ),
+        );
+      }
+      function resetAll() {
+        if (
+          confirm("Cancellare tutte le lezioni e tutte le opzioni di viaggio?")
+        ) {
+          lessons = [];
+          trips = [];
+          persist();
+        }
+      }
+      normalize();
+      render();
+    </script>
+  </body>
+</html>
